@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/personalcenter/personalcenter",
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/mainpage/mainpage"
+  ],
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-popup": "@vant/weapp/popup/index"
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "HealTHU",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
+}
