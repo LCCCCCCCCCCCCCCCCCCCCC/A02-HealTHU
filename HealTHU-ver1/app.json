@@ -3,7 +3,19 @@
     "pages/personalcenter/personalcenter",
     "pages/index/index",
     "pages/logs/logs",
-    "pages/mainpage/mainpage"
+    "pages/mainpage/mainpage",
+    "pages/plan/plan",
+    "pages/achievements/achievements",
+    "pages/activities/activities",
+    "pages/attention/attention",
+    "pages/bindthu/bindthu",
+    "pages/changehealth/changehealth",
+    "pages/changeinfo/changeinfo",
+    "pages/dailyhealth/dailyhealth",
+    "pages/fans/fans",
+    "pages/personal/personal",
+    "pages/messages/messages",
+    "pages/settings/settings"
   ],
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",

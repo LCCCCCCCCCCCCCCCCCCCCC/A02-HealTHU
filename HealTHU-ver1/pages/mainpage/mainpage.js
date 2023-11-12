@@ -27,6 +27,66 @@ Page({
       currentTab: tab
     });
   },
+  gotoedit(){
+    wx.navigateTo({
+      url: '../plan/plan'
+    })
+  },
+  activity(){
+    wx.navigateTo({
+      url: '../activities/activities'
+    })
+  },
+  dailyhealth(){
+    wx.navigateTo({
+      url: '../dailyhealth/dailyhealth'
+    })
+  },
+  achievements(){
+    wx.navigateTo({
+      url: '../achievements/achievements'
+    })
+  },
+  dongtai(){
+    wx.navigateTo({
+      url: '../personal/personal'
+    })
+  },
+  guanzhu(){
+    wx.navigateTo({
+      url: '../attention/attention'
+    })
+  },
+  fensi(){
+    wx.navigateTo({
+      url: '../fans/fans'
+    })
+  },
+  changeInfo(){
+    wx.navigateTo({
+      url: '../changeinfo/changeinfo'
+    })
+  },
+  health(){
+    wx.navigateTo({
+      url: '../changehealth/changehealth'
+    })
+  },
+  tsinghua(){
+    wx.navigateTo({
+      url: '../bindthu/bindthu'
+    })
+  },
+  set(){
+    wx.navigateTo({
+      url: '../settings/settings'
+    })
+  },
+  messages(){
+    wx.navigateTo({
+      url: '../messages/messages'
+    })
+  },
   getColorByType(type){
     console.log(111);
     switch (type) {
