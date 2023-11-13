@@ -15,11 +15,15 @@
     "pages/fans/fans",
     "pages/personal/personal",
     "pages/messages/messages",
-    "pages/settings/settings"
+    "pages/settings/settings",
+    "pages/sports/sports"
   ],
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
-    "van-popup": "@vant/weapp/popup/index"
+    "van-popup": "@vant/weapp/popup/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-radio": "@vant/weapp/radio/index",
+    "van-radio-group": "@vant/weapp/radio-group/index"
   },
   "window": {
     "backgroundTextStyle": "light",
