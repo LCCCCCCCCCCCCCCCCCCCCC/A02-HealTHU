@@ -71,13 +71,16 @@ swiper{
   margin-top: 20px;
 }
 .button-act{
-  font-size: 14px;
+  font-size: 10px;
+}
+.button-spo{
+  font-size: 10px;
 }
 .button-hel{
-  font-size: 14px;
+  font-size: 10px;
 }
 .button-ach{
-  font-size: 14px;
+  font-size: 10px;
 }
 .userinfo{
   margin-top: 20px;

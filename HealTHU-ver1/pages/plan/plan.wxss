@@ -28,12 +28,25 @@
   font-size: 14px;
   color: #007aff;
 }
+.buttons{
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+}
 .addtodo{
   width:auto;
   background-color:rgb(191, 255, 161);
   margin-top: 5px;
   margin-bottom: 5px;
-  font-size: 14px;
+  font-size: 12px;
+  margin-left:5px;
+  margin-right:5px;
+}
+.sleep{
+  height:40px;
+  width: 80%;
+  border: 2px solid #000000;
+  font-size: 12px;
 }
 .addradio{
   width: 200px;
@@ -46,6 +59,10 @@
 .addddl{
   width: 250px;
   height: 300px;
+}
+.editact{
+  width: 250px;
+  height: 400px;
 }
 .todo-list{
   width:90%;

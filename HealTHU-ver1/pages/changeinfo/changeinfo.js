@@ -5,9 +5,33 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    avatarUrl: '',
+    nickName: '',
+    id:'',
+    sign:''
   },
-
+  handleNameInput(event) {
+    this.setData({
+      nickName: event.detail.value
+    });
+  },
+  handleSignInput(event) {
+    this.setData({
+      sign: event.detail.value
+    });
+  },
+  onChooseAvatar(e){
+    this.setData({'avatarUrl': e.detail.avatarUrl})
+  },
+  change(){
+    wx.setStorageSync('avatarUrl', this.data.avatarUrl);
+    wx.setStorageSync('nickName', this.data.nickName);
+    wx.setStorageSync('sign', this.data.sign);
+    wx.showToast({
+      title: "修改成功",
+      icon: "success"
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -26,7 +50,15 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    var avatarUrl = wx.getStorageSync('avatarUrl');
+    var nickName = wx.getStorageSync('nickName');
+    var sign = wx.getStorageSync('sign');
+    this.setData({
+      avatarUrl: avatarUrl,
+      nickName: nickName,
+      id:"ID",
+      sign: sign
+    });
   },
 
   /**

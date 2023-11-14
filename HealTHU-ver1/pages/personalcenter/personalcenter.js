@@ -26,6 +26,16 @@ Page({
     })
   },
   login(){
+    wx.setStorageSync('avatarUrl', this.data.userInfo.avatarUrl);
+    wx.setStorageSync('nickName', this.data.userInfo.nickName);
+    wx.setStorageSync('sign', "尚未设置");
+    wx.setStorageSync('todos', [
+      { title: "任务1", type:"课程", color:"#BBBB00", start:"7:00", end:"7:30"},
+      { title: "任务2", type:"运动", color:"#00BB00", start:"8:00", end:"8:30"},
+      { title: "任务3", type:"活动", color:"#0000FF", start:"9:00", end:"9:30"},
+      { title: "任务4", type:"ddl", color:"#009999", start:"10:00", end:"10:30"},
+      { title: "任务5", type:"饮食", color:"#BB00BB", start:"11:00", end:"11:30"}
+    ])
     wx.navigateTo({
       url: '../mainpage/mainpage'
     })

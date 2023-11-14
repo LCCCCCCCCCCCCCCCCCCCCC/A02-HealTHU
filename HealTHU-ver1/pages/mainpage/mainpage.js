@@ -6,23 +6,17 @@ Page({
    */
   data: {
     todos:[
-      { title: "任务1", type:"课程", color:"#BBBB00", start:"7:00", end:"7:30"},
-      { title: "任务2", type:"运动", color:"#00BB00", start:"8:00", end:"8:30"},
-      { title: "任务3", type:"活动", color:"#0000FF", start:"9:00", end:"9:30"},
-      { title: "任务4", type:"ddl", color:"#009999", start:"10:00", end:"10:30"},
-      { title: "任务5", type:"饮食", color:"#BB00BB", start:"11:00", end:"11:30"}
     ],
     currentTab: 0,
     userInfo: {
-      avatarUrl: 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',
-      nickName: '微信昵称',
+      avatarUrl: '',
+      nickName: '',
       id:"ID",
       sign:"尚未设置"
     }
   },
   handleTabChange(event){
     const tab = event.currentTarget.dataset.tab
-    console.log(tab)
     this.setData({
       currentTab: tab
     });
@@ -35,6 +29,11 @@ Page({
   activity(){
     wx.navigateTo({
       url: '../activities/activities'
+    })
+  },
+  sports(){
+    wx.navigateTo({
+      url: '../sports/sports'
     })
   },
   dailyhealth(){
@@ -105,7 +104,20 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    var data = wx.getStorageSync('todos');
+    //todo:主页只展示结束时间在当前时间之后的
+    var avatarUrl = wx.getStorageSync('avatarUrl');
+    var nickName = wx.getStorageSync('nickName');
+    var sign = wx.getStorageSync('sign');
+    this.setData({
+      todos: data,
+      userInfo:{
+        avatarUrl: avatarUrl,
+        nickName: nickName,
+        id:"ID",
+        sign: sign
+      }
+    });
   },
 
   /**

@@ -1,2 +1,9 @@
 <!--pages/changeinfo/changeinfo.wxml-->
-<text>TODO:编辑个人信息</text>
+<view class="container">
+  <button open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+     <image src="{{avatarUrl}}" style="width:100px;height:100px;"></image>
+  </button>  
+  <view>用户名：</view><input bindinput="handleNameInput" placeholder="{{nickName}}"/>
+  <view>个人签名：</view><textarea bindinput="handleSignInput" placeholder="{{sign}}" class="sign"/>
+  <van-button bind:tap="change">确认修改</van-button>
+</view>

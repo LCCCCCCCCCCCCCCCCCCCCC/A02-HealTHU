@@ -7,11 +7,6 @@ Page({
   data: {
     date: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
     todos:[
-      { title: "任务1", type:"课程", color:"#BBBB00", start:"7:00", end:"7:30"},
-      { title: "任务2", type:"运动", color:"#00BB00", start:"8:00", end:"8:30"},
-      { title: "任务3", type:"活动", color:"#0000FF", start:"9:00", end:"9:30"},
-      { title: "任务4", type:"ddl", color:"#009999", start:"10:00", end:"10:30"},
-      { title: "任务5", type:"饮食", color:"#BB00BB", start:"11:00", end:"11:30"}
     ],
     title:"",
     start:"",
@@ -19,8 +14,12 @@ Page({
     show: false,
     showact: false,
     showddl: false,
+    showedit: false,
+    nowId: 0,
+    nowtype: "",
     radio: "运动",
   },
+  //选择添加事务类型后点击确定
   determine(){
     switch(this.data.radio){
       case "运动":
@@ -40,6 +39,7 @@ Page({
     }
     this.setData({ show: false });
   },
+  //以下三个为设置任务信息
   handleNameInput(event) {
     this.setData({
       title: event.detail.value
@@ -55,6 +55,7 @@ Page({
       end: event.detail.value
     });
   },
+  //确定添加普通活动
   handleAct() {
     var newtodos = this.data.todos;
     newtodos.push({
@@ -64,16 +65,24 @@ Page({
       start:this.data.start,
       end:this.data.end
     })
+    newtodos.sort(function(a, b) {
+      var startTimeA = parseInt(a.start.replace(":", ""));
+      var startTimeB = parseInt(b.start.replace(":", ""));
+      return startTimeA - startTimeB;
+    });
     this.setData({
       todos:newtodos,
       showact: false
-    })
+    });
+    wx.setStorageSync('todos', this.data.todos);
   },
+  //跳转到发起活动页面
   addAct(){
     wx.navigateTo({
       url: '../activities/activities'
     })
   },
+  //确定添加ddl
   handleDDL() {
     var newtodos = this.data.todos;
     newtodos.push({
@@ -82,12 +91,19 @@ Page({
       color:"#009999",
       start:this.data.start,
       end:this.data.start
-    })
+    });
+    newtodos.sort(function(a, b) {
+      var startTimeA = parseInt(a.start.replace(":", ""));
+      var startTimeB = parseInt(b.start.replace(":", ""));
+      return startTimeA - startTimeB;
+    });
     this.setData({
       todos:newtodos,
       showddl: false
-    })
+    });
+    wx.setStorageSync('todos', this.data.todos);
   },
+  //上端获取前/后一天日期
   subDate() {
     // 获取当前日期
     var date = this.data.date;
@@ -102,7 +118,6 @@ Page({
     var newDay = newDate.getDate();
     var dateString = newYear + '-' + newMonth + '-' + newDay;
     // 页面跳转并传递新的日期参数
-    console.log(dateString);
     wx.redirectTo({
       url: '../plan/plan?date=' + dateString,
     })
@@ -126,16 +141,79 @@ Page({
       url: '../plan/plan?date=' + dateString,
     })
   },
+  //跳转到睡眠管理
+  tosleep(){
+    wx.navigateTo({
+      url: '../sleep/sleep',
+    })
+  },
+  //跳转到饮食管理
+  toeat(){
+    wx.navigateTo({
+      url: '../eat/eat',
+    })
+  },
+  //展示弹窗页面
   showPopup() {
     this.setData({ show: true });
   },
+  //选择事务类型
   onChange(event) {
     this.setData({
       radio: event.detail,
     });
   },
+  //关闭弹窗页面
   onClose() {
     this.setData({ show: false });
+  },
+  handleEdit(event) {
+    const buttonId = event.currentTarget.dataset.id;
+    var newtodo = this.data.todos[buttonId];
+    this.setData({ 
+      showedit: true,
+      title: newtodo.title,
+      start: newtodo.start,
+      end: newtodo.end,
+      nowId: buttonId,
+      nowtype: newtodo.type
+     });
+  },
+  //编辑事务
+  editAct(){
+    var newtodos = this.data.todos;
+    newtodos[this.data.nowId] = {
+      title:this.data.title,
+      type:this.data.nowtype,
+      color:this.switchColorbyType(this.data.nowtype),
+      start:this.data.start,
+      end:this.data.end
+    }
+    newtodos.sort(function(a, b) {
+      var startTimeA = parseInt(a.start.replace(":", ""));
+      var startTimeB = parseInt(b.start.replace(":", ""));
+      return startTimeA - startTimeB;
+    });
+    this.setData({
+      todos:newtodos,
+      showedit: false
+    });
+    wx.setStorageSync('todos', this.data.todos);
+  },
+  //删除事务
+  deleteAct(){
+    var newtodos = this.data.todos;
+    newtodos.splice(this.data.nowId,1);
+    newtodos.sort(function(a, b) {
+      var startTimeA = parseInt(a.start.replace(":", ""));
+      var startTimeB = parseInt(b.start.replace(":", ""));
+      return startTimeA - startTimeB;
+    });
+    this.setData({
+      todos:newtodos,
+      showedit: false
+    })
+    wx.setStorageSync('todos', this.data.todos);
   },
   /**
    * 生命周期函数--监听页面加载
@@ -160,7 +238,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    var data = wx.getStorageSync('todos');
+    this.setData({
+      todos: data
+    });
   },
 
   /**
@@ -196,5 +277,19 @@ Page({
    */
   onShareAppMessage() {
 
+  },
+  switchColorbyType(type){
+    switch(type){
+      case "课程":
+        return "#BBBB00";
+      case "运动":
+        return "#00BB00";
+      case "活动":
+        return "#0000FF";
+      case "ddl":
+        return "#009999";
+      case "饮食":
+        return "#BB00BB";
+    }
   }
 })

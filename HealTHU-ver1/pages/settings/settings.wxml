@@ -1,2 +1,7 @@
 <!--pages/settings/settings.wxml-->
-<text>TODO:设置</text>
+<van-button>个性化设置</van-button>
+<van-button>隐私权限</van-button>
+<van-button>黑名单管理</van-button>
+<van-button>帮助</van-button>
+<van-button>客服中心</van-button>
+<van-button>退出登录</van-button>

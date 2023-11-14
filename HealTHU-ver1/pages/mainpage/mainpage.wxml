@@ -27,6 +27,7 @@
     </view>
     <view class="buttons">
       <button class="button-act" bind:tap="activity">个人活动</button>
+      <button class="button-spo" bind:tap="sports">运动中心</button>
       <button class="button-hel" bind:tap="dailyhealth">健康日报</button>
       <button class="button-ach" bind:tap="achievements">个人成就</button>
     </view>

@@ -13,14 +13,23 @@
     <view class="date">{{date}}</view>
     <view class="add-btn" bindtap="addDate">后一天{{">"}}</view>
   </view>
-  <button class="addtodo" bind:tap="showPopup">添加事务</button>
+  <view class="buttons">
+    <button class="addtodo" bind:tap="tosleep">睡眠管理</button>
+    <button class="addtodo" bind:tap="toeat">饮食管理</button>
+    <button class="addtodo" bind:tap="showPopup">添加事务</button>
+  </view>
+  <view class="sleep">
+    <text>昨日睡眠情况：{{}}
+    建议睡眠时间：{{}}
+    </text>
+  </view>
   <van-popup show="{{ show }}" bind:close="onClose">
     <view class="addradio">
     <van-radio-group value="{{ radio }}" bind:change="onChange">
       <van-radio name="运动">运动</van-radio>
       <van-radio name="活动">活动</van-radio>
       <van-radio name="ddl">ddl</van-radio>
-      <button class="datermine" bind:tap="determine">确定</button>
+      <button class="determine" bind:tap="determine">确定</button>
     </van-radio-group>
     </view>
   </van-popup>
@@ -40,12 +49,22 @@
       <button bindtap="handleDDL">确定</button>
     </view>
   </van-popup>
+  <van-popup show="{{ showedit }}">
+    <view class="editact">
+      <view>名称：</view><input bindinput="handleNameInput" placeholder="{{title}}"/>
+      <view>类型：{{nowtype}}</view>
+      <view>起始时间：</view><input bindinput="handleStartTimeInput" placeholder="{{start}}"/>
+      <view>结束时间：</view><input bindinput="handleEndTimeInput" placeholder="{{end}}"/>
+      <button bindtap="deleteAct">删除</button>
+      <button bindtap="editAct">确定</button>
+    </view>
+  </van-popup>
   <view class="todo-list">
     <block wx:for="{{todos}}" wx:key="index">
       <view class="todo-item" style="background: linear-gradient(to bottom right, {{item.color}}, #FFFFFF);">
           {{item.title}}
         <span class="item-time">{{item.start}}——{{item.end}}</span>
-        <button class="edit">编辑</button>
+        <button class="edit" data-id="{{index}}" bindtap="handleEdit">编辑</button>
       </view>
     </block>
   </view>
