@@ -5,6 +5,10 @@ class UserInfo(models.Model):
     avatarUrl = models.CharField(max_length=200)
     nickName = models.CharField(max_length=20)
     signature = models.CharField(max_length=100)
+    followings = models.JSONField()
+    followingNum = models.IntegerField()
+    followers = models.JSONField()
+    followerNum = models.IntegerField()
     
     
 
