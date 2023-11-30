@@ -10,6 +10,11 @@ class UserInfo(models.Model):
     followers = models.JSONField()
     followerNum = models.IntegerField()
     
+class CustomSettings(models.Model):
+    displayMode = models.IntegerField()
+    ddlRange = models.CharField(max_length=50)
+    storageRange = models.CharField(max_length=50)
+    blackList = models.JSONField()
     
 
 class User(models.Model):
@@ -17,4 +22,5 @@ class User(models.Model):
     userid = models.CharField(max_length=20) # the openid from wechat
     nickName = models.CharField(max_length=100)
     userInfo = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
+    customSettings = models.ForeignKey(CustomSettings, on_delete=models.CASCADE)
     
