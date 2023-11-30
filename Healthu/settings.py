@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
     'healthInfo.apps.HealthinfoConfig',
+    'schedule.apps.ScheduleConfig'
 ]
 
 MIDDLEWARE = [

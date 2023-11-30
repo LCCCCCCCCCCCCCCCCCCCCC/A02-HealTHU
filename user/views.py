@@ -7,7 +7,9 @@ import requests
 def user_index(request):
     if request.method == 'GET':
         nickName = request.GET.get('nickName')
-        avatarUrl = request.GET.get('avatarUrl')
+        userInfo = request.GET.get('userInfo')
+        if userInfo:
+            avatarUrl = userInfo.get('avatarUrl') # todo: test this code
         user = User(nickName=nickName, avatarUrl=avatarUrl)
         user.save()
         return HttpResponse(f"nickName: {nickName}, avatarUrl: {avatarUrl},显示成功")
