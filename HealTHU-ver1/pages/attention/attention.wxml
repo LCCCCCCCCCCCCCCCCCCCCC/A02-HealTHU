@@ -1,0 +1,20 @@
+<!--pages/attention/attention.wxml-->
+<van-nav-bar title="关注" 
+  right-text="搜索"
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="onClickRight">
+</van-nav-bar>
+
+<van-swipe-cell
+  id="swipe-cell"
+  right-width="{{ 48 }}"
+  bind:click="onClose"
+>
+  <van-cell-group>
+    <van-cell title="{{attention.nickname}}" value="{{attention.id}}" />
+    <van-cell title="{{attention2.nickname}}" value="{{attention2.id}}" />
+  </van-cell-group>
+  <view slot="right" class="van-swipe-cell__right">删除</view>
+</van-swipe-cell>

@@ -1,0 +1,53 @@
+<!--pages/plan/addplan/addplan.wxml-->
+<van-nav-bar
+  title="新建日程"
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="onClickRight"
+  >
+  <view slot="right">
+    <van-icon name="success" color="blue"/>
+  </view>
+</van-nav-bar>
+
+<van-cell-group class="addnew" inset>
+  <van-field
+    label="主题"
+    placeholder="活动主题"
+    bind:change="handleNameInput"
+  />
+  <van-field
+    label="备注"
+    placeholder="地点等备注信息"
+    bind:change="handleLabelInput"
+  />
+  <van-field label="类型">
+    <van-dropdown-menu slot="input">
+      <van-dropdown-item value="{{ optionvalue1 }}" options="{{ option1 }}" bind:change="onTypeConfirm"/>
+    </van-dropdown-menu>
+  </van-field>
+
+  <van-cell title="选择日期" value="{{ date }}" bind:click="onDisplay"/>
+    <van-calendar show="{{ dateshow }}" bind:close="onClose" bind:confirm="onConfirm" />
+  <view hidden="{{optionvalue1 == 0}}">
+  <van-cell title="开始时间" value="{{start}}" bind:click="showPicker1"/>
+    <van-datetime-picker
+        wx:if="{{showpicker == 1}}"
+        type="time"
+        min-hour="0"
+        max-hour="24"  
+        bind:confirm="handleStartTimeInput"
+        bind:cancel="closePicker"
+      />
+  </view>
+  <van-cell title="结束时间" value="{{end}}" bind:click="showPicker2"/>
+    <van-datetime-picker
+        wx:if="{{showpicker == 2}}"
+        type="time"
+        min-hour="0"
+        max-hour="24"  
+        bind:confirm="handleEndTimeInput"
+        bind:cancel="closePicker"
+      />
+</van-cell-group>

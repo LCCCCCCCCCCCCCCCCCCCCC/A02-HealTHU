@@ -1,0 +1,26 @@
+<!--pages/changeinfo/changeinfo.wxml-->
+<view class="container">
+  <button class="choosebutton" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar"> 
+    <van-image round width="6rem" height="6rem" src="{{avatarUrl}}"></van-image>
+  </button>
+  <van-divider />
+  <van-cell-group>
+  <van-field
+    label="用户名"
+    placeholder="{{nickName}}"
+    bind:input="handleNameInput"
+  />
+  <van-field class="sign"
+    label="个性签名"
+    placeholder="{{sign}}"
+    bind:input="handleSignInput"
+    border="{{false}}"
+  />
+  </van-cell-group>
+  <van-divider />
+  <!-- <view>用户名：</view>
+  <input bindinput="handleNameInput" placeholder="{{nickName}}"/>
+  <view>个人签名：</view>
+  <textarea bindinput="handleSignInput" placeholder="{{sign}}" class="sign"/> -->
+  <van-button bind:tap="change">确认修改</van-button>
+</view>

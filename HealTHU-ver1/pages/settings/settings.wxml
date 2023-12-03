@@ -1,0 +1,12 @@
+<!--pages/settings/settings.wxml-->
+ <van-row gutter="20">
+  <van-col span="8">
+    <text>个人主页</text>
+  </van-col>
+
+  <van-col span="16">
+  <van-dropdown-menu>
+    <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
+  </van-dropdown-menu>
+  </van-col>
+</van-row> 

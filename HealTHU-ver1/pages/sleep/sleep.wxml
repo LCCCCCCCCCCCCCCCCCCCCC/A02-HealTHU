@@ -1,0 +1,7 @@
+<!--pages/sleep/sleep.wxml-->
+<!-- <view>TODO:近一周睡眠曲线与分析、建议</view> -->
+<view class="sleep">
+    <text>昨日睡眠情况：{{}}
+    建议睡眠时间：{{}}
+    </text>
+  </view>

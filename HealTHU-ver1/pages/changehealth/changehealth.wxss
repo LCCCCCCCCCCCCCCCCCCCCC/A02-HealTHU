@@ -1,0 +1,24 @@
+/* pages/changehealth/changehealth.wxss */
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0;
+}
+.info {
+  float:left;
+  text-align: left;
+  color:grey;
+  padding: 12px;
+}
+.edit{
+  float:right;
+  font-size: 12px;
+  height: 30px;
+  border: 1px solid black;
+  margin-bottom: 4px;
+}
+.van-button{
+  float: right;
+}

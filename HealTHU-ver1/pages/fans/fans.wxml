@@ -1,0 +1,24 @@
+<van-nav-bar title="粉丝" 
+  right-text="搜索"
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="onClickRight">
+</van-nav-bar>
+
+<view class="container">
+  <van-row class="user-list">
+    <block wx:for="{{ userList }}" wx:key="id">
+      <van-col span="17">
+          <image class="avatar" src="{{ item.avatar }}"></image>
+            <text class="name">{{ item.nickname }}</text>
+            <!-- <text class="signature">{{ item.signature }}</text> -->
+        </van-col>
+        <van-col span="6" offset="1">
+          <button class="follow-btn" wx:if="{{ !item.followed }}" bindtap="followUser" data-id="{{ item.id }}">关注</button>
+          <button class="followed-text" wx:else>已关注</button>
+        </van-col>
+    </block>
+    <van-divider />
+  </van-row>
+</view>

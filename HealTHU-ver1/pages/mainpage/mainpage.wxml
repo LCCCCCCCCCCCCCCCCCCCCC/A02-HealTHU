@@ -1,0 +1,107 @@
+<!--pages/mainpage/mainpage.wxml-->
+<view class="container">
+  <view wx:if="{{currentTab == 0}}" class = "mainpage">
+    <swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}">
+      <swiper-item>
+        <image src="../images/swiper1.jpg" mode="aspectFill"></image>
+      </swiper-item>
+      <swiper-item>
+        <image src="../images/swiper2.jpg" mode="aspectFill"></image>
+      </swiper-item>
+      <swiper-item>
+        <image src="../images/swiper3.jpg" mode="aspectFill"></image>
+      </swiper-item>
+    </swiper>
+    <view class="buttons">
+      <button class="button-act" bind:tap="activity">
+        <image src="../images/activity.svg" class="button-icon"></image>
+        活动</button>
+      <button class="button-spo" bind:tap="sports">
+        <image src="../images/sports.svg" class="button-icon"></image>
+        运动</button>
+      <button class="button-hel" bind:tap="dailyhealth">
+        <image src="../images/daily.svg" class="button-icon"></image>
+        日报</button>
+      <button class="button-ach" bind:tap="achievements">
+        <image src="../images/achievement.svg" class="button-icon"></image>
+        成就</button>
+    </view>
+    <view class="header">
+      <view class="title">今日日程安排</view>
+      <!--可以展示当前开始一部分最近的，到编辑界面展示全部-->
+      <button class="edit" bind:tap="gotoedit">管理</button>
+    </view>
+    <view class="todo-list">
+      <block wx:for="{{todos}}" wx:key="index">
+        <view class="todo-item" style="background: linear-gradient(to bottom right, {{item.color}}, #FFFFFF);">
+          {{item.title}} {{item.label}}
+          <span class="item-time">{{item.start}}——{{item.end}}</span>
+        </view>
+      </block>
+    </view>
+    <view class="header">
+      <view class="title">倒计时提醒</view>
+    </view>
+    <view class="ddl">
+     <van-cell-group wx:for="{{ddls}}" wx:key="index">
+      <van-cell title="{{item.title}}" value="{{item.date}} {{item.time}}" label="{{item.label}}" />
+     </van-cell-group>
+    </view>
+
+  </view>
+  <view wx:if="{{currentTab == 1}}" class = "mainpage">
+  <van-calendar
+    title="功能开发中"
+    poppable="{{ false }}"
+    show-confirm="{{ false }}"
+    class="calendar"
+  />
+  </view>
+
+  <view wx:if="{{currentTab == 2}}" class="mainpage">
+  <van-row>
+    <van-col span="8">
+      <van-image round width="6rem" height="6rem" src="{{userInfo.avatarUrl}}"/>
+    </van-col>
+    <van-col span="12" offset="2">
+      <view class="userinfo-nick">{{userInfo.nickName}}</view>
+      <view class="userinfo-id">UID：{{userInfo.id}}</view>
+      <button class="infobutton" bind:tap="changeInfo">编辑个人信息</button>
+    </van-col>
+  </van-row>
+  <van-grid column-num="3" gutter="{{ 32 }}" border="{{false}}" direction="horizontal">
+    <van-grid-item link-type="navigateTo"
+      url='../personal/personal' text="0 动态" />
+      <van-grid-item link-type="navigateTo"
+      url='../attention/attention' text="2 关注" />
+      <van-grid-item link-type="navigateTo"
+      url='../fans/fans' text="2 粉丝" />
+  </van-grid>
+  <view class="empty-line"></view>
+    <view class="changeinfo">
+    <van-cell-group>
+      <van-cell is-link title="  健康状况" icon="manager-o"
+        link-type="navigateTo" url='../changehealth/changehealth'/>
+      <van-cell is-link title="  个性化" icon="records-o"
+      link-type="navigateTo" url='../settings/selfset/selfset'/>
+      <view class="empty-line"></view>
+      <van-cell is-link title="  账号绑定" icon="link-o"  
+        link-type="navigateTo" url='../bindthu/bindthu'/>
+      <van-cell is-link title="  隐私设置" icon="setting-o"  
+      link-type="navigateTo" url='../settings/settings'/>
+      <view class="empty-line"></view>
+      <van-cell is-link title="  帮助" icon="service-o"  
+      link-type="navigateTo" url='../settings/settings'/>
+      <van-cell is-link title="  退出登录" icon="replay"  
+      link-type="navigateTo" url='../settings/settings'/>
+    </van-cell-group>
+    </view>
+    </view>
+  <van-tabbar active="{{ currentTab }}" 
+    bind:change="handleTabChange"
+    placeholder="{{true}}">
+    <van-tabbar-item icon="wap-home">主页</van-tabbar-item>
+    <van-tabbar-item icon="newspaper">消息</van-tabbar-item>
+    <van-tabbar-item icon="contact">我的</van-tabbar-item>
+  </van-tabbar>
+</view>

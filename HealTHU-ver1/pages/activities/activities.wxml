@@ -1,0 +1,67 @@
+<!--pages/activities/activities.wxml-->
+<!-- page-meta 只能是页面内的第一个节点 -->
+<page-meta page-style="{{ show ? 'overflow: hidden;' : '' }}" />
+<van-nav-bar
+  right-text="发起"
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="onClickRight">
+  <view slot="title">
+    <van-search
+      value="{{ value }}"
+      placeholder="请输入搜索关键词"
+      use-action-slot
+      bind:change="onChange"
+      bind:search="onSearch"
+    >
+      <view slot="action" bind:tap="onClick">搜索</view>
+    </van-search> 
+  </view>
+</van-nav-bar>
+<van-tabs active="{{ active }}" bind:change="onChange">
+  <van-tab title="关注">
+    <van-empty description="关注的人还没有参加过活动"></van-empty>
+  </van-tab>
+  <van-tab title="活动">
+  <van-card
+    tag="报名中"
+    desc="打卡统计"
+    title="软件学院2023秋第10周集体锻炼"
+    thumb="../images/swiper2.jpg"
+    thumb-link
+    url='./activity/activity'
+  >
+  <view slot="tags">
+    <van-tag plain type="primary">紫荆操场</van-tag>
+    <van-tag plain type="primary">飞盘</van-tag>
+    <van-tag plain type="primary">集体锻炼</van-tag>
+  </view>
+  <view slot="footer">
+    <van-button size="mini" bind:click="showdetail">查看</van-button>
+    <van-button size="mini" bind:click="signup">报名</van-button>
+  </view>
+  </van-card>
+  <van-card
+    desc="初学者，水平一般，周末都有空，希望不嫌我菜"
+    title="寻找网球等球类搭子"
+    thumb="../images/swiper1.jpg"
+    thumb-link
+    url='./activity/activity'
+  >
+  <view slot="tags">
+    <van-tag plain type="danger">已结束</van-tag>
+    <van-tag plain type="primary">紫荆网球场</van-tag>
+    <van-tag plain type="primary">网球</van-tag>
+    <van-tag plain type="primary">羽毛球</van-tag>
+    <van-tag plain type="primary">交友</van-tag>
+  </view>
+  <view slot="footer">
+    <van-button size="mini" bind:click="showdetail">查看</van-button>
+  </view>
+  </van-card>
+</van-tab>
+  <van-tab title="我的">
+    <van-empty description="还没有参加过活动"></van-empty>
+  </van-tab>
+</van-tabs>

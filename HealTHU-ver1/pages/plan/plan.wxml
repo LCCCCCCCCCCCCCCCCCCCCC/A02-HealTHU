@@ -1,0 +1,62 @@
+<!--pages/plan/plan.wxml-->
+<!--TODO:个人健康规划主页
+该页记录当天的时间规划事项，包括课程、ddl、运动、饮食、睡眠、活动等等
+系统生成一部分规划供参考，用户可以编辑或添加
+每类事件添加规划时会有相应事件设置
+以运动为例，用户可以选择场馆预约与个人运动，在选择好运动类型后，进入规划时间软件会进行提醒，用户要在时间内进行运动（只有个人运动会手动记录）
+每项事件可以在开始之前修改编辑，开始后不可编辑，能记录的事件未完成扣除一定分数并进行提醒
+上端跳转前一天/后一天
+加入一个以周（或更长时间）为单位的计划概览-->
+<view class="container">
+  <view class="top-bar">
+    <view class="sub-btn" bindtap="subDate">{{"<"}}</view>
+    <view class="date">{{date}}</view>
+    <view class="add-btn" bindtap="addDate">{{">"}}</view>
+  </view>
+  <view class="buttons">
+    <button class="addtodo" bind:tap="tosleep">睡眠管理</button>
+    <button class="addtodo" bind:tap="toeat">饮食管理</button>
+    <button class="addtodo" bind:tap="toadd">添加事务</button>
+  </view>
+
+  <van-popup show="{{ showedit }}">
+    <view class="editact">
+      <view>名称：</view><input bindinput="handleNameInput" placeholder="{{title}}"/>
+      <view>备注：</view><input bindinput="handleLabelInput" placeholder="{{label}}"/>
+      <view>类型：{{nowtype}}</view>
+      <view>起始时间：{{start}}</view><button bind:tap="showPicker1">编辑</button>
+      <van-datetime-picker
+        wx:if="{{showpicker == 1}}"
+        type="time"
+        value="{{start}}"
+        min-hour="0"
+        max-hour="24"  
+        bind:confirm="handleStartTimeInput"
+        bind:cancel="closePicker"
+      />
+      <view>结束时间：{{end}}</view><button bind:tap="showPicker2">编辑</button>
+      <van-datetime-picker
+        wx:if="{{showpicker == 2}}"
+        type="time"
+        value="{{end}}"
+        min-hour="0"
+        max-hour="24"  
+        bind:confirm="handleEndTimeInput"
+        bind:cancel="closePicker"
+      />
+      <button bindtap="deleteAct">删除</button>
+      <button bindtap="editAct">确定</button>
+    </view>
+  </van-popup>
+
+
+  <view class="todo-list">
+    <block wx:for="{{todos}}" wx:key="index">
+      <view class="todo-item" style="background: linear-gradient(to bottom right, {{item.color}}, #FFFFFF);">
+          {{item.title}} {{item.label}}
+        <span class="item-time">{{item.start}}——{{item.end}}</span>
+        <button class="edit" data-id="{{index}}" bindtap="handleEdit">编辑</button>
+      </view>
+    </block>
+  </view>
+</view>
