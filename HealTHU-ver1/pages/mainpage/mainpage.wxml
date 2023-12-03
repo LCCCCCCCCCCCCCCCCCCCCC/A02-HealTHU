@@ -103,7 +103,7 @@
       <van-cell is-link title="  帮助与反馈" icon="service-o"  
       link-type="navigateTo" url='../settings/help/help'/>
       <van-cell is-link title="  退出登录" icon="replay"  
-      link-type="navigateTo" url='../settings/settings'/>
+      link-type="navigateTo" url='../personalcenter/personalcenter'/>
     </van-cell-group>
     </view>
     </view>

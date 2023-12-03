@@ -220,7 +220,7 @@ Page({
       default:
         return;
     }
-<<<<<<< HEAD
+
     if(this.data.isValid){
       wx.showToast({ title: '添加成功', icon: 'success' });
       wx.navigateTo({
@@ -230,7 +230,7 @@ Page({
     else{
       wx.showToast({ title: '时间不合法', icon: 'success' });
     }
-=======
+
     wx.showToast({ title: '添加成功', icon: 'success' });
     wx.navigateTo({
       delta: 1
@@ -240,7 +240,6 @@ Page({
     wx.navigateTo({
       url: '../plan'
     })
->>>>>>> 5748f74126768c3ce61efcec7e6b49dfe5f2a2af
   },
   /**
    * 生命周期函数--监听页面加载

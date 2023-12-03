@@ -1,30 +1,29 @@
 <!--pages/dailyhealth/dailyhealth.wxml-->
-<van-nav-bar title="健康日报" 
-  right-text="选择日期"
-  safe-area-inset-top="{{false}}"
-  fixed="{{true}}"
-  placeholder="{{true}}"
-  bind:click-right="onClickRight">
-</van-nav-bar>
-<van-card
-  tag="未查看"
-  desc="描述信息"
-  title="2023-11-22健康日报"
-  thumb="{{ imageURL }}"
->
-  <view slot="footer">
-    <van-button size="mini">详情</van-button>
-    <van-button size="mini">删除</van-button>
-  </view>
-</van-card>
-<van-card
-  tag="未查看"
-  desc="描述信息"
-  title="2023秋第9周(11/13-11/19)健康周报"
-  thumb="{{ imageURL }}"
->
-  <view slot="footer">
-    <van-button size="mini">详情</van-button>
-    <van-button size="mini">删除</van-button>
-  </view>
-</van-card>
+<van-tabs active="{{ active }}" bind:change="onChange">
+  <van-tab title="昨日小结">
+    <text class="text">昨日完成事项:{{lastNum}}</text>
+    <canvas canvas-id="pieCanvas-num" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
+    <text class="text">昨日工作量:{{lastHour}}</text>
+    <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
+  </van-tab>
+  <van-tab title="事件统计">
+    <text class="text">工作量趋势</text>
+    <view class="workload">
+      <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler-pie"></canvas>
+    </view>
+    <!-- TODO：再加一个每日完成事件表line chart，能够筛选时间范围，显示完成事件的类型分布 -->
+  </van-tab>
+  <van-tab title="报告">
+    <van-card
+      tag="未查看"
+      desc="描述信息"
+      title="2023秋第9周(11/27-12/3)健康周报"
+      thumb="{{ imageURL }}"
+    >
+      <view slot="footer">
+        <van-button size="mini">详情</van-button>
+        <van-button size="mini">删除</van-button>
+      </view>
+    </van-card> 
+  </van-tab>
+</van-tabs>
