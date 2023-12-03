@@ -59,22 +59,27 @@ swiper.item{
   overflow:auto;
   color:white;
 }
-.buttons{
+.buttons-grid{
+  width:90%;
+  margin-top: 16px;
+}
+/* .buttons{
   width:90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
-}
+} */
 .button-icon {
   width: 36px;
   height: 36px;
-  padding-top: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.button-act{
+/* .button-act{
   font-size: 12px;
   background-color: transparent;
   color: #000000;
@@ -105,7 +110,7 @@ swiper.item{
   padding-bottom:2px;
   border: none;
   background-color:white;
-}
+} */
 van-row{
   width: 85%;
   margin-top:10px; 

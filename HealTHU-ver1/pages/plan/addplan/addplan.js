@@ -214,7 +214,12 @@ Page({
     }
     wx.showToast({ title: '添加成功', icon: 'success' });
     wx.navigateTo({
-      url: '../plan',
+      delta: 1
+    })
+  },
+  onClickLeft(){
+    wx.navigateTo({
+      url: '../plan'
     })
   },
   /**

@@ -12,20 +12,24 @@
         <image src="../images/swiper3.jpg" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
-    <view class="buttons">
-      <button class="button-act" bind:tap="activity">
-        <image src="../images/activity.svg" class="button-icon"></image>
-        活动</button>
-      <button class="button-spo" bind:tap="sports">
-        <image src="../images/sports.svg" class="button-icon"></image>
-        运动</button>
-      <button class="button-hel" bind:tap="dailyhealth">
-        <image src="../images/daily.svg" class="button-icon"></image>
-        统计</button>
-      <button class="button-ach" bind:tap="achievements">
-        <image src="../images/achievement.svg" class="button-icon"></image>
-        成就</button>
-    </view>
+    <van-grid class="buttons-grid" column-num="5" border="{{false}}">
+      <van-grid-item text="睡眠"  link-type="navigateTo" url="../sleep/sleep">
+        <image slot="icon" src="../images/sleep.svg" class="button-icon"/>
+      </van-grid-item>
+      <van-grid-item text="活动"  link-type="navigateTo" url="../activities/activities">
+        <image slot="icon" src="../images/activity.svg" class="button-icon"/>
+      </van-grid-item>
+      <van-grid-item text="健身"  link-type="navigateTo" url="../sports/sport">
+        <image slot="icon" src="../images/sports.svg" class="button-icon"/>
+      </van-grid-item>
+      <van-grid-item text="统计"  link-type="navigateTo" url="../dailyhealth/dailyhealth">
+        <image slot="icon" src="../images/daily.svg" class="button-icon"/>
+      </van-grid-item>
+      <van-grid-item text="成就"  link-type="navigateTo" url="../achievements/achievements">
+        <image slot="icon" src="../images/achievement.svg" class="button-icon"/>
+      </van-grid-item>
+    </van-grid>    
+
     <view class="header">
       <view class="title">今日计划</view>
       <!--可以展示当前开始一部分最近的，到编辑界面展示全部-->
@@ -33,7 +37,12 @@
     </view>
     <view class="todo-list">
       <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
-        <van-cell label="{{item.label}}" value="{{item.start}}—{{item.end}}" >
+        <van-cell wx:if="{{ item.type !== 'ddl' }}" label="{{item.label}}" value="{{item.start}}—{{item.end}}" >
+          <view slot="title">
+            <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
+          </view>
+        </van-cell>
+        <van-cell wx:else label="{{item.label}}" value="{{item.end}}" >
           <view slot="title">
             <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
           </view>
