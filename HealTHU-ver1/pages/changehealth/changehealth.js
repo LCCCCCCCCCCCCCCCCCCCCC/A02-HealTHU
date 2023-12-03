@@ -38,7 +38,10 @@ Page({
   },
   change(){
     var bmiNumber = (this.data.update.weight*10000/this.data.update.height/this.data.update.height).toFixed(2);
+    var date = new Date();
+    var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-'+ date.getDate();
     this.setData({
+      'update.time': dateString,
       'update.bmi': bmiNumber
     });
     // wx.setStorageSync('age', this.data.update.age);
@@ -50,6 +53,7 @@ Page({
       icon: "success"
     });
     // 后端更新数据（以及重新计算体测分数）
+    // 想画变化曲线的话要后端都存起来x
     // 年龄的话还是根据生日计算比较合适？；性别的修改
   },
   // 需要把本页的data.update改为storage
