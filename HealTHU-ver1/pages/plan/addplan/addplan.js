@@ -6,7 +6,7 @@ Page({
    */
   data: {
     nowtime: new Date().getHours() + ":" + new Date().getMinutes(),
-    date: (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+    date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     dateshow: false,
     option1: [
       { text: 'ddl', value: 0 },
@@ -16,14 +16,15 @@ Page({
       { text: '吃饭', value: 4 }
     ],
     optionvalue1: 0,
-    start: "8:00",
-    end: "23:59",
-    todos: wx.getStorageSync('todos'),
+    start: "",
+    end: "",
+    todos: [],
     title:"",
     label:"",
     showpicker: false,
     nowId: 0,
     nowtype: "",
+    isValid:false
   },
   onTypeConfirm(event){
     this.setData({ optionvalue1: event.detail});
@@ -37,13 +38,15 @@ Page({
   },
   formatDate(date) {
     date = new Date(date);
-    return `${date.getMonth() + 1}/${date.getDate()}`;
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    //把todos里的值改为该天的todos
   },
   onConfirm(event) {
     this.setData({
       dateshow: false,
       date: this.formatDate(event.detail),
     });
+    console.log(this.data.date)
   },
   //以下三个为设置任务信息
   handleNameInput(event) {
@@ -102,7 +105,8 @@ Page({
         return startTimeA - startTimeB;
       });
       this.setData({
-        todos:newtodos,
+        todos:newtodos,//添加日期标记
+        isValid:true
       });
       wx.setStorageSync('todos', this.data.todos);
     }
@@ -110,7 +114,7 @@ Page({
   //确定添加ddl
   handleDDL() {
     var newtodos = this.data.todos;
-    if(this.isValid(this.data.start,this.data.start,this.data.todos)){
+    if(this.isValid(this.data.end,this.data.end,this.data.todos)){
       newtodos.push({
         title:this.data.title,
         type:"ddl",
@@ -126,6 +130,7 @@ Page({
       });
       this.setData({
         todos:newtodos,
+        isValid:true
       });
       wx.setStorageSync('todos', this.data.todos);
     }
@@ -148,6 +153,7 @@ Page({
       });
       this.setData({
         todos:newtodos,
+        isValid:true
       });
       wx.setStorageSync('todos', this.data.todos);
     }
@@ -170,6 +176,7 @@ Page({
       });
       this.setData({
         todos:newtodos,
+        isValid:true
       });
       wx.setStorageSync('todos', this.data.todos);
     }
@@ -192,6 +199,7 @@ Page({
       });
       this.setData({
         todos:newtodos,
+        isValid:true
       });
       wx.setStorageSync('todos', this.data.todos);
     }
@@ -212,10 +220,15 @@ Page({
       default:
         return;
     }
-    wx.showToast({ title: '添加成功', icon: 'success' });
-    wx.navigateTo({
-      url: '../plan',
-    })
+    if(this.data.isValid){
+      wx.showToast({ title: '添加成功', icon: 'success' });
+      wx.navigateTo({
+        url: '../plan',
+      })
+    }
+    else{
+      wx.showToast({ title: '时间不合法', icon: 'success' });
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -235,7 +248,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    var data = wx.getStorageSync('todos');
+    this.setData({
+      todos: data
+    });
   },
 
   /**

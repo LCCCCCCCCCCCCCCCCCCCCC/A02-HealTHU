@@ -35,6 +35,7 @@
     <van-datetime-picker
         wx:if="{{showpicker == 1}}"
         type="time"
+        value="{{start}}"
         min-hour="0"
         max-hour="24"  
         bind:confirm="handleStartTimeInput"
@@ -45,6 +46,7 @@
     <van-datetime-picker
         wx:if="{{showpicker == 2}}"
         type="time"
+        value="{{end}}"
         min-hour="0"
         max-hour="24"  
         bind:confirm="handleEndTimeInput"

@@ -7,7 +7,7 @@ Page({
    */
   data: {
     dateshow: false,
-    date: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
+    date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     todos:[
     ],
     title:"",
@@ -23,7 +23,21 @@ Page({
     nowtype: "",
     radio: "运动",
   },
-
+  showPicker1(){
+    this.setData({
+      showpicker:1
+    });
+  },
+  showPicker2(){
+    this.setData({
+      showpicker:2
+    });
+  },
+  closePicker(){
+    this.setData({
+      showpicker:false
+    });
+  },
   //上端获取前/后一天日期
   subDate() {
     // 获取当前日期
@@ -37,7 +51,7 @@ Page({
     var newYear = newDate.getFullYear();
     var newMonth = newDate.getMonth() + 1;
     var newDay = newDate.getDate();
-    var dateString = newYear + '-' + newMonth + '-' + newDay;
+    var dateString = newYear + '/' + newMonth + '/' + newDay;
     // 页面跳转并传递新的日期参数
     wx.redirectTo({
       url: '../plan/plan?date=' + dateString,
@@ -55,7 +69,7 @@ Page({
     var newYear = newDate.getFullYear();
     var newMonth = newDate.getMonth() + 1;
     var newDay = newDate.getDate();
-    var dateString = newYear + '-' + newMonth + '-' + newDay;
+    var dateString = newYear + '/' + newMonth + '/' + newDay;
     // 页面跳转并传递新的日期参数
     console.log(dateString);
     wx.redirectTo({
@@ -69,7 +83,29 @@ Page({
       radio: event.detail,
     });
   },
-
+  //以下三个为设置任务信息
+  handleNameInput(event) {
+    this.setData({
+      title: event.detail.value
+    });
+  },
+  handleLabelInput(event) {
+    this.setData({
+      label: event.detail.value
+    });
+  },
+  handleStartTimeInput(event) {
+    this.setData({
+      start: event.detail,
+      showpicker:false
+    });
+  },
+  handleEndTimeInput(event) {
+    this.setData({
+      end: event.detail,
+      showpicker:false
+    });
+  },
   handleEdit(event) {
     const buttonId = event.currentTarget.dataset.id;
     var newtodo = this.data.todos[buttonId];
