@@ -1,10 +1,12 @@
 <!--pages/plan/addplan/addplan.wxml-->
 <van-nav-bar
   title="新建日程"
+  left-arrow
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
   placeholder="{{true}}"
   bind:click-right="onClickRight"
+  bind:click-left="onClickLeft"
   >
   <view slot="right">
     <van-icon name="success" color="blue"/>
