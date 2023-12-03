@@ -1,4 +1,3 @@
-<!--pages/attention/attention.wxml-->
 <van-nav-bar title="关注" 
   right-text="搜索"
   safe-area-inset-top="{{false}}"
@@ -7,14 +6,19 @@
   bind:click-right="onClickRight">
 </van-nav-bar>
 
-<van-swipe-cell
-  id="swipe-cell"
-  right-width="{{ 48 }}"
-  bind:click="onClose"
->
-  <van-cell-group>
-    <van-cell title="{{attention.nickname}}" value="{{attention.id}}" />
-    <van-cell title="{{attention2.nickname}}" value="{{attention2.id}}" />
-  </van-cell-group>
-  <view slot="right" class="van-swipe-cell__right">删除</view>
-</van-swipe-cell>
+<view class="container">
+  <van-row class="user-list">
+    <block wx:for="{{ userList }}" wx:key="id">
+      <van-col span="15">
+          <image class="avatar" src="{{ item.avatar }}"></image>
+            <text class="name">{{ item.nickname }}</text>
+            <!-- <text class="signature">{{ item.signature }}</text> -->
+        </van-col>
+        <van-col span="8" offset="1">
+          <button class="follow-btn" wx:if="{{ !item.followed }}" bind:tap="followUser" data-id="{{ item.id }}">关注</button>
+          <button class="followed-text" wx:else bind:tap="unfollowUser" data-id="{{ item.id }}">已关注</button>
+        </van-col>
+    </block>
+    <van-divider />
+  </van-row>
+</view>

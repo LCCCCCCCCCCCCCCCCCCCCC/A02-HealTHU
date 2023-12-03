@@ -32,17 +32,18 @@
       <button class="edit" bind:tap="gotoedit">管理</button>
     </view>
     <view class="todo-list">
-      <block wx:for="{{todos}}" wx:key="index">
-        <view class="todo-item" style="background: linear-gradient(to bottom right, {{item.color}}, #FFFFFF);">
-          {{item.title}} {{item.label}}
-          <span class="item-time">{{item.start}}——{{item.end}}</span>
-        </view>
-      </block>
+      <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
+        <van-cell label="{{item.label}}" value="{{item.start}}—{{item.end}}" >
+          <view slot="title">
+            <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
+          </view>
+        </van-cell>
+      </van-cell-group>
     </view>
     <view class="header">
       <view class="title">倒计时提醒</view>
     </view>
-    <view class="ddl">
+    <view class="ddl-list">
      <van-cell-group wx:for="{{ddls}}" wx:key="index">
       <van-cell title="{{item.title}}" value="{{item.date}} {{item.time}}" label="{{item.label}}" />
      </van-cell-group>
@@ -73,9 +74,9 @@
     <van-grid-item link-type="navigateTo"
       url='../personal/personal' text="0 动态" />
       <van-grid-item link-type="navigateTo"
-      url='../attention/attention' text="2 关注" />
+      url='../attention/attention' text="{{attention.length}} 关注" />
       <van-grid-item link-type="navigateTo"
-      url='../fans/fans' text="2 粉丝" />
+      url='../fans/fans' text="{{fans.length}} 粉丝" />
   </van-grid>
   <view class="empty-line"></view>
     <view class="changeinfo">
@@ -101,7 +102,7 @@
     bind:change="handleTabChange"
     placeholder="{{true}}">
     <van-tabbar-item icon="wap-home">主页</van-tabbar-item>
-    <van-tabbar-item icon="newspaper">消息</van-tabbar-item>
+    <van-tabbar-item icon="chat">消息</van-tabbar-item>
     <van-tabbar-item icon="contact">我的</van-tabbar-item>
   </van-tabbar>
 </view>

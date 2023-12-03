@@ -5,8 +5,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    todos:[
-    ],
+    todos:[],
+    fans:[],
+    attention:[],
+    fannum: 0,
+    attentionnum: 0,
     ddls:[//这里可以选取之后一周的所有ddl，与当日事务进行区分
       {title:"软件工程验收", date:"11/23", time:"9:50", label:"第三小节"},
       {title:"党课讲座签到", date:"11/24", time:"19:20", label:"六教C10"},
@@ -94,6 +97,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    var fans = wx.getStorageSync('fans');
+    var attention = wx.getStorageSync('attention');
     var datas = wx.getStorageSync('todos');
     //todo:主页只展示结束时间在当前时间之后的
     var currentTime = parseInt(new Date().getHours() + "" + new Date().getMinutes())
@@ -107,6 +112,8 @@ Page({
     var id = wx.getStorageSync('id')
     this.setData({
       todos: filteredTasks,
+      fans: fans,
+      attention: attention,
       userInfo:{
         avatarUrl: avatarUrl,
         nickName: nickName,

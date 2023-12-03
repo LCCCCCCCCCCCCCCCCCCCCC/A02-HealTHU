@@ -1,1 +1,43 @@
-/* pages/attention/attention.wxss */
+.container {
+  padding: 20rpx;
+  width: 100%;
+  display: flex; 
+}
+.user-list {
+  margin-left: 12px;
+  margin-top: 12rpx;
+  display: flex; 
+  margin-bottom: 12rpx;
+}
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-bottom: 12px;
+}
+.name {
+  position: absolute;
+  margin-left:12px;
+  margin-top: 11px;
+  font-size: 36rpx;
+  color: #333333;
+}
+.signature {
+  font-size: 26rpx;
+  color: #999999;
+}
+.follow-btn {
+  font-size: 26rpx;
+  color: #ffffff;
+  background-color: #007aff;
+  border-radius: 4rpx;
+  margin-right: 12px;
+  margin-top: 8px;
+}
+.followed-text {
+  font-size: 26rpx;
+  color: #999999;
+  border-radius: 4rpx;
+  margin-right: 12px;
+  margin-top: 8px;
+}

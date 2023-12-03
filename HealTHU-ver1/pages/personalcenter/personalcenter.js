@@ -38,10 +38,49 @@ Page({
     wx.setStorageSync('sign', "尚未设置");
     wx.setStorageSync('todos', [
       { title: "任务1", type:"课程", color:"#BBBB00", start:"09:00", end:"09:30", label:"1"},
-      { title: "任务2", type:"运动", color:"#00BB00", start:"12:00", end:"14:30", label:"2"},
-      { title: "任务3", type:"活动", color:"#0000FF", start:"15:00", end:"15:30", label:"3"},
-      { title: "任务4", type:"ddl", color:"#009999", start:"16:00", end:"16:30", label:"4"},
+      { title: "任务2", type:"运动", color:"#00BB00", start:"12:00", end:"14:30", label:"不同颜色对应活动类型"},
+      { title: "任务3", type:"活动", color:"#0000FF", start:"15:00", end:"15:30", label:"修改为序号或类型logo"},
+      { title: "任务4", type:"ddl", color:"#009999", start:"16:00", end:"16:30", label:"其他样式设计（填充？）"},
       { title: "任务5", type:"饮食", color:"#BB00BB", start:"20:00", end:"23:30", label:"5"}
+    ]);
+    wx.setStorageSync('fans',[
+      {
+        id: '1',
+        nickname: 'testuser1',
+        avatar: '../images/avatar1.png',
+        signature: '签名1',
+        followed: true
+      },
+      {
+        id: '2',
+        nickname: 'testuser2',
+        avatar: '../images/avatar2.png',
+        signature: '签名2',
+        followed: true
+      },
+      {
+        id: '3',
+        nickname: 'testuser3',
+        avatar: '../images/avatar3.png',
+        signature: '签名3',
+        followed: false
+      },
+    ]);
+    wx.setStorageSync('attention', [
+      {
+        id: '1',
+        nickname: 'testuser1',
+        avatar: '../images/avatar1.png',
+        signature: '签名1',
+        followed: true
+      },
+      {
+        id: '2',
+        nickname: 'testuser2',
+        avatar: '../images/avatar2.png',
+        signature: '签名2',
+        followed: true
+      },
     ])
     wx.navigateTo({
       url: '../mainpage/mainpage'

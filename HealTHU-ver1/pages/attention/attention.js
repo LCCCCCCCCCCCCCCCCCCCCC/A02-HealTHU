@@ -5,36 +5,87 @@ Page({
    * 页面的初始数据
    */
   data: {
-    attention:{
-      nickname: 'Attentionee',
-      id: '001'
-    },
-    attention2:{
-      nickname: 'Attentioner',
-      id: '002'
-    }
+    userList: []
   },
 
   onClickRight() {
     wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
   },
-  onClose(event) {
-    const { position, instance } = event.detail;
-    switch (position) {
-      case 'left':
-      case 'cell':
-        instance.close();
-        break;
-      case 'right':
-        Dialog.confirm({
-          message: '确定删除吗？',
-        }).then(() => {
-          instance.close();
-        });
-        break;
-    }
-  },
+// 粉丝界面处理程序，取消关注+回关操作实现需修改一下
+  // followUser(event) {
+  //   var fans = wx.getStorageSync('fans');
+  //   const userId = event.currentTarget.dataset.id;
+  //   var user = fans.find(function(u) {
+  //     return u.id === userId;
+  //   });
+  //   console.log(user);
+  //   if (user) {
+  //     user.followed = true;
+  //     wx.setStorage({
+  //       key: 'fans',
+  //       data: fans,
+  //       success: function(res) {
+  //       }
+  //     });
+  //     var attention = wx.getStorageSync('attention');
+  //     attention.push(user);
+  //     console.log(user);
+  //     wx.setStorage({
+  //       key: 'attention',
+  //       data: attention,
+  //       success: function(res) {
+  //       // TODO:调用后端接口发送关注请求,并更新对应用户项的状态
+  //       }
+  //     });
+  //   } 
 
+  //   console.log('关注用户', userId);
+  //   wx.showToast({ title: '关注成功', icon: 'success' });
+  // },
+  
+  unfollowUser(event) {
+    // TODO：在关注界面加一个取消关注确认比较好
+    var fans = wx.getStorageSync('fans');
+    const userId = event.currentTarget.dataset.id;
+    var user = fans.find(function(u) {
+      return u.id === userId;
+    });
+    console.log(user)
+    if (user) {
+      user.followed = false;
+      wx.setStorage({
+        key: 'fans',
+        data: fans,
+        success: function(res) {
+        }
+      });
+    } 
+
+    var attention = wx.getStorageSync('attention');
+    var user1 = attention.find(function(u) {
+      return u.id === userId;
+    });
+    console.log(user1)
+    if (user1) {
+      attention.splice(user1, 1);
+      wx.setStorage({
+        key: 'attention',
+        data: attention,
+        success: function(res) {
+        // TODO:调用后端接口发送取消关注请求,并更新对应用户项的状态
+        }
+      });
+      this.setData({
+        userList: attention
+      });
+    }
+    else {
+      console.log("未找到user"+"{{userId}}");
+    }
+
+    console.log('取消关注', userId);
+    wx.showToast({ title: '已取消关注', icon: 'success' });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -53,7 +104,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    var attention = wx.getStorageSync('attention');
+    this.setData({
+      userList: attention
+    });
   },
 
   /**

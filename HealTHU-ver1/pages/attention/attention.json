@@ -1,6 +1,8 @@
 {
   "usingComponents": {
-    "van-swipe-cell": "@vant/weapp/swipe-cell/index",
-    "van-nav-bar": "@vant/weapp/nav-bar/index"
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-divider": "@vant/weapp/divider/index"
   }
 }

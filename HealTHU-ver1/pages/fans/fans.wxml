@@ -15,8 +15,8 @@
             <!-- <text class="signature">{{ item.signature }}</text> -->
         </van-col>
         <van-col span="6" offset="1">
-          <button class="follow-btn" wx:if="{{ !item.followed }}" bindtap="followUser" data-id="{{ item.id }}">关注</button>
-          <button class="followed-text" wx:else>已关注</button>
+          <button class="follow-btn" wx:if="{{ !item.followed }}" bind:tap="followUser" data-id="{{ item.id }}">关注</button>
+          <button class="followed-text" wx:else bind:tap="unfollowUser" data-id="{{ item.id }}">已关注</button>
         </van-col>
     </block>
     <van-divider />

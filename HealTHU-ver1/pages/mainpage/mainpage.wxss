@@ -46,13 +46,20 @@ swiper.item{
   border: 1px solid black;
 }
 .todo-list{
-  width:80%;
+  width:85%;
   height:200px;
-  border: 2px solid #000000;
-  border-radius: 10px;
+  border-radius: 10px; 
   overflow:auto;
+  color:white;
 }
-.todo-item{
+.ddl-list{
+  width:85%;
+  height:200px;
+  border-radius: 10px; 
+  overflow:auto;
+  color:white;
+}
+/* .todo-item{
   margin-top:2px;
   margin-left:2px;
   margin-right:2px;
@@ -61,17 +68,14 @@ swiper.item{
   border-radius: 5px;
   font-size: 20px;
   color:white;
-}
-.item-time{
+} */
+/* .item-time{
   position: relative;
   margin-left:50px;
   color: black;
   font-size: 16px;
   top: 25rpx;
-}
-.ddl{
-  width: 85%;
-}
+} */
 .buttons{
   width:90%;
   display: flex;
@@ -92,24 +96,32 @@ swiper.item{
   background-color: transparent;
   color: #000000;
   padding-bottom:2px;
+  border: none;
+  background-color:white;
 }
 .button-spo{
   font-size: 12px;
   background-color: transparent;
   color: #000000;
   padding-bottom:2px;
+  border: none;
+  background-color:white;
 }
 .button-hel{
   font-size: 12px;
   background-color: transparent;
   color: #000000;
   padding-bottom:2px;
+  border: none;
+  background-color:white;
 }
 .button-ach{
   font-size: 12px;
   background-color: transparent;
   color: #000000;
   padding-bottom:2px;
+  border: none;
+  background-color:white;
 }
 van-row{
   width: 85%;
