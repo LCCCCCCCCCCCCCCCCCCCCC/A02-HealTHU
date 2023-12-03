@@ -10,6 +10,7 @@ Page({
     wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
   },
   followUser(event) {
+    // 本地存储fans更新，界面userList更新
     var fans = wx.getStorageSync('fans');
     const userId = event.currentTarget.dataset.id;
     var user = fans.find(function(u) {
@@ -27,9 +28,9 @@ Page({
       this.setData({
         userList: fans
       });
+      // 本地attention更新
       var attention = wx.getStorageSync('attention');
       attention.push(user);
-      console.log(user);
       wx.setStorage({
         key: 'attention',
         data: attention,
@@ -38,11 +39,12 @@ Page({
         }
       });
     } 
-
     console.log('关注用户', userId);
     wx.showToast({ title: '关注成功', icon: 'success' });
   },
+
   unfollowUser(event) {
+    // 本地fans更新，界面userList更新
     var fans = wx.getStorageSync('fans');
     const userId = event.currentTarget.dataset.id;
     var user = fans.find(function(u) {
@@ -62,24 +64,18 @@ Page({
       });
     } 
 
+    // 本地attention删人
     var attention = wx.getStorageSync('attention');
-    var user1 = attention.find(function(u) {
-      return u.id === userId;
+    var updatedAttention = attention.filter(function(u) {
+      return u.id !== userId;
     });
-    console.log(user1)
-    if (user1) {
-      attention.splice(user1, 1);
-      wx.setStorage({
-        key: 'attention',
-        data: attention,
-        success: function(res) {
-        // TODO:调用后端接口发送取消关注请求,并更新对应用户项的状态
-        }
-      });
-    }
-    else {
-      console.log("未找到user"+"{{userId}}");
-    }
+    wx.setStorage({
+      key: 'attention',
+      data: updatedAttention,
+      success: function(res) {
+      // TODO:调用后端接口发送取消关注请求,并更新对应用户项的状态
+      }
+    });
 
     console.log('取消关注', userId);
     wx.showToast({ title: '已取消关注', icon: 'success' });

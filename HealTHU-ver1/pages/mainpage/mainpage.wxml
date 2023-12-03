@@ -21,13 +21,13 @@
         运动</button>
       <button class="button-hel" bind:tap="dailyhealth">
         <image src="../images/daily.svg" class="button-icon"></image>
-        日报</button>
+        统计</button>
       <button class="button-ach" bind:tap="achievements">
         <image src="../images/achievement.svg" class="button-icon"></image>
         成就</button>
     </view>
     <view class="header">
-      <view class="title">今日日程安排</view>
+      <view class="title">今日计划</view>
       <!--可以展示当前开始一部分最近的，到编辑界面展示全部-->
       <button class="edit" bind:tap="gotoedit">管理</button>
     </view>
@@ -91,8 +91,8 @@
       <van-cell is-link title="  隐私设置" icon="setting-o"  
       link-type="navigateTo" url='../settings/settings'/>
       <view class="empty-line"></view>
-      <van-cell is-link title="  帮助" icon="service-o"  
-      link-type="navigateTo" url='../settings/settings'/>
+      <van-cell is-link title="  帮助与反馈" icon="service-o"  
+      link-type="navigateTo" url='../settings/help/help'/>
       <van-cell is-link title="  退出登录" icon="replay"  
       link-type="navigateTo" url='../settings/settings'/>
     </van-cell-group>

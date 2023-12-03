@@ -21,7 +21,8 @@
     "pages/eat/eat",
     "pages/activities/activity/activity",
     "pages/settings/selfset/selfset",
-    "pages/plan/addplan/addplan"
+    "pages/plan/addplan/addplan",
+    "pages/settings/help/help"
   ],
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",

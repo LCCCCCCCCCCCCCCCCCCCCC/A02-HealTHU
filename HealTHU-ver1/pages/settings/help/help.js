@@ -1,16 +1,11 @@
-// pages/settings/settings.js
+// pages/settings/help/help.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    optionvalue1: 0,
-    option1: [
-      { text: '全部可见', value: 0 },
-      { text: '仅粉丝可见', value: 1 },
-      { text: '仅自己可见', value: 2 },
-    ],
+
   },
 
   /**

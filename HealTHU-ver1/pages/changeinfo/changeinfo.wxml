@@ -10,6 +10,7 @@
     placeholder="{{nickName}}"
     bind:input="handleNameInput"
   />
+  <!-- 多行输入框没响应desu，解决了把反馈那里改一下 -->
   <van-field class="sign"
     label="个性签名"
     placeholder="{{sign}}"

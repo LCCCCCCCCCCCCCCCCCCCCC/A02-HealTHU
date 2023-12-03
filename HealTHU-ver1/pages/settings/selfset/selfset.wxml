@@ -1,5 +1,5 @@
 <!--pages/settings/selfset/selfset.wxml-->
-<van-cell-group>
+<van-cell-group inset>
   <van-cell title="深色模式" is-link/>
   <van-cell title="ddl提醒范围" is-link/>
   <van-cell title="本地存储设置" is-link/>

@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    dateshow: false,
     date: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
     todos:[
     ],
@@ -22,26 +23,6 @@ Page({
     nowtype: "",
     radio: "运动",
   },
-  //选择添加事务类型后点击确定
-  // determine(){
-  //   switch(this.data.radio){
-  //     case "运动":
-  //       wx.navigateTo({
-  //         url: '../sports/sports'
-  //       })
-  //       break;
-  //     case "活动":
-  //       this.setData({ showact: true });
-  //       break;
-  //     case "ddl":
-  //       this.setData({ showddl: true });
-  //       break;
-  //     case "饮食":
-  //       this.setData({ showfood: true });
-  //       break;
-  //   }
-  //   this.setData({ show: false });
-  // },
 
   //上端获取前/后一天日期
   subDate() {
@@ -79,23 +60,6 @@ Page({
     console.log(dateString);
     wx.redirectTo({
       url: '../plan/plan?date=' + dateString,
-    })
-  },
-  //跳转到睡眠管理
-  tosleep(){
-    wx.navigateTo({
-      url: '../sleep/sleep',
-    })
-  },
-  //跳转到饮食管理
-  toeat(){
-    wx.navigateTo({
-      url: '../eat/eat',
-    })
-  },
-  toadd(){
-    wx.navigateTo({
-      url: './addplan/addplan',
     })
   },
 
@@ -254,5 +218,31 @@ Page({
       }
     }
     return true; // 没有重叠，合法
-  }
+  },
+
+  // 通过日历选择日期
+  onDisplay() {
+    this.setData({ dateshow: true });
+  },
+  onClose() {
+    this.setData({ dateshow: false });
+  },
+  formatDate(date) {
+    var newDate = new Date(date);
+    var newYear = newDate.getFullYear();
+    var newMonth = newDate.getMonth() + 1;
+    var newDay = newDate.getDate();
+    var dateString = newYear + '-' + newMonth + '-' + newDay;
+    console.log(dateString)
+    return dateString;
+  },
+  onConfirm(event) {
+    this.setData({
+      dateshow: false,
+    });
+    var dateString = this.formatDate(event.detail);
+    wx.redirectTo({
+      url: '../plan/plan?date=' + dateString
+    })
+  },
 })

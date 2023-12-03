@@ -6,19 +6,18 @@
   bind:click-right="onClickRight">
 </van-nav-bar>
 
-<view class="container">
-  <van-row class="user-list">
-    <block wx:for="{{ userList }}" wx:key="id">
-      <van-col span="15">
-          <image class="avatar" src="{{ item.avatar }}"></image>
-            <text class="name">{{ item.nickname }}</text>
-            <!-- <text class="signature">{{ item.signature }}</text> -->
-        </van-col>
-        <van-col span="8" offset="1">
-          <button class="follow-btn" wx:if="{{ !item.followed }}" bind:tap="followUser" data-id="{{ item.id }}">关注</button>
-          <button class="followed-text" wx:else bind:tap="unfollowUser" data-id="{{ item.id }}">已关注</button>
-        </van-col>
-    </block>
-    <van-divider />
-  </van-row>
-</view>
+<van-cell-group wx:for="{{ userList }}" wx:key="id">
+   <van-cell use-label-slot>
+    <view slot="title">
+      <image class="avatar" src="{{ item.avatar }}"></image>
+      <text class="name">{{ item.nickname }}</text>
+    </view>
+    <view slot="label">
+      <text class="signature">{{ item.signature }}</text>
+    </view>
+    <view slot="right-icon">
+      <button class="follow-btn" wx:if="{{ !item.followed }}" bind:tap="followUser" data-id="{{ item.id }}">关注</button>
+      <button class="followed-text" wx:else bind:tap="unfollowUser" data-id="{{ item.id }}">已关注</button>
+    </view>
+   </van-cell>
+  </van-cell-group>

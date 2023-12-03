@@ -44,7 +44,8 @@ Page({
   // },
   
   unfollowUser(event) {
-    // TODO：在关注界面加一个取消关注确认比较好
+    // TODO：在关注界面加一个取消关注确认比较好(现在是取关后刷新界面消失，暂无回关操作)
+    // 如果关注的人也在粉丝列表，需要更新粉丝列表
     var fans = wx.getStorageSync('fans');
     const userId = event.currentTarget.dataset.id;
     var user = fans.find(function(u) {
@@ -61,30 +62,24 @@ Page({
       });
     } 
 
+    // 本地attention删人
     var attention = wx.getStorageSync('attention');
-    var user1 = attention.find(function(u) {
-      return u.id === userId;
+    var updatedAttention = attention.filter(function(u) {
+      return u.id !== userId;
     });
-    console.log(user1)
-    if (user1) {
-      attention.splice(user1, 1);
-      wx.setStorage({
-        key: 'attention',
-        data: attention,
-        success: function(res) {
-        // TODO:调用后端接口发送取消关注请求,并更新对应用户项的状态
-        }
-      });
-      this.setData({
-        userList: attention
-      });
-    }
-    else {
-      console.log("未找到user"+"{{userId}}");
-    }
-
+    wx.setStorage({
+      key: 'attention',
+      data: updatedAttention,
+      success: function(res) {
+      // TODO:调用后端接口发送取消关注请求,并更新对应用户项的状态
+      }
+    });
     console.log('取消关注', userId);
     wx.showToast({ title: '已取消关注', icon: 'success' });
+
+    this.setData({
+      userList: attention
+    });
   },
   /**
    * 生命周期函数--监听页面加载
