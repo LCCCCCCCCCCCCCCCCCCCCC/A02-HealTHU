@@ -5,7 +5,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    value_step: 78,
+    gradientColor1: {
+      '0%': '#ffd01e',
+      '100%': '#ee0a24',
+    },
+    value_run: 42,
+    gradientColor2: {
+      '0%': '#ee0a24',
+      '100%': '#ee0a24',
+    },
+    value_km: 48,
+    gradientColor3: {
+      '0%': '#07c160',
+      '100%': '#ee0a24',
+    },
   },
 
   /**

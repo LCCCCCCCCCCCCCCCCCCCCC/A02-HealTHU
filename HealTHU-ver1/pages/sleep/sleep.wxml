@@ -1,11 +1,11 @@
 <!--pages/sleep/sleep.wxml-->
 <!-- <view>TODO:近一周睡眠曲线与分析、建议</view> -->
-<view class="container">
+<view class="sleepchart">
 	<view class="title">
-		<view wx:if="{{!isMainChartDisplay}}" class="back-btn" bindtap="backToMainChart">返回</view>
+		<view wx:if="{{!isMainChartDisplay}}" class="back-btn" bindtap="backToMainChart">点击返回</view>
+    <!-- <view wx:if="{{!isMainChartDisplay}}" class="empty-line"></view> -->
+    <view wx:if="{{isMainChartDisplay}}">点击条形图查看单日睡眠详情</view>
 	</view>
-  <view class="empty-line"></view>
   <view>{{chartTitle}}</view>
     <canvas canvas-id="columnCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
-    <view wx:if="{{isMainChartDisplay}}" style="text-align:center">点击数据每一项查看详情</view>
 </view>

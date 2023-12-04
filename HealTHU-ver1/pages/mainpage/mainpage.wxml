@@ -19,7 +19,7 @@
       <van-grid-item text="活动"  link-type="navigateTo" url="../activities/activities">
         <image slot="icon" src="../images/activity.svg" class="button-icon"/>
       </van-grid-item>
-      <van-grid-item text="健身"  link-type="navigateTo" url="../sports/sport">
+      <van-grid-item text="健身"  link-type="navigateTo" url="../sports/sports">
         <image slot="icon" src="../images/sports.svg" class="button-icon"/>
       </van-grid-item>
       <van-grid-item text="统计"  link-type="navigateTo" url="../dailyhealth/dailyhealth">

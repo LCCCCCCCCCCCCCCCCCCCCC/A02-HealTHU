@@ -1,9 +1,9 @@
 <!--pages/dailyhealth/dailyhealth.wxml-->
 <van-tabs active="{{ active }}" bind:change="onChange">
   <van-tab title="昨日小结">
-    <text class="text">昨日完成事项:{{lastNum}}</text>
+    <view class="text">昨日完成事项:{{lastNum}}</view>
     <canvas canvas-id="pieCanvas-num" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
-    <text class="text">昨日工作量:{{lastHour}}</text>
+    <view class="text">昨日工作量:{{lastHour}}</view>
     <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
   </van-tab>
   <van-tab title="事件统计">

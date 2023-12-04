@@ -1,5 +1,5 @@
 /* pages/dailyhealth/dailyhealth.wxss */
 .text{
-  margin-left: 12px;
+  margin-left: 16px;
   padding-top: 20px;
 }

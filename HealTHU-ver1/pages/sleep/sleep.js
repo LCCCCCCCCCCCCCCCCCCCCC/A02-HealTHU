@@ -5,7 +5,7 @@ var app = getApp();
 var columnChart = null;
 var chartData = {
     main: {
-        title: '一周睡眠时间',
+        title: '睡眠时间',
         data: [7, 7, 8, 6, 6, 7, 6],
         categories: ['11-30', '12-1', '12-2', '12-3', '12-4', '12-5', '12-6']
     },
@@ -60,7 +60,7 @@ Page({
             name: 'sleep',
             data: chartData.main.data,
             format: function (val, name) {
-                return val.toFixed(2) + '万';
+                return val.toFixed(1);
             }
         }]
     });
