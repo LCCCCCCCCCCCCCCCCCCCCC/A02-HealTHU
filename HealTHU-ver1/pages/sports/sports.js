@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    today_cal: 7.1,
     value_step: 78,
     gradientColor1: {
       '0%': '#ffd01e',

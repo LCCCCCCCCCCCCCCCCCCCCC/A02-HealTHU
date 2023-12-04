@@ -4,6 +4,11 @@
 下半边手动设置运动类型与时间，并展示运动层面的建议
 以及展示体育相关新闻
 当运动为可以手动记录的类型（如跑步、乐动力打卡）时，到开始时间会弹出记录界面，不记录视为未完成自动放弃，点击开始记录后绑定里程记录等</text> -->
+<view class="today-text">
+  <view class="today-number">{{today_cal}}</view>
+  <text>今日运动/千卡</text>
+</view>
+
 <view class="width">
   <van-grid class="buttons-grid" column-num="5" border="{{false}}">
       <van-grid-item text="跑步"  link-type="navigateTo" >

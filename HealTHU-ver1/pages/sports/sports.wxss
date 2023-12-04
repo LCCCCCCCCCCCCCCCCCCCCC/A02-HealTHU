@@ -1,4 +1,12 @@
 /* pages/sports/sports.wxss */
+.today-text{
+  padding-left:24px;
+  padding-top:12px;
+  font-weight: bold;
+}
+.today-number{
+  font-size: 48px;
+}
 .buttons-grid{
   width:90%;
 }
