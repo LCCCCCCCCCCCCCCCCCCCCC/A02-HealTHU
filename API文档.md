@@ -136,7 +136,7 @@ wx.request({
 |id|int|用户id|
 #### 获取用户信息
 ```HTTP
-[GET] /user/getdetail
+[GET] /user/getDetail
 ```
 获取当前登录用户的信息。
 ##### 请求参数
