@@ -8,4 +8,9 @@
   <view>{{chartTitle}}</view>
     <canvas canvas-id="columnCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
     <view wx:if="{{isMainChartDisplay}}" style="text-align:center">点击数据每一项查看详情</view>
+    <view wx:if="{{isMainChartDisplay}}">
+      <view>您的睡眠质量评分：{{score}}</view>
+      <view wx:if="{{isShort == true}}">睡眠时间较少，建议增加睡眠时间</view>
+      <view wx:if="{{isLate == true}}">睡眠时间较晚，建议减少熬夜行为</view>
+    </view>
 </view>

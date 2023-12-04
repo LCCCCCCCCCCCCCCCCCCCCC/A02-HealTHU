@@ -47,13 +47,17 @@ Page({
    */
   data: {
     chartTitle: '睡眠时间',
-    isMainChartDisplay: true
+    isMainChartDisplay: true,
+    score:"",
+    isShort:false,//睡眠时间是否不足
+    isLate:false//是否熬夜
   },
   backToMainChart: function () {
     this.setData({
         chartTitle: chartData.main.title,
         isMainChartDisplay: true
     });
+    this.getscore()
     columnChart.updateData({
         categories: chartData.main.categories,
         series: [{
@@ -127,9 +131,42 @@ touchHandler: function (e) {
         },
         width: windowWidth,
         height: 200,
-    });    
+    });
+    this.getscore()
   },
-
+  getscore(){
+    var lengthScore = 0//睡眠时长评分
+    var timeScore = 0//睡眠时间评分
+    var scores = [0,0,0,0,0,0,0]
+    for(var i = 0;i < 7;i++){
+      scores[i] = chartData.main.data[i] / 8
+      if(scores[i]>1){
+        scores[i] = 1
+      }
+    }
+    lengthScore = (scores[6]*0.5 + scores[5]*0.3 + scores[4]*0.1 + scores[3]*0.04 + scores[2]*0.02 + scores[1]*0.01 + scores[0]*0.01) * 60
+    if(lengthScore < 52.5){
+      this.setData({
+        isShort:true
+      })
+    }
+    for(var i = 0;i < 7;i++){
+      var data = chartData.sub[i].data
+      scores[i] = 1
+      if(data[11] < 1){scores[i] -= 0.2}
+      if(data[0] < 2){scores[i] -= (2-data[0]) * 0.2}
+      if(data[1] < 2){scores[i] -= (2-data[1]) * 0.2}
+    }
+    timeScore = (scores[6]*0.5 + scores[5]*0.3 + scores[4]*0.1 + scores[3]*0.04 + scores[2]*0.02 + scores[1]*0.01 + scores[0]*0.01) * 40
+    if(timeScore < 30){
+      this.setData({
+        isLate:true
+      })
+    }
+    this.setData({
+      score:lengthScore+timeScore
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

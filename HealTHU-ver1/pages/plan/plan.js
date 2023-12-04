@@ -42,7 +42,7 @@ Page({
   subDate() {
     // 获取当前日期
     var date = this.data.date;
-    var currentDate = date.split("-");
+    var currentDate = date.split("/");
     var year = parseInt(currentDate[0]);
     var month = parseInt(currentDate[1]);
     var day = parseInt(currentDate[2]);
@@ -60,7 +60,7 @@ Page({
   addDate() {
     // 获取当前日期
     var date = this.data.date;
-    var currentDate = date.split("-");
+    var currentDate = date.split("/");
     var year = parseInt(currentDate[0]);
     var month = parseInt(currentDate[1]);
     var day = parseInt(currentDate[2]);
