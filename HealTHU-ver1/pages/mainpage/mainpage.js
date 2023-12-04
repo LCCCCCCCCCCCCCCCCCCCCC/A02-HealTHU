@@ -66,7 +66,7 @@ Page({
     var attention = wx.getStorageSync('attention');
     var datas = wx.getStorageSync('todos');
     //todo:主页只展示结束时间在当前时间之后的
-    var currentTime = parseInt(new Date().getHours() + "" + new Date().getMinutes())
+    var currentTime = parseInt(new Date().getHours() + "" + (new Date().getMinutes()).toString().padStart(2, '0'))
     var filteredTasks = datas.filter(function(data) {
       var end = parseInt(data.end.replace(":", ""));
       return end > currentTime
