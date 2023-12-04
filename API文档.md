@@ -113,7 +113,7 @@
 ### 一、用户管理部分
 #### 首次登录时生成id
 ```HTTP
-[POST] /getId
+[GET] /getId
 ```
 通过code调用API，获取用户的openid，如果这个openid在用户集中返回id，否则生成一个id，为用户总数+1，同时用户总数+1
 获取openid可以参考
@@ -154,7 +154,7 @@ wx.request({
 |userinfo|userInfo|用户信息|
 #### 修改用户信息
 ```HTTP
-[PUT] /user/{id}/changeInfo
+[POST] /user/{id}/changeInfo
 ```
 ##### 请求参数
 |参数|类型|位置|说明|
