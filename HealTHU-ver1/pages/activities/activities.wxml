@@ -19,7 +19,7 @@
     </van-search> 
   </view>
 </van-nav-bar>
-<van-tabs active="{{ active }}" bind:change="onChange">
+<van-tabs active="{{ active }}" bind:change="onactiveChange">
   <van-tab title="关注">
     <van-empty description="关注的人还没有参加过活动"></van-empty>
   </van-tab>

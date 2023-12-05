@@ -6,6 +6,6 @@
   placeholder="{{true}}"
   bind:click-right="onClickRight">
 </van-nav-bar>
-<van-grid square column-num="3">
+<van-grid van-grid square column-num="3">
   <van-grid-item icon="photo-o" text="成就" wx:for="{{ 18 }}" />
 </van-grid>

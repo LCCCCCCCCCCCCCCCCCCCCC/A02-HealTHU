@@ -1,5 +1,72 @@
 /* pages/dailyhealth/dailyhealth.wxss */
-.text{
-  margin-left: 16px;
-  padding-top: 20px;
+.container_num {
+  margin-top:12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.block1 {
+  width: 41%;
+  background-color: #cd8be6;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  font-weight: bold;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.block2 {
+  width: 41%;
+  background-color: #Db70db;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  font-weight: bold;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.lasting-block {
+  width: 85%;
+  background-color: #Db70db;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.text {
+  color: #ffffff;
+  font-size: 28rpx;
+}
+.today-number{
+  color: #ffffff;
+  font-size: 32px;
+}
+.waiting-block {
+  width: 85%;
+  background-color: grey;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  flex-direction: column;
+}
+.container_chart{
+  margin-top:12px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+/* .workload{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  -webkit-text-size-adjust:none;
+  -webkit-user-select: none;
+  font-size: 35rpx;
+  color: #333;
+} */

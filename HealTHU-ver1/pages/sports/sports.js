@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    today_cal: 7.1,
+    today_cal: 7.5,
     value_step: 78,
     gradientColor1: {
       '0%': '#ffd01e',
@@ -22,7 +22,12 @@ Page({
       '100%': '#ee0a24',
     },
   },
-
+  today_replay(){
+    var today_calnew = parseFloat(this.data.today_cal + 1);
+    this.setData({
+      today_cal: today_calnew
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */

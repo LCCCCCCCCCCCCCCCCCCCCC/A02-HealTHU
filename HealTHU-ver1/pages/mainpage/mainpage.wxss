@@ -146,6 +146,16 @@ van-row{
 .empty-line {
   height: 12px; 
 }
+.exit-text{
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+}
+.exit-btn{
+  position: absolute;
+  bottom: 0;
+}
 
 .calendar {
   --calendar-height: 618px;

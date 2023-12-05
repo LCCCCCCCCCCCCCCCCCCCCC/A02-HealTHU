@@ -1,29 +1,67 @@
 <!--pages/dailyhealth/dailyhealth.wxml-->
 <van-tabs active="{{ active }}" bind:change="onChange">
   <van-tab title="昨日小结">
-    <view class="text">昨日完成事项:{{lastNum}}</view>
-    <canvas canvas-id="pieCanvas-num" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
-
-    <view class="text">昨日工作量:{{lastHour}}</view>
-    <!--感觉条形图比饼图直观一些，横向排布，或者标出个数-->
-    <text class="text">昨日工作量:{{lastHour}}</text>
-    <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
-    <!--这个饼图可以不要-->
+    <view class="container_num">
+      <view class="block1">
+        <view class="text">工作量</view>
+        <view class="today-number">{{lastHour}}h
+          <text class="text">+12.1%</text>
+        </view>
+      </view>
+      <view class="block2">
+        <view class="text">完成事项</view>
+        <view class="today-number">{{lastNum}}
+          <text class="text">+11.1%</text>
+        </view>
+      </view>
+    </view>
+    <canvas canvas-id="pieCanvas-num" class="canvas" style="height:300px" bindtouchstart="touchHandler_pie"></canvas>
+    <view class="container_num">
+      <view class="block1">
+        <view class="text">睡眠时长</view>
+        <view class="today-number">{{sleepHour}}h
+          <text class="text">-13.4%</text>
+        </view>
+      </view>
+      <view class="block2">
+        <view class="text">消耗热量</view>
+        <view class="today-number">{{heatNum}}kJ
+          <text class="text">+11.1%</text>
+        </view>
+      </view>
+    </view>
     <view>引入总结其他模块的部分内容，比如：</view>
-    <view>昨日总睡眠时长：评分：</view>
-    <view>昨日运动次数：消耗热量：</view>
     <view>今天发起/参与了{{}}个活动,有多少多少与好友有关</view>
     <view>达成了xx成就</view>
     <view>条件判定若干关键词，如ddl战士、健身达人、社牛分子、养生作息等</view>
   </van-tab>
   <van-tab title="事件统计">
-    <text class="text">工作量趋势</text>
-    <view class="workload">
-      <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler-pie"></canvas>
+    <view class="container_num">
+      <view class="lasting-block">
+          <view class="text">已连续打卡</view>
+          <view class="today-number">{{lasting}}
+            <text class="text">天</text>
+          </view>
+        </view> 
     </view>
-    <!-- TODO：再加一个每日完成事件表line chart，能够筛选时间范围，显示完成事件的类型分布 //个人认为不需要-->
+
+    <view class="container_chart">
+      <view class="workload">
+        <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
+      </view>
+    <!-- 完成不同事件的折线图，能够筛选事件类型和时间范围 -->
+    </view>
+    
+    <view class="container_num">
+      <view class="waiting-block">
+          <view class="text">徽章提醒</view>
+          <view class="today-number">{{waiting}}
+            <text class="text">天后获得新成就</text>
+          </view>
+        </view> 
+    </view>
   </van-tab>
-  <van-tab title="报告">
+  <van-tab title="历史报告">
     <van-card
       tag="未查看"
       desc="描述信息"

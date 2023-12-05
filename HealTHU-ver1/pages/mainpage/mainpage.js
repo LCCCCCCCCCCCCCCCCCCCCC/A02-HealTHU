@@ -23,6 +23,7 @@ Page({
       id:"ID",
       sign:"尚未设置"
     },
+    exitshow: false,
   },
   handleTabChange(event){
     this.setData({ currentTab: event.detail });
@@ -62,6 +63,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    // datas.filter is not a function, 没有在首页登录的话就会没有storage，所以其他页面应该先检查一下登陆状态（以及后端）
     var fans = wx.getStorageSync('fans');
     var attention = wx.getStorageSync('attention');
     var datas = wx.getStorageSync('todos');
@@ -121,5 +123,18 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+  onexitClose() {
+    this.setData({ exitshow: false });
+  },
+  exit_confirm(){
+    this.setData({ exitshow: true });
+  },
+  loginExit(){
+    // 退出登录逻辑和向后端传递
+    console.log(exit)
+    wx.navigateTo({
+      url: '../personalcenter/personalcenter'
+    })
+  },
 })

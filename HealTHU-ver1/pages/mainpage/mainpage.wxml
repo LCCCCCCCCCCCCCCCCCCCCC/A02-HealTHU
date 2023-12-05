@@ -12,7 +12,7 @@
         <image src="../images/swiper3.jpg" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
-    <van-grid class="buttons-grid" column-num="5" border="{{false}}">
+    <van-grid clickable class="buttons-grid" column-num="5" border="{{false}}">
       <van-grid-item text="睡眠"  link-type="navigateTo" url="../sleep/sleep">
         <image slot="icon" src="../images/sleep.svg" class="button-icon"/>
       </van-grid-item>
@@ -103,11 +103,23 @@
       <van-cell is-link title="  帮助与反馈" icon="service-o"  
       link-type="navigateTo" url='../settings/help/help'/>
       <van-cell is-link title="  退出登录" icon="replay"  
-      link-type="navigateTo" url='../personalcenter/personalcenter'/>
+      bind:click="exit_confirm"/>
+      <van-popup show="{{ exitshow }}" 
+        custom-style="height: 20%; width: 60%;"
+        bind:close="onexitClose">
+        <view class="exit-text">确认退出吗？</view>
+        <view class="exit-btn">
+          <van-button hairline type="default" bind:click="onexitClose">取消</van-button>
+          <van-button hairline type="danger" bind:click="loginExit">确认</van-button>
+          <!-- 确认突然不好使, ReferenceError: exit is not defined -->
+        </view>    
+      </van-popup>
     </van-cell-group>
     </view>
     </view>
-  <van-tabbar active="{{ currentTab }}" 
+  <van-tabbar active="{{ currentTab }}"
+    active-color="#6b238e"
+    inactive-color="#000"
     bind:change="handleTabChange"
     placeholder="{{true}}">
     <van-tabbar-item icon="wap-home">主页</van-tabbar-item>

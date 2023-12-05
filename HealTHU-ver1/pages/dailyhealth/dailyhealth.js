@@ -13,7 +13,11 @@ Page({
   data: {
     active: 0,
     lastNum: 10,
-    lastHour: '13.6h'
+    lastHour: 13.6,
+    lasting: 8,
+    waiting: 2,
+    sleepHour: 6.1,
+    heatNum: 27,
   },
 
   touchHandler: function (e) {
@@ -103,31 +107,6 @@ createSimulationData: function () {
             lineStyle: 'curve'
         }
     });
-
-    pieChart = new wxCharts({
-      animation: true,
-      canvasId: 'pieCanvas',
-      type: 'pie',
-      series: [{
-          name: '吃饭',
-          data: 15,
-      }, {
-          name: '运动',
-          data: 35,
-      }, {
-          name: '专注',
-          data: 78,
-      }, {
-          name: '课程',
-          data: 63,
-      }, {
-          name: '活动',
-          data: 35,
-      }],
-      width: windowWidth,
-      height: 300,
-      dataLabel: true,
-  });
 
   pieChart = new wxCharts({
     animation: true,
