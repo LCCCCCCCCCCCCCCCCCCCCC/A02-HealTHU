@@ -95,6 +95,8 @@ def addAct(request):
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
             # todo: add activity to Schedule.initiActs
+            return HttpResponse("Add successfully")
+    return HttpResponse("Hello, world. You're at the schedule addAct.")
 
 def deleteAct(request):
     return HttpResponse("Hello, world. You're at the schedule deleteAct.")
