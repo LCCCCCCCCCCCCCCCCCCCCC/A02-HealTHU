@@ -137,3 +137,92 @@ def getAttention(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
+
+def getFans(request):
+    if request.method == 'GET':
+        id = request.GET.get("id")
+        user = User.objects.filter(id=id).first()
+        if user:
+            fansList = user.userInfo.followers
+            result = []
+            for id in fansList:
+                # 根据id查找相应的avatarUrl, nickName和signature
+                user = User.objects.filter(id=id).first()
+                avatarUrl = user.userInfo.avatarUrl
+                nickName = user.userInfo.nickName
+                signature = user.userInfo.signature
+                if id in user.userInfo.followings:
+                    fan_info = {
+                        'id': id,
+                        'avatarUrl': avatarUrl,
+                        'nickName': nickName,
+                        'signature': signature,
+                        'following_state': 'true'
+                    }
+                    result.append(fan_info)
+                else:
+                    fan_info = {
+                        'id': id,
+                        'avatarUrl': avatarUrl,
+                        'nickName': nickName,
+                        'signature': signature,
+                        'following_state': 'false'
+                    }
+                    result.append(fan_info)
+            result_json = json.dumps(result, ensure_ascii=False)
+            return JsonResponse(result_json, safe=False)
+        else:
+            # 用户不存在的情况下返回错误的响应
+            return HttpResponse("User not found", status=400)
+
+@csrf_exempt
+def addAttention(request):
+    if request.method == 'POST':
+        #host关注customer
+        hostid = request.POST.get("hostId")
+        customerid = request.POST.get("customerId")
+        if hostid == customerid:
+            return HttpResponse("Self Attention Prohibited", status=400)
+        else:
+            host = User.objects.filter(id=hostid).first()
+            customer = User.objects.filter(id=customerid).first()
+            if host and customer:
+                host.userInfo.followings.append(customerid)
+                host.userInfo.followingNum += 1
+                customer.userInfo.followers.append(hostid)
+                customer.userInfo.followerNum += 1
+                host.userInfo.save()
+                customer.userInfo.save()
+                return HttpResponse("Add Attention Success", status=200)
+            else:
+                return HttpResponse("User not found", status=400)
+
+@csrf_exempt
+def delAttention(request):
+    if request.method == 'POST':
+        #host取消关注customer
+        hostid = request.POST.get("hostId")
+        customerid = request.POST.get("customerId")
+        if hostid == customerid:
+            return HttpResponse("Self Delete Attention Prohibited", status=400)
+        else:
+            host = User.objects.filter(id=hostid).first()
+            customer = User.objects.filter(id=customerid).first()
+            if host and customer:
+                for item in host.userInfo.followings:
+                    if item == customerid:
+                        # 找到匹配项，从列表中删除
+                        host.userInfo.followings.remove(item)
+                        break
+                host.userInfo.followingNum -= 1
+                for item in customer.userInfo.followers:
+                    if item == hostid:
+                        # 找到匹配项，从列表中删除
+                        customer.userInfo.followers.remove(item)
+                        break
+                customer.userInfo.followerNum -= 1
+                host.userInfo.save()
+                customer.userInfo.save()
+                return HttpResponse("Delete Attention Success", status=200)
+            else:
+                return HttpResponse("User not found", status=400)
