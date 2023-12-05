@@ -2,8 +2,6 @@ from django.db import models
 
 # Create your models here.
 class Todo(models.Model):
-    todoID = models.AutoField(primary_key=True) # an int automatically incremented
-    date = models.CharField(max_length=50) # the date, in the form of "yyyy/mm/dd"
     title = models.CharField(max_length=100)
     start = models.CharField(max_length=50)
     end = models.CharField(max_length=50)
