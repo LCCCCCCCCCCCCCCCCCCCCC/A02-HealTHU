@@ -12,8 +12,19 @@ import requests
 import json
 # Create your views here.
 def todos(request):
-    return HttpResponse("Hello, world. You're at the schedule todos.")
-
+    if request.method == 'GET':
+        id = request.GET.get("id") # the id of the schedule
+        date = request.GET.get("date") # the date, in the form of "yyyy/mm/dd"
+        # find the schedule (if any) according to the id
+        targetSchedule = Schedule.objects.filter(id=id).first()
+        if targetSchedule:
+            # find in Schedule.todos by the date
+            allTodos = targetSchedule.todos # JSONField
+            targetTodos = [todo for todo in allTodos if todo['date'] == date]
+            return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
+            
 def changeTodo(request):
     return HttpResponse("Hello, world. You're at the schedule changeTodo.")
 
