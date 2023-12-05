@@ -210,7 +210,7 @@ wx.request({
 ### 二、计划处理部分
 #### 获取指定日期的事务
 ```HTTP
-[GET] /user/{id}/todos
+[GET] /schedule/{id}/todos
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -236,7 +236,7 @@ wx.request({
 
 #### 事务的增删改（以修改为例）
 ```HTTP
-[GET] /user/{id}/changeTodo
+[GET] /schedule/{id}/changeTodo
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -247,7 +247,7 @@ wx.request({
 
 #### 发起活动
 ```HTTP
-[GET] /user/{id}/addAct
+[GET] /schedule/{id}/addAct
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -255,7 +255,7 @@ wx.request({
 |activity|activity|发起的活动信息|
 #### 查找活动
 ```HTTP
-[GET] /user/{id}/findAct
+[GET] /schedule/{id}/findAct
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -270,7 +270,7 @@ wx.request({
 |acticities|activity[]|得到的活动|
 #### 参与活动
 ```HTTP
-[GET] /user/{id}/partAct
+[GET] /schedule/{id}/partAct
 ```
 ##### 传入参数
 |字段|类型|说明|
