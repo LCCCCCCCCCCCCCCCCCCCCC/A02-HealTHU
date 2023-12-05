@@ -7,8 +7,7 @@ Page({
   data: {
     avatarUrl: '',
     nickName: '',
-    id:'',
-    sign:''
+    sign:'',
   },
   handleNameInput(event) {
     this.setData({
@@ -24,15 +23,28 @@ Page({
     this.setData({'avatarUrl': e.detail.avatarUrl})
   },
   change(){
-    wx.setStorageSync('avatarUrl', this.data.avatarUrl);
-    wx.setStorageSync('nickName', this.data.nickName);
-    wx.setStorageSync('sign', this.data.sign);
-    wx.showToast({
-      title: "修改成功",
-      icon: "success"
-    });
-    wx.navigateTo({
-      url: '../mainpage/mainpage?tabid=2'
+    var that = this
+    var id = wx.getStorageSync('id')
+    console.log(that.data)
+    wx.request({
+      url:'http://127.0.0.1:8000/user/changeInfo/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id: id,
+        nickName:that.data.nickName,
+        avatarUrl:that.data.avatarUrl,
+        signature:that.data.sign
+      },
+      method:'POST',
+      success:function(res){
+        wx.showToast({
+          title: "修改成功",
+          icon: "success"
+        });
+        wx.navigateTo({
+          url: '../mainpage/mainpage?tabid=2'
+        })
+      }
     })
     // 后端请求，更新用户状态
   },
@@ -40,15 +52,25 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    var avatarUrl = wx.getStorageSync('avatarUrl');
-    var nickName = wx.getStorageSync('nickName');
-    var sign = wx.getStorageSync('sign');
-    this.setData({
-      avatarUrl: avatarUrl,
-      nickName: nickName,
-      id:"ID",
-      sign: sign
-    });
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/user/getDetail',
+      data:{
+        'hostId': id,
+        'customerId':id
+      },
+      method:'GET',
+      success:function(res){
+        var data = JSON.parse(res.data)
+        that.setData({
+          avatarUrl: data.avatarUrl,
+          nickName: data.nickName,
+          id:id,
+          sign: data.signature
+        })
+      }
+    })
   },
 
   /**

@@ -19,22 +19,24 @@ Page({
       success: (res) => {
             if(res.code){
               wx.request({
-                url:'http://127.0.0.1:8000/user/index',
+                url:'http://127.0.0.1:8000/user/getId',
                 data:{
                   'code':res.code
                 },
                 method:'GET',
                 success:function(res){
-                  console.log(res.data)
+                  wx.setStorageSync('id', res.data);
+                  wx.navigateTo({
+                    url: '../mainpage/mainpage'
+                  })
                 }
               })
           }
       },
     })
-    this.setData({ show: true });
+    //this.setData({ show: true });
     wx.setStorageSync('avatarUrl', this.data.userInfo.avatarUrl);
     wx.setStorageSync('nickName', this.data.userInfo.nickName);
-    wx.setStorageSync('id', this.data.userInfo.id);
     wx.setStorageSync('sign', "尚未设置");
     wx.setStorageSync('todos', [
       { title: "任务1", type:"课程", color:"#BBBB00", start:"09:00", end:"09:30", label:"1"},
@@ -82,9 +84,6 @@ Page({
         followed: true
       },
     ])
-    wx.navigateTo({
-      url: '../mainpage/mainpage'
-    })
   },
   
   onChooseAvatar(e){

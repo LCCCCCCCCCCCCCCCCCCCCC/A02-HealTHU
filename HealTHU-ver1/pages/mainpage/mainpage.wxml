@@ -79,13 +79,14 @@
       <button class="infobutton" bind:tap="changeInfo">编辑个人信息</button>
     </van-col>
   </van-row>
+  <view>签名：{{userInfo.sign}}</view>
   <van-grid column-num="3" gutter="{{ 32 }}" border="{{false}}" direction="horizontal">
     <van-grid-item link-type="navigateTo"
       url='../personal/personal' text="0 动态" />
       <van-grid-item link-type="navigateTo"
-      url='../attention/attention' text="{{attention.length}} 关注" />
+      url='../attention/attention' text="{{attentionnum}} 关注" />
       <van-grid-item link-type="navigateTo"
-      url='../fans/fans' text="{{fans.length}} 粉丝" />
+      url='../fans/fans' text="{{fannum}} 粉丝" />
   </van-grid>
   <view class="empty-line"></view>
     <view class="changeinfo">
