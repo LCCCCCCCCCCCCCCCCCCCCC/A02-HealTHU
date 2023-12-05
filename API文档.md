@@ -246,6 +246,7 @@ wx.request({
 |-------------|-------------|-------------|
 |id|int|用户id|
 |oldTodo|todo|修改前事项|
+注意: 假设todo由 date, title, start, end唯一决定
 
 #### 事务的改
 ```HTTP
@@ -257,6 +258,7 @@ wx.request({
 |id|int|用户id|
 |oldTodo|todo|修改前事项|
 |newtodo|todo|修改后事项|
+注意: 假设todo由 date, title, start, end唯一决定
 
 #### 发起活动
 ```HTTP
