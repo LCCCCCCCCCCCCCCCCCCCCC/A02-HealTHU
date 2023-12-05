@@ -268,7 +268,7 @@ Page({
     var newYear = newDate.getFullYear();
     var newMonth = newDate.getMonth() + 1;
     var newDay = newDate.getDate();
-    var dateString = newYear + '-' + newMonth + '-' + newDay;
+    var dateString = newYear + '/' + newMonth + '/' + newDay;
     console.log(dateString)
     return dateString;
   },
