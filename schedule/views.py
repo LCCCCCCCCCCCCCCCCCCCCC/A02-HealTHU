@@ -24,12 +24,21 @@ def todos(request):
             return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
         # else: not found
         return HttpResponse("Schedule not found", status=400)
+           
+def deleteTodo():
+    return HttpResponse("Hello, world. You're at the schedule deleteTodo.")           
             
 def changeTodo(request):
     return HttpResponse("Hello, world. You're at the schedule changeTodo.")
 
 def addAct(request):
     return HttpResponse("Hello, world. You're at the schedule addAct.")
+
+def deleteAct(request):
+    return HttpResponse("Hello, world. You're at the schedule deleteAct.")
+
+def changeAct(request):
+    return HttpResponse("Hello, world. You're at the schedule changeAct.")
 
 def findAct(request):
     return HttpResponse("Hello, world. You're at the schedule findAct.")
