@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns=[
     path('todos/',views.todos),
-    path('addTodo/',views.changeTodo),
-    path('deleteTodo/',views.changeTodo),
+    path('addTodo/',views.addTodo),
+    path('deleteTodo/',views.deleteTodo),
     path('changeTodo/',views.changeTodo),
     path('addAct/',views.addAct),
     path('deleteAct/',views.addAct),
