@@ -22,7 +22,8 @@
     "pages/activities/activity/activity",
     "pages/settings/selfset/selfset",
     "pages/plan/addplan/addplan",
-    "pages/settings/help/help"
+    "pages/settings/help/help",
+    "pages/plan/editplan/editplan"
   ],
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",

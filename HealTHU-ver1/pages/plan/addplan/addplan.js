@@ -22,8 +22,6 @@ Page({
     title:"",
     label:"",
     showpicker: false,
-    nowId: 0,
-    nowtype: "",
     isValid:false
   },
   onTypeConfirm(event){
@@ -39,7 +37,7 @@ Page({
   formatDate(date) {
     date = new Date(date);
     return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-    //把todos里的值改为该天的todos
+    //TODO：把todos里的值改为该天的todos
   },
   onConfirm(event) {
     this.setData({
@@ -230,11 +228,6 @@ Page({
     else{
       wx.showToast({ title: '时间不合法', icon: 'success' });
     }
-
-    wx.showToast({ title: '添加成功', icon: 'success' });
-    wx.navigateTo({
-      delta: 1
-    })
   },
   onClickLeft(){
     wx.navigateTo({

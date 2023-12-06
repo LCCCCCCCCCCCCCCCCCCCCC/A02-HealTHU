@@ -1,7 +1,7 @@
-<!--pages/plan/addplan/addplan.wxml-->
+<!--pages/plan/editplan/editplan.wxml-->
 <view class="pages">
 <van-nav-bar
-  title="新建日程"
+  title="编辑日程"
   left-arrow
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
@@ -18,11 +18,13 @@
   <van-field
     label="主题"
     placeholder="活动主题"
+    value="{{title}}"
     bind:change="handleNameInput"
   />
   <van-field
     label="备注"
     placeholder="地点等备注信息"
+    value="{{label}}"
     bind:change="handleLabelInput"
   />
   <van-field label="类型">
@@ -56,4 +58,5 @@
         bind:cancel="closePicker"
       />
 </van-cell-group>
+<button class="delete-btn" bindtap="deleteAct">删除</button>
 </view>

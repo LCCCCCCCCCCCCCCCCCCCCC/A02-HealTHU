@@ -26,7 +26,7 @@
     <navigator url='./addplan/addplan'>+</navigator >
   </view>
 
-  <van-popup show="{{ showedit }}">
+  <!-- <van-popup show="{{ showedit }}">
     <view class="editact">
       <view>名称：</view><input bindinput="handleNameInput" placeholder="{{title}}"/>
       <view>备注：</view><input bindinput="handleLabelInput" placeholder="{{label}}"/>
@@ -54,7 +54,7 @@
       <button bindtap="deleteAct">删除</button>
       <button bindtap="editAct">确定</button>
     </view>
-  </van-popup>
+  </van-popup> -->
 
 
   <!-- <view class="todo-list">
@@ -67,15 +67,27 @@
     </block>
   </view> -->
 
+  <!-- <view class="todo-list">
+    <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
+      <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="handleEdit">
+        <view slot="title">
+          <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
+        </view>
+        <view wx:if="{{ item.type !== 'ddl' }}">{{item.start}}—{{item.end}}</view>
+        <view wx:else>{{item.end}}</view>
+      </van-cell>
+    </van-cell-group>
+  </view> -->
+
   <view class="todo-list">
-      <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
-        <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="handleEdit">
-          <view slot="title">
-            <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
-          </view>
-          <view wx:if="{{ item.type !== 'ddl' }}">{{item.start}}—{{item.end}}</view>
-          <view wx:else>{{item.end}}</view>
-        </van-cell>
-      </van-cell-group>
-    </view>
+    <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
+      <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="tohandleEdit">
+        <view slot="title">
+          <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
+        </view>
+        <view wx:if="{{ item.type !== 'ddl' }}">{{item.start}}—{{item.end}}</view>
+        <view wx:else>{{item.end}}</view>
+      </van-cell>
+    </van-cell-group>
+  </view>
 </view>

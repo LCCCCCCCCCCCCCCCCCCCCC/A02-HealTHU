@@ -14,14 +14,10 @@ Page({
     start:"",
     end:"",
     label:"",
-    show: false,
-    showact: false,
-    showddl: false,
     showedit: false,
     showpicker: false,
     nowId: 0,
     nowtype: "",
-    radio: "运动",
   },
   showPicker1(){
     this.setData({
@@ -77,90 +73,12 @@ Page({
     })
   },
 
-  //选择事务类型
-  onChange(event) {
-    this.setData({
-      radio: event.detail,
-    });
-  },
-  //以下三个为设置任务信息
-  handleNameInput(event) {
-    this.setData({
-      title: event.detail.value
-    });
-  },
-  handleLabelInput(event) {
-    this.setData({
-      label: event.detail.value
-    });
-  },
-  handleStartTimeInput(event) {
-    this.setData({
-      start: event.detail,
-      showpicker:false
-    });
-  },
-  handleEndTimeInput(event) {
-    this.setData({
-      end: event.detail,
-      showpicker:false
-    });
-  },
-  handleEdit(event) {
+  tohandleEdit(event) {
+    var urldate = this.data.date;
     const buttonId = event.currentTarget.dataset.id;
-    var newtodo = this.data.todos[buttonId];
-    this.setData({ 
-      showedit: true,
-      title: newtodo.title,
-      start: newtodo.start,
-      end: newtodo.end,
-      nowId: buttonId,
-      nowtype: newtodo.type,
-      label:newtodo.label
-     });
-  },
-  //编辑事务
-  editAct(){
-    var newtodos = this.data.todos;
-    newtodos.splice(this.data.nowId,1);
-    if(!this.isValid(this.data.start,this.data.end,newtodos)){
-      newtodos = this.data.todos;
-    }
-    else{
-      newtodos.push({
-        title:this.data.title,
-        type:this.data.nowtype,
-        color:this.switchColorbyType(this.data.nowtype),
-        start:this.data.start,
-        end:this.data.end,
-        label:this.data.label
-      })
-      newtodos.sort(function(a, b) {
-        var startTimeA = parseInt(a.start.replace(":", ""));
-        var startTimeB = parseInt(b.start.replace(":", ""));
-        return startTimeA - startTimeB;
-      });
-      this.setData({
-        todos:newtodos,
-        showedit: false
-      });
-      wx.setStorageSync('todos', this.data.todos);
-    }
-  },
-  //删除事务
-  deleteAct(){
-    var newtodos = this.data.todos;
-    newtodos.splice(this.data.nowId,1);
-    newtodos.sort(function(a, b) {
-      var startTimeA = parseInt(a.start.replace(":", ""));
-      var startTimeB = parseInt(b.start.replace(":", ""));
-      return startTimeA - startTimeB;
-    });
-    this.setData({
-      todos:newtodos,
-      showedit: false
+    wx.navigateTo({
+      url: './editplan/editplan?id=' + buttonId + '&date=' + urldate
     })
-    wx.setStorageSync('todos', this.data.todos);
   },
   /**
    * 生命周期函数--监听页面加载
