@@ -18,6 +18,7 @@
     <view slot="title">
       <van-button type="default" bind:click="onDisplay">{{date}}</van-button>
       <van-calendar show="{{ dateshow }}" bind:close="onClose" bind:confirm="onConfirm" />
+      <!-- 目前日期只能选之后的不能选之前的，定好范围之后改一下 -->
     </view>
   </van-nav-bar>
 <view class="container">
