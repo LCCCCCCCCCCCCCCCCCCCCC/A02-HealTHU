@@ -73,21 +73,33 @@ Page({
       var end = parseInt(data.end.replace(":", ""));
       return end > currentTime
     });
-    var avatarUrl = wx.getStorageSync('avatarUrl');
-    var nickName = wx.getStorageSync('nickName');
-    var sign = wx.getStorageSync('sign');
+    var that = this
     var id = wx.getStorageSync('id')
-    this.setData({
-      todos: filteredTasks,
-      fans: fans,
-      attention: attention,
-      userInfo:{
-        avatarUrl: avatarUrl,
-        nickName: nickName,
-        id:id,
-        sign: sign
+    wx.request({
+      url:'http://127.0.0.1:8000/user/getDetail',
+      data:{
+        'hostId': id,
+        'customerId':id
+      },
+      method:'GET',
+      success:function(res){
+        var data = JSON.parse(res.data)
+        that.setData({
+          todos: filteredTasks,
+          fans: fans,
+          attention: attention,
+          userInfo:{
+            avatarUrl: data.avatarUrl,
+            nickName: data.nickName,
+            id:id,
+            sign: data.signature
+          },
+          attentionnum:data.followingNum,
+          fannum:data.followerNum,
+        });
       }
-    });
+    })
+    
   },
 
   /**
