@@ -87,6 +87,20 @@ def changeTodo(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
+def addTodo(request):
+    if request.method == 'GET':
+        id = request.GET.get("id")
+        todo = request.GET.get("todo")
+        # find the schedule (if any) according to the id
+        targetSchedule = Schedule.objects.filter(id=id).first()
+        if targetSchedule:
+            # put this todo into Schedule.todos, which is a JSONField
+            targetSchedule.todos.append(todo)
+            targetSchedule.save()
+            return HttpResponse("Add successfully")
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
+
 def addAct(request):
     if request.method == 'GET':
         id = request.GET.get("id")
