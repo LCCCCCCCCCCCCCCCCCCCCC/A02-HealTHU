@@ -108,12 +108,30 @@ def addAct(request):
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
-            # todo: add activity to Schedule.initiActs
+            # add activity to Schedule.initiActs, which is a JSONField
+            # also add activity to Schedule.partActs, which is a JSONField
+            targetSchedule.initiActs.append(activity)
+            targetSchedule.partiActs.append(activity)
+            targetSchedule.save()
             return HttpResponse("Add successfully")
-    return HttpResponse("Hello, world. You're at the schedule addAct.")
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
 
 def deleteAct(request):
-    return HttpResponse("Hello, world. You're at the schedule deleteAct.")
+    if request.method == 'GET':
+        id = request.GET.get("id")
+        activity = request.GET.get("activity")
+        # find the schedule (if any) according to the id
+        targetSchedule = Schedule.objects.filter(id=id).first()
+        if targetSchedule:
+            # delete activity from Schedule.initiActs, which is a JSONField
+            # also delete activity from Schedule.partActs, which is a JSONField
+            targetSchedule.initiActs.remove(activity)
+            targetSchedule.partiActs.remove(activity)
+            targetSchedule.save()
+            return HttpResponse("Delete successfully")
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
 
 def changeAct(request):
     return HttpResponse("Hello, world. You're at the schedule changeAct.")
