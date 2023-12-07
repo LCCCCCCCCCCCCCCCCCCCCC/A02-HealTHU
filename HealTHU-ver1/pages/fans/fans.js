@@ -10,42 +10,39 @@ Page({
     wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
   },
   followUser(event) {
-    // 本地存储fans更新，界面userList更新
-    var fans = wx.getStorageSync('fans');
-    const userId = event.currentTarget.dataset.id;
-    var user = fans.find(function(u) {
-      return u.id === userId;
-    });
-    console.log(user);
-    if (user) {
-      user.followed = true;
-      wx.setStorage({
-        key: 'fans',
-        data: fans,
-        success: function(res) {
-        }
-      });
-      this.setData({
-        userList: fans
-      });
-      // 本地attention更新
-      var attention = wx.getStorageSync('attention');
-      attention.push(user);
-      wx.setStorage({
-        key: 'attention',
-        data: attention,
-        success: function(res) {
-        // TODO:调用后端接口发送关注请求,并更新对应用户项的状态
-        }
-      });
-    } 
-    console.log('关注用户', userId);
-    wx.showToast({ title: '关注成功', icon: 'success' });
+    const userId = event.currentTarget.dataset.id
+    var id = wx.getStorageSync('id')
+    var ids = wx.getStorageSync('attentionId');
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/user/addAttention/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        hostId: id,
+        customerId: userId
+      },
+      method:'POST',
+      success:function(res){
+        var newList = that.data.userList
+        newList = newList.map(function(u) {
+          if (u.id === userId) {
+            u.followed = true;
+          }
+          return u;
+        });
+        that.setData({
+          userList:newList
+        })
+        ids.push(userId)
+        wx.setStorageSync('attentionId', ids)
+      }
+    })
   },
 
   unfollowUser(event) {
     const userId = event.currentTarget.dataset.id
     var id = wx.getStorageSync('id')
+    var ids = wx.getStorageSync('attentionId');
     var that = this
     wx.request({
       url:'http://127.0.0.1:8000/user/delAttention/',
@@ -66,6 +63,10 @@ Page({
         that.setData({
           userList:newList
         })
+        ids = ids.filter(function(value) {
+          return value != userId;
+        })
+        wx.setStorageSync('attentionId', ids)
       }
     })
     
@@ -102,11 +103,18 @@ Page({
         method:'GET',
         success:function(res){
           var data = JSON.parse(res.data)
+          var followed = true;
+          if(data.following_state == "true"){
+            followed = true
+          }
+          if(data.following_state == "false"){
+            followed = false
+          }
           var user = {
             id: ids[i],
             nickName: data.nickName,
             avatar: data.avatarUrl,
-            followed: data.following_state,
+            followed: followed,
             signature: data.signature
           }
           that.data.userList.push(user)

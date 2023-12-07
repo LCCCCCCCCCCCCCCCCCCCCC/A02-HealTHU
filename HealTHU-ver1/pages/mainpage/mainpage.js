@@ -94,8 +94,8 @@ Page({
             id:id,
             sign: data.signature
           },
-          attentionnum:data.followingNum,
-          fannum:data.followerNum,
+          attentionnum:data.followings.length,
+          fannum:data.followers.length,
         });
         wx.setStorageSync('fansId', that.data.fans)
         wx.setStorageSync('attentionId', that.data.attention)
