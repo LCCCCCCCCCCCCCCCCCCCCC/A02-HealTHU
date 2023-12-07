@@ -64,8 +64,8 @@ Page({
    */
   onShow() {
     // datas.filter is not a function, 没有在首页登录的话就会没有storage，所以其他页面应该先检查一下登陆状态（以及后端）
-    var fans = wx.getStorageSync('fans');
-    var attention = wx.getStorageSync('attention');
+    //var fans = wx.getStorageSync('fans');
+    //var attention = wx.getStorageSync('attention');
     var datas = wx.getStorageSync('todos');
     //todo:主页只展示结束时间在当前时间之后的
     var currentTime = parseInt(new Date().getHours() + "" + (new Date().getMinutes()).toString().padStart(2, '0'))
@@ -76,7 +76,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     wx.request({
-      url:'http://127.0.0.1:8000/user/getDetail',
+      url:'http://127.0.0.1:8000/user/getDetail/',
       data:{
         'hostId': id,
         'customerId':id
@@ -86,8 +86,8 @@ Page({
         var data = JSON.parse(res.data)
         that.setData({
           todos: filteredTasks,
-          fans: fans,
-          attention: attention,
+          fans: data.followers,
+          attention: data.followings,
           userInfo:{
             avatarUrl: data.avatarUrl,
             nickName: data.nickName,
@@ -97,9 +97,11 @@ Page({
           attentionnum:data.followingNum,
           fannum:data.followerNum,
         });
+        wx.setStorageSync('fansId', that.data.fans)
+        wx.setStorageSync('attentionId', that.data.attention)
       }
     })
-    
+
   },
 
   /**
@@ -140,6 +142,7 @@ Page({
     this.setData({ exitshow: false });
   },
   exit_confirm(){
+    
     this.setData({ exitshow: true });
   },
   loginExit(){

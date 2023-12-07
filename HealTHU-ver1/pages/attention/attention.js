@@ -9,6 +9,7 @@ Page({
   },
 
   onClickRight() {
+    console.log(this.data.userList)
     wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
   },
 // 粉丝界面处理程序，取消关注+回关操作实现需修改一下
@@ -99,10 +100,37 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    var attention = wx.getStorageSync('attention');
-    this.setData({
-      userList: attention
-    });
+    var ids = wx.getStorageSync('attentionId');
+    var id = wx.getStorageSync('id')
+    //console.log(ids.length)
+    var that = this
+    for(let i = 0; i < ids.length; i++){
+      wx.request({
+        url:'http://127.0.0.1:8000/user/getDetail/',
+        data:{
+          'hostId': id,
+          'customerId':ids[i]
+        },
+        method:'GET',
+        success:function(res){
+          var data = JSON.parse(res.data)
+          var user = {
+            id: ids[i],
+            nickName: data.nickName,
+            avatar: data.avatarUrl,
+            followed: data.following_state,
+            signature: data.signature
+          }
+          that.data.userList.push(user)
+          if(i == ids[i] - 1){
+            that.setData({
+              userList: that.data.userList
+            })
+          }
+        }
+      })
+
+    }
   },
 
   /**

@@ -55,7 +55,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     wx.request({
-      url:'http://127.0.0.1:8000/user/getDetail',
+      url:'http://127.0.0.1:8000/user/getDetail/',
       data:{
         'hostId': id,
         'customerId':id

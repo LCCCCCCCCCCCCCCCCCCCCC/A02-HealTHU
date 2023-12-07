@@ -19,7 +19,7 @@ Page({
       success: (res) => {
             if(res.code){
               wx.request({
-                url:'http://127.0.0.1:8000/user/getId',
+                url:'http://127.0.0.1:8000/user/getId/',
                 data:{
                   'code':res.code
                 },
@@ -45,45 +45,6 @@ Page({
       { title: "任务4", type:"ddl", color:"#009999", start:"16:00", end:"16:30", label:"其他样式设计（填充？）"},
       { title: "任务5", type:"饮食", color:"#BB00BB", start:"20:00", end:"23:30", label:"5"}
     ]);
-    wx.setStorageSync('fans',[
-      {
-        id: '1',
-        nickname: 'testuser1',
-        avatar: '../images/avatar1.png',
-        signature: '签名1',
-        followed: true
-      },
-      {
-        id: '2',
-        nickname: 'testuser2',
-        avatar: '../images/avatar2.png',
-        signature: '签名2',
-        followed: true
-      },
-      {
-        id: '3',
-        nickname: 'testuser3',
-        avatar: '../images/avatar3.png',
-        signature: '签名3',
-        followed: false
-      },
-    ]);
-    wx.setStorageSync('attention', [
-      {
-        id: '1',
-        nickname: 'testuser1',
-        avatar: '../images/avatar1.png',
-        signature: '签名1',
-        followed: true
-      },
-      {
-        id: '2',
-        nickname: 'testuser2',
-        avatar: '../images/avatar2.png',
-        signature: '签名2',
-        followed: true
-      },
-    ])
   },
   
   onChooseAvatar(e){
