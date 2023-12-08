@@ -5,24 +5,27 @@ Page({
    * 页面的初始数据
    */
   data: {
-    nowtime: new Date().getHours() + ":" + new Date().getMinutes(),
+    nowTime: new Date().getHours() + ":" + new Date().getMinutes(),
     date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     dateshow: false,
     option1: [
       { text: 'ddl', value: 0 },
       { text: '课程', value: 1 },
       { text: '活动', value: 2 },
-      { text: '健身', value: 3 },
-      { text: '吃饭', value: 4 }
+      { text: '运动', value: 3 },
+      { text: '饮食', value: 4 }
     ],
     optionvalue1: 0,
     start: "",
     end: "",
     todos: [],
     title:"",
-    label:"",
+    label: "",
+    type: "",
     showpicker: false,
-    isValid:false
+    isValid:false,
+    sportType:"",
+    sportState:""
   },
   onTypeConfirm(event){
     this.setData({ optionvalue1: event.detail});
@@ -44,7 +47,6 @@ Page({
       dateshow: false,
       date: this.formatDate(event.detail),
     });
-    console.log(this.data.date)
   },
   //以下三个为设置任务信息
   handleNameInput(event) {
@@ -87,147 +89,109 @@ Page({
 
   //确定添加普通活动
   handleAct() {
-    var newtodos = this.data.todos;
     if(this.isValid(this.data.start,this.data.end,this.data.todos)){
-      newtodos.push({
-        title:this.data.title,
-        type:"活动",
-        color:"#0000FF",
-        start:this.data.start,
-        end:this.data.end,
-        label:this.data.label
-      })
-      newtodos.sort(function(a, b) {
-        var startTimeA = parseInt(a.start.replace(":", ""));
-        var startTimeB = parseInt(b.start.replace(":", ""));
-        return startTimeA - startTimeB;
-      });
       this.setData({
-        todos:newtodos,//添加日期标记
-        isValid:true
+        isValid:true,
+        type:"活动"
       });
-      wx.setStorageSync('todos', this.data.todos);
     }
   },
   //确定添加ddl
   handleDDL() {
-    var newtodos = this.data.todos;
     if(this.isValid(this.data.end,this.data.end,this.data.todos)){
-      newtodos.push({
-        title:this.data.title,
-        type:"ddl",
-        color:"#009999",
-        start:this.data.end,
-        end:this.data.end,
-        label:this.data.label
-      });
-      newtodos.sort(function(a, b) {
-        var startTimeA = parseInt(a.start.replace(":", ""));
-        var startTimeB = parseInt(b.start.replace(":", ""));
-        return startTimeA - startTimeB;
-      });
       this.setData({
-        todos:newtodos,
-        isValid:true
+        isValid:true,
+        type:"ddl",
+        start:this.data.end
       });
-      wx.setStorageSync('todos', this.data.todos);
     }
   },
   HandleCourse(){
-    var newtodos = this.data.todos;
-    if(this.isValid(this.data.start,this.data.start,this.data.todos)){
-      newtodos.push({
-        title:this.data.title,
-        type:"课程",
-        color:"#BBBB00",
-        start:this.data.start,
-        end:this.data.end,
-        label:this.data.label
-      });
-      newtodos.sort(function(a, b) {
-        var startTimeA = parseInt(a.start.replace(":", ""));
-        var startTimeB = parseInt(b.start.replace(":", ""));
-        return startTimeA - startTimeB;
-      });
+    if(this.isValid(this.data.start,this.data.end,this.data.todos)){
       this.setData({
-        todos:newtodos,
-        isValid:true
+        isValid:true,
+        type:"课程"
       });
-      wx.setStorageSync('todos', this.data.todos);
     }
   },
   HandleEat(){
-    var newtodos = this.data.todos;
-    if(this.isValid(this.data.start,this.data.start,this.data.todos)){
-      newtodos.push({
-        title:this.data.title,
-        type:"吃饭",
-        color:"#BB00BB",
-        start:this.data.start,
-        end:this.data.end,
-        label:this.data.label
-      });
-      newtodos.sort(function(a, b) {
-        var startTimeA = parseInt(a.start.replace(":", ""));
-        var startTimeB = parseInt(b.start.replace(":", ""));
-        return startTimeA - startTimeB;
-      });
+    if(this.isValid(this.data.start,this.data.end,this.data.todos)){
       this.setData({
-        todos:newtodos,
-        isValid:true
+        isValid:true,
+        type:"饮食"
       });
-      wx.setStorageSync('todos', this.data.todos);
     }
   },
   HandleSports(){
-    var newtodos = this.data.todos;
-    if(this.isValid(this.data.start,this.data.start,this.data.todos)){
-      newtodos.push({
-        title:this.data.title,
-        type:"健身",
-        color:"#00BB00",
-        start:this.data.start,
-        end:this.data.end,
-        label:this.data.label
-      });
-      newtodos.sort(function(a, b) {
-        var startTimeA = parseInt(a.start.replace(":", ""));
-        var startTimeB = parseInt(b.start.replace(":", ""));
-        return startTimeA - startTimeB;
-      });
+    if(this.isValid(this.data.start,this.data.end,this.data.todos)){
       this.setData({
-        todos:newtodos,
-        isValid:true
+        isValid:true,
+        type:"运动"
       });
-      wx.setStorageSync('todos', this.data.todos);
     }
   },
   // 添加活动总处理
   onClickRight(){
-    switch(this.data.optionvalue1){
-      case 0:
-        this.handleDDL();break;
-      case 1:
-        this.HandleCourse();break;
-      case 2:
-        this.handleAct();break;
-      case 3:
-        this.HandleSports();break;
-      case 4:
-        this.HandleEat();break;
-      default:
-        return;
-    }
-
-    if(this.data.isValid){
-      wx.showToast({ title: '添加成功', icon: 'success' });
-      wx.navigateTo({
-        url: '../plan',
-      })
-    }
-    else{
-      wx.showToast({ title: '时间不合法', icon: 'success' });
-    }
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/todos/',
+      data:{
+        'id': id,
+        'date': that.data.date
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          todos: data
+        });
+        switch(that.data.optionvalue1){
+          case 0:
+            that.handleDDL();break;
+          case 1:
+            that.HandleCourse();break;
+          case 2:
+            that.handleAct();break;
+          case 3:
+            that.HandleSports();break;
+          case 4:
+            that.HandleEat();break;
+          default:
+            return;
+        }
+        if(that.data.isValid){
+          var id = wx.getStorageSync('id')
+          wx.request({
+            url:'http://127.0.0.1:8000/schedule/addTodo/',
+            header:{ 'content-type': 'application/x-www-form-urlencoded'},
+            data:{
+              id: id,
+              title: that.data.title,
+              date: that.data.date,
+              start: that.data.start,
+              end: that.data.end,
+              label: that.data.label,
+              type: that.data.type,
+              state: 0,
+              sportType: that.data.sportType,
+              sportState: that.data.sportState
+            },
+            method:'POST',
+            success:function(res){
+              wx.showToast({ title: '添加成功', icon: 'success' });
+              that.setData({
+              isValid:false
+              })
+              wx.navigateBack({delta:1})
+            }
+          })
+        }
+        else{
+          wx.showToast({ title: '时间不合法', icon: 'success' });
+        }
+      }
+    })
   },
   onClickLeft(){
     wx.navigateTo({
@@ -252,10 +216,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    var data = wx.getStorageSync('todos');
-    this.setData({
-      todos: data
-    });
+    //var data = wx.getStorageSync('todos');
+    //this.setData({
+      //todos: data
+    //});
   },
 
   /**
@@ -294,9 +258,15 @@ Page({
   },
 
   isValid(start,end,todos){
+    var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+    nowTime = parseInt(nowTime.replace(":",""))
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     start = parseInt(start.replace(":", ""))
     end = parseInt(end.replace(":", ""))
     if(start>end){
+      return false;
+    }
+    if((date == this.data.date)&&((start<=nowTime)||(end<=nowTime))){
       return false;
     }
     for (let i = 0; i < todos.length; i++) {

@@ -39,12 +39,12 @@
       <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
         <van-cell wx:if="{{ item.type !== 'ddl' }}" label="{{item.label}}" value="{{item.start}}—{{item.end}}" >
           <view slot="title">
-            <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
+            <van-icon name="checked" color="{{switchColorbyType[item.type]}}"/> {{item.title}}
           </view>
         </van-cell>
         <van-cell wx:else label="{{item.label}}" value="{{item.end}}" >
           <view slot="title">
-            <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
+            <van-icon name="checked" color="{{switchColorbyType[item.type]}}"/> {{item.title}}
           </view>
         </van-cell>
       </van-cell-group>

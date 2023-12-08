@@ -5,6 +5,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    switchColorbyType: {
+      "课程": "#BBBB00",
+      "运动": "#00BB00",
+      "活动": "#0000FF",
+      "ddl":  "#009999",
+      "饮食": "#BB00BB",
+      "游戏!": "#66ccff"
+    },
     todos:[],
     fans:[],
     attention:[],
@@ -64,15 +72,10 @@ Page({
    */
   onShow() {
     // datas.filter is not a function, 没有在首页登录的话就会没有storage，所以其他页面应该先检查一下登陆状态（以及后端）
-    //var fans = wx.getStorageSync('fans');
-    //var attention = wx.getStorageSync('attention');
-    var datas = wx.getStorageSync('todos');
+    //var datas = wx.getStorageSync('todos');
     //todo:主页只展示结束时间在当前时间之后的
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate()
     var currentTime = parseInt(new Date().getHours() + "" + (new Date().getMinutes()).toString().padStart(2, '0'))
-    var filteredTasks = datas.filter(function(data) {
-      var end = parseInt(data.end.replace(":", ""));
-      return end > currentTime
-    });
     var that = this
     var id = wx.getStorageSync('id')
     wx.request({
@@ -85,7 +88,6 @@ Page({
       success:function(res){
         var data = JSON.parse(res.data)
         that.setData({
-          todos: filteredTasks,
           fans: data.followers,
           attention: data.followings,
           userInfo:{
@@ -101,7 +103,30 @@ Page({
         wx.setStorageSync('attentionId', that.data.attention)
       }
     })
-
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/todos/',
+      data:{
+        'id': id,
+        'date': date
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        console.log(data)
+        var filteredTasks = data.filter(function(data) {
+          var end = parseInt(data.end.replace(":", ""));
+          return end > currentTime
+        });
+        filteredTasks.sort(function(a, b) {
+          var startTimeA = parseInt(a.start.replace(":", ""));
+          var startTimeB = parseInt(b.start.replace(":", ""));
+          return startTimeA - startTimeB;
+        });
+        that.setData({
+          todos: filteredTasks,
+        });
+      }
+    })
   },
 
   /**
@@ -151,5 +176,5 @@ Page({
     wx.navigateTo({
       url: '../personalcenter/personalcenter'
     })
-  },
+  }
 })

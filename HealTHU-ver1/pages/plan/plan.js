@@ -6,6 +6,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    switchColorbyType: {
+        "课程": "#BBBB00",
+        "运动": "#00BB00",
+        "活动": "#0000FF",
+        "ddl":  "#009999",
+        "饮食": "#BB00BB"
+    },
     dateshow: false,
     date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     todos:[
@@ -76,9 +83,16 @@ Page({
   tohandleEdit(event) {
     var urldate = this.data.date;
     const buttonId = event.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: './editplan/editplan?id=' + buttonId + '&date=' + urldate
-    })
+    if(this.data.todos[buttonId].state == 0){
+      wx.setStorageSync('oldTodo', this.data.todos[buttonId])
+      wx.navigateTo({
+        url: './editplan/editplan?id=' + buttonId + '&date=' + urldate
+      })
+    }
+    else{
+      wx.showToast({title: '只能编辑未开始的事项', icon: 'success'})
+    }
+    //事项状态参考API文档，可以根据事项状态设置一下不同的显示样式
   },
   /**
    * 生命周期函数--监听页面加载
@@ -103,10 +117,27 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    var data = wx.getStorageSync('todos');
-    this.setData({
-      todos: data
-    });
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/todos/',
+      data:{
+        'id': id,
+        'date': that.data.date
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        data.sort(function(a, b) {
+          var startTimeA = parseInt(a.start.replace(":", ""));
+          var startTimeB = parseInt(b.start.replace(":", ""));
+          return startTimeA - startTimeB;
+        });
+        that.setData({
+          todos: data
+        });
+      }
+    })
   },
 
   /**
@@ -142,36 +173,6 @@ Page({
    */
   onShareAppMessage() {
 
-  },
-  switchColorbyType(type){
-    switch(type){
-      case "课程":
-        return "#BBBB00";
-      case "运动":
-        return "#00BB00";
-      case "活动":
-        return "#0000FF";
-      case "ddl":
-        return "#009999";
-      case "饮食":
-        return "#BB00BB";
-    }
-  },
-  isValid(start,end,todos){
-    start = parseInt(start.replace(":", ""))
-    end = parseInt(end.replace(":", ""))
-    if(start>end){
-      return false;
-    }
-    for (let i = 0; i < todos.length; i++) {
-      const todo = todos[i];
-      let thestart = parseInt(todo.start.replace(":", ""))
-      let theend = parseInt(todo.end.replace(":", ""))
-      if (!((start <= thestart && end <= thestart) || (end >= theend && start >= theend))) {
-        return false; // 与某一项有重叠，不合法
-      }
-    }
-    return true; // 没有重叠，合法
   },
 
   // 通过日历选择日期

@@ -12,9 +12,10 @@ Page({
       { text: 'ddl', value: 0 },
       { text: '课程', value: 1 },
       { text: '活动', value: 2 },
-      { text: '健身', value: 3 },
-      { text: '吃饭', value: 4 }
+      { text: '运动', value: 3 },
+      { text: '饮食', value: 4 }
     ],
+    oldTodo:{},
     optionvalue1: 0,
     start: "",
     end: "",
@@ -94,42 +95,69 @@ Page({
 
   // 添加编辑完的活动
   onClickRight(){
-    var newType = this.switchTypebyValue(this.data.optionvalue1);
-    var newtodos = this.data.todos;
-    newtodos.splice(this.data.nowId,1);
-    if(!this.isValid(this.data.start,this.data.end,newtodos)){
-      newtodos = this.data.todos;
-    }
-    else{
-      newtodos.push({
-        title:this.data.title,
-        type:newType,
-        color:this.switchColorbyType(newType),
-        start:this.data.start,
-        end:this.data.end,
-        label:this.data.label
-      })
-      newtodos.sort(function(a, b) {
-        var startTimeA = parseInt(a.start.replace(":", ""));
-        var startTimeB = parseInt(b.start.replace(":", ""));
-        return startTimeA - startTimeB;
-      });
-      this.setData({
-        todos:newtodos,
-      });
-      wx.setStorageSync('todos', this.data.todos);
-    }
-
-    wx.showToast({ title: '修改成功', icon: 'success' });
-    wx.navigateTo({
-      url: '../plan',
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/todos/',
+      data:{
+        'id': id,
+        'date': that.data.date
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          todos: data
+        });
+        let newType = that.switchTypebyValue(that.data.optionvalue1);
+        var newtodos = that.data.todos;
+        if(that.data.date == that.data.oldTodo.date){
+          newtodos.splice(that.data.nowId,1);
+        }
+        if(newType == "ddl"){
+          that.setData({
+            start:that.data.end
+          })
+        }
+        console.log(that.data.start+" "+that.data.end)
+        if(!that.isValid(that.data.start,that.data.end,newtodos)){
+          wx.showToast({ title: '时间不合法', icon: 'success' });
+        }
+        else{
+          var id = wx.getStorageSync('id')
+          wx.request({
+            url:'http://127.0.0.1:8000/schedule/changeTodo/',
+            header:{ 'content-type': 'application/x-www-form-urlencoded'},
+            data:{
+              id: id,
+              oldDate: that.data.oldTodo.date,
+              oldStart: that.data.oldTodo.start,
+              oldEnd: that.data.oldTodo.end,
+              oldTitle: that.data.oldTodo.title,
+              newTitle: that.data.title,
+              newDate: that.data.date,
+              newStart: that.data.start,
+              newEnd: that.data.end,
+              newLabel: that.data.label,
+              newType: newType,
+              newState: that.data.oldTodo.state,
+              newSportType: that.data.oldTodo.sportType,
+              newSportState: that.data.oldTodo.sportState
+            },
+            method:'POST',
+            success:function(res){
+              wx.showToast({ title: '修改成功', icon: 'success' });
+              wx.navigateBack({delta:1})
+            }
+          })
+        }
+      }
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    console.log(options)
     if (options.id && options.date) {
       // 通过日期和点击id传递到编辑界面
       this.setData({
@@ -137,18 +165,15 @@ Page({
         date: options.date
       });
     } 
-    var data = wx.getStorageSync('todos');
-    this.setData({
-      todos: data
-    });
-    var newtodo = this.data.todos[options.id];
-    var typeValue = this.switchValuebyType(newtodo.type);
+    var oldTodo = wx.getStorageSync('oldTodo')
+    var typeValue = this.switchValuebyType(oldTodo.type);
     this.setData({ 
-      title: newtodo.title,
-      start: newtodo.start,
-      end: newtodo.end,
-      nowtype: newtodo.type,
-      label: newtodo.label,
+      oldTodo: oldTodo,
+      title: oldTodo.title,
+      start: oldTodo.start,
+      end: oldTodo.end,
+      nowtype: oldTodo.type,
+      label: oldTodo.label,
       optionvalue1: typeValue
      });
   },
@@ -244,9 +269,15 @@ Page({
     }
   },
   isValid(start,end,todos){
+    var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+    nowTime = parseInt(nowTime.replace(":",""))
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     start = parseInt(start.replace(":", ""))
     end = parseInt(end.replace(":", ""))
     if(start>end){
+      return false;
+    }
+    if((date == this.data.date)&&((start<=nowTime)||(end<=nowTime))){
       return false;
     }
     for (let i = 0; i < todos.length; i++) {
@@ -261,21 +292,23 @@ Page({
   },
   //删除事务，TODO：加个确认删除
   deleteAct(){
-    var newtodos = this.data.todos;
-    newtodos.splice(this.data.nowId,1);
-    newtodos.sort(function(a, b) {
-      var startTimeA = parseInt(a.start.replace(":", ""));
-      var startTimeB = parseInt(b.start.replace(":", ""));
-      return startTimeA - startTimeB;
-    });
-    this.setData({
-      todos:newtodos,
-    })
-    wx.setStorageSync('todos', this.data.todos);
-
-    wx.showToast({ title: '删除成功', icon: 'success' });
-    wx.navigateTo({
-      url: '../plan',
+    var id = wx.getStorageSync('id')
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/deleteTodo/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id: id,
+        oldDate: that.data.oldTodo.date,
+        oldStart: that.data.oldTodo.start,
+        oldEnd: that.data.oldTodo.end,
+        oldTitle: that.data.oldTodo.title
+      },
+      method:'POST',
+      success:function(res){
+        wx.showToast({ title: '删除成功', icon: 'success' });
+        wx.navigateBack({delta:1})
+      }
     })
   },
 })

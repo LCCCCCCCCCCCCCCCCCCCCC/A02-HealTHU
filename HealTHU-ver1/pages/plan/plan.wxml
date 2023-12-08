@@ -78,12 +78,11 @@
       </van-cell>
     </van-cell-group>
   </view> -->
-
   <view class="todo-list">
     <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
       <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="tohandleEdit">
         <view slot="title">
-          <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
+          <van-icon name="checked" color="{{switchColorbyType[item.type]}}"/> {{item.title}}
         </view>
         <view wx:if="{{ item.type !== 'ddl' }}">{{item.start}}—{{item.end}}</view>
         <view wx:else>{{item.end}}</view>
