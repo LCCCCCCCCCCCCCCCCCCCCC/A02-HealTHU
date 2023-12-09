@@ -64,15 +64,20 @@
 |label|string|备注|
 |type|string|类型|
 |state|int|状态(0代表未开始，1代表进行中，2代表已完成，3代表未完成)|
-|sportType|int|运动类型|
-|sportState|string|运动完成情况（如跑步时间）|
+|readOnly|bool|是否能被修改|
+
+state不为0或为公共活动时，todo均只读
 #### 活动 activity
 |字段|类型|说明|
 |-------------|-------------|-------------|
+|title|string|标题|
 |promoter|int|发起人|
 |participants|int[]|参与人|
 |partnum|int[2]|人数范围|
-|date|string|活动时间|
+|date|string|日期(格式为年/月/日)|
+|start|string|开始时间(格式为xx:xx)|
+|end|string|结束时间|
+|label|string|备注|
 |detail|string|详情|
 |images|string[]|图片|
 |tags|string[]|标签|
@@ -237,6 +242,7 @@ wx.request({
 |-------------|-------------|-------------|
 |ddls|todo[]|筛选出的这一段时间的ddl|
 
+注：建议按时间顺序返回
 #### 事务的删
 ```HTTP
 [GET] /schedule/{id}/deleteTodo
@@ -262,35 +268,143 @@ wx.request({
 
 #### 发起活动
 ```HTTP
-[GET] /schedule/{id}/addAct
+[POST] /schedule/{id}/addAct
 ```
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |activity|activity|发起的活动信息|
+
+提示：不仅要改变活动相关信息，还要在用户的todo中添加这一项活动，todo的各项属性与act的同名属性基本相同，在todo的标题前添加"(我发起的)", 类型就是"活动"，state=0(未完成)，readOnly=true(不可修改)
+在发起成功后最好每个活动也带一个id，和用户id逻辑类似
+
 #### 查找活动
 ```HTTP
 [GET] /schedule/{id}/findAct
 ```
+
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|key|string|关键字（可选）|
-|nickName|string|用户昵称（可选）|
-|tag|string|标签（可选）|
-|Date|string|日期（可选）（下略）|
+|promoter|id|发起人(可选)|
+|participants|id|参与人(可选)|
+|keyForSearch|string|用于查找的关键字(返回tag与其相同和标题、备注中包含关键字的所有活动)(可选)|
+|minDate|string|最早日期(可选)|
+|maxDate|string|最晚日期(可选)|
+|isRandom|bool|是否随机返回最多20条活动(无前置限制)|
+
 ##### 响应数据
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |acticities|activity[]|得到的活动|
+
+注:不完全遵守活动格式，不会返回details与images，多返回一个活动id
+
+#### 查看活动详情
+```HTTP
+[GET] /schedule/{id}/getActDetail
+```
+
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|actId|int|活动id|
+
+##### 响应数据
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|activity|activity|得到的活动(完整信息)|
+
 #### 参与活动
 ```HTTP
-[GET] /schedule/{id}/partAct
+[POST] /schedule/{id}/partAct
 ```
+
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
 |otherid|int|发起人id|
-|activity|activity|参与的活动|
+|actId|actId|参与的活动|
+|message|string|申请时附带的一段信息|
 
+(完毕后同样会在todos中添加一段事项，前缀"(申请中)")
+
+#### 获取活动申请信息
+```HTTP
+[GET] /schedule/{id}/getApplication
+```
+
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+
+##### 响应数据
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|applications|application[]||
+
+#### 申请信息 application
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|申请者id|
+|nickName|string|申请者昵称|
+|message|string|申请时附带的一段信息|
+|actId|int|活动id|
+|title|string|活动标题|
+
+#### 同意/不同意申请
+```HTTP
+[POST] /schedule/{id}/appReply
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|appId|int|申请者id|
+|actId|int|活动id|
+|isAgree|bool|是否同意加入|
+|application|application|申请信息|
+
+提示：也是act端和todo端都要进行更改，如果同意，申请者todo事项的前缀从"(申请中)"改为"(我参与的)"，否则删除这条事项。同时，删掉被申请者的这条申请信息，对活动参与人进行更改。
+
+#### 删除活动
+```HTTP
+[POST] /schedule/{id}/deleteAct
+```
+
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|发起人id|
+|actId|int|活动id|
+
+#### 修改活动
+```HTTP
+[POST] /schedule/{id}/changeAct
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|发起人id|
+|actId|int|活动id|
+|newtitle|string|标题|
+|newpartnum|int[2]|人数范围|
+|newlabel|string|备注|
+|newdetail|string|详情|
+|newimages|string[]|图片|
+|newtags|string[]|标签|
+
+#### 退出活动
+```HTTP
+[POST] /schedule/{id}/exitAct
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|发起人id|
+|exitId|int|申请退出的id|
+|actId|int|活动id|
+
+注：上边三个操作也要修改todos事项
