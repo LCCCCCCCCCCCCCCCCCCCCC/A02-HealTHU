@@ -252,12 +252,12 @@ def getddl(request):
     if request.method == 'GET':
         id = request.GET.get("id")
         date = request.GET.get("date")
-        range = request.GET.get("range")
+        ddlRange = request.GET.get("range")
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
             allTodos = targetSchedule.todos
-            dateArray = nDays(date, range)
+            dateArray = nDays(date, ddlRange)
             targetTodos = []
             # find all Todos:
             # 1. whose date is in dateArray
