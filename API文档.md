@@ -63,7 +63,7 @@
 |end|string|结束时间|
 |label|string|备注|
 |type|string|类型|
-|state|int|状态(0代表未开始，1代表进行中，2代表已完成，3代表未完成)|
+|state|int|状态(0代表未完成，1代表已完成)|
 |readOnly|bool|是否能被修改|
 
 state不为0或为公共活动时，todo均只读
@@ -267,6 +267,16 @@ wx.request({
 |newtodo|todo|修改后事项|
 注意: 假设todo由 date, title, start, end唯一决定
 
+#### 完成事务
+```HTTP
+[POST] /schedule/{id}/doTodo
+```
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|todo|todo|事项(可参照之前由date, title, start, end唯一决定)|
+
+进行的操作:将state设置为1，readOnly设置为True(不管先前如何)
 #### 发起活动
 ```HTTP
 [POST] /schedule/{id}/addAct
