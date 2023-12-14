@@ -252,7 +252,7 @@ def getddl(request):
     if request.method == 'GET':
         id = request.GET.get("id")
         date = request.GET.get("date")
-        ddlRange = request.GET.get("range")
+        ddlRange = int(request.GET.get("range"))
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
