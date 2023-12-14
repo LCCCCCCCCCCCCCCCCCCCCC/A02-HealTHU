@@ -135,21 +135,68 @@ def addTodo(request):
         return HttpResponse("Add successfully")
         
 
+@csrf_exempt
 def addAct(request):
-    if request.method == 'GET':
-        id = request.GET.get("id")
-        activity = request.GET.get("activity")
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        actTitle = request.POST.get("title")
+        actPromoter = request.POST.get("promoter")
+        actParticipants = request.POST.get("participants")
+        actPartNumMin = request.POST.get("partNumMin")
+        actPartNumMax = request.POST.get("partNumMax")
+        actDate = request.POST.get("date")
+        actStart = request.POST.get("start")
+        actEnd = request.POST.get("end")
+        actLabel = request.POST.get("label")
+        actDetail = request.POST.get("detail")
+        actImages = request.POST.get("images")
+        actTags = request.POST.get("tags")
+        actState = request.POST.get("state")
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
-        if targetSchedule:
-            # add activity to Schedule.initiActs, which is a JSONField
-            # also add activity to Schedule.partActs, which is a JSONField
-            targetSchedule.initiActs.append(activity)
-            targetSchedule.partiActs.append(activity)
-            targetSchedule.save()
-            return HttpResponse("Add successfully")
-        # else: not found
-        return HttpResponse("Schedule not found", status=400)
+        if not targetSchedule:
+            # create a new schedule
+            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[])
+            newSchedule.save()
+            targetSchedule = newSchedule
+            pass
+        # find in Schedule.todos by the date, title, start and end
+        # put the new todo into Schedule.todos, which is a JSONField
+        newAct = {
+            'title': actTitle,
+            'promoter': actPromoter,
+            'participants': actParticipants,
+            'partNumMin': actPartNumMin,
+            'partNumMax': actPartNumMax,
+            'date': actDate,
+            'start': actStart,
+            'end': actEnd,
+            'label': actLabel,
+            'detail': actDetail,
+            'images': actImages,
+            'tags': actTags,
+            'state': actState
+        }
+        targetSchedule.initiActs.append(newAct)
+        targetSchedule.save()
+        # then: add a todo according to the act
+        # the todo is basically the same as the act
+        # except that its title = "(我发起的)"+actTitle
+        newTodo = {
+            'title': "(我发起的)"+actTitle,
+            'date': actDate,
+            'start': actStart,
+            'end': actEnd,
+            'label': actLabel,
+            'type': "活动",
+            'state': 0,
+            'sportType': "0",
+            'sportState': "0",
+            'readOnly': True
+        }
+        targetSchedule.todos.append(newTodo)
+        targetSchedule.save()
+        return HttpResponse("Add successfully")
 
 def deleteAct(request):
     if request.method == 'GET':
@@ -175,3 +222,51 @@ def findAct(request):
 
 def partAct(request):
     return HttpResponse("Hello, world. You're at the schedule partAct.")
+
+def nDays(date, n):
+    # date is a string in the form of "yyyy/mm/dd"
+    # n>0 is an integer
+    # output is an array, whose elements are strings in the form of "yyyy/mm/dd"
+    # the output array has n elements, starting from date
+    # for example, nDays("2020/12/31", 3) = ["2020/12/31", "2021/01/01", "2021/01/02"]
+    # Note that the 'date' is included
+    import datetime
+    year = int(date[0:4])
+    month = int(date[5:7])
+    day = int(date[8:10])
+    startDate = datetime.date(year, month, day)
+    ansArray = []
+    for i in range(n):
+        # i = 0, 1, 2, ..., n-1
+        thisDay = startDate
+        thisDay += datetime.timedelta(days=i)
+        # convert thisDay to "yyyy/mm/dd"
+        thisDayStr = str(thisDay)
+        thisDayStr = thisDayStr.replace("-", "/")
+        # add thisDayStr to the output array
+        ansArray.append(thisDayStr)
+    return ansArray
+    
+
+def getddl(request):
+    if request.method == 'GET':
+        id = request.GET.get("id")
+        date = request.GET.get("date")
+        range = request.GET.get("range")
+        # find the schedule (if any) according to the id
+        targetSchedule = Schedule.objects.filter(id=id).first()
+        if targetSchedule:
+            allTodos = targetSchedule.todos
+            dateArray = nDays(date, range)
+            targetTodos = []
+            # find all Todos:
+            # 1. whose date is in dateArray
+            # 2. whose type is "ddl"
+            for date in dateArray:
+                # find in Schedule.todos by the date
+                for todo in allTodos:
+                    if todo['date'] == date and todo['type'] == "ddl":
+                        targetTodos.append(todo)
+            return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
