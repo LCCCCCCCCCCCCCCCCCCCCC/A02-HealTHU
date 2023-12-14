@@ -10,6 +10,8 @@ from .models import Appointment
 from .models import Activity
 import requests
 import json
+import datetime
+import random
 # Create your views here.
 def todos(request):
     if request.method == 'GET':
@@ -109,6 +111,7 @@ def addTodo(request):
         todoState = request.POST.get("state")
         todoSportType = request.POST.get("sportType")
         todoSportState = request.POST.get("sportState")
+        todoReadOnly = request.POST.get("readOnly")
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
@@ -128,7 +131,8 @@ def addTodo(request):
             'type': todoType,
             'state': todoState,
             'sportType': todoSportType,
-            'sportState': todoSportState
+            'sportState': todoSportState,
+            'readOnly': todoReadOnly
         }
         targetSchedule.todos.append(newTodo)
         targetSchedule.save()
@@ -160,28 +164,31 @@ def addAct(request):
             newSchedule.save()
             targetSchedule = newSchedule
             pass
-        # find in Schedule.todos by the date, title, start and end
-        # put the new todo into Schedule.todos, which is a JSONField
-        newAct = {
-            'title': actTitle,
-            'promoter': actPromoter,
-            'participants': actParticipants,
-            'partNumMin': actPartNumMin,
-            'partNumMax': actPartNumMax,
-            'date': actDate,
-            'start': actStart,
-            'end': actEnd,
-            'label': actLabel,
-            'detail': actDetail,
-            'images': actImages,
-            'tags': actTags,
-            'state': actState
-        }
-        targetSchedule.initiActs.append(newAct)
+        # >> put this into Activity.objects
+        new_act = Activity.objects.create(\
+            title=actTitle,\
+            promoter=actPromoter,\
+            participants=actParticipants,\
+            partNumMin=actPartNumMin,\
+            partNumMax=actPartNumMax,\
+            date=actDate,\
+            start=actStart,\
+            end=actEnd,\
+            label=actLabel,\
+            detail=actDetail,\
+            images=actImages,\
+            tags=actTags,\
+            state=actState)
+        # >> get this new_act's id in Activity.objects
+        new_act_id = new_act.id
+        # append this id in targetSchedule.initiActs and targetSchedule.partiActs
+        targetSchedule.initiActs.append(new_act_id)
+        targetSchedule.partiActs.append(new_act_id)
         targetSchedule.save()
-        # then: add a todo according to the act
-        # the todo is basically the same as the act
-        # except that its title = "(我发起的)"+actTitle
+        # >> also append a newTodo into targetSchedule.todos
+        # the newTodo satisfy:
+        # 1. type == "活动", state = 0, readOnly = True
+        # 2. title = "(我发起的)"+actTitle
         newTodo = {
             'title': "(我发起的)"+actTitle,
             'date': actDate,
@@ -190,35 +197,212 @@ def addAct(request):
             'label': actLabel,
             'type': "活动",
             'state': 0,
-            'sportType': "0",
-            'sportState': "0",
+            'sportType': 0,
+            'sportState': "",
             'readOnly': True
         }
         targetSchedule.todos.append(newTodo)
         targetSchedule.save()
-        return HttpResponse("Add successfully")
+        return HttpResponse("Add successfully")       
 
+@csrf_exempt
 def deleteAct(request):
-    if request.method == 'GET':
-        id = request.GET.get("id")
-        activity = request.GET.get("activity")
-        # find the schedule (if any) according to the id
-        targetSchedule = Schedule.objects.filter(id=id).first()
-        if targetSchedule:
-            # delete activity from Schedule.initiActs, which is a JSONField
-            # also delete activity from Schedule.partActs, which is a JSONField
-            targetSchedule.initiActs.remove(activity)
-            targetSchedule.partiActs.remove(activity)
-            targetSchedule.save()
-            return HttpResponse("Delete successfully")
-        # else: not found
-        return HttpResponse("Schedule not found", status=400)
+    return HttpResponse("Hello, world. You're at the schedule deleteAct.")
 
 def changeAct(request):
     return HttpResponse("Hello, world. You're at the schedule changeAct.")
 
 def findAct(request):
-    return HttpResponse("Hello, world. You're at the schedule findAct.")
+    if request.method == 'GET':
+        promoterId = int(request.GET.get("promoter")) # optional
+        participantsId = request.GET.get("participants") # optional
+        keyForSearch = request.GET.get("keyForSearch") # optional
+        minDate = request.GET.get("minDate") # optional, >= minDate
+        maxDate = request.GET.get("maxDate") # optional, <= maxDate
+        # note that the preceding five params are filters that are conencted by OR
+        # i.e. activities satisfiying any of the five filters will be returned
+        isRandom = bool(request.GET.get("isRandom"))
+        if isRandom:
+            # randomly pick up to 20 activities
+            # get the number of objects in Activity.objects
+            num_of_acts = Activity.objects.count()
+            # if num_of_acts <= 20, then return all the activities
+            if num_of_acts <= 20:
+                all_acts = Activity.objects.all()
+                ansArray = []
+                for act in all_acts:
+                    newAct = {
+                        'id': act.id,
+                        'title': act.title,
+                        'promoter': act.promoter,
+                        'participants': act.participants,
+                        'partNumMin': act.partNumMin,
+                        'partNumMax': act.partNumMax,
+                        'date': act.date,
+                        'start': act.start,
+                        'end': act.end,
+                        'label': act.label,
+                        'tags': act.tags,
+                        'state': act.state
+                    } # remove the detail and images, to save space
+                    ansArray.append(newAct)
+                # now ansArray contains all the activities
+                return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
+            # else: num_of_acts > 20
+            # then: act.id = 1,2,...,num_of_acts
+            # pick 20 random different numbers from 1,2,...,num_of_acts
+            # and find the corresponding activities
+            selected_actIDs = random.sample(range(1, num_of_acts+1), 20)
+            for selected_actID in selected_actIDs:
+                # for each randomly picked actid:
+                # find the corresponding act
+                act = Activity.objects.filter(id=selected_actID).first()
+                newAct = {
+                    'id': act.id,
+                    'title': act.title,
+                    'promoter': act.promoter,
+                    'participants': act.participants,
+                    'partNumMin': act.partNumMin,
+                    'partNumMax': act.partNumMax,
+                    'date': act.date,
+                    'start': act.start,
+                    'end': act.end,
+                    'label': act.label,
+                    'tags': act.tags,
+                    'state': act.state
+                } # remove the detail and images, to save space
+                ansArray.append(newAct)
+            # now ansArray contains all the activities
+            return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
+        # isRandom == False
+        ansArray = []
+        # find in Activity.objects by the five filters
+        if participantsId:
+            set_of_participantsId = set(participantsId)
+        for act in Activity.objects.all():
+            if promoterId:
+                # promoterId is not None
+                # filter by promoterId
+                if act.promoter == promoterId:
+                    newAct = {
+                        'id': act.id,
+                        'title': act.title,
+                        'promoter': act.promoter,
+                        'participants': act.participants,
+                        'partNumMin': act.partNumMin,
+                        'partNumMax': act.partNumMax,
+                        'date': act.date,
+                        'start': act.start,
+                        'end': act.end,
+                        'label': act.label,
+                        'tags': act.tags,
+                        'state': act.state
+                    } # remove the detail and images, to save space
+                    ansArray.append(newAct)
+                    continue # continue to avoid repeated appending
+            if participantsId:
+                # participantsId is not None
+                # filter by participantsId, i.e.
+                # if participantsId is in act.participants (i.e. a subset of act.participants):
+                # then append act to ansArray
+                set_of_act_participants = set(act.participants)
+                if set_of_participantsId.issubset(set_of_act_participants):
+                    # participantsId is a subset of act.participants
+                    newAct = {
+                        'id': act.id,
+                        'title': act.title,
+                        'promoter': act.promoter,
+                        'participants': act.participants,
+                        'partNumMin': act.partNumMin,
+                        'partNumMax': act.partNumMax,
+                        'date': act.date,
+                        'start': act.start,
+                        'end': act.end,
+                        'label': act.label,
+                        'tags': act.tags,
+                        'state': act.state
+                    } # remove the detail and images, to save space
+                    ansArray.append(newAct)
+                    continue # continue to avoid repeated appending
+            if keyForSearch:
+                # keyForSearch is not None
+                # filter by keyForSearch
+                # append iff:
+                # 1. act.title contains keyForSearch, OR:
+                # 2. act.label contains keyForSearch, OR:
+                # 3. act.tags contains keyForSearch
+                if keyForSearch in act.title\
+                or keyForSearch in act.label\
+                or keyForSearch in act.tags:
+                    # keyForSearch is in act.title, act.label or act.tags
+                    newAct = {
+                        'id': act.id,
+                        'title': act.title,
+                        'promoter': act.promoter,
+                        'participants': act.participants,
+                        'partNumMin': act.partNumMin,
+                        'partNumMax': act.partNumMax,
+                        'date': act.date,
+                        'start': act.start,
+                        'end': act.end,
+                        'label': act.label,
+                        'tags': act.tags,
+                        'state': act.state
+                    } # remove the detail and images, to save space
+                    ansArray.append(newAct)
+                    continue # continue to avoid repeated appending
+            if minDate:
+                # minDate is not None
+                # filter by minDate
+                # act.date and minDate are in the form of "yyyy/mm/dd"
+                # append iff date >= minDate
+                if act.date >= minDate:
+                    newAct = {
+                        'id': act.id,
+                        'title': act.title,
+                        'promoter': act.promoter,
+                        'participants': act.participants,
+                        'partNumMin': act.partNumMin,
+                        'partNumMax': act.partNumMax,
+                        'date': act.date,
+                        'start': act.start,
+                        'end': act.end,
+                        'label': act.label,
+                        'tags': act.tags,
+                        'state': act.state
+                    } # remove the detail and images, to save space
+                    ansArray.append(newAct)
+                    continue # continue to avoid repeated appending
+            if maxDate:
+                # similar to minDate:
+                # maxDate is not None
+                # filter by maxDate
+                # act.date and maxDate are in the form of "yyyy/mm/dd"
+                # append iff date <= maxDate
+                if act.date <= maxDate:
+                    newAct = {
+                        'id': act.id,
+                        'title': act.title,
+                        'promoter': act.promoter,
+                        'participants': act.participants,
+                        'partNumMin': act.partNumMin,
+                        'partNumMax': act.partNumMax,
+                        'date': act.date,
+                        'start': act.start,
+                        'end': act.end,
+                        'label': act.label,
+                        'tags': act.tags,
+                        'state': act.state
+                    } # remove the detail and images, to save space
+                    ansArray.append(newAct)
+                    continue # continue to avoid repeated appending
+        # now ansArray contains all the activities that satisfy the filters
+        # return ansArray
+        return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
+                
+                
+                
+                
 
 def partAct(request):
     return HttpResponse("Hello, world. You're at the schedule partAct.")
@@ -230,7 +414,6 @@ def nDays(date, n):
     # the output array has n elements, starting from date
     # for example, nDays("2020/12/31", 3) = ["2020/12/31", "2021/01/01", "2021/01/02"]
     # Note that the 'date' is included
-    import datetime
     year = int(date[0:4])
     month = int(date[5:7])
     day = int(date[8:10])
