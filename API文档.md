@@ -73,7 +73,8 @@ state不为0或为公共活动时，todo均只读
 |title|string|标题|
 |promoter|int|发起人|
 |participants|int[]|参与人|
-|partnum|int[2]|人数范围|
+|partnumMin|int|人数最小值|
+|partnumMax|int|人数最大值|
 |date|string|日期(格式为年/月/日)|
 |start|string|开始时间(格式为xx:xx)|
 |end|string|结束时间|
