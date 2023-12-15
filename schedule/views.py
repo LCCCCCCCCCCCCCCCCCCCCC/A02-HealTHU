@@ -44,7 +44,20 @@ def todos(request):
                     # check if the todo satisfies the date
                     if todo.date == date:
                         # put the todo into ansArray
-                        ansArray.append(todo)
+                        newTodo = {
+                            'title': todo.title,
+                            'date': todo.date,
+                            'start': todo.start,
+                            'end': todo.end,
+                            'label': todo.label,
+                            'type': todo.type,
+                            'state': todo.state,
+                            'sportType': todo.sportType,
+                            'sportState': todo.sportState,
+                            'readOnly': todo.readOnly,
+                            'promoter': todo.promoter
+                        }
+                        ansArray.append(newTodo)
             # return ansArray
             return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
         # else: not found
@@ -799,7 +812,24 @@ def getActDetail(request):
             # found
             # return the activity
             # since id is a PK, there is only one activity, so we can return directly
-            return HttpResponse(json.dumps(targetAct, ensure_ascii=False))
+            newAct = {
+                'id': targetAct.id,
+                'title': targetAct.title,
+                'promoter': targetAct.promoter,
+                'participants': targetAct.participants,
+                'partNumMin': targetAct.partNumMin,
+                'partNumMax': targetAct.partNumMax,
+                'date': targetAct.date,
+                'start': targetAct.start,
+                'end': targetAct.end,
+                'place': targetAct.place,
+                'label': targetAct.label,
+                'detail': targetAct.detail,
+                'images': targetAct.images,
+                'tags': targetAct.tags,
+                'state': targetAct.state
+            }
+            return HttpResponse(json.dumps(newAct, ensure_ascii=False))
         # else: not found
         return HttpResponse("Activity not found", status=400)
 
