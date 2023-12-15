@@ -47,6 +47,8 @@
             <van-icon name="checked" color="{{switchColorbyType[item.type]}}"/> {{item.title}}
           </view>
         </van-cell>
+        <view wx:if="{{ (item.state == 0)&&(item.type !== 'ddl')}}">未完成</view>
+        <view wx:if="{{ (item.state == 1)&&(item.type !== 'ddl')}}">已完成</view>
       </van-cell-group>
     </view>
     <view class="header">
@@ -54,7 +56,7 @@
     </view>
     <view class="ddl-list">
      <van-cell-group wx:for="{{ddls}}" wx:key="index">
-      <van-cell title="{{item.title}}" value="{{item.date}} {{item.time}}" label="{{item.label}}" />
+      <van-cell title="{{item.title}}" value="{{item.date}} {{item.start}}" label="{{item.label}}" />
      </van-cell-group>
     </view>
 

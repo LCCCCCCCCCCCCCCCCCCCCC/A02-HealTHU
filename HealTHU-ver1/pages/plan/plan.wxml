@@ -86,6 +86,9 @@
         </view>
         <view wx:if="{{ item.type !== 'ddl' }}">{{item.start}}—{{item.end}}</view>
         <view wx:else>{{item.end}}</view>
+        <view wx:if="{{ (item.state == 0)&&(item.type !== 'ddl')}}">未完成</view>
+        <view wx:if="{{ (item.state == 1)&&(item.type !== 'ddl')}}">已完成</view>
+        <view wx:if="{{ (item.state == 2)&&(item.type !== 'ddl')}}">进行中</view>
       </van-cell>
     </van-cell-group>
   </view>

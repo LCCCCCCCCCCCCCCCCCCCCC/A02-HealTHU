@@ -83,14 +83,40 @@ Page({
   tohandleEdit(event) {
     var urldate = this.data.date;
     const buttonId = event.currentTarget.dataset.id;
-    if(this.data.todos[buttonId].state == 0){
-      wx.setStorageSync('oldTodo', this.data.todos[buttonId])
-      wx.navigateTo({
-        url: './editplan/editplan?id=' + buttonId + '&date=' + urldate
+    var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+    nowTime = parseInt(nowTime.replace(":",""))
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate()
+    var start = parseInt(this.data.todos[buttonId].start.replace(":", ""))
+    var end = parseInt(this.data.todos[buttonId].end.replace(":", ""))
+    if((date > this.data.date)||((date == this.data.date)&&(end<nowTime))){
+      this.data.todos[buttonId].readOnly = true
+    }
+    if((date == this.data.date)&&((start<=nowTime)&&(end>=nowTime))&&(this.data.todos[buttonId].state == 2)){
+      var id = wx.getStorageSync('id')
+      var that = this
+      wx.showToast({ title: '事项进行中', icon: 'success' });
+      wx.request({
+        url:'http://127.0.0.1:8000/schedule/doTodo/',
+        header:{ 'content-type': 'application/x-www-form-urlencoded'},
+        data:{
+          id: id,
+          title: that.data.todos[buttonId].title,
+          date: that.data.todos[buttonId].date,
+          start: that.data.todos[buttonId].start,
+          end: that.data.todos[buttonId].end,
+        },
+        method:'POST',
+        success:function(res){
+          wx.showToast({ title: '事项已完成', icon: 'success' });
+          that.onShow()//刷新页面
+        }
       })
     }
     else{
-      wx.showToast({title: '只能编辑未开始的事项', icon: 'success'})
+      wx.setStorageSync('oldTodo', this.data.todos[buttonId])
+      wx.navigateTo({
+        url: './editplan/editplan?id=' + buttonId + '&date=' + urldate + '&readOnly=' + this.data.todos[buttonId].readOnly
+      })
     }
     //事项状态参考API文档，可以根据事项状态设置一下不同的显示样式
   },
@@ -133,6 +159,16 @@ Page({
           var startTimeB = parseInt(b.start.replace(":", ""));
           return startTimeA - startTimeB;
         });
+        var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+        nowTime = parseInt(nowTime.replace(":",""))
+        var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate()
+        for(var i = 0;i<data.length;i++){
+          var start = parseInt(data[i].start.replace(":", ""))
+          var end = parseInt(data[i].end.replace(":", ""))
+          if((date == that.data.date)&&((start<=nowTime)&&(end>=nowTime)&&(data[i].state == 0))){
+            data[i].state = 2
+          }
+        }
         that.setData({
           todos: data
         });

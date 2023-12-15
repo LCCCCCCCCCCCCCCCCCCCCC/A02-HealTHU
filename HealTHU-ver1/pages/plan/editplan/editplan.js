@@ -5,7 +5,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    nowtime: new Date().getHours() + ":" + new Date().getMinutes(),
     date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     dateshow: false,
     option1: [
@@ -25,19 +24,21 @@ Page({
     showpicker: false,
     nowId: 0,
     nowtype: "",
-    isValid:false
+    isValid:false,
+    readOnly:false,
+    Title:"编辑日程"
   },
   onClickLeft(){
-    wx.navigateTo({
-      url: '../plan'
-    })
+    wx.navigateBack({delta:1})
   },
   onTypeConfirm(event){
     this.setData({ optionvalue1: event.detail});
   },
   // 以下四个日期选择(默认当天)
   onDisplay() {
-    this.setData({ dateshow: true });
+    if(!this.data.readOnly){
+      this.setData({ dateshow: true });
+    }
   },
   onClose() {
     this.setData({ dateshow: false });
@@ -78,14 +79,18 @@ Page({
     });
   },
   showPicker1(){
-    this.setData({
-      showpicker:1
-    });
+    if(!this.data.readOnly){
+      this.setData({
+        showpicker:1
+      });
+    }
   },
   showPicker2(){
-    this.setData({
-      showpicker:2
-    });
+    if(!this.data.readOnly){
+      this.setData({
+        showpicker:2
+      });
+    }
   },
   closePicker(){
     this.setData({
@@ -97,6 +102,12 @@ Page({
   onClickRight(){
     var that = this
     var id = wx.getStorageSync('id')
+    if(this.data.title == ""){
+      wx.showToast({
+        title: '主题不可为空',
+      })
+      return;
+    }
     wx.request({
       url:'http://127.0.0.1:8000/schedule/todos/',
       data:{
@@ -119,8 +130,7 @@ Page({
             start:that.data.end
           })
         }
-        console.log(that.data.start+" "+that.data.end)
-        if(!that.isValid(that.data.start,that.data.end,newtodos)){
+        if(!that.isValid(that.data.start,that.data.end,newtodos,newType)){
           wx.showToast({ title: '时间不合法', icon: 'success' });
         }
         else{
@@ -158,11 +168,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    if (options.id && options.date) {
+    if (options.id && options.date && options.readOnly) {
       // 通过日期和点击id传递到编辑界面
+      var readOnly = true
+      if(options.readOnly == "false"){
+        readOnly = false
+      }
+      else{
+        this.setData({
+          Title:"查看日程"
+        })
+      }
       this.setData({
         nowId: options.id,
-        date: options.date
+        date: options.date,
+        readOnly: readOnly
       });
     } 
     var oldTodo = wx.getStorageSync('oldTodo')
@@ -268,7 +288,7 @@ Page({
         return "饮食";
     }
   },
-  isValid(start,end,todos){
+  isValid(start,end,todos,type){
     var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
     nowTime = parseInt(nowTime.replace(":",""))
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
@@ -280,12 +300,14 @@ Page({
     if((date == this.data.date)&&((start<=nowTime)||(end<=nowTime))){
       return false;
     }
-    for (let i = 0; i < todos.length; i++) {
-      const todo = todos[i];
-      let thestart = parseInt(todo.start.replace(":", ""))
-      let theend = parseInt(todo.end.replace(":", ""))
-      if (!((start <= thestart && end <= thestart) || (end >= theend && start >= theend))) {
-        return false; // 与某一项有重叠，不合法
+    if(type != "ddl"){
+      for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
+        let thestart = parseInt(todo.start.replace(":", ""))
+        let theend = parseInt(todo.end.replace(":", ""))
+        if (!((start <= thestart && end <= thestart) || (end >= theend && start >= theend))) {
+          return false; // 与某一项有重叠，不合法
+        }
       }
     }
     return true; // 没有重叠，合法

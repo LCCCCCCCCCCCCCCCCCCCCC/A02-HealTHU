@@ -40,7 +40,7 @@
         type="time"
         value="{{start}}"
         min-hour="0"
-        max-hour="24"  
+        max-hour="23"  
         bind:confirm="handleStartTimeInput"
         bind:cancel="closePicker"
       />
@@ -51,7 +51,7 @@
         type="time"
         value="{{end}}"
         min-hour="0"
-        max-hour="24"  
+        max-hour="23"  
         bind:confirm="handleEndTimeInput"
         bind:cancel="closePicker"
       />

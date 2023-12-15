@@ -5,8 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    nowTime: new Date().getHours() + ":" + new Date().getMinutes(),
-    date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+    date: "",
     dateshow: false,
     option1: [
       { text: 'ddl', value: 0 },
@@ -15,7 +14,7 @@ Page({
       { text: '运动', value: 3 },
       { text: '饮食', value: 4 }
     ],
-    optionvalue1: 0,
+    optionvalue1: 2,
     start: "",
     end: "",
     todos: [],
@@ -89,7 +88,7 @@ Page({
 
   //确定添加普通活动
   handleAct() {
-    if(this.isValid(this.data.start,this.data.end,this.data.todos)){
+    if(this.isValid(this.data.start,this.data.end,this.data.todos,"活动")){
       this.setData({
         isValid:true,
         type:"活动"
@@ -98,7 +97,7 @@ Page({
   },
   //确定添加ddl
   handleDDL() {
-    if(this.isValid(this.data.end,this.data.end,this.data.todos)){
+    if(this.isValid(this.data.end,this.data.end,this.data.todos,"ddl")){
       this.setData({
         isValid:true,
         type:"ddl",
@@ -107,7 +106,7 @@ Page({
     }
   },
   HandleCourse(){
-    if(this.isValid(this.data.start,this.data.end,this.data.todos)){
+    if(this.isValid(this.data.start,this.data.end,this.data.todos,"课程")){
       this.setData({
         isValid:true,
         type:"课程"
@@ -115,7 +114,7 @@ Page({
     }
   },
   HandleEat(){
-    if(this.isValid(this.data.start,this.data.end,this.data.todos)){
+    if(this.isValid(this.data.start,this.data.end,this.data.todos,"饮食")){
       this.setData({
         isValid:true,
         type:"饮食"
@@ -123,7 +122,7 @@ Page({
     }
   },
   HandleSports(){
-    if(this.isValid(this.data.start,this.data.end,this.data.todos)){
+    if(this.isValid(this.data.start,this.data.end,this.data.todos,"运动")){
       this.setData({
         isValid:true,
         type:"运动"
@@ -134,6 +133,12 @@ Page({
   onClickRight(){
     var that = this
     var id = wx.getStorageSync('id')
+    if(this.data.title == ""){
+      wx.showToast({
+        title: '主题不可为空',
+      })
+      return;
+    }
     wx.request({
       url:'http://127.0.0.1:8000/schedule/todos/',
       data:{
@@ -175,7 +180,8 @@ Page({
               type: that.data.type,
               state: 0,
               sportType: that.data.sportType,
-              sportState: that.data.sportState
+              sportState: that.data.sportState,
+              readOnly: false
             },
             method:'POST',
             success:function(res){
@@ -194,15 +200,17 @@ Page({
     })
   },
   onClickLeft(){
-    wx.navigateTo({
-      url: '../plan'
-    })
+    wx.navigateBack({delta:1})
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    this.setData({
+      start:new Date().getHours() + ":" + new Date().getMinutes(),
+      end:new Date().getHours() + ":" + new Date().getMinutes(),
+      date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+    })
   },
 
   /**
@@ -257,7 +265,7 @@ Page({
 
   },
 
-  isValid(start,end,todos){
+  isValid(start,end,todos,type){
     var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
     nowTime = parseInt(nowTime.replace(":",""))
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
@@ -269,12 +277,14 @@ Page({
     if((date == this.data.date)&&((start<=nowTime)||(end<=nowTime))){
       return false;
     }
-    for (let i = 0; i < todos.length; i++) {
-      const todo = todos[i];
-      let thestart = parseInt(todo.start.replace(":", ""))
-      let theend = parseInt(todo.end.replace(":", ""))
-      if (!((start <= thestart && end <= thestart) || (end >= theend && start >= theend))) {
-        return false; // 与某一项有重叠，不合法
+    if(type != "ddl"){
+      for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
+        let thestart = parseInt(todo.start.replace(":", ""))
+        let theend = parseInt(todo.end.replace(":", ""))
+        if (!((start <= thestart && end <= thestart) || (end >= theend && start >= theend))) {
+          return false; // 与某一项有重叠，不合法
+        }
       }
     }
     return true; // 没有重叠，合法

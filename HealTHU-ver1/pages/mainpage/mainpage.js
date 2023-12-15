@@ -11,7 +11,6 @@ Page({
       "活动": "#0000FF",
       "ddl":  "#009999",
       "饮食": "#BB00BB",
-      "游戏!": "#66ccff"
     },
     todos:[],
     fans:[],
@@ -19,18 +18,9 @@ Page({
     fannum: 0,
     attentionnum: 0,
     ddls:[//这里可以选取之后一周的所有ddl，与当日事务进行区分
-      {title:"软件工程验收", date:"11/23", time:"9:50", label:"第三小节"},
-      {title:"党课讲座签到", date:"11/24", time:"19:20", label:"六教C10"},
-      {title:"计算机网络第三次作业", date:"11/28", time:"23:59"},
-      {title:"游泳测试", date:"12/9", time:"8:00"}
     ],
     currentTab: 0,
-    userInfo: {
-      avatarUrl: '',
-      nickName: '',
-      id:"ID",
-      sign:"尚未设置"
-    },
+    userInfo: {},
     exitshow: false,
   },
   handleTabChange(event){
@@ -112,7 +102,6 @@ Page({
       method:'GET',
       success:function(res){
         var data = res.data
-        console.log(data)
         var filteredTasks = data.filter(function(data) {
           var end = parseInt(data.end.replace(":", ""));
           return end > currentTime
@@ -124,6 +113,24 @@ Page({
         });
         that.setData({
           todos: filteredTasks,
+        });
+      }
+    })
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/getddl/',
+      data:{
+        'id': id,
+        'date': date,
+        'range': 7
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        for(var i = 0; i < data.length; i++){
+          data[i].date = data[i].date.split("/").slice(1).join("/")
+        }
+        that.setData({
+          ddls: data,
         });
       }
     })

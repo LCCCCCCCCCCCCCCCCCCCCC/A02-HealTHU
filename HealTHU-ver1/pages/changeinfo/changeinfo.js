@@ -41,9 +41,9 @@ Page({
           title: "修改成功",
           icon: "success"
         });
-        wx.navigateTo({
-          url: '../mainpage/mainpage?tabid=2'
-        })
+        //wx.navigateTo({
+          //url: '../mainpage/mainpage?tabid=2'
+        //})
       }
     })
     // 后端请求，更新用户状态

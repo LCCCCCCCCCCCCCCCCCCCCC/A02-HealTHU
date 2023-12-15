@@ -1,43 +1,20 @@
-// pages/activities/activities.js
+// pages/addactivity/addactivity.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    active: 1,
-    value: '',
+
   },
-  onClickRight() {
-    wx.navigateTo({
-      url: '../addactivity/addactivity',
-    })
-  },
-  showdetail() {
-    wx.navigateTo({
-      url: './activity/activity'
-    })
-  },
-  signup(){
-    wx.showToast({ title: '报名成功！TODO:signup', icon: 'success' });
-  },
-  // onChange(e) {
-  //   this.setData({
-  //     value: e.detail,
-  //   });
-  // },
-  // onSearch() {
-  //   Toast('搜索' + this.data.value);
-  // },
-  // onClick() {
-  //   Toast('搜索' + this.data.value);
-  // },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
 
   },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
