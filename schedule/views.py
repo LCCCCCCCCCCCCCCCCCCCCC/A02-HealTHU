@@ -337,7 +337,7 @@ def doTodo(request):
                         # set the state to 1, and readOnly to True
                         todoFound = True
                         todo['state'] = 1
-                        todo['readOnly'] = True
+                        todo['readOnly'] = 1
                         targetSchedule.save()
             if todoFound:
                 return HttpResponse("Do successfully")
@@ -426,7 +426,7 @@ def addAct(request):
             state=0,\
             sportType=0,\
             sportState="",\
-            readOnly=True,\
+            readOnly=1,\
             promoter=actPromoter)
         # >> get the newTodo's id in Todo.objects
         newTodoId = newTodo.id

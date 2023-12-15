@@ -12,7 +12,7 @@ class Todo(models.Model):
     state = models.IntegerField()
     sportType = models.IntegerField()
     sportState = models.CharField(max_length=20)
-    readOnly = models.BooleanField()
+    readOnly = models.IntegerField() # 0 <--> false, 1 <--> true
 
 class Activity(models.Model):
     title = models.CharField(max_length=100)
