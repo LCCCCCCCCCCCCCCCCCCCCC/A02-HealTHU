@@ -14,6 +14,18 @@ import datetime
 import random
 # Create your views here.
 def todos(request):
+        # if request.method == 'GET':
+        #     id = request.GET.get("id") # the id of the schedule
+        #     date = request.GET.get("date") # the date, in the form of "yyyy/mm/dd"
+        #     # find the schedule (if any) according to the id
+        #     targetSchedule = Schedule.objects.filter(id=id).first()
+        #     if targetSchedule:
+        #         # find in Schedule.todos by the date
+        #         allTodos = targetSchedule.todos # JSONField
+        #         targetTodos = [todo for todo in allTodos if todo['date'] == date]
+        #         return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
+        #     # else: not found
+        #     return HttpResponse("Schedule not found", status=400)
     if request.method == 'GET':
         id = request.GET.get("id") # the id of the schedule
         date = request.GET.get("date") # the date, in the form of "yyyy/mm/dd"
@@ -22,13 +34,49 @@ def todos(request):
         if targetSchedule:
             # find in Schedule.todos by the date
             allTodos = targetSchedule.todos # JSONField
-            targetTodos = [todo for todo in allTodos if todo['date'] == date]
-            return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
+            # NEW STUFF:
+            # now todos store the id of the todo object, instead of the todo object itself
+            ansArray = []
+            for todoID in allTodos:
+                todo = Todo.objects.filter(id=todoID).first()
+                if todo:
+                    # found
+                    # check if the todo satisfies the date
+                    if todo['date'] == date:
+                        # put the todo into ansArray
+                        ansArray.append(todo)
+            # return ansArray
+            return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
 @csrf_exempt
 def deleteTodo(request):
+        # if request.method == 'POST':
+        #     id = request.POST.get("id")
+        #     oldTodoDate = request.POST.get("oldDate")
+        #     oldTodoStart = request.POST.get("oldStart")
+        #     oldTodoEnd = request.POST.get("oldEnd")
+        #     oldTodoTitle = request.POST.get("oldTitle")
+        #     # find the schedule (if any) according to the id
+        #     targetSchedule = Schedule.objects.filter(id=id).first()
+        #     if targetSchedule:
+        #         # find in Schedule.todos by the date, start and end
+        #         allTodos = targetSchedule.todos
+        #         todoFound = False
+        #         for todo in allTodos:
+        #             if todo['date'] == oldTodoDate\
+        #             and todo['start'] == oldTodoStart\
+        #             and todo['end'] == oldTodoEnd\
+        #             and todo['title'] == oldTodoTitle:
+        #                 todoFound = True
+        #                 allTodos.remove(todo)
+        #                 targetSchedule.save()
+        #         if todoFound:
+        #             return HttpResponse("Delete successfully")
+        #         return HttpResponse("Todo not found", status=400)
+        #     # else: not found
+        #     return HttpResponse("Schedule not found", status=400)
     if request.method == 'POST':
         id = request.POST.get("id")
         oldTodoDate = request.POST.get("oldDate")
@@ -38,25 +86,72 @@ def deleteTodo(request):
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
-            # find in Schedule.todos by the date, start and end
+            # find in Schedule.todos by the date, start, end and title
             allTodos = targetSchedule.todos
             todoFound = False
-            for todo in allTodos:
-                if todo['date'] == oldTodoDate\
-                and todo['start'] == oldTodoStart\
-                and todo['end'] == oldTodoEnd\
-                and todo['title'] == oldTodoTitle:
-                    todoFound = True
-                    allTodos.remove(todo)
-                    targetSchedule.save()
+            for todoID in allTodos:
+                todo = Todo.objects.filter(id=todoID).first()
+                if todo:
+                    # exists
+                    if todo['date'] == oldTodoDate\
+                    and todo['start'] == oldTodoStart\
+                    and todo['end'] == oldTodoEnd\
+                    and todo['title'] == oldTodoTitle:
+                        # a match
+                        todoFound = True
+                        # delete not only the todoID in targetSchedule.todos;
+                        allTodos.remove(todoID)
+                        targetSchedule.save()
+                        # but also the todo object itself in Todo.objects
+                        todo.delete()
             if todoFound:
                 return HttpResponse("Delete successfully")
             return HttpResponse("Todo not found", status=400)
         # else: not found
         return HttpResponse("Schedule not found", status=400)
-                  
+              
 @csrf_exempt
 def changeTodo(request):
+        # if request.method == 'POST':
+        #     id = request.POST.get("id")
+        #     oldTodoDate = request.POST.get("oldDate")
+        #     oldTodoStart = request.POST.get("oldStart")
+        #     oldTodoEnd = request.POST.get("oldEnd")
+        #     oldTodoTitle = request.POST.get("oldTitle")
+        #     newTodoTitle = request.POST.get("newTitle")
+        #     newTodoDate = request.POST.get("newDate")
+        #     newTodoStart = request.POST.get("newStart")
+        #     newTodoEnd = request.POST.get("newEnd")
+        #     newTodoLabel = request.POST.get("newLabel")
+        #     newTodoType = request.POST.get("newType")
+        #     newTodoState = request.POST.get("newState")
+        #     newTodoSportType = request.POST.get("newSportType")
+        #     newTodoSportState = request.POST.get("newSportState")
+        #     # find the schedule (if any) according to the id
+        #     targetSchedule = Schedule.objects.filter(id=id).first()
+        #     if targetSchedule:
+        #         # find in Schedule.todos by the date, start and end
+        #         allTodos = targetSchedule.todos
+        #         todoFound = False
+        #         for todo in allTodos:
+        #             if todo['date'] == oldTodoDate\
+        #             and todo['start'] == oldTodoStart\
+        #             and todo['end'] == oldTodoEnd\
+        #             and todo['title'] == oldTodoTitle:
+        #                 todoFound = True
+        #                 todo['title'] = newTodoTitle
+        #                 todo['date'] = newTodoDate
+        #                 todo['start'] = newTodoStart
+        #                 todo['end'] = newTodoEnd
+        #                 todo['label'] = newTodoLabel
+        #                 todo['type'] = newTodoType
+        #                 todo['state'] = newTodoState
+        #                 todo['sportType'] = newTodoSportType
+        #                 todo['sportState'] = newTodoSportState
+        #                 targetSchedule.save()
+        #         if todoFound:
+        #             return HttpResponse("Change successfully")
+        #         return HttpResponse("Todo not found", status=400)
     if request.method == 'POST':
         id = request.POST.get("id")
         oldTodoDate = request.POST.get("oldDate")
@@ -75,31 +170,76 @@ def changeTodo(request):
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
-            # find in Schedule.todos by the date, start and end
+            # find in Schedule.todos by the date, start, end and title
             allTodos = targetSchedule.todos
             todoFound = False
-            for todo in allTodos:
-                if todo['date'] == oldTodoDate\
-                and todo['start'] == oldTodoStart\
-                and todo['end'] == oldTodoEnd\
-                and todo['title'] == oldTodoTitle:
-                    todoFound = True
-                    todo['title'] = newTodoTitle
-                    todo['date'] = newTodoDate
-                    todo['start'] = newTodoStart
-                    todo['end'] = newTodoEnd
-                    todo['label'] = newTodoLabel
-                    todo['type'] = newTodoType
-                    todo['state'] = newTodoState
-                    todo['sportType'] = newTodoSportType
-                    todo['sportState'] = newTodoSportState
-                    targetSchedule.save()
+            for todoID in allTodos:
+                todo = Todo.objects.filter(id=todoID).first()
+                if todo:
+                    # exists
+                    if todo['date'] == oldTodoDate\
+                    and todo['start'] == oldTodoStart\
+                    and todo['end'] == oldTodoEnd\
+                    and todo['title'] == oldTodoTitle:
+                        # a match
+                        todoFound = True
+                        # change only the corresponding todo object in Todo.objects,
+                        # since the todoID itself is not changed
+                        todo['title'] = newTodoTitle
+                        todo['date'] = newTodoDate
+                        todo['start'] = newTodoStart
+                        todo['end'] = newTodoEnd
+                        todo['label'] = newTodoLabel
+                        todo['type'] = newTodoType
+                        todo['state'] = newTodoState
+                        todo['sportType'] = newTodoSportType
+                        todo['sportState'] = newTodoSportState
+                        targetSchedule.save()
             if todoFound:
                 return HttpResponse("Change successfully")
             return HttpResponse("Todo not found", status=400)
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
 
 @csrf_exempt
 def addTodo(request):
+        # if request.method == 'POST':
+        #     id = request.POST.get("id")
+        #     todoTitle = request.POST.get("title")
+        #     todoDate = request.POST.get("date")
+        #     todoStart = request.POST.get("start")
+        #     todoEnd = request.POST.get("end")
+        #     todoLabel = request.POST.get("label")
+        #     todoType = request.POST.get("type")
+        #     todoState = request.POST.get("state")
+        #     todoSportType = request.POST.get("sportType")
+        #     todoSportState = request.POST.get("sportState")
+        #     todoReadOnly = request.POST.get("readOnly")
+        #     # find the schedule (if any) according to the id
+        #     targetSchedule = Schedule.objects.filter(id=id).first()
+        #     if not targetSchedule:
+        #         # create a new schedule
+        #         newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[])
+        #         newSchedule.save()
+        #         targetSchedule = newSchedule
+        #         pass
+        #     # find in Schedule.todos by the date, title, start and end
+        #     # put the new todo into Schedule.todos, which is a JSONField
+        #     newTodo = {
+        #         'title': todoTitle,
+        #         'date': todoDate,
+        #         'start': todoStart,
+        #         'end': todoEnd,
+        #         'label': todoLabel,
+        #         'type': todoType,
+        #         'state': todoState,
+        #         'sportType': todoSportType,
+        #         'sportState': todoSportState,
+        #         'readOnly': todoReadOnly
+        #     }
+        #     targetSchedule.todos.append(newTodo)
+        #     targetSchedule.save()
+        #     return HttpResponse("Add successfully")
     if request.method == 'POST':
         id = request.POST.get("id")
         todoTitle = request.POST.get("title")
@@ -121,25 +261,58 @@ def addTodo(request):
             targetSchedule = newSchedule
             pass
         # find in Schedule.todos by the date, title, start and end
-        # put the new todo into Schedule.todos, which is a JSONField
-        newTodo = {
-            'title': todoTitle,
-            'date': todoDate,
-            'start': todoStart,
-            'end': todoEnd,
-            'label': todoLabel,
-            'type': todoType,
-            'state': todoState,
-            'sportType': todoSportType,
-            'sportState': todoSportState,
-            'readOnly': todoReadOnly
-        }
-        targetSchedule.todos.append(newTodo)
+        # put the new todoID into Schedule.todos, which is a JSONField
+        # NEW STUFF:
+        # first create a new Todo object
+        newTodo = Todo.objects.create(\
+            title=todoTitle,\
+            date=todoDate,\
+            start=todoStart,\
+            end=todoEnd,\
+            label=todoLabel,\
+            type=todoType,\
+            state=todoState,\
+            sportType=todoSportType,\
+            sportState=todoSportState,\
+            readOnly=todoReadOnly)
+        # then get the newTodo's id in Todo.objects
+        newTodoId = newTodo.id
+        # finally append this id into targetSchedule.todos
+        targetSchedule.todos.append(newTodoId)
         targetSchedule.save()
         return HttpResponse("Add successfully")
 
 @csrf_exempt 
 def doTodo(request):
+        # if request.method == 'POST':
+        #     id = request.POST.get("id")
+        #     todoDate = request.POST.get("date")
+        #     todoStart = request.POST.get("start")
+        #     todoEnd = request.POST.get("end")
+        #     todoTitle = request.POST.get("title")
+        #     # find the schedule (if any) according to the id
+        #     targetSchedule = Schedule.objects.filter(id=id).first()
+        #     if targetSchedule:
+        #         # find in Schedule.todos by the date, start, end and title
+        #         allTodos = targetSchedule.todos
+        #         todoFound = False
+        #         for todo in allTodos:
+        #             if todo['date'] == todoDate\
+        #             and todo['start'] == todoStart\
+        #             and todo['end'] == todoEnd\
+        #             and todo['title'] == todoTitle:
+        #                 # found
+        #                 # set the state to 1, and readOnly to True
+        #                 todoFound = True
+        #                 todo['state'] = 1
+        #                 todo['readOnly'] = True
+        #                 targetSchedule.save()
+        #         if todoFound:
+        #             return HttpResponse("Do successfully")
+        #         # else: todo not found
+        #         return HttpResponse("Todo not found", status=400)
+        #     # else: schedule not found
+        #     return HttpResponse("Schedule not found", status=400)
     if request.method == 'POST':
         id = request.POST.get("id")
         todoDate = request.POST.get("date")
@@ -152,17 +325,20 @@ def doTodo(request):
             # find in Schedule.todos by the date, start, end and title
             allTodos = targetSchedule.todos
             todoFound = False
-            for todo in allTodos:
-                if todo['date'] == todoDate\
-                and todo['start'] == todoStart\
-                and todo['end'] == todoEnd\
-                and todo['title'] == todoTitle:
-                    # found
-                    # set the state to 1, and readOnly to True
-                    todoFound = True
-                    todo['state'] = 1
-                    todo['readOnly'] = True
-                    targetSchedule.save()
+            for todoID in allTodos:
+                todo = Todo.objects.filter(id=todoID).first()
+                if todo:
+                    # exists
+                    if todo['date'] == todoDate\
+                    and todo['start'] == todoStart\
+                    and todo['end'] == todoEnd\
+                    and todo['title'] == todoTitle:
+                        # found
+                        # set the state to 1, and readOnly to True
+                        todoFound = True
+                        todo['state'] = 1
+                        todo['readOnly'] = True
+                        targetSchedule.save()
             if todoFound:
                 return HttpResponse("Do successfully")
             # else: todo not found
@@ -218,23 +394,44 @@ def addAct(request):
         targetSchedule.initiActs.append(new_act_id)
         targetSchedule.partiActs.append(new_act_id)
         targetSchedule.save()
-        # >> also append a newTodo into targetSchedule.todos
+            # # >> also append a newTodo into targetSchedule.todos
+            # # the newTodo satisfy:
+            # # 1. type == "活动", state = 0, readOnly = True
+            # # 2. title = "(我发起的)"+actTitle
+            # newTodo = {
+            #     'title': "(我发起的)"+actTitle,
+            #     'date': actDate,
+            #     'start': actStart,
+            #     'end': actEnd,
+            #     'label': actLabel,
+            #     'type': "活动",
+            #     'state': 0,
+            #     'sportType': 0,
+            #     'sportState': "",
+            #     'readOnly': True
+            # }
+            # targetSchedule.todos.append(newTodo)
+            # targetSchedule.save()
+        # >> also append a newTodoID into targetSchedule.todos
         # the newTodo satisfy:
         # 1. type == "活动", state = 0, readOnly = True
-        # 2. title = "(我发起的)"+actTitle
-        newTodo = {
-            'title': "(我发起的)"+actTitle,
-            'date': actDate,
-            'start': actStart,
-            'end': actEnd,
-            'label': actLabel,
-            'type': "活动",
-            'state': 0,
-            'sportType': 0,
-            'sportState': "",
-            'readOnly': True
-        }
-        targetSchedule.todos.append(newTodo)
+        # 2. title = "(我发起的)"+actTitle, note the the braket are English brakets, instead of Chinese ones
+        newTodo = Todo.objects.create(\
+            title="(我发起的)"+actTitle,\
+            date=actDate,\
+            start=actStart,\
+            end=actEnd,\
+            label=actLabel,\
+            type="活动",\
+            state=0,\
+            sportType=0,\
+            sportState="",\
+            readOnly=True,\
+            promoter=actPromoter)
+        # >> get the newTodo's id in Todo.objects
+        newTodoId = newTodo.id
+        # >> append this id into targetSchedule.todos
+        targetSchedule.todos.append(newTodoId)
         targetSchedule.save()
         return HttpResponse("Add successfully")       
 
@@ -256,16 +453,31 @@ def deleteAct(request):
                 # 1.1 delete the activity in promotorSchedule.initiActs
                 promotorSchedule.initiActs.remove(actId)
                 promotorSchedule.save()
-                # 1.2 delete the corresponding todo in promotorSchedule.todos
+                # 1.2 delete the corresponding todo
+                    # allTodos = promotorSchedule.todos
+                    # for todo in allTodos:
+                    #     if todo['title'] == "(我发起的)"+targetAct.title\
+                    #     and todo['date'] == targetAct.date\
+                    #     and todo['start'] == targetAct.start\
+                    #     and todo['end'] == targetAct.end:
+                    #         todoFound = True
+                    #         allTodos.remove(todo)
+                    #         promotorSchedule.save()
                 allTodos = promotorSchedule.todos
-                for todo in allTodos:
-                    if todo['title'] == "(我发起的)"+targetAct.title\
-                    and todo['date'] == targetAct.date\
-                    and todo['start'] == targetAct.start\
-                    and todo['end'] == targetAct.end:
-                        todoFound = True
-                        allTodos.remove(todo)
-                        promotorSchedule.save()
+                for todoID in allTodos:
+                    todo = Todo.objects.filter(id=todoID).first()
+                    if todo:
+                        # found
+                        if todo['title'] == "(我发起的)"+targetAct.title\
+                        and todo['date'] == targetAct.date\
+                        and todo['start'] == targetAct.start\
+                        and todo['end'] == targetAct.end:
+                            todoFound = True
+                            # delete not only the todoID in promotorSchedule.todos;
+                            allTodos.remove(todoID)
+                            promotorSchedule.save()
+                            # but also the todo object itself in Todo.objects
+                            todo.delete()
             # 2. then delete the activity in it's participants' partiActs
             # , also: delete the corresponding todos in their schedules
             participantsId = targetAct.participants # which is an array
@@ -277,16 +489,32 @@ def deleteAct(request):
                     # 2.1 delete the activity in participantSchedule.partiActs
                     participantSchedule.partiActs.remove(actId)
                     participantSchedule.save()
-                    # 2.2 delete the corresponding todo in participantSchedule.todos
+                    # 2.2 delete the corresponding todo
+                        # allTodos = participantSchedule.todos
+                        # for todo in allTodos:
+                        #     if todo['title'] == "(我参与的)"+targetAct.title\
+                        #     and todo['date'] == targetAct.date\
+                        #     and todo['start'] == targetAct.start\
+                        #     and todo['end'] == targetAct.end:
+                        #         todoFound = True
+                        #         allTodos.remove(todo)
+                        #         participantSchedule.save()
                     allTodos = participantSchedule.todos
-                    for todo in allTodos:
-                        if todo['title'] == "(我参与的)"+targetAct.title\
-                        and todo['date'] == targetAct.date\
-                        and todo['start'] == targetAct.start\
-                        and todo['end'] == targetAct.end:
-                            todoFound = True
-                            allTodos.remove(todo)
-                            participantSchedule.save()
+                    for todoID in allTodos:
+                        todo = Todo.objects.filter(id=todoID).first()
+                        if todo:
+                            # found
+                            if (todo['title'] == "(我参与的)"+targetAct.title\
+                            or todo['title'] == "(申请中)"+targetAct.title)\
+                            and todo['date'] == targetAct.date\
+                            and todo['start'] == targetAct.start\
+                            and todo['end'] == targetAct.end:
+                                todoFound = True
+                                # delete not only the todoID in participantSchedule.todos;
+                                allTodos.remove(todoID)
+                                participantSchedule.save()
+                                # but also the todo object itself in Todo.objects
+                                todo.delete()
             # 3. finally delete the activity in Activity.objects
             targetAct.delete()
             return HttpResponse("Delete successfully")
@@ -307,7 +535,52 @@ def changeAct(request):
         targetAct = Activity.objects.filter(id=actId).first()
         if targetAct:
             # found
-            # change the activity according to the params
+                # # change the activity according to the params
+                # targetAct.title = newActTitle
+                # targetAct.partNumMin = newActPartNumMin
+                # targetAct.partNumMax = newActPartNumMax
+                # targetAct.label = newActLabel
+                # targetAct.detail = newActDetail
+                # targetAct.images = newActImages
+                # targetAct.tags = newActTags
+                # targetAct.place = newActPlace
+                # targetAct.save()
+            # first change the todo itself in Todo.objects
+            initTodo = Todo.objects.filter(\
+                title="(我发起的)"+targetAct.title,\
+                date=targetAct.date,\
+                start=targetAct.start,\
+                end=targetAct.end,\
+                promoter=targetAct.promoter).first()
+            if initTodo:
+                # found
+                initTodo['title'] = "(我发起的)"+newActTitle
+                initTodo['label'] = newActLabel
+                initTodo.save()
+            # then change the todo in the promoter's schedule
+            partTodo = Todo.objects.filter(\
+                title="(我参与的)"+targetAct.title,\
+                date=targetAct.date,\
+                start=targetAct.start,\
+                end=targetAct.end,\
+                promoter=targetAct.promoter).first()
+            if partTodo:
+                # found
+                partTodo['title'] = "(我参与的)"+newActTitle
+                partTodo['label'] = newActLabel
+                partTodo.save()
+            applyingTodo = Todo.objects.filter(\
+                title="(申请中)"+targetAct.title,\
+                date=targetAct.date,\
+                start=targetAct.start,\
+                end=targetAct.end,\
+                promoter=targetAct.promoter).first()
+            if applyingTodo:
+                # found
+                applyingTodo['title'] = "(申请中)"+newActTitle
+                applyingTodo['label'] = newActLabel
+                applyingTodo.save()
+            # finally change the activity in Activity.objects
             targetAct.title = newActTitle
             targetAct.partNumMin = newActPartNumMin
             targetAct.partNumMax = newActPartNumMax
