@@ -23,7 +23,7 @@ Page({
     type: "",
     showpicker: false,
     isValid:false,
-    sportType:"",
+    sportType:0,
     sportState:""
   },
   onTypeConfirm(event){
@@ -167,6 +167,7 @@ Page({
         }
         if(that.data.isValid){
           var id = wx.getStorageSync('id')
+          console.log(id)
           wx.request({
             url:'http://127.0.0.1:8000/schedule/addTodo/',
             header:{ 'content-type': 'application/x-www-form-urlencoded'},
@@ -181,7 +182,7 @@ Page({
               state: 0,
               sportType: that.data.sportType,
               sportState: that.data.sportState,
-              readOnly: false
+              readOnly: 0
             },
             method:'POST',
             success:function(res){
@@ -207,8 +208,8 @@ Page({
    */
   onLoad(options) {
     this.setData({
-      start:new Date().getHours() + ":" + new Date().getMinutes(),
-      end:new Date().getHours() + ":" + new Date().getMinutes(),
+      start:parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0'),
+      end:parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0'),
       date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
     })
   },

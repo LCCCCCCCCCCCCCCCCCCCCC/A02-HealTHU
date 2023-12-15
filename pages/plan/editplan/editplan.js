@@ -25,7 +25,7 @@ Page({
     nowId: 0,
     nowtype: "",
     isValid:false,
-    readOnly:false,
+    readOnly:0,
     Title:"编辑日程"
   },
   onClickLeft(){
@@ -170,9 +170,9 @@ Page({
   onLoad(options) {
     if (options.id && options.date && options.readOnly) {
       // 通过日期和点击id传递到编辑界面
-      var readOnly = true
-      if(options.readOnly == "false"){
-        readOnly = false
+      var readOnly = 1
+      if(options.readOnly == 0){
+        readOnly = 0
       }
       else{
         this.setData({

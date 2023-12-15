@@ -9,7 +9,7 @@
   bind:click-right="onClickRight"
   bind:click-left="onClickLeft"
   >
-  <view slot="right" wx:if="{{readOnly == false}}">
+  <view slot="right" wx:if="{{readOnly == 0}}">
     <van-icon name="success" color="blue"/>
   </view>
 </van-nav-bar>
@@ -60,5 +60,5 @@
         bind:cancel="closePicker"
       />
 </van-cell-group>
-<button class="delete-btn" bindtap="deleteAct" wx:if="{{readOnly == false}}">删除</button>
+<button class="delete-btn" bindtap="deleteAct" wx:if="{{readOnly == 0}}">删除</button>
 </view>

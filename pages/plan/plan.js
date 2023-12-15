@@ -89,7 +89,7 @@ Page({
     var start = parseInt(this.data.todos[buttonId].start.replace(":", ""))
     var end = parseInt(this.data.todos[buttonId].end.replace(":", ""))
     if((date > this.data.date)||((date == this.data.date)&&(end<nowTime))){
-      this.data.todos[buttonId].readOnly = true
+      this.data.todos[buttonId].readOnly = 1
     }
     if((date == this.data.date)&&((start<=nowTime)&&(end>=nowTime))&&(this.data.todos[buttonId].state == 2)){
       var id = wx.getStorageSync('id')
