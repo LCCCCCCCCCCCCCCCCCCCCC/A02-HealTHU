@@ -42,7 +42,7 @@ def todos(request):
                 if todo:
                     # found
                     # check if the todo satisfies the date
-                    if todo['date'] == date:
+                    if todo.date == date:
                         # put the todo into ansArray
                         ansArray.append(todo)
             # return ansArray
@@ -93,10 +93,10 @@ def deleteTodo(request):
                 todo = Todo.objects.filter(id=todoID).first()
                 if todo:
                     # exists
-                    if todo['date'] == oldTodoDate\
-                    and todo['start'] == oldTodoStart\
-                    and todo['end'] == oldTodoEnd\
-                    and todo['title'] == oldTodoTitle:
+                    if todo.date == oldTodoDate\
+                    and todo.start == oldTodoStart\
+                    and todo.end == oldTodoEnd\
+                    and todo.title == oldTodoTitle:
                         # a match
                         todoFound = True
                         # delete not only the todoID in targetSchedule.todos;
@@ -177,24 +177,24 @@ def changeTodo(request):
                 todo = Todo.objects.filter(id=todoID).first()
                 if todo:
                     # exists
-                    if todo['date'] == oldTodoDate\
-                    and todo['start'] == oldTodoStart\
-                    and todo['end'] == oldTodoEnd\
-                    and todo['title'] == oldTodoTitle:
+                    if todo.date == oldTodoDate\
+                    and todo.start == oldTodoStart\
+                    and todo.end == oldTodoEnd\
+                    and todo.title == oldTodoTitle:
                         # a match
                         todoFound = True
                         # change only the corresponding todo object in Todo.objects,
                         # since the todoID itself is not changed
-                        todo['title'] = newTodoTitle
-                        todo['date'] = newTodoDate
-                        todo['start'] = newTodoStart
-                        todo['end'] = newTodoEnd
-                        todo['label'] = newTodoLabel
-                        todo['type'] = newTodoType
-                        todo['state'] = newTodoState
-                        todo['sportType'] = newTodoSportType
-                        todo['sportState'] = newTodoSportState
-                        targetSchedule.save()
+                        todo.title = newTodoTitle
+                        todo.date = newTodoDate
+                        todo.start = newTodoStart
+                        todo.end = newTodoEnd
+                        todo.label = newTodoLabel
+                        todo.type = newTodoType
+                        todo.state = newTodoState
+                        todo.sportType = newTodoSportType
+                        todo.sportState = newTodoSportState
+                        todo.save()
             if todoFound:
                 return HttpResponse("Change successfully")
             return HttpResponse("Todo not found", status=400)
@@ -330,15 +330,15 @@ def doTodo(request):
                 todo = Todo.objects.filter(id=todoID).first()
                 if todo:
                     # exists
-                    if todo['date'] == todoDate\
-                    and todo['start'] == todoStart\
-                    and todo['end'] == todoEnd\
-                    and todo['title'] == todoTitle:
+                    if todo.date == todoDate\
+                    and todo.start == todoStart\
+                    and todo.end == todoEnd\
+                    and todo.title == todoTitle:
                         # found
                         # set the state to 1, and readOnly to True
                         todoFound = True
-                        todo['state'] = 1
-                        todo['readOnly'] = 1
+                        todo.state = 1
+                        todo.readOnly = 1
                         targetSchedule.save()
             if todoFound:
                 return HttpResponse("Do successfully")
@@ -469,10 +469,10 @@ def deleteAct(request):
                     todo = Todo.objects.filter(id=todoID).first()
                     if todo:
                         # found
-                        if todo['title'] == "(我发起的)"+targetAct.title\
-                        and todo['date'] == targetAct.date\
-                        and todo['start'] == targetAct.start\
-                        and todo['end'] == targetAct.end:
+                        if todo.title == "(我发起的)"+targetAct.title\
+                        and todo.date == targetAct.date\
+                        and todo.start == targetAct.start\
+                        and todo.end == targetAct.end:
                             todoFound = True
                             # delete not only the todoID in promotorSchedule.todos;
                             allTodos.remove(todoID)
@@ -505,11 +505,11 @@ def deleteAct(request):
                         todo = Todo.objects.filter(id=todoID).first()
                         if todo:
                             # found
-                            if (todo['title'] == "(我参与的)"+targetAct.title\
-                            or todo['title'] == "(申请中)"+targetAct.title)\
-                            and todo['date'] == targetAct.date\
-                            and todo['start'] == targetAct.start\
-                            and todo['end'] == targetAct.end:
+                            if (todo.title == "(我参与的)"+targetAct.title\
+                            or todo.title == "(申请中)"+targetAct.title)\
+                            and todo.date == targetAct.date\
+                            and todo.start == targetAct.start\
+                            and todo.end == targetAct.end:
                                 todoFound = True
                                 # delete not only the todoID in participantSchedule.todos;
                                 allTodos.remove(todoID)
@@ -555,8 +555,8 @@ def changeAct(request):
                 promoter=targetAct.promoter).first()
             if initTodo:
                 # found
-                initTodo['title'] = "(我发起的)"+newActTitle
-                initTodo['label'] = newActLabel
+                initTodo.title = "(我发起的)"+newActTitle
+                initTodo.label = newActLabel
                 initTodo.save()
             # then change the todo in the promoter's schedule
             partTodo = Todo.objects.filter(\
@@ -567,8 +567,8 @@ def changeAct(request):
                 promoter=targetAct.promoter).first()
             if partTodo:
                 # found
-                partTodo['title'] = "(我参与的)"+newActTitle
-                partTodo['label'] = newActLabel
+                partTodo.title = "(我参与的)"+newActTitle
+                partTodo.label = newActLabel
                 partTodo.save()
             applyingTodo = Todo.objects.filter(\
                 title="(申请中)"+targetAct.title,\
@@ -578,8 +578,8 @@ def changeAct(request):
                 promoter=targetAct.promoter).first()
             if applyingTodo:
                 # found
-                applyingTodo['title'] = "(申请中)"+newActTitle
-                applyingTodo['label'] = newActLabel
+                applyingTodo.title = "(申请中)"+newActTitle
+                applyingTodo.label = newActLabel
                 applyingTodo.save()
             # finally change the activity in Activity.objects
             targetAct.title = newActTitle
@@ -846,7 +846,7 @@ def getddl(request):
             for date in dateArray:
                 # find in Schedule.todos by the date
                 for todo in allTodos:
-                    if todo['date'] == date and todo['type'] == "ddl":
+                    if todo.date == date and todo.type == "ddl":
                         targetTodos.append(todo)
             return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
         # else: not found
