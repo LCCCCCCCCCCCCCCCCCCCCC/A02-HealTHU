@@ -352,7 +352,7 @@ def doTodo(request):
                         todoFound = True
                         todo.state = 1
                         todo.readOnly = 1
-                        targetSchedule.save()
+                        todo.save()
             if todoFound:
                 return HttpResponse("Do successfully")
             # else: todo not found
