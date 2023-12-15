@@ -12,4 +12,6 @@ urlpatterns=[
     path('findAct/',views.findAct),
     path('partAct/',views.partAct),
     path('getddl/',views.getddl),
+    path('doTodo/',views.doTodo),
+    path('getActDetail/',views.getActDetail),
 ]

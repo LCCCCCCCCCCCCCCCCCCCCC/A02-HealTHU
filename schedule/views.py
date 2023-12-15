@@ -137,7 +137,38 @@ def addTodo(request):
         targetSchedule.todos.append(newTodo)
         targetSchedule.save()
         return HttpResponse("Add successfully")
-        
+
+@csrf_exempt 
+def doTodo(request):
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        todoDate = request.POST.get("date")
+        todoStart = request.POST.get("start")
+        todoEnd = request.POST.get("end")
+        todoTitle = request.POST.get("title")
+        # find the schedule (if any) according to the id
+        targetSchedule = Schedule.objects.filter(id=id).first()
+        if targetSchedule:
+            # find in Schedule.todos by the date, start, end and title
+            allTodos = targetSchedule.todos
+            todoFound = False
+            for todo in allTodos:
+                if todo['date'] == todoDate\
+                and todo['start'] == todoStart\
+                and todo['end'] == todoEnd\
+                and todo['title'] == todoTitle:
+                    # found
+                    # set the state to 1, and readOnly to True
+                    todoFound = True
+                    todo['state'] = 1
+                    todo['readOnly'] = True
+                    targetSchedule.save()
+            if todoFound:
+                return HttpResponse("Do successfully")
+            # else: todo not found
+            return HttpResponse("Todo not found", status=400)
+        # else: schedule not found
+        return HttpResponse("Schedule not found", status=400)      
 
 @csrf_exempt
 def addAct(request):
@@ -209,10 +240,86 @@ def addAct(request):
 
 @csrf_exempt
 def deleteAct(request):
-    return HttpResponse("Hello, world. You're at the schedule deleteAct.")
+    if request.method == 'POST':
+        actId = request.POST.get("actId")
+        # find the activity (if any) according to the actId
+        targetAct = Activity.objects.filter(id=actId).first()
+        if targetAct:
+            # found
+            # 1. first delete the activity in it's promoter's initiActs
+            # , also: delete the corresponding todo in the promoter's schedule
+            promoterId = targetAct.promoter
+            # find the schedule (if any) according to the promoterId
+            promotorSchedule = Schedule.objects.filter(id=promoterId).first()
+            if promotorSchedule:
+                # found
+                # 1.1 delete the activity in promotorSchedule.initiActs
+                promotorSchedule.initiActs.remove(actId)
+                promotorSchedule.save()
+                # 1.2 delete the corresponding todo in promotorSchedule.todos
+                allTodos = promotorSchedule.todos
+                for todo in allTodos:
+                    if todo['title'] == "(我发起的)"+targetAct.title\
+                    and todo['date'] == targetAct.date\
+                    and todo['start'] == targetAct.start\
+                    and todo['end'] == targetAct.end:
+                        todoFound = True
+                        allTodos.remove(todo)
+                        promotorSchedule.save()
+            # 2. then delete the activity in it's participants' partiActs
+            # , also: delete the corresponding todos in their schedules
+            participantsId = targetAct.participants # which is an array
+            for participantId in participantsId:
+                # find the schedule (if any) according to the participantId
+                participantSchedule = Schedule.objects.filter(id=participantId).first()
+                if participantSchedule:
+                    # found
+                    # 2.1 delete the activity in participantSchedule.partiActs
+                    participantSchedule.partiActs.remove(actId)
+                    participantSchedule.save()
+                    # 2.2 delete the corresponding todo in participantSchedule.todos
+                    allTodos = participantSchedule.todos
+                    for todo in allTodos:
+                        if todo['title'] == "(我参与的)"+targetAct.title\
+                        and todo['date'] == targetAct.date\
+                        and todo['start'] == targetAct.start\
+                        and todo['end'] == targetAct.end:
+                            todoFound = True
+                            allTodos.remove(todo)
+                            participantSchedule.save()
+            # 3. finally delete the activity in Activity.objects
+            targetAct.delete()
+            return HttpResponse("Delete successfully")
 
+@csrf_exempt
 def changeAct(request):
-    return HttpResponse("Hello, world. You're at the schedule changeAct.")
+    if request.method == 'POST':
+        actId = request.POST.get("actId")
+        newActTitle = request.POST.get("newTitle")
+        newActPartNumMin = request.POST.get("newPartNumMin")
+        newActPartNumMax = request.POST.get("newPartNumMax")
+        newActLabel = request.POST.get("newLabel")
+        newActDetail = request.POST.get("newDetail")
+        newActImages = request.POST.get("newImages")
+        newActTags = request.POST.get("newTags")
+        newActPlace = request.POST.get("newPlace")
+        # find the activity (if any) according to the actId
+        targetAct = Activity.objects.filter(id=actId).first()
+        if targetAct:
+            # found
+            # change the activity according to the params
+            targetAct.title = newActTitle
+            targetAct.partNumMin = newActPartNumMin
+            targetAct.partNumMax = newActPartNumMax
+            targetAct.label = newActLabel
+            targetAct.detail = newActDetail
+            targetAct.images = newActImages
+            targetAct.tags = newActTags
+            targetAct.place = newActPlace
+            targetAct.save()
+            return HttpResponse("Change successfully")
+        # else: not found
+        return HttpResponse("Activity not found", status=400)
 
 def findAct(request):
     if request.method == 'GET':
@@ -408,10 +515,19 @@ def findAct(request):
         # now ansArray contains all the activities that satisfy the filters
         # return ansArray
         return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
-                
-                
-                
-                
+
+def getActDetail(request):
+    if request.method == 'GET':
+        actId = request.GET.get("actId")
+        # find the activity (if any) according to the actId
+        targetAct = Activity.objects.filter(id=actId).first()
+        if targetAct:
+            # found
+            # return the activity
+            # since id is a PK, there is only one activity, so we can return directly
+            return HttpResponse(json.dumps(targetAct, ensure_ascii=False))
+        # else: not found
+        return HttpResponse("Activity not found", status=400)
 
 def partAct(request):
     return HttpResponse("Hello, world. You're at the schedule partAct.")
@@ -439,7 +555,6 @@ def nDays(date, n):
         ansArray.append(thisDayStr)
     return ansArray
     
-
 def getddl(request):
     if request.method == 'GET':
         id = request.GET.get("id")
