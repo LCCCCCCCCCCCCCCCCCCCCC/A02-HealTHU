@@ -875,9 +875,26 @@ def getddl(request):
             # 2. whose type is "ddl"
             for date in dateArray:
                 # find in Schedule.todos by the date
-                for todo in allTodos:
-                    if todo.date == date and todo.type == "ddl":
-                        targetTodos.append(todo)
+                for todoID in allTodos:
+                    todo = Todo.objects.filter(id=todoID).first()
+                    if todo:
+                        # exists
+                        if todo.date == date\
+                        and todo.type == "ddl":
+                            # a match
+                            newTodo = {
+                                'title': todo.title,
+                                'date': todo.date,
+                                'start': todo.start,
+                                'end': todo.end,
+                                'label': todo.label,
+                                'type': todo.type,
+                                'state': todo.state,
+                                'sportType': todo.sportType,
+                                'sportState': todo.sportState,
+                                'readOnly': todo.readOnly
+                            }
+                            targetTodos.append(newTodo)
             return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
         # else: not found
         return HttpResponse("Schedule not found", status=400)
