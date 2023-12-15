@@ -151,6 +151,7 @@ def addAct(request):
         actDate = request.POST.get("date")
         actStart = request.POST.get("start")
         actEnd = request.POST.get("end")
+        actPlace = request.POST.get("place")
         actLabel = request.POST.get("label")
         actDetail = request.POST.get("detail")
         actImages = request.POST.get("images")
@@ -174,6 +175,7 @@ def addAct(request):
             date=actDate,\
             start=actStart,\
             end=actEnd,\
+            place=actPlace,\
             label=actLabel,\
             detail=actDetail,\
             images=actImages,\
@@ -241,6 +243,7 @@ def findAct(request):
                         'date': act.date,
                         'start': act.start,
                         'end': act.end,
+                        'place': act.place,
                         'label': act.label,
                         'tags': act.tags,
                         'state': act.state
@@ -267,6 +270,7 @@ def findAct(request):
                     'date': act.date,
                     'start': act.start,
                     'end': act.end,
+                    'place': act.place,
                     'label': act.label,
                     'tags': act.tags,
                     'state': act.state
@@ -294,6 +298,7 @@ def findAct(request):
                         'date': act.date,
                         'start': act.start,
                         'end': act.end,
+                        'place': act.place,
                         'label': act.label,
                         'tags': act.tags,
                         'state': act.state
@@ -318,6 +323,7 @@ def findAct(request):
                         'date': act.date,
                         'start': act.start,
                         'end': act.end,
+                        'place': act.place,
                         'label': act.label,
                         'tags': act.tags,
                         'state': act.state
@@ -345,6 +351,7 @@ def findAct(request):
                         'date': act.date,
                         'start': act.start,
                         'end': act.end,
+                        'place': act.place,
                         'label': act.label,
                         'tags': act.tags,
                         'state': act.state
@@ -367,6 +374,7 @@ def findAct(request):
                         'date': act.date,
                         'start': act.start,
                         'end': act.end,
+                        'place': act.place,
                         'label': act.label,
                         'tags': act.tags,
                         'state': act.state
@@ -390,6 +398,7 @@ def findAct(request):
                         'date': act.date,
                         'start': act.start,
                         'end': act.end,
+                        'place': act.place,
                         'label': act.label,
                         'tags': act.tags,
                         'state': act.state

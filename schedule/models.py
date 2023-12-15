@@ -22,6 +22,7 @@ class Activity(models.Model):
     date = models.CharField(max_length=50)
     start = models.CharField(max_length=50)
     end = models.CharField(max_length=50)
+    place = models.CharField(max_length=50)
     label = models.CharField(max_length=50)
     detail = models.CharField(max_length=200)
     images = models.JSONField()
