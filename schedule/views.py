@@ -274,7 +274,8 @@ def addTodo(request):
             state=todoState,\
             sportType=todoSportType,\
             sportState=todoSportState,\
-            readOnly=todoReadOnly)
+            readOnly=todoReadOnly,\
+            promoter=id)
         # then get the newTodo's id in Todo.objects
         newTodoId = newTodo.id
         # finally append this id into targetSchedule.todos
