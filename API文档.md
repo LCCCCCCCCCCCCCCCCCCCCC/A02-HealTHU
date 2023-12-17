@@ -70,9 +70,13 @@ state不为0或为公共活动时，todo均只读
 #### 活动 activity
 |字段|类型|说明|
 |-------------|-------------|-------------|
+|pubTime|string|发布时间|
 |title|string|标题|
-|promoter|int|发起人|
-|participants|int[]|参与人|
+|promoter|string|发起人|
+|promoterId|int|发起人id|
+|promoterUrl|string|发起人头像|
+|participants|string[]|参与人|
+|participantsId|int[]|参与人Id|
 |partNumMin|int|人数最小值|
 |partNumMax|int|人数最大值|
 |date|string|日期(格式为年/月/日)|
@@ -83,6 +87,19 @@ state不为0或为公共活动时，todo均只读
 |images|string[]|图片|
 |tags|string[]|标签|
 |state|int|活动状态|
+|comments|comment[]|活动评价|
+
+##### 活动评价 comment
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|Id|int|评价人Id|
+|nickName|string|评价人昵称|
+|avatarUrl|string|头像|
+|comment|string|内容|
+|likes|int|点赞数|
+|pubTime|string|发布时间|
+|id|int|按照评价添加顺序即可|
+
 #### 预约的场馆 appoint
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -277,9 +294,12 @@ wx.request({
 |todo|todo|事项(可参照之前由date, title, start, end唯一决定)|
 
 进行的操作:将state设置为1，readOnly设置为True(不管先前如何)
+
+### 三、活动处理部分
+
 #### 发起活动
 ```HTTP
-[POST] /schedule/{id}/addAct
+[POST] /activity/{id}/addAct
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -291,7 +311,7 @@ wx.request({
 
 #### 查找活动
 ```HTTP
-[GET] /schedule/{id}/findAct
+[GET] /activity/{id}/findAct
 ```
 
 ##### 传入参数
@@ -307,13 +327,22 @@ wx.request({
 ##### 响应数据
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|acticities|activity[]|得到的活动|
+|title|string|标题|
+|promoter|string|发起人|
+|participantNum|int|参与人数量|
+|partNumMin|int|人数最小值|
+|partNumMax|int|人数最大值|
+|date|string|日期(格式为年/月/日)|
+|start|string|开始时间(格式为xx:xx)|
+|end|string|结束时间|
+|label|string|备注|
+|tags|string[]|标签|
+|state|int|活动状态|
 
-注:不完全遵守活动格式，不会返回details与images，多返回一个活动id
 
 #### 查看活动详情
 ```HTTP
-[GET] /schedule/{id}/getActDetail
+[GET] /activity/{id}/getActDetail
 ```
 
 ##### 传入参数
@@ -326,9 +355,11 @@ wx.request({
 |-------------|-------------|-------------|
 |activity|activity|得到的活动(完整信息)|
 
+
+
 #### 参与活动
 ```HTTP
-[POST] /schedule/{id}/partAct
+[POST] /activity/{id}/partAct
 ```
 
 ##### 传入参数
@@ -343,7 +374,7 @@ wx.request({
 
 #### 获取活动申请信息
 ```HTTP
-[GET] /schedule/{id}/getApplication
+[GET] /activity/{id}/getApplication
 ```
 
 ##### 传入参数
@@ -361,13 +392,14 @@ wx.request({
 |-------------|-------------|-------------|
 |id|int|申请者id|
 |nickName|string|申请者昵称|
+|url|string|申请者头像|
 |message|string|申请时附带的一段信息|
 |actId|int|活动id|
 |title|string|活动标题|
 
 #### 同意/不同意申请
 ```HTTP
-[POST] /schedule/{id}/appReply
+[POST] /activity/{id}/appReply
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -382,7 +414,7 @@ wx.request({
 
 #### 删除活动
 ```HTTP
-[POST] /schedule/{id}/deleteAct
+[POST] /activity/{id}/deleteAct
 ```
 
 ##### 传入参数
@@ -393,7 +425,7 @@ wx.request({
 
 #### 修改活动
 ```HTTP
-[POST] /schedule/{id}/changeAct
+[POST] /activity/{id}/changeAct
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -409,7 +441,7 @@ wx.request({
 
 #### 退出活动
 ```HTTP
-[POST] /schedule/{id}/exitAct
+[POST] /activity/{id}/exitAct
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -419,3 +451,93 @@ wx.request({
 |actId|int|活动id|
 
 注：上边三个操作也要修改todos事项
+
+#### 对活动进行评价
+```HTTP
+[POST] /activity/{id}/commentAct
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|发起人id|
+|commentId|int|评价人id|
+|actId|int|活动id|
+|comment|string|评价内容|
+|pubTime|string|评价时间|
+
+点赞略，按照活动id和评价id令点赞数+1即可
+删除略，同样按两个id索引
+
+### 四、运动处理部分
+
+#### 获取场馆预约信息
+```HTTP
+[GET] /sport/{id}/getAppoints
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|查找的id|
+|date|string|当天时间|
+
+##### 返回参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|appoints|appoint[]|七天内的场馆预约|
+
+#### 获取运动信息
+TODO
+
+### 五、消息部分
+
+#### 获取距今一定范围的若干条消息
+```HTTP
+[GET] /message/{id}/getMessages
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|start|int|从第x条|
+|end|int|到第y条|
+
+比如获取最近的20条消息，则x=1，y=20，按时间倒序返回
+
+##### 返回参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|messages|message[]|简略message|
+|unread|int|未读消息数量(所有)|
+
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|同样累加|
+|date|string|时间|
+|state|int|0表示未读,1表示已读|
+|title|string|标题|
+|label|string|简略内容,只回复前若干个字符和...|
+|sender|string|发件者名称|
+
+#### 查看具体消息
+```HTTP
+[GET] /message/{id}/getMessage
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|messageId|int|消息Id|
+
+##### 返回参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|date|string|时间|
+|title|string|标题|
+|label|string|完整内容|
+|sender|string|发件者名称|
+|senderId|int|发件者Id|
+|senderUrl|string|发件者头像|
+|toUrl|string|(可选)跳转到的具体位置，比如帖子下的评论|
+
+将帖子标记为已读略，同样传两个Id
+
