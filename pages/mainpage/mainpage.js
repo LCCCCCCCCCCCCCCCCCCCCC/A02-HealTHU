@@ -175,10 +175,11 @@ Page({
   },
   exit_confirm(){
     
-    this.setData({ exitshow: true });
+    /*
+    this.setData({ exitshow: true });*/
   },
+  
   loginExit(){
-    // 退出登录逻辑和向后端传递
     console.log(exit)
     wx.navigateTo({
       url: '../personalcenter/personalcenter'

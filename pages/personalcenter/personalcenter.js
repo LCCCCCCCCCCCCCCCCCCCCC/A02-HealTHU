@@ -15,6 +15,21 @@ Page({
     wxcode:"",
   },
   sign(){
+    const that = this;
+    // 获取用户的当前设置，判断是否点击了“总是保持以上，不在询问”
+    wx.getSetting({
+      withSubscriptions: true, // 是否获取用户订阅消息的订阅状态，默认false不返回
+      success(res) {
+        console.log('res.authSetting', res.authSetting)
+        if (res.authSetting['scope.subscribeMessage']) {
+          console.log('用户点击了“总是保持以上，不再询问”')
+
+        } else {
+          console.log('用户没有点击“总是保持以上，不再询问”则每次都会调起订阅消息')
+          that.authorizationBtn();
+        }
+      }
+    })
     wx.login({
       success: (res) => {
             if(res.code){
@@ -34,17 +49,6 @@ Page({
           }
       },
     })
-    //this.setData({ show: true });
-    wx.setStorageSync('avatarUrl', this.data.userInfo.avatarUrl);
-    wx.setStorageSync('nickName', this.data.userInfo.nickName);
-    wx.setStorageSync('sign', "尚未设置");
-    wx.setStorageSync('todos', [
-      { title: "任务1", type:"课程", color:"#BBBB00", start:"09:00", end:"09:30", label:"1"},
-      { title: "任务2", type:"运动", color:"#00BB00", start:"12:00", end:"14:30", label:"不同颜色对应活动类型"},
-      { title: "任务3", type:"活动", color:"#0000FF", start:"15:00", end:"15:30", label:"修改为序号或类型logo"},
-      { title: "任务4", type:"ddl", color:"#009999", start:"16:00", end:"16:30", label:"其他样式设计（填充？）"},
-      { title: "任务5", type:"饮食", color:"#BB00BB", start:"20:00", end:"23:30", label:"5"}
-    ]);
   },
   
   onChooseAvatar(e){
@@ -59,7 +63,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
   },
 
   /**
@@ -73,9 +76,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    
   },
-
+  authorizationBtn() {
+    wx.requestSubscribeMessage({
+      tmplIds: ['fHPE-sivPSATvWyAsqHrlIFKo6-6NN20DmVxFx8q4I8'],
+      success(res) {
+        console.log('授权成功')
+      }
+    })
+  },
+  
   /**
    * 生命周期函数--监听页面隐藏
    */

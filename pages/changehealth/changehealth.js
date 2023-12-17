@@ -17,7 +17,7 @@ Page({
       grade_thousand: '8.9',
       ehundred: '',
       grade_ehundred: '',
-      gender: 'male',
+      gender: '男',
       fifty:'6.9',
       grade_fifty:'18',
       jump:'2.36',
@@ -27,8 +27,9 @@ Page({
       situp:'10',
       grade_situp:'10',
       pullup:'5',
-      grade_pullup:'8'
-    } 
+      grade_pullup:'8',
+      beizhu:''
+    }
   },
   ChangeHealthClick() {
     this.setData({ show: true });
@@ -57,6 +58,11 @@ Page({
     // 年龄的话还是根据生日计算比较合适？；性别的修改
   },
   // 需要把本页的data.update改为storage
+  ChangeGender(event){
+    this.setData({
+      'update.gender': event.detail
+    });
+  },
   ChangeAge(event){
     this.setData({
       'update.age': event.detail
@@ -70,6 +76,11 @@ Page({
   ChangeWeight(event){
     this.setData({
       'update.weight': event.detail
+    });
+  },
+  ChangeBeizhu(event){
+    this.setData({
+      'update.beizhu': event.detail
     });
   },
   /**
