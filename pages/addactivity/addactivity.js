@@ -20,7 +20,7 @@ Page({
         pubTime: "2023/12/19 13:00",
         title: "原神",
         promoter: id,
-        participants: [],
+        participants: '[1,2]',
         partNumMin: 2,
         partNumMax: 4,
         date: "2023/12/20",
@@ -28,7 +28,7 @@ Page({
         end: "15:00",
         label: "我要玩原神！",
         detail: "",
-        images: [],
+        images: '["../../images/swiper1.jpg", "../../images/swiper2.jpg", "../../images/swiper3.jpg"]',
         tags: '["原神","op","玩原神玩的"]',
         state: 0,
         comments:[]
@@ -37,7 +37,6 @@ Page({
       success:function(res){
         console.log(res)
         wx.showToast({ title: '添加成功', icon: 'success' });
-
       }
     })
   },
