@@ -501,24 +501,24 @@ def changeAct(request):
                 initTodo.jobId = job.id
                 initTodo.save()
             # then change the todo in the promoter's schedule
-            partTodo = Todo.objects.filter(\
+            allPartTodos = Todo.objects.filter(\
                 title="(我参与的)"+targetAct.title,\
                 date=targetAct.date,\
                 start=targetAct.start,\
                 end=targetAct.end,\
-                promoter=targetAct.promoter).first()
-            if partTodo:
+                promoter=targetAct.promoter)
+            for partTodo in allPartTodos:
                 # found
                 partTodo.title = "(我参与的)"+newActTitle
                 partTodo.label = newActLabel
                 partTodo.save()
-            applyingTodo = Todo.objects.filter(\
+            allApplyingTodos = Todo.objects.filter(\
                 title="(申请中)"+targetAct.title,\
                 date=targetAct.date,\
                 start=targetAct.start,\
                 end=targetAct.end,\
                 promoter=targetAct.promoter).first()
-            if applyingTodo:
+            for applyingTodo in allApplyingTodos:
                 # found
                 applyingTodo.title = "(申请中)"+newActTitle
                 applyingTodo.label = newActLabel
