@@ -17,10 +17,10 @@ import datetime
 import random
 # Create your views here.
 
-#全局todo任务list
+#全局 todo 任务 list
 todo_schedule = BackgroundScheduler()
 todo_schedule.start()
-#微信提醒函数，参数为用户openid,todo项name,开始时间,结束时间
+#微信提醒函数，参数为用户 openid,todo 项 name，开始时间，结束时间
 def wx_reminder(touser, todoname, starttime, endtime):
     url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token
     data = {
@@ -182,22 +182,24 @@ def addTodo(request):
         todoSportType = request.POST.get("sportType")
         todoSportState = request.POST.get("sportState")
         todoReadOnly = request.POST.get("readOnly")
-
+        jobId = ""
         # 添加定时向用户发送微信提醒
-        user = User.objects.filter(id=id).first()
-        touser = user.userid
-        todo_year, todo_month, todo_day = todoDate.split("/")
-        start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoStart
-        end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoEnd
-        remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todoStart + ":00"
-        print(touser)
-        print(todoTitle)
-        print(start_time)
-        print(end_time)
-        print(remind_time)
-        global todo_schedule
-        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
-        print(job)
+        if todoType == "活动" or todoType == "运动":
+            user = User.objects.filter(id=id).first()
+            touser = user.userid
+            todo_year, todo_month, todo_day = todoDate.split("/")
+            start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoStart
+            end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoEnd
+            remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todoStart + ":00"
+            print(touser)
+            print(todoTitle)
+            print(start_time)
+            print(end_time)
+            print(remind_time)
+            global todo_schedule
+            job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
+            print(job)
+            jobId = job.id
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
@@ -221,7 +223,8 @@ def addTodo(request):
             sportType=todoSportType,\
             sportState=todoSportState,\
             readOnly=todoReadOnly,\
-            promoter=id)
+            promoter=id,\
+            jobId=jobId)
         # then get the newTodo's id in Todo.objects
         newTodoId = newTodo.id
         # finally append this id into targetSchedule.todos
@@ -295,6 +298,20 @@ def addAct(request):
             actComments = json.loads(comments)
         else:
             actComments = []
+        user = User.objects.filter(id=id).first()
+        touser = user.userid
+        todo_year, todo_month, todo_day = actDate.split("/")
+        start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + actStart
+        end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + actEnd
+        remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + actStart + ":00"
+        print(touser)
+        print(todoTitle)
+        print(start_time)
+        print(end_time)
+        print(remind_time)
+        global todo_schedule
+        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
+        print(job)
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
@@ -341,7 +358,8 @@ def addAct(request):
             sportType=0,\
             sportState="",\
             readOnly=1,\
-            promoter=actPromoter)
+            promoter=actPromoter,\
+            jobId=job.id)
         # >> get the newTodo's id in Todo.objects
         newTodoId = newTodo.id
         # >> append this id into targetSchedule.todos
@@ -741,6 +759,20 @@ def partAct(request):
                 receiverSchedule.save()
                 # next: put a todo in senderSchedule.todos
                 # try check the corresponding todo in receiverSchedule.todos
+                user = User.objects.filter(id=id).first()
+                touser = user.userid
+                todo_year, todo_month, todo_day = targetAct.date.split("/")
+                start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.start
+                end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.end
+                remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + targetAct.start + ":00"
+                print(touser)
+                print(todoTitle)
+                print(start_time)
+                print(end_time)
+                print(remind_time)
+                global todo_schedule
+                job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
+                print(job)
                 newTodo = Todo.objects.create(\
                     title="(申请中)"+targetAct.title,\
                     date=targetAct.date,\
@@ -752,7 +784,8 @@ def partAct(request):
                     sportType=0,\
                     sportState="",\
                     readOnly=1,\
-                    promoter=otherId)
+                    promoter=otherId,\
+                    jobId=job.id)
                 senderSchedule.todos.append(newTodo.id)
                 senderSchedule.save()
                 return HttpResponse("Apply successfully")
