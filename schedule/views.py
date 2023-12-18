@@ -793,16 +793,6 @@ def partAct(request):
                 # next: put a todo in senderSchedule.todos
                 # try check the corresponding todo in receiverSchedule.todos
 
-                user = User.objects.filter(id=id).first()
-                touser = user.userid
-                todo_year, todo_month, todo_day = targetAct.date.split("/")
-                start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.start
-                end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.end
-                remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + targetAct.start + ":00"
-                global todo_schedule
-                job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,targetAct.title,start_time,end_time])
-                print(job)
-
                 newTodo = Todo.objects.create(\
                     title="(申请中)"+targetAct.title,\
                     date=targetAct.date,\
@@ -815,7 +805,7 @@ def partAct(request):
                     sportState="",\
                     readOnly=1,\
                     promoter=otherId,\
-                    jobId=job.id)
+                    jobId="")
                 senderSchedule.todos.append(newTodo.id)
                 senderSchedule.save()
                 return HttpResponse("Apply successfully")
@@ -881,8 +871,20 @@ def appReply(request):
                             if isAgree == 1:
                                 # agree
                                 # change the corresponding todo
+                                user = User.objects.filter(id=id).first()
+                                touser = user.userid
+                                todo_year, todo_month, todo_day = todo.date.split("/")
+                                start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todo.start
+                                end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todo.end
+                                remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todo.start + ":00"
+                                global todo_schedule
+                                job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
+                                                            args=[touser, todo.title, start_time, end_time])
+                                print(job)
+
                                 todo.title = "(我参与的)"+activity.title
                                 todo.readOnly = 1
+                                todo.jobId = job.id
                                 todo.save()
                                 # add the applicant to activity.participants
                                 activity.participants.append(applyerId)
