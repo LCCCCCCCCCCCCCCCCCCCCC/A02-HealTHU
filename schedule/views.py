@@ -507,11 +507,13 @@ def findAct(request):
         ansArray = []
         # find in Activity.objects by the five filters
         if participantsId:
+            participantId = json.loads(participantsId)
             set_of_participantsId = set(participantsId)
         for act in Activity.objects.all():
             if promoterId:
                 # promoterId is not None
                 # filter by promoterId
+                promoterId = int(promoterId)
                 if act.promoter == promoterId:
                     newAct = {
                         'id': act.id,
