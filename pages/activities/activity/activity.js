@@ -5,7 +5,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    scoreValue: 4,
+    scoreValue: 4.2,
+    userscore: 0,
+    userid:3,
+    actid:3734,
+    signshow: false,
+    scoreshow: false,
+    signtext: '',
+    scoretext: '',
     activity:{
       title: "软件学院2023秋第10周集体锻炼",
       promoter:"NLno", 
@@ -20,26 +27,61 @@ Page({
       start:"17:00",
       end:"18:00",
       label:"打卡统计",
-      detail:"可以作为阳光体育打卡的凭证",
+      detail:"可以作为阳光体育打卡的凭证，报名时请填写姓名、学号信息，便于助教统计",
       images:['../../images/swiper1.jpg', '../../images/swiper2.jpg', '../../images/swiper3.jpg'],
       tags:["紫荆操场","飞盘","集体锻炼"],
-      state:1
+      state:0
     }
   },
 
-  handleClick() {
+  // TODO：报名和评分处理
+  scoreConfirm() {
+
+  },
+  signupConfirm() {
+
+  },
+  handleSignup() {
     if(this.data.activity.state == 1){
       wx.showToast({ title: '活动已结束', icon: 'cross' });
-      return;
     }
-    wx.showToast({ title: '报名成功！TODO:signup', icon: 'success' });
-    //和外面报名保持一致
+    else{
+      this.setData({ signshow : true }); 
+    }
   },
+  handleScore() {
+    this.setData({ scoreshow : true });     
+  },
+  onscoreClose() {
+    this.setData({ scoreshow : false });     
+  },
+  onsignClose() {
+    this.setData({ signshow : false });     
+  },
+  handleScoreGiven(event) {
+    this.setData({ userscore : event.detail });
+  },
+  handleScoreInput(event) {
+    this.setData({
+      scoretext: event.detail.value
+    });
+  },
+  handleSignInput(event) {
+    this.setData({
+      signtext: event.detail.value
+    });
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    var actid = options.actid;
+    var idself = wx.getStorageSync('id');
+    var idself2 = options.actid;
+    this.setData({
+      userid : idself,
+      actid : idself2
+    });
     // actid请求和data设置
   },
 

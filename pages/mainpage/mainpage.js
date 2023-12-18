@@ -174,14 +174,11 @@ Page({
     this.setData({ exitshow: false });
   },
   exit_confirm(){
-    
-    /*
-    this.setData({ exitshow: true });*/
+    this.setData({ exitshow: true });
   },
   
   loginExit(){
-    console.log(exit)
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../personalcenter/personalcenter'
     })
   }

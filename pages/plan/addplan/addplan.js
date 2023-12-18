@@ -47,7 +47,6 @@ Page({
       date: this.formatDate(event.detail),
     });
   },
-  //以下三个为设置任务信息
   handleNameInput(event) {
     this.setData({
       title: event.detail

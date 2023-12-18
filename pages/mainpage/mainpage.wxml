@@ -107,16 +107,15 @@
       link-type="navigateTo" url='../settings/help/help'/>
       <van-cell is-link title="  退出登录" icon="replay"  
       bind:click="exit_confirm"/>
-      <van-popup show="{{ exitshow }}" 
-        custom-style="height: 20%; width: 60%;"
-        bind:close="onexitClose">
-        <view class="exit-text">确认退出吗？</view>
-        <view class="exit-btn">
-          <van-button hairline type="default" bind:click="onexitClose">取消</van-button>
-          <van-button hairline type="danger" bind:click="loginExit">确认</van-button>
-          <!-- 确认突然不好使, ReferenceError: exit is not defined -->
-        </view>    
-      </van-popup>
+      <van-dialog
+        title="确认退出吗？"
+        show="{{ exitshow }}"
+        show-cancel-button
+        confirm-button-open-type="getUserInfo"
+        bind:close="onexitClose"
+        bind:getuserinfo="loginExit"
+      >
+      </van-dialog>
     </van-cell-group>
     </view>
     </view>

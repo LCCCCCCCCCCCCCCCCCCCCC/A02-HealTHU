@@ -57,3 +57,16 @@ swiper.item{
   margin-right:24px;
   margin-bottom: 12px;
 }
+.toflex{
+  display: flex; 
+  justify-content: center;
+  margin: 6px; 
+}
+.textinput {
+  margin: 8px;
+  height: 100px;
+  width: 260px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 8px;
+}

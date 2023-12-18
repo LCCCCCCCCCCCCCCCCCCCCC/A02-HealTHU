@@ -1,2 +1,88 @@
 <!--pages/addactivity/addactivity.wxml-->
-<text>pages/addactivity/addactivity.wxml</text>
+<view class="pages">
+<van-nav-bar
+  title="发起活动"
+  left-arrow
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="addAct"
+  bind:click-left="onClickLeft"
+  >
+  <view slot="right">
+    <van-icon name="success" color="blue"/>
+  </view>
+</van-nav-bar>
+
+<van-uploader class="upload"
+  file-list="{{ fileList }}" 
+  deletable="{{ true }}"
+  multiple="{{ true }}"
+  bind:after-read="afterRead" />
+
+<van-cell-group class="addnew" inset>
+  <van-field
+    label="主题"
+    placeholder="活动主题"
+    bind:change="handleNameInput"
+  />
+  <van-field
+    label="活动类型"
+    placeholder=""
+    bind:change="handleLabelInput"
+  />
+  <van-cell title="人数下限">
+    <van-stepper value="{{ minNum }}" min="0" bind:change="handleMin"/>
+  </van-cell>
+  <van-cell title="人数上限">
+    <van-stepper value="{{ maxNum }}" min="1" bind:change="handleMax"/>
+  </van-cell>
+  <van-field clearable
+    label="标签"
+    placeholder="可多次添加"
+    bind:change="handleTagInput"
+    maxlength="8"
+    use-button-slot>
+    <van-button slot="button" size="mini" type="primary" bind:click="tagAdd">添加</van-button>
+  </van-field>
+  <can-cell class="tags" wx:for="{{tags}}" wx:key="index">
+    <van-tag plain closeable round
+      size="medium" type="primary"
+      bind:close="ontagClose" data-index="{{index}}"
+    >{{tags[index]}}
+    </van-tag>
+  </can-cell>
+</van-cell-group>
+
+<van-cell-group class="addnew" title="活动时间" inset>
+  <van-cell title="选择日期" value="{{ date }}" bind:click="onDisplay"/>
+    <van-calendar show="{{ dateshow }}" bind:close="onClose" bind:confirm="onConfirm" />
+  <view hidden="{{optionvalue1 == 0}}">
+  <van-cell title="开始时间" value="{{start}}" bind:click="showPicker1"/>
+    <van-datetime-picker
+        wx:if="{{showpicker == 1}}"
+        type="time"
+        value="{{start}}"
+        min-hour="0"
+        max-hour="23"  
+        bind:confirm="handleStartTimeInput"
+        bind:cancel="closePicker"
+      />
+  </view>
+  <van-cell title="结束时间" value="{{end}}" bind:click="showPicker2"/>
+    <van-datetime-picker
+        wx:if="{{showpicker == 2}}"
+        type="time"
+        value="{{end}}"
+        min-hour="0"
+        max-hour="23"  
+        bind:confirm="handleEndTimeInput"
+        bind:cancel="closePicker"
+      />
+</van-cell-group>
+
+<van-cell-group class="addnew" title="活动介绍" inset>
+  <textarea class="textinput"
+      bindinput="handleSignInput" placeholder="请填写相关信息"></textarea>
+</van-cell-group>
+</view>

@@ -10,7 +10,6 @@
     placeholder="{{nickName}}"
     bind:input="handleNameInput"
   />
-  <!-- 多行输入框没响应desu，解决了把反馈/plan备注（其他长输入框etc）那里改一下 -->
   <van-field class="sign"
     label="个性签名"
     placeholder="{{sign}}"
@@ -19,9 +18,5 @@
   />
   </van-cell-group>
   <van-divider />
-  <!-- <view>用户名：</view>
-  <input bindinput="handleNameInput" placeholder="{{nickName}}"/>
-  <view>个人签名：</view>
-  <textarea bindinput="handleSignInput" placeholder="{{sign}}" class="sign"/> -->
   <van-button bind:tap="change">确认修改</van-button>
 </view>
