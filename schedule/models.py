@@ -13,7 +13,7 @@ class Todo(models.Model):
     sportType = models.IntegerField()
     sportState = models.CharField(max_length=20)
     readOnly = models.IntegerField() # 0 <--> false, 1 <--> true
-    jodId = models.CharField(max_length=100)
+    jobId = models.CharField(max_length=100)
 
 class Comment(models.Model):
     commenterId = models.IntegerField()
