@@ -392,8 +392,6 @@ wx.request({
 |title|string|活动标题|
 |applyerId|int|申请者id|
 |actId|int|活动id|
-|nickName|string|申请者昵称|
-|avatarUrl|string|申请者头像|
 |message|string|申请时附带的一段信息|
 
 #### 同意/不同意申请
