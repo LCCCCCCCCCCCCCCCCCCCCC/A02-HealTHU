@@ -19,7 +19,7 @@ import random
 
 #全局todo任务list
 todo_schedule = BackgroundScheduler()
-
+todo_schedule.start()
 #微信提醒函数，参数为用户openid,todo项name,开始时间,结束时间
 def wx_reminder(touser, todoname, starttime, endtime):
     url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token
@@ -42,6 +42,7 @@ def wx_reminder(touser, todoname, starttime, endtime):
         "lang": "zh_CN"
     }
     response = requests.post(url, json=data)
+    print(response.json())
 
 def todos(request):
     if request.method == 'GET':
@@ -189,9 +190,14 @@ def addTodo(request):
         start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoStart
         end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoEnd
         remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todoStart + ":00"
+        print(touser)
+        print(todoTitle)
+        print(start_time)
+        print(end_time)
+        print(remind_time)
         global todo_schedule
-        job = todo_schedule.add_job(wx_reminder(touser,todoTitle,start_time,end_time), 'date', run_date=remind_time)
-
+        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
+        print(job)
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
