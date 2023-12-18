@@ -232,8 +232,8 @@ def addAct(request):
         actEnd = request.POST.get("end")
         actLabel = request.POST.get("label")
         actDetail = request.POST.get("detail")
-        actImages = request.POST.get("images")
-        actTags = request.POST.get("tags")
+        actImages = json.loads(request.POST.get("images"))
+        actTags = json.loads(request.POST.get("tags"))
         actState = request.POST.get("state")
         actComments = request.POST.get("comments")
         # find the schedule (if any) according to the id
@@ -365,8 +365,8 @@ def changeAct(request):
         newActPartNumMax = request.POST.get("newPartNumMax")
         newActLabel = request.POST.get("newLabel")
         newActDetail = request.POST.get("newDetail")
-        newActImages = request.POST.get("newImages")
-        newActTags = request.POST.get("newTags")
+        newActImages = json.loads(request.POST.get("newImages"))
+        newActTags = json.loads(request.POST.get("newTags"))
         # find the activity (if any) according to the actId
         targetAct = Activity.objects.filter(id=actId).first()
         if targetAct:
