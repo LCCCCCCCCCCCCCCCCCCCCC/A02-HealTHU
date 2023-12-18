@@ -10,7 +10,7 @@ from .models import Todo
 from .models import Appointment
 from .models import Activity
 from user.models import User
-from __init__ import access_token
+from .__init__ import access_token
 import requests
 import json
 import datetime
