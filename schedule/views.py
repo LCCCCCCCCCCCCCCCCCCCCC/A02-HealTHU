@@ -276,7 +276,6 @@ def addAct(request):
         actPubTime = request.POST.get("pubTime")
         actTitle = request.POST.get("title")
         actPromoter = request.POST.get("promoter")
-        actParticipants = request.POST.get("participants")
         actPartNumMin = request.POST.get("partNumMin")
         actPartNumMax = request.POST.get("partNumMax")
         actDate = request.POST.get("date")
@@ -286,6 +285,11 @@ def addAct(request):
         actDetail = request.POST.get("detail") 
         actState = request.POST.get("state")
         img = request.POST.get("images")
+        parts = request.POST.get("participants")
+        if parts:
+            actParticipants = json.loads(parts)
+        else:
+            actParticipants = []
         if img:
             actImages = json.loads(img)
         else:
@@ -313,7 +317,7 @@ def addAct(request):
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
             # create a new schedule
-            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[])
+            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[], applications=[])
             newSchedule.save()
             targetSchedule = newSchedule
             pass
