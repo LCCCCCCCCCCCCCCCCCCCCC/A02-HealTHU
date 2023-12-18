@@ -17,14 +17,15 @@ import requests
 import json
 import datetime
 import random
+
 # Create your views here.
 
-#全局 todo 任务 list
+# 全局 todo 任务 list
 todo_schedule = BackgroundScheduler()
 todo_schedule.start()
 
 
-#微信提醒函数，参数为用户 openid,todo 项 name，开始时间，结束时间
+# 微信提醒函数，参数为用户 openid,todo 项 name，开始时间，结束时间
 def wx_reminder(touser, todoname, starttime, endtime):
     url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token
     data = {
@@ -48,15 +49,16 @@ def wx_reminder(touser, todoname, starttime, endtime):
     response = requests.post(url, json=data)
     print(response.json())
 
+
 def todos(request):
     if request.method == 'GET':
-        id = request.GET.get("id") # the id of the schedule
-        date = request.GET.get("date") # the date, in the form of "yyyy/mm/dd"
+        id = request.GET.get("id")  # the id of the schedule
+        date = request.GET.get("date")  # the date, in the form of "yyyy/mm/dd"
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
             # find in Schedule.todos by the date
-            allTodos = targetSchedule.todos # JSONField
+            allTodos = targetSchedule.todos  # JSONField
             # NEW STUFF:
             # now todos store the id of the todo object, instead of the todo object itself
             ansArray = []
@@ -86,6 +88,7 @@ def todos(request):
         # else: not found
         return HttpResponse(json.dumps([], ensure_ascii=False))
 
+
 @csrf_exempt
 def deleteTodo(request):
     if request.method == 'POST':
@@ -104,10 +107,10 @@ def deleteTodo(request):
                 todo = Todo.objects.filter(id=todoID).first()
                 if todo:
                     # exists
-                    if todo.date == oldTodoDate\
-                    and todo.start == oldTodoStart\
-                    and todo.end == oldTodoEnd\
-                    and todo.title == oldTodoTitle:
+                    if todo.date == oldTodoDate \
+                            and todo.start == oldTodoStart \
+                            and todo.end == oldTodoEnd \
+                            and todo.title == oldTodoTitle:
                         # a match
                         todoFound = True
                         if todo.type == "活动" or todo.type == "运动":
@@ -123,7 +126,8 @@ def deleteTodo(request):
             return HttpResponse("Todo not found", status=400)
         # else: not found
         return HttpResponse("Schedule not found", status=400)
-              
+
+
 @csrf_exempt
 def changeTodo(request):
     if request.method == 'POST':
@@ -151,10 +155,10 @@ def changeTodo(request):
                 todo = Todo.objects.filter(id=todoID).first()
                 if todo:
                     # exists
-                    if todo.date == oldTodoDate\
-                    and todo.start == oldTodoStart\
-                    and todo.end == oldTodoEnd\
-                    and todo.title == oldTodoTitle:
+                    if todo.date == oldTodoDate \
+                            and todo.start == oldTodoStart \
+                            and todo.end == oldTodoEnd \
+                            and todo.title == oldTodoTitle:
                         # a match
                         newjobId = ""
                         if todo.type == "活动" or todo.type == "运动":
@@ -191,6 +195,7 @@ def changeTodo(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
+
 @csrf_exempt
 def addTodo(request):
     if request.method == 'POST':
@@ -215,14 +220,16 @@ def addTodo(request):
             end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoEnd
             remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todoStart + ":00"
             global todo_schedule
-            job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
+            job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
+                                        args=[touser, todoTitle, start_time, end_time])
             print(job)
             jobId = job.id
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
             # create a new schedule
-            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[], applications=[])
+            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[],
+                                                  applications=[])
             newSchedule.save()
             targetSchedule = newSchedule
             pass
@@ -230,18 +237,18 @@ def addTodo(request):
         # put the new todoID into Schedule.todos, which is a JSONField
         # NEW STUFF:
         # first create a new Todo object
-        newTodo = Todo.objects.create(\
-            title=todoTitle,\
-            date=todoDate,\
-            start=todoStart,\
-            end=todoEnd,\
-            label=todoLabel,\
-            type=todoType,\
-            state=todoState,\
-            sportType=todoSportType,\
-            sportState=todoSportState,\
-            readOnly=todoReadOnly,\
-            promoter=id,\
+        newTodo = Todo.objects.create( \
+            title=todoTitle, \
+            date=todoDate, \
+            start=todoStart, \
+            end=todoEnd, \
+            label=todoLabel, \
+            type=todoType, \
+            state=todoState, \
+            sportType=todoSportType, \
+            sportState=todoSportState, \
+            readOnly=todoReadOnly, \
+            promoter=id, \
             jobId=jobId)
         # then get the newTodo's id in Todo.objects
         newTodoId = newTodo.id
@@ -250,7 +257,8 @@ def addTodo(request):
         targetSchedule.save()
         return HttpResponse("Add successfully")
 
-@csrf_exempt 
+
+@csrf_exempt
 def doTodo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -268,10 +276,10 @@ def doTodo(request):
                 todo = Todo.objects.filter(id=todoID).first()
                 if todo:
                     # exists
-                    if todo.date == todoDate\
-                    and todo.start == todoStart\
-                    and todo.end == todoEnd\
-                    and todo.title == todoTitle:
+                    if todo.date == todoDate \
+                            and todo.start == todoStart \
+                            and todo.end == todoEnd \
+                            and todo.title == todoTitle:
                         # found
                         # set the state to 1, and readOnly to True
                         todoFound = True
@@ -283,7 +291,8 @@ def doTodo(request):
             # else: todo not found
             return HttpResponse("Todo not found", status=400)
         # else: schedule not found
-        return HttpResponse("Schedule not found", status=400)      
+        return HttpResponse("Schedule not found", status=400)
+
 
 @csrf_exempt
 def addAct(request):
@@ -298,7 +307,7 @@ def addAct(request):
         actStart = request.POST.get("start")
         actEnd = request.POST.get("end")
         actLabel = request.POST.get("label")
-        actDetail = request.POST.get("detail") 
+        actDetail = request.POST.get("detail")
         actState = request.POST.get("state")
         img = request.POST.get("images")
         parts = request.POST.get("participants")
@@ -327,32 +336,34 @@ def addAct(request):
         end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + actEnd
         remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + actStart + ":00"
         global todo_schedule
-        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,actTitle,start_time,end_time])
+        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
+                                    args=[touser, actTitle, start_time, end_time])
         print(job)
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
             # create a new schedule
-            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[], applications=[])
+            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[],
+                                                  applications=[])
             newSchedule.save()
             targetSchedule = newSchedule
             pass
         # >> put this into Activity.objects
-        new_act = Activity.objects.create(\
-            pubTime=actPubTime,\
-            title=actTitle,\
-            promoter=actPromoter,\
-            participants=actParticipants,\
-            partNumMin=actPartNumMin,\
-            partNumMax=actPartNumMax,\
-            date=actDate,\
-            start=actStart,\
-            end=actEnd,\
-            label=actLabel,\
-            detail=actDetail,\
-            images=actImages,\
-            tags=actTags,\
-            state=actState,\
+        new_act = Activity.objects.create( \
+            pubTime=actPubTime, \
+            title=actTitle, \
+            promoter=actPromoter, \
+            participants=actParticipants, \
+            partNumMin=actPartNumMin, \
+            partNumMax=actPartNumMax, \
+            date=actDate, \
+            start=actStart, \
+            end=actEnd, \
+            label=actLabel, \
+            detail=actDetail, \
+            images=actImages, \
+            tags=actTags, \
+            state=actState, \
             comments=actComments)
         # >> get this new_act's id in Activity.objects
         new_act_id = new_act.id
@@ -364,25 +375,26 @@ def addAct(request):
         # the newTodo satisfy:
         # 1. type == "活动", state = 0, readOnly = True
         # 2. title = "(我发起的)"+actTitle, note the the braket are English brakets, instead of Chinese ones
-        newTodo = Todo.objects.create(\
-            title="(我发起的)"+actTitle,\
-            date=actDate,\
-            start=actStart,\
-            end=actEnd,\
-            label=actLabel,\
-            type="活动",\
-            state=0,\
-            sportType=0,\
-            sportState="",\
-            readOnly=1,\
-            promoter=actPromoter,\
+        newTodo = Todo.objects.create( \
+            title="(我发起的)" + actTitle, \
+            date=actDate, \
+            start=actStart, \
+            end=actEnd, \
+            label=actLabel, \
+            type="活动", \
+            state=0, \
+            sportType=0, \
+            sportState="", \
+            readOnly=1, \
+            promoter=actPromoter, \
             jobId=job.id)
         # >> get the newTodo's id in Todo.objects
         newTodoId = newTodo.id
         # >> append this id into targetSchedule.todos
         targetSchedule.todos.append(newTodoId)
         targetSchedule.save()
-        return HttpResponse("Add successfully")       
+        return HttpResponse("Add successfully")
+
 
 @csrf_exempt
 def deleteAct(request):
@@ -408,10 +420,10 @@ def deleteAct(request):
                     todo = Todo.objects.filter(id=todoID).first()
                     if todo:
                         # found
-                        if todo.title == "(我发起的)"+targetAct.title\
-                        and todo.date == targetAct.date\
-                        and todo.start == targetAct.start\
-                        and todo.end == targetAct.end:
+                        if todo.title == "(我发起的)" + targetAct.title \
+                                and todo.date == targetAct.date \
+                                and todo.start == targetAct.start \
+                                and todo.end == targetAct.end:
                             todoFound = True
                             global todo_schedule
                             todo_schedule.remove_job(todo.jobId)
@@ -422,7 +434,7 @@ def deleteAct(request):
                             todo.delete()
             # 2. then delete the activity in it's participants' partiActs
             # , also: delete the corresponding todos in their schedules
-            participantsId = targetAct.participants # which is an array
+            participantsId = targetAct.participants  # which is an array
             for participantId in participantsId:
                 # find the schedule (if any) according to the participantId
                 participantSchedule = Schedule.objects.filter(id=participantId).first()
@@ -437,11 +449,11 @@ def deleteAct(request):
                         todo = Todo.objects.filter(id=todoID).first()
                         if todo:
                             # found
-                            if (todo.title == "(我参与的)"+targetAct.title\
-                            or todo.title == "(申请中)"+targetAct.title)\
-                            and todo.date == targetAct.date\
-                            and todo.start == targetAct.start\
-                            and todo.end == targetAct.end:
+                            if (todo.title == "(我参与的)" + targetAct.title \
+                                or todo.title == "(申请中)" + targetAct.title) \
+                                    and todo.date == targetAct.date \
+                                    and todo.start == targetAct.start \
+                                    and todo.end == targetAct.end:
                                 todoFound = True
                                 todo_schedule.remove_job(todo.jobId)
                                 # delete not only the todoID in participantSchedule.todos;
@@ -452,6 +464,7 @@ def deleteAct(request):
             # 3. finally delete the activity in Activity.objects
             targetAct.delete()
             return HttpResponse("Delete successfully")
+
 
 @csrf_exempt
 def changeAct(request):
@@ -484,15 +497,26 @@ def changeAct(request):
                 todo = Todo.objects.filter(id=todoId).first()
                 if todo:
                     # found
-                    if todo.title == "(我发起的)"+targetAct.title\
-                    and todo.date == targetAct.date\
-                    and todo.start == targetAct.start\
-                    and todo.end == targetAct.end:
+                    if todo.title == "(我发起的)" + targetAct.title \
+                            and todo.date == targetAct.date \
+                            and todo.start == targetAct.start \
+                            and todo.end == targetAct.end:
                         # found
-                        # todo: send msgs
+                        global todo_schedule
+                        todo_schedule.remove_job(todo.jobId)
+                        user = User.objects.filter(id=targetAct.promoter).first()
+                        touser = user.userid
+                        todo_year, todo_month, todo_day = targetAct.date.split("/")
+                        start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.start
+                        end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.end
+                        remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + targetAct.start + ":00"
+                        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
+                                                    args=[touser, newActTitle, start_time, end_time])
+                        print(job)
                         # change!
-                        todo.title = "(我发起的)"+newActTitle
+                        todo.title = "(我发起的)" + newActTitle
                         todo.label = newActLabel
+                        todo.jobId = job.id
                         todo.save()
             participants = targetAct.participants
             for participantId in participants:
@@ -502,24 +526,33 @@ def changeAct(request):
                     todo = Todo.objects.filter(id=todoId).first()
                     if todo:
                         # found
-                        if todo.title == "(我参与的)"+targetAct.title\
-                        and todo.date == targetAct.date\
-                        and todo.start == targetAct.start\
-                        and todo.end == targetAct.end:
+                        if todo.title == "(我参与的)" + targetAct.title \
+                                and todo.date == targetAct.date \
+                                and todo.start == targetAct.start \
+                                and todo.end == targetAct.end:
                             # found
-                            # todo: send msgs
+                            todo_schedule.remove_job(todo.jobId)
+                            user = User.objects.filter(id=participantId).first()
+                            touser = user.userid
+                            todo_year, todo_month, todo_day = targetAct.date.split("/")
+                            start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.start
+                            end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.end
+                            remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + targetAct.start + ":00"
+                            job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
+                                                        args=[touser, newActTitle, start_time, end_time])
+                            print(job)
                             # change!
-                            todo.title = "(我参与的)"+newActTitle
+                            todo.title = "(我参与的)" + newActTitle
                             todo.label = newActLabel
+                            todo.jobId = job.id
                             todo.save()
-                        if todo.title == "(申请中)"+targetAct.title\
-                        and todo.date == targetAct.date\
-                        and todo.start == targetAct.start\
-                        and todo.end == targetAct.end:
+                        if todo.title == "(申请中)" + targetAct.title \
+                                and todo.date == targetAct.date \
+                                and todo.start == targetAct.start \
+                                and todo.end == targetAct.end:
                             # found
-                            # todo: send msgs
                             # change!
-                            todo.title = "(申请中)"+newActTitle
+                            todo.title = "(申请中)" + newActTitle
                             todo.label = newActLabel
                             todo.save()
             # then change the activity in Activity.objects
@@ -534,17 +567,16 @@ def changeAct(request):
             return HttpResponse("Change successfully")
         # else: not found
         return HttpResponse("Activity not found", status=400)
-            
-                    
+
 
 def findAct(request):
     if request.method == 'GET':
         ansArray = []
-        promoterId = request.GET.get("promoter") # optional
-        participantsId = request.GET.get("participants") # optional
-        keyForSearch = request.GET.get("keyForSearch") # optional
-        minDate = request.GET.get("minDate") # optional, >= minDate
-        maxDate = request.GET.get("maxDate") # optional, <= maxDate
+        promoterId = request.GET.get("promoter")  # optional
+        participantsId = request.GET.get("participants")  # optional
+        keyForSearch = request.GET.get("keyForSearch")  # optional
+        minDate = request.GET.get("minDate")  # optional, >= minDate
+        maxDate = request.GET.get("maxDate")  # optional, <= maxDate
         # note that the preceding five params are filters that are conencted by OR
         # i.e. activities satisfiying any of the five filters will be returned
         isRandom = request.GET.get("isRandom")
@@ -571,7 +603,7 @@ def findAct(request):
                         'tags': act.tags,
                         'state': act.state,
                         'comments': act.comments
-                    } # remove the detail and images, to save space
+                    }  # remove the detail and images, to save space
                     ansArray.append(newAct)
                 # now ansArray contains all the activities
                 return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
@@ -579,7 +611,7 @@ def findAct(request):
             # then: act.id = 1,2,...,num_of_acts
             # pick 20 random different numbers from 1,2,...,num_of_acts
             # and find the corresponding activities
-            selected_actIDs = random.sample(range(1, num_of_acts+1), 20)
+            selected_actIDs = random.sample(range(1, num_of_acts + 1), 20)
             for selected_actID in selected_actIDs:
                 # for each randomly picked actid:
                 # find the corresponding act
@@ -598,7 +630,7 @@ def findAct(request):
                     'tags': act.tags,
                     'state': act.state,
                     'comments': act.comments
-                } # remove the detail and images, to save space
+                }  # remove the detail and images, to save space
                 ansArray.append(newAct)
             # now ansArray contains all the activities
             return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
@@ -628,9 +660,9 @@ def findAct(request):
                         'tags': act.tags,
                         'state': act.state,
                         'comments': act.comments
-                    } # remove the detail and images, to save space
+                    }  # remove the detail and images, to save space
                     ansArray.append(newAct)
-                    continue # continue to avoid repeated appending
+                    continue  # continue to avoid repeated appending
             if participantsId:
                 # participantsId is not None
                 # filter by participantsId, i.e.
@@ -653,9 +685,9 @@ def findAct(request):
                         'tags': act.tags,
                         'state': act.state,
                         'comments': act.comments
-                    } # remove the detail and images, to save space
+                    }  # remove the detail and images, to save space
                     ansArray.append(newAct)
-                    continue # continue to avoid repeated appending
+                    continue  # continue to avoid repeated appending
             if keyForSearch:
                 # keyForSearch is not None
                 # filter by keyForSearch
@@ -663,9 +695,9 @@ def findAct(request):
                 # 1. act.title contains keyForSearch, OR:
                 # 2. act.label contains keyForSearch, OR:
                 # 3. act.tags contains keyForSearch
-                if keyForSearch in act.title\
-                or keyForSearch in act.label\
-                or keyForSearch in act.tags:
+                if keyForSearch in act.title \
+                        or keyForSearch in act.label \
+                        or keyForSearch in act.tags:
                     # keyForSearch is in act.title, act.label or act.tags
                     newAct = {
                         'id': act.id,
@@ -681,9 +713,9 @@ def findAct(request):
                         'tags': act.tags,
                         'state': act.state,
                         'comments': act.comments
-                    } # remove the detail and images, to save space
+                    }  # remove the detail and images, to save space
                     ansArray.append(newAct)
-                    continue # continue to avoid repeated appending
+                    continue  # continue to avoid repeated appending
             if minDate:
                 # minDate is not None
                 # filter by minDate
@@ -704,9 +736,9 @@ def findAct(request):
                         'tags': act.tags,
                         'state': act.state,
                         'comments': act.comments
-                    } # remove the detail and images, to save space
+                    }  # remove the detail and images, to save space
                     ansArray.append(newAct)
-                    continue # continue to avoid repeated appending
+                    continue  # continue to avoid repeated appending
             if maxDate:
                 # similar to minDate:
                 # maxDate is not None
@@ -728,12 +760,13 @@ def findAct(request):
                         'tags': act.tags,
                         'state': act.state,
                         'comments': act.comments
-                    } # remove the detail and images, to save space
+                    }  # remove the detail and images, to save space
                     ansArray.append(newAct)
-                    continue # continue to avoid repeated appending
+                    continue  # continue to avoid repeated appending
         # now ansArray contains all the activities that satisfy the filters
         # return ansArray
         return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
+
 
 def getActDetail(request):
     if request.method == 'GET':
@@ -765,6 +798,7 @@ def getActDetail(request):
         # else: not found
         return HttpResponse("Activity not found", status=400)
 
+
 @csrf_exempt
 def partAct(request):
     if request.method == 'POST':
@@ -778,7 +812,8 @@ def partAct(request):
         receiverSchedule = Schedule.objects.filter(id=otherId).first()
         if not senderSchedule:
             # create a new schedule
-            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[], applications=[])
+            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[],
+                                                  applications=[])
             newSchedule.save()
             senderSchedule = newSchedule
         if senderSchedule and receiverSchedule:
@@ -799,24 +834,25 @@ def partAct(request):
                 # next: put a todo in senderSchedule.todos
                 # try check the corresponding todo in receiverSchedule.todos
 
-                newTodo = Todo.objects.create(\
-                    title="(申请中)"+targetAct.title,\
-                    date=targetAct.date,\
-                    start=targetAct.start,\
-                    end=targetAct.end,\
-                    label=targetAct.label,\
-                    type="活动",\
-                    state=0,\
-                    sportType=0,\
-                    sportState="",\
-                    readOnly=1,\
-                    promoter=otherId,\
+                newTodo = Todo.objects.create( \
+                    title="(申请中)" + targetAct.title, \
+                    date=targetAct.date, \
+                    start=targetAct.start, \
+                    end=targetAct.end, \
+                    label=targetAct.label, \
+                    type="活动", \
+                    state=0, \
+                    sportType=0, \
+                    sportState="", \
+                    readOnly=1, \
+                    promoter=otherId, \
                     jobId="")
                 senderSchedule.todos.append(newTodo.id)
                 senderSchedule.save()
                 return HttpResponse("Apply successfully")
             # else: not found
             return HttpResponse("Activity not found", status=400)
+
 
 def getApplication(request):
     if request.method == 'GET':
@@ -844,12 +880,13 @@ def getApplication(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
+
 @csrf_exempt
 def appReply(request):
     if request.method == 'POST':
         id = request.POST.get("id")
         applicationId = request.POST.get("applicationId")
-        isAgree = request.POST.get("isAgree") # 0 <--> false, 1 <--> true
+        isAgree = request.POST.get("isAgree")  # 0 <--> false, 1 <--> true
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
@@ -869,10 +906,10 @@ def appReply(request):
                     todo = Todo.objects.filter(id=todoId).first()
                     if todo:
                         # found
-                        if todo.title == "(申请中)"+activity.title\
-                        and todo.date == activity.date\
-                        and todo.start == activity.start\
-                        and todo.end == activity.end:
+                        if todo.title == "(申请中)" + activity.title \
+                                and todo.date == activity.date \
+                                and todo.start == activity.start \
+                                and todo.end == activity.end:
                             # found
                             if isAgree == 1:
                                 # agree
@@ -885,10 +922,10 @@ def appReply(request):
                                 remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todo.start + ":00"
                                 global todo_schedule
                                 job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
-                                                            args=[touser, todo.title, start_time, end_time])
+                                                            args=[touser, activity.title, start_time, end_time])
                                 print(job)
 
-                                todo.title = "(我参与的)"+activity.title
+                                todo.title = "(我参与的)" + activity.title
                                 todo.readOnly = 1
                                 todo.jobId = job.id
                                 todo.save()
@@ -911,7 +948,8 @@ def appReply(request):
             return HttpResponse("Application not found", status=400)
         # else: not found
         return HttpResponse("Schedule not found", status=400)
-                                
+
+
 def nDays(date, n):
     # date is a string in the form of "yyyy/mm/dd"
     # n>0 is an integer
@@ -934,7 +972,8 @@ def nDays(date, n):
         # add thisDayStr to the output array
         ansArray.append(thisDayStr)
     return ansArray
-    
+
+
 def getddl(request):
     if request.method == 'GET':
         id = request.GET.get("id")
@@ -955,8 +994,8 @@ def getddl(request):
                     todo = Todo.objects.filter(id=todoID).first()
                     if todo:
                         # exists
-                        if todo.date == date\
-                        and todo.type == "ddl":
+                        if todo.date == date \
+                                and todo.type == "ddl":
                             # a match
                             newTodo = {
                                 'title': todo.title,
