@@ -574,7 +574,7 @@ def findAct(request):
         ansArray = []
         # find in Activity.objects by the five filters
         if participantsId:
-            participantId = json.loads(participantsId)
+            participantsId = json.loads(participantsId)
             set_of_participantsId = set(participantsId)
         for act in Activity.objects.all():
             if promoterId:
