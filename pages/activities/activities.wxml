@@ -39,8 +39,8 @@
         </span>
       </view>
       <view slot="footer">
-        <van-button size="mini" bind:click="showdetail">查看</van-button>
-        <van-button size="mini" bind:click="signup" wx:if="{{item.state == 0}}">报名</van-button>
+        <van-button size="mini" data-id="{{item-id}}" bind:click="showdetail">查看</van-button>
+        <van-button size="mini" data-id="{{item-id}}" bind:click="signup" wx:if="{{item.state == 0}}">报名</van-button>
       </view>
     </van-card>
   </view>

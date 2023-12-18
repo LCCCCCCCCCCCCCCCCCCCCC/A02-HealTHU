@@ -1,1 +1,59 @@
 /* pages/activities/activity/activity.wxss */
+swiper{
+  /* position: relative; */
+  margin-top: 15px;
+  margin-left: 30px;
+  width:100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+}
+swiper.item{
+  margin-left: auto;
+  margin-right: auto;
+}
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left: 12px;
+}
+.name {
+  position: absolute;
+  margin-left:12px;
+  margin-top: 12px;
+  font-size: 30rpx;
+  color: #333333;
+}
+.title-text {
+  font-size: 36rpx;
+  color: #333333;
+}
+.tags {
+  padding-left: 16px;
+}
+.progress-down {
+  padding-top: 9px;
+}
+.round-click{
+  height: 120rpx;
+  width: 120rpx;
+  background-color: #39C5BB;
+  border-radius: 100%;
+  position: fixed;
+  bottom: 150rpx;
+  right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+}
+.labeltag{
+  color: blue;
+}
+/* 颜色改不动，之后再试试 */
+.detail{
+  margin-left: 24px;
+  margin-right:24px;
+  margin-bottom: 12px;
+}
