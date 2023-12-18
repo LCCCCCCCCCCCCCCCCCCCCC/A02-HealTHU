@@ -102,7 +102,7 @@
   </view>
 </van-cell>
 <van-cell-group inset title="参与者：{{activity.participantNum}}">
-  <view wx:for="{{activity.patticipants}}" wx:key="index">
+  <view wx:for="{{activity.participants}}" wx:key="index">
     <van-cell is-link
       title="{{item}}" 
       link-type="navigateTo"

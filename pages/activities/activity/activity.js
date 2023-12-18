@@ -19,7 +19,7 @@ Page({
       promoterId:3,
       promoterUrl:'../../images/avatar4.jpg',
       participantNum:2,
-      patticipants:["teto","GUMI"],
+      participants:["teto","GUMI"],
       participantsId:[5,7],
       partNumMin:2,
       partNumMax:4,
@@ -76,12 +76,53 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    var idself = wx.getStorageSync('id');
-    var idself2 = options.actid;
-    this.setData({
-      userid : idself,
-      actid : idself2
-    });
+    var actid = options.actid;
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      data:{
+        'actId': actid
+      },
+      method:'GET',
+      success:function(res){
+        var activity = res.data
+        activity.promoterId = activity.promoter
+        activity.participantNum = activity.participants.length
+        activity.participantsId = activity.participants
+        wx.request({
+          url:'http://127.0.0.1:8000/user/getDetail/',
+          data:{
+            'hostId': activity.promoter,
+            'customerId':activity.promoter
+          },
+          method:'GET',
+          success:function(res){
+            var dataa = JSON.parse(res.data)
+            activity.promoter = dataa.nickName
+            activity.promoterUrl = dataa.avatarUrl
+          }
+        })
+        for(let i = 0;i<activity.participantNum;i++){
+          wx.request({
+            url:'http://127.0.0.1:8000/user/getDetail/',
+            data:{
+              'hostId': activity.promoter,
+              'customerId':activity.participantsId[i]
+            },
+            method:'GET',
+            success:function(res){
+              var dataa = JSON.parse(res.data)
+              activity.participants[i] = dataa.nickName
+              if(i == activity.participantNum - 1){
+                that.setData({
+                  activity:activity
+                })
+              }
+            }
+          })
+        }
+      }
+    })
     // actid请求和data设置
   },
 
