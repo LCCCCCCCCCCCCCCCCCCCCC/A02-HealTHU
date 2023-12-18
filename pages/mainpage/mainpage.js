@@ -64,7 +64,7 @@ Page({
     // datas.filter is not a function, 没有在首页登录的话就会没有storage，所以其他页面应该先检查一下登陆状态（以及后端）
     //var datas = wx.getStorageSync('todos');
     //todo:主页只展示结束时间在当前时间之后的
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate()
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     var currentTime = parseInt(new Date().getHours() + "" + (new Date().getMinutes()).toString().padStart(2, '0'))
     var that = this
     var id = wx.getStorageSync('id')

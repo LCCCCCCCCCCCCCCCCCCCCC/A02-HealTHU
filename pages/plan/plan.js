@@ -14,7 +14,7 @@ Page({
         "饮食": "#BB00BB"
     },
     dateshow: false,
-    date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+    date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0'),
     todos:[
     ],
     title:"",
@@ -52,8 +52,8 @@ Page({
     // 构建新的日期字符串，假设你想向后切换一天
     var newDate = new Date(year, month - 1, day - 1);
     var newYear = newDate.getFullYear();
-    var newMonth = newDate.getMonth() + 1;
-    var newDay = newDate.getDate();
+    var newMonth = (newDate.getMonth() + 1).toString().padStart(2, '0');
+    var newDay = newDate.getDate().toString().padStart(2, '0');
     var dateString = newYear + '/' + newMonth + '/' + newDay;
     // 页面跳转并传递新的日期参数
     wx.redirectTo({
@@ -70,8 +70,8 @@ Page({
     // 构建新的日期字符串，假设你想向后切换一天
     var newDate = new Date(year, month - 1, day + 1);
     var newYear = newDate.getFullYear();
-    var newMonth = newDate.getMonth() + 1;
-    var newDay = newDate.getDate();
+    var newMonth = (newDate.getMonth() + 1).toString().padStart(2, '0');
+    var newDay = newDate.getDate().toString().padStart(2, '0');
     var dateString = newYear + '/' + newMonth + '/' + newDay;
     // 页面跳转并传递新的日期参数
     console.log(dateString);
@@ -85,7 +85,7 @@ Page({
     const buttonId = event.currentTarget.dataset.id;
     var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
     nowTime = parseInt(nowTime.replace(":",""))
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate()
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     var start = parseInt(this.data.todos[buttonId].start.replace(":", ""))
     var end = parseInt(this.data.todos[buttonId].end.replace(":", ""))
     if((date > this.data.date)||((date == this.data.date)&&(end<nowTime))){
@@ -161,7 +161,7 @@ Page({
         });
         var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
         nowTime = parseInt(nowTime.replace(":",""))
-        var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate()
+        var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
         for(var i = 0;i<data.length;i++){
           var start = parseInt(data[i].start.replace(":", ""))
           var end = parseInt(data[i].end.replace(":", ""))
@@ -221,8 +221,8 @@ Page({
   formatDate(date) {
     var newDate = new Date(date);
     var newYear = newDate.getFullYear();
-    var newMonth = newDate.getMonth() + 1;
-    var newDay = newDate.getDate();
+    var newMonth = (newDate.getMonth() + 1).toString().padStart(2, '0');
+    var newDay = newDate.getDate().toString().padStart(2, '0');
     var dateString = newYear + '/' + newMonth + '/' + newDay;
     console.log(dateString)
     return dateString;

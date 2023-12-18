@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+    date: new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0'),
     dateshow: false,
     option1: [
       { text: 'ddl', value: 0 },
@@ -45,7 +45,7 @@ Page({
   },
   formatDate(date) {
     date = new Date(date);
-    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
     //TODO：把todos里的值改为该天的todos
   },
   onConfirm(event) {
@@ -291,7 +291,7 @@ Page({
   isValid(start,end,todos,type){
     var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
     nowTime = parseInt(nowTime.replace(":",""))
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0'),
     start = parseInt(start.replace(":", ""))
     end = parseInt(end.replace(":", ""))
     if(start>end){
