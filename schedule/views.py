@@ -644,9 +644,134 @@ def getActDetail(request):
         # else: not found
         return HttpResponse("Activity not found", status=400)
 
+@csrf_exempt
 def partAct(request):
-    return HttpResponse("Hello, world. You're at the schedule partAct.")
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        otherId = request.POST.get("otherId")
+        actId = request.POST.get("actId")
+        message = request.POST.get("message")
+        # send a apply message about actId from id to otherId
+        # first, find id and otherId in Schedule.objects
+        senderSchedule = Schedule.objects.filter(id=id).first()
+        receiverSchedule = Schedule.objects.filter(id=otherId).first()
+        if senderSchedule and receiverSchedule:
+            # both found
+            # then, find actId in Activity.objects
+            targetAct = Activity.objects.filter(id=actId).first()
+            if targetAct:
+                # found
+                # then, append a new Application to receiverSchedule.appoints
+                newApplication = {
+                    'applyerId': id,
+                    'actId': actId,
+                    'message': message,
+                    'title': targetAct.title
+                }
+                receiverSchedule.applications.append(newApplication.id)
+                receiverSchedule.save()
+                # next: put a todo in senderSchedule.todos
+                # try check the corresponding todo in receiverSchedule.todos
+                newTodo = Todo.objects.create(\
+                    title="(申请中)"+targetAct.title,\
+                    date=targetAct.date,\
+                    start=targetAct.start,\
+                    end=targetAct.end,\
+                    label=targetAct.label,\
+                    type="活动",\
+                    state=0,\
+                    sportType=0,\
+                    sportState="",\
+                    readOnly=1,\
+                    promoter=otherId)
+                senderSchedule.todos.append(newTodo.id)
+                senderSchedule.save()
+                return HttpResponse("Apply successfully")
+            # else: not found
+            return HttpResponse("Activity not found", status=400)
 
+def getApplication(request):
+    if request.method == 'GET':
+        id = request.GET.get("id")
+        # find the schedule (if any) according to the id
+        targetSchedule = Schedule.objects.filter(id=id).first()
+        if targetSchedule:
+            # found
+            # find all applications in targetSchedule.applications
+            allApplications = targetSchedule.applications
+            ansArray = []
+            for applicationID in allApplications:
+                application = Application.objects.filter(id=applicationID).first()
+                if application:
+                    # found
+                    newApplication = {
+                        'id': application.id,
+                        'applyerId': application.applyerId,
+                        'actId': application.actId,
+                        'message': application.message,
+                        'title': application.title
+                    }
+                    ansArray.append(newApplication)
+            return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
+
+@csrf_exempt
+def appReply(request):
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        applicationId = request.POST.get("applicationId")
+        isAgree = request.POST.get("isAgree") # 0 <--> false, 1 <--> true
+        # find the schedule (if any) according to the id
+        targetSchedule = Schedule.objects.filter(id=id).first()
+        if targetSchedule:
+            # found
+            # find the info of the application
+            application = Application.objects.filter(id=applicationId).first()
+            if application:
+                # found
+                # get the info of this application
+                applyerId = application.applyerId
+                actId = application.actId
+                applicantSchedule = Schedule.objects.filter(id=applyerId).first()
+                activity = Activity.objects.filter(id=actId).first()
+                # find the corresponding todo in applicantSchedule.
+                allTodos = applicantSchedule.todos
+                for todoId in allTodos:
+                    todo = Todo.objects.filter(id=todoId).first()
+                    if todo:
+                        # found
+                        if todo.title == "(申请中)"+activity.title\
+                        and todo.date == activity.date\
+                        and todo.start == activity.start\
+                        and todo.end == activity.end:
+                            # found
+                            if isAgree == 1:
+                                # agree
+                                # change the corresponding todo
+                                todo.title = "(我参与的)"+activity.title
+                                todo.readOnly = 1
+                                todo.save()
+                                # add the applicant to activity.participants
+                                activity.participants.append(applyerId)
+                                activity.save()
+                            else:
+                                # isAgree == 0, disagree
+                                # delete the corresponding todo
+                                applicantSchedule.todos.remove(todoId)
+                                applicantSchedule.save()
+                                todo.delete()
+                                # do nothing to activity.participants
+                            # whatever the result is, delete the application
+                            targetSchedule.applications.remove(applicationId)
+                            targetSchedule.save()
+                            application.delete()
+                            return HttpResponse("Reply successfully")
+            # else: not found
+            return HttpResponse("Application not found", status=400)
+        # else: not found
+        return HttpResponse("Schedule not found", status=400)
+                                
 def nDays(date, n):
     # date is a string in the form of "yyyy/mm/dd"
     # n>0 is an integer

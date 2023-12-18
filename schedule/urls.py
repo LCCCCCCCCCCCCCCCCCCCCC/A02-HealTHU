@@ -14,4 +14,6 @@ urlpatterns=[
     path('getddl/',views.getddl),
     path('doTodo/',views.doTodo),
     path('getActDetail/',views.getActDetail),
+    path('getApplication/',views.getApplication),
+    path('appReply/',views.addReply),
 ]

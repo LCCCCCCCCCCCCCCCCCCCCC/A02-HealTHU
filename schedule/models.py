@@ -16,9 +16,7 @@ class Todo(models.Model):
 
 class Comment(models.Model):
     commenterId = models.IntegerField()
-    activityId = models.IntegerField()
-    nickName = models.CharField(max_length=50)
-    avatarUrl = models.CharField(max_length=200)
+    actId = models.IntegerField()
     comment = models.CharField(max_length=200)
     likes = models.IntegerField()
     likesID = models.JSONField()
@@ -47,6 +45,12 @@ class Appointment(models.Model):
     start = models.CharField(max_length=50)
     end = models.CharField(max_length=50)
     
+class Application(models.Model):
+    applyerId = models.IntegerField()
+    actId = models.IntegerField()
+    message = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
+    
 class Schedule(models.Model):
     id = models.AutoField(primary_key=True) # an int automatically incremented
     userid = models.CharField(max_length=20) # the openid from wechat
@@ -54,3 +58,4 @@ class Schedule(models.Model):
     partiActs = models.JSONField()
     initiActs = models.JSONField()
     appoints = models.JSONField()
+    applications = models.JSONField()
