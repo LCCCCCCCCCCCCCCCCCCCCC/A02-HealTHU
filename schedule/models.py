@@ -14,7 +14,18 @@ class Todo(models.Model):
     sportState = models.CharField(max_length=20)
     readOnly = models.IntegerField() # 0 <--> false, 1 <--> true
 
+class Comment(models.Model):
+    commenterId = models.IntegerField()
+    activityId = models.IntegerField()
+    nickName = models.CharField(max_length=50)
+    avatarUrl = models.CharField(max_length=200)
+    comment = models.CharField(max_length=200)
+    likes = models.IntegerField()
+    likesID = models.JSONField()
+    pubTime = models.CharField(max_length=50)
+
 class Activity(models.Model):
+    pubTime = models.CharField(max_length=50)
     title = models.CharField(max_length=100)
     promoter = models.IntegerField()
     participants = models.JSONField()
@@ -23,12 +34,12 @@ class Activity(models.Model):
     date = models.CharField(max_length=50)
     start = models.CharField(max_length=50)
     end = models.CharField(max_length=50)
-    place = models.CharField(max_length=50)
     label = models.CharField(max_length=50)
     detail = models.CharField(max_length=200)
     images = models.JSONField()
     tags = models.JSONField()
     state = models.IntegerField()
+    comments = models.JSONField()
 
 class Appointment(models.Model):
     gym = models.CharField(max_length=20)
