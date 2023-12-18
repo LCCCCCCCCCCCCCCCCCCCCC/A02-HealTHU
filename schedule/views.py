@@ -231,11 +231,23 @@ def addAct(request):
         actStart = request.POST.get("start")
         actEnd = request.POST.get("end")
         actLabel = request.POST.get("label")
-        actDetail = request.POST.get("detail")
-        actImages = json.loads(request.POST.get("images"))
-        actTags = json.loads(request.POST.get("tags"))
+        actDetail = request.POST.get("detail") 
         actState = request.POST.get("state")
-        actComments = request.POST.get("comments")
+        img = request.POST.get("images")
+        if img:
+            actImages = json.loads(img)
+        else:
+            actImages = []
+        tags = request.POST.get("tags")
+        if tags:
+            actTags = json.loads(tags)
+        else:
+            actTags = []
+        comments = request.POST.get("comments")
+        if comments:
+            actComments = json.loads(comments)
+        else:
+            actComments = []
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
@@ -365,8 +377,16 @@ def changeAct(request):
         newActPartNumMax = request.POST.get("newPartNumMax")
         newActLabel = request.POST.get("newLabel")
         newActDetail = request.POST.get("newDetail")
-        newActImages = json.loads(request.POST.get("newImages"))
-        newActTags = json.loads(request.POST.get("newTags"))
+        img = request.POST.get("newImages")
+        if img:
+            newActImages = json.loads(img)
+        else:
+            newActImages = []
+        tags = request.POST.get("newTags")
+        if tags:
+            newActTags = json.loads(tags)
+        else:
+            newActTags = []
         # find the activity (if any) according to the actId
         targetAct = Activity.objects.filter(id=actId).first()
         if targetAct:
