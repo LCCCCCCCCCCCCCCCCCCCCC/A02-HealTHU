@@ -283,7 +283,8 @@ def addAct(request):
             sportType=0,\
             sportState="",\
             readOnly=1,\
-            promoter=actPromoter)
+            promoter=actPromoter,\
+            applications=[])
         # >> get the newTodo's id in Todo.objects
         newTodoId = newTodo.id
         # >> append this id into targetSchedule.todos
@@ -684,7 +685,8 @@ def partAct(request):
                     sportType=0,\
                     sportState="",\
                     readOnly=1,\
-                    promoter=otherId)
+                    promoter=otherId,\
+                    applications=[])
                 senderSchedule.todos.append(newTodo.id)
                 senderSchedule.save()
                 return HttpResponse("Apply successfully")
