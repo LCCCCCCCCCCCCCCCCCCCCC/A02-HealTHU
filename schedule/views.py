@@ -443,7 +443,6 @@ def deleteAct(request):
                             and todo.start == targetAct.start\
                             and todo.end == targetAct.end:
                                 todoFound = True
-                                global todo_schedule
                                 todo_schedule.remove_job(todo.jobId)
                                 # delete not only the todoID in participantSchedule.todos;
                                 allTodos.remove(todoID)
