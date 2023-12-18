@@ -404,8 +404,8 @@ wx.request({
 |id|int|用户id|
 |appId|int|申请者id|
 |actId|int|活动id|
-|isAgree|bool|是否同意加入|
-|application|application|申请信息|
+|isAgree|int|是否同意加入|
+|applicationId|int|申请信息|
 
 提示：也是act端和todo端都要进行更改，如果同意，申请者todo事项的前缀从"(申请中)"改为"(我参与的)"，否则删除这条事项。同时，删掉被申请者的这条申请信息，对活动参与人进行更改。
 
