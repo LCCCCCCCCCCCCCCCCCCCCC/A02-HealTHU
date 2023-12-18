@@ -41,7 +41,39 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    var that = this
+    let id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/findAct/',
+      data:{
+        'maxDate': '2024/02/19'
+      },
+      method:'GET',
+      success:function(res){
+        let data = res.data
+        console.log(data)
+        for(let i = 0;i<data.length;i++){
+          data[i].participantNum = data[i].participants.length
+          wx.request({
+            url:'http://127.0.0.1:8000/user/getDetail/',
+            data:{
+              'hostId': data[i].promoter,
+              'customerId':data[i].promoter
+            },
+            method:'GET',
+            success:function(res){
+              var dataa = JSON.parse(res.data)
+              data[i].promoter = dataa.nickName
+              if(i == data.length - 1){
+                that.setData({
+                  activities2: data
+                })
+              }
+            }
+          })
+        }
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -24,7 +24,7 @@
     <van-empty description="关注的人还没有参加过活动"></van-empty>
   </van-tab>
   <van-tab title="活动">
-  <view wx:for="{{activities}}" wx:key="index">
+  <view wx:for="{{activities2}}" wx:key="index">
     <van-card 
     desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
     title="{{item.title}}"
