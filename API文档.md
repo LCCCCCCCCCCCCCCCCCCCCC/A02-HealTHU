@@ -402,8 +402,6 @@ wx.request({
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
-|appId|int|申请者id|
-|actId|int|活动id|
 |isAgree|int|是否同意加入|
 |applicationId|int|申请信息|
 
