@@ -476,54 +476,53 @@ def changeAct(request):
         targetAct = Activity.objects.filter(id=actId).first()
         if targetAct:
             # found
-            # first change the todo itself in Todo.objects
-            initTodo = Todo.objects.filter(\
-                title="(我发起的)"+targetAct.title,\
-                date=targetAct.date,\
-                start=targetAct.start,\
-                end=targetAct.end,\
-                promoter=targetAct.promoter).first()
-            if initTodo:
-                # found
-                global todo_schedule
-                todo_schedule.remove_job(initTodo.jobId)
-                user = User.objects.filter(id=targetAct.promoter).first()
-                touser = user.userid
-                todo_year, todo_month, todo_day = initTodo.date.split("/")
-                start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + initTodo.start
-                end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + initTodo.end
-                remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + initTodo.start + ":00"
-                job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
-                                            args=[touser, newActTitle, start_time, end_time])
-                print(job)
-                initTodo.title = "(我发起的)"+newActTitle
-                initTodo.label = newActLabel
-                initTodo.jobId = job.id
-                initTodo.save()
-            # then change the todo in the promoter's schedule
-            allPartTodos = Todo.objects.filter(\
-                title="(我参与的)"+targetAct.title,\
-                date=targetAct.date,\
-                start=targetAct.start,\
-                end=targetAct.end,\
-                promoter=targetAct.promoter)
-            for partTodo in allPartTodos:
-                # found
-                partTodo.title = "(我参与的)"+newActTitle
-                partTodo.label = newActLabel
-                partTodo.save()
-            allApplyingTodos = Todo.objects.filter(\
-                title="(申请中)"+targetAct.title,\
-                date=targetAct.date,\
-                start=targetAct.start,\
-                end=targetAct.end,\
-                promoter=targetAct.promoter).first()
-            for applyingTodo in allApplyingTodos:
-                # found
-                applyingTodo.title = "(申请中)"+newActTitle
-                applyingTodo.label = newActLabel
-                applyingTodo.save()
-            # finally change the activity in Activity.objects
+            # first change the todos in Todo.objects
+            promoter = targetAct.promoter
+            promoterSchedule = Schedule.objects.filter(id=promoter).first()
+            promoterTodos = promoterSchedule.todos
+            for todoId in promoterTodos:
+                todo = Todo.objects.filter(id=todoId).first()
+                if todo:
+                    # found
+                    if todo.title == "(我发起的)"+targetAct.title\
+                    and todo.date == targetAct.date\
+                    and todo.start == targetAct.start\
+                    and todo.end == targetAct.end:
+                        # found
+                        # todo: send msgs
+                        # change!
+                        todo.title = "(我发起的)"+newActTitle
+                        todo.label = newActLabel
+                        todo.save()
+            participants = targetAct.participants
+            for participantId in participants:
+                participantSchedule = Schedule.objects.filter(id=participantId).first()
+                participantTodos = participantSchedule.todos
+                for todoId in participantTodos:
+                    todo = Todo.objects.filter(id=todoId).first()
+                    if todo:
+                        # found
+                        if todo.title == "(我参与的)"+targetAct.title\
+                        and todo.date == targetAct.date\
+                        and todo.start == targetAct.start\
+                        and todo.end == targetAct.end:
+                            # found
+                            # todo: send msgs
+                            # change!
+                            todo.title = "(我参与的)"+newActTitle
+                            todo.label = newActLabel
+                            todo.save()
+                        if todo.title == "(申请中)"+targetAct.title\
+                        and todo.date == targetAct.date\
+                        and todo.start == targetAct.start\
+                        and todo.end == targetAct.end:
+                            # found
+                            # todo: send msgs
+                            # change!
+                            todo.title = "(申请中)"+newActTitle
+                            todo.label = newActLabel
+                            todo.save()
+            # then change the activity in Activity.objects
             targetAct.title = newActTitle
             targetAct.partNumMin = newActPartNumMin
             targetAct.partNumMax = newActPartNumMax
@@ -535,6 +534,8 @@ def changeAct(request):
             return HttpResponse("Change successfully")
         # else: not found
         return HttpResponse("Activity not found", status=400)
+            
+                    
 
 def findAct(request):
     if request.method == 'GET':
