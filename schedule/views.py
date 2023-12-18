@@ -84,7 +84,7 @@ def todos(request):
             # return ansArray
             return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
         # else: not found
-        return HttpResponse("Schedule not found", status=400)
+        return HttpResponse(json.dumps([], ensure_ascii=False))
 
 @csrf_exempt
 def deleteTodo(request):
