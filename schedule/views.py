@@ -482,15 +482,15 @@ def changeAct(request):
 
 def findAct(request):
     if request.method == 'GET':
-        promoterId = int(request.GET.get("promoter")) # optional
+        promoterId = request.GET.get("promoter") # optional
         participantsId = request.GET.get("participants") # optional
         keyForSearch = request.GET.get("keyForSearch") # optional
         minDate = request.GET.get("minDate") # optional, >= minDate
         maxDate = request.GET.get("maxDate") # optional, <= maxDate
         # note that the preceding five params are filters that are conencted by OR
         # i.e. activities satisfiying any of the five filters will be returned
-        isRandom = bool(request.GET.get("isRandom"))
-        if isRandom:
+        isRandom = request.GET.get("isRandom")
+        if isRandom == 1:
             # randomly pick up to 20 activities
             # get the number of objects in Activity.objects
             num_of_acts = Activity.objects.count()
