@@ -3,16 +3,46 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from .models import Schedule
 from .models import Todo
 from .models import Appointment
 from .models import Activity
+from user.models import User
+from __init__ import access_token
 import requests
 import json
 import datetime
 import random
 # Create your views here.
+
+#全局todo任务list
+todo_schedule = BackgroundScheduler()
+
+#微信提醒函数，参数为用户openid,todo项name,开始时间,结束时间
+def wx_reminder(touser, todoname, starttime, endtime):
+    url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token
+    data = {
+        "template_id": "fHPE-sivPSATvWyAsqHrlIFKo6-6NN20DmVxFx8q4I8",
+        "touser": touser,
+        "page": "pages/personalcenter/mainpage",
+        "data": {
+            "thing1": {
+                "value": todoname
+            },
+            "time2": {
+                "value": starttime
+            },
+            "time9": {
+                "value": endtime
+            }
+        },
+        "miniprogram_state": "developer",
+        "lang": "zh_CN"
+    }
+    response = requests.post(url, json=data)
+
 def todos(request):
     if request.method == 'GET':
         id = request.GET.get("id") # the id of the schedule
@@ -151,6 +181,17 @@ def addTodo(request):
         todoSportType = request.POST.get("sportType")
         todoSportState = request.POST.get("sportState")
         todoReadOnly = request.POST.get("readOnly")
+
+        # 添加定时向用户发送微信提醒
+        user = User.objects.filter(id=id).first()
+        touser = user.userid
+        todo_year, todo_month, todo_day = todoDate.split("/")
+        start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoStart
+        end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoEnd
+        remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todoStart + ":00"
+        global todo_schedule
+        job = todo_schedule.add_job(wx_reminder(touser,todoTitle,start_time,end_time), 'date', run_date=remind_time)
+
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if not targetSchedule:
