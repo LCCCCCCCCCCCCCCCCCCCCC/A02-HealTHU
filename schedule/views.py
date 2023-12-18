@@ -775,6 +775,11 @@ def partAct(request):
         # first, find id and otherId in Schedule.objects
         senderSchedule = Schedule.objects.filter(id=id).first()
         receiverSchedule = Schedule.objects.filter(id=otherId).first()
+        if not senderSchedule:
+            # create a new schedule
+            newSchedule = Schedule.objects.create(id=id, todos=[], partiActs=[], initiActs=[], appoints=[], applications=[])
+            newSchedule.save()
+            senderSchedule = newSchedule
         if senderSchedule and receiverSchedule:
             # both found
             # then, find actId in Activity.objects
