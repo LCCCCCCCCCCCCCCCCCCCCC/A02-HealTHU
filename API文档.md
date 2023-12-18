@@ -72,11 +72,8 @@ state不为0或为公共活动时，todo均只读
 |-------------|-------------|-------------|
 |pubTime|string|发布时间|
 |title|string|标题|
-|promoter|string|发起人|
-|promoterId|int|发起人id|
-|promoterUrl|string|发起人头像|
-|participants|string[]|参与人|
-|participantsId|int[]|参与人Id|
+|promoter|int|发起人|
+|participants|int[]|参与人Id|
 |partNumMin|int|人数最小值|
 |partNumMax|int|人数最大值|
 |date|string|日期(格式为年/月/日)|
@@ -92,13 +89,15 @@ state不为0或为公共活动时，todo均只读
 ##### 活动评价 comment
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|Id|int|评价人Id|
+|id|int|按照评价添加顺序即可|
+|commenterId|int|评价人Id|
 |nickName|string|评价人昵称|
 |avatarUrl|string|头像|
 |comment|string|内容|
 |likes|int|点赞数|
+|likesId|int[]|点赞者的Id|
 |pubTime|string|发布时间|
-|id|int|按照评价添加顺序即可|
+
 
 #### 预约的场馆 appoint
 |字段|类型|说明|
