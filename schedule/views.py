@@ -22,6 +22,8 @@ import random
 #全局 todo 任务 list
 todo_schedule = BackgroundScheduler()
 todo_schedule.start()
+
+
 #微信提醒函数，参数为用户 openid,todo 项 name，开始时间，结束时间
 def wx_reminder(touser, todoname, starttime, endtime):
     url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token
@@ -108,6 +110,9 @@ def deleteTodo(request):
                     and todo.title == oldTodoTitle:
                         # a match
                         todoFound = True
+                        if todo.type == "活动" or todo.type == "运动":
+                            global todo_schedule
+                            todo_schedule.remove_job(todo.jobId)
                         # delete not only the todoID in targetSchedule.todos;
                         allTodos.remove(todoID)
                         targetSchedule.save()
@@ -151,6 +156,21 @@ def changeTodo(request):
                     and todo.end == oldTodoEnd\
                     and todo.title == oldTodoTitle:
                         # a match
+                        newjobId = ""
+                        if todo.type == "活动" or todo.type == "运动":
+                            global todo_schedule
+                            todo_schedule.remove_job(todo.jobId)
+                        if newTodoType == "活动" or newTodoType == "运动":
+                            user = User.objects.filter(id=id).first()
+                            touser = user.userid
+                            todo_year, todo_month, todo_day = newTodoDate.split("/")
+                            start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + newTodoStart
+                            end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + newTodoEnd
+                            remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + newTodoStart + ":00"
+                            job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
+                                                        args=[touser, newTodoTitle, start_time, end_time])
+                            print(job)
+                            newjobId = job.id
                         todoFound = True
                         # change only the corresponding todo object in Todo.objects,
                         # since the todoID itself is not changed
@@ -163,6 +183,7 @@ def changeTodo(request):
                         todo.state = newTodoState
                         todo.sportType = newTodoSportType
                         todo.sportState = newTodoSportState
+                        todo.jobId = newjobId
                         todo.save()
             if todoFound:
                 return HttpResponse("Change successfully")
@@ -193,11 +214,6 @@ def addTodo(request):
             start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoStart
             end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + todoEnd
             remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + todoStart + ":00"
-            print(touser)
-            print(todoTitle)
-            print(start_time)
-            print(end_time)
-            print(remind_time)
             global todo_schedule
             job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
             print(job)
@@ -397,6 +413,8 @@ def deleteAct(request):
                         and todo.start == targetAct.start\
                         and todo.end == targetAct.end:
                             todoFound = True
+                            global todo_schedule
+                            todo_schedule.remove_job(todo.jobId)
                             # delete not only the todoID in promotorSchedule.todos;
                             allTodos.remove(todoID)
                             promotorSchedule.save()
@@ -425,6 +443,8 @@ def deleteAct(request):
                             and todo.start == targetAct.start\
                             and todo.end == targetAct.end:
                                 todoFound = True
+                                global todo_schedule
+                                todo_schedule.remove_job(todo.jobId)
                                 # delete not only the todoID in participantSchedule.todos;
                                 allTodos.remove(todoID)
                                 participantSchedule.save()
@@ -466,8 +486,20 @@ def changeAct(request):
                 promoter=targetAct.promoter).first()
             if initTodo:
                 # found
+                global todo_schedule
+                todo_schedule.remove_job(initTodo.jobId)
+                user = User.objects.filter(id=targetAct.promoter).first()
+                touser = user.userid
+                todo_year, todo_month, todo_day = initTodo.date.split("/")
+                start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + initTodo.start
+                end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + initTodo.end
+                remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + initTodo.start + ":00"
+                job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,
+                                            args=[touser, newActTitle, start_time, end_time])
+                print(job)
                 initTodo.title = "(我发起的)"+newActTitle
                 initTodo.label = newActLabel
+                initTodo.jobId = job.id
                 initTodo.save()
             # then change the todo in the promoter's schedule
             partTodo = Todo.objects.filter(\
