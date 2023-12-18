@@ -973,4 +973,4 @@ def getddl(request):
                             targetTodos.append(newTodo)
             return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
         # else: not found
-        return HttpResponse("Schedule not found", status=400)
+        return HttpResponse(json.dumps([], ensure_ascii=False))
