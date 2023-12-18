@@ -27,7 +27,7 @@
     bind:change="handleNameInput"
   />
   <van-field
-    label="活动类型"
+    label="活动简介"
     placeholder=""
     bind:change="handleLabelInput"
   />

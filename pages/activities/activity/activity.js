@@ -14,6 +14,7 @@ Page({
     signtext: '',
     scoretext: '',
     activity:{
+      /*
       title: "软件学院2023秋第10周集体锻炼",
       promoter:"NLno", 
       promoterId:3,
@@ -31,7 +32,9 @@ Page({
       images:['../../images/swiper1.jpg', '../../images/swiper2.jpg', '../../images/swiper3.jpg'],
       tags:["紫荆操场","飞盘","集体锻炼"],
       state:0
-    }
+      */
+    },
+    todos:[]
   },
 
   // TODO：报名和评分处理
@@ -39,14 +42,50 @@ Page({
 
   },
   signupConfirm() {
-
+    var id = wx.getStorageSync('id')
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/partAct/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id: id,
+        otherId: that.data.activity.promoterId,
+        actId: that.data.activity.id,
+        message: that.data.signtext
+      },
+      method:'POST',
+      success:function(res){
+        wx.showToast({ title: '报名成功', icon: 'success' });
+      }
+    })
   },
   handleSignup() {
     if(this.data.activity.state == 1){
       wx.showToast({ title: '活动已结束', icon: 'cross' });
     }
     else{
-      this.setData({ signshow : true }); 
+      let that = this
+      let id = wx.getStorageSync('id')
+      wx.request({
+        url:'http://127.0.0.1:8000/schedule/todos/',
+        data:{
+          'id': id,
+          'date': that.data.activity.date
+        },
+        method:'GET',
+        success:function(res){
+          var data = res.data
+          that.setData({
+            todos: data
+          });
+          if(that.isValid(that.data.activity.start,that.data.activity.end,that.data.todos,"活动")){
+            this.setData({ signshow : true }); 
+          }
+          else{
+            wx.showToast({ title: '时间冲突'})
+          }
+        }
+      })
     }
   },
   handleScore() {
@@ -100,8 +139,11 @@ Page({
             var dataa = JSON.parse(res.data)
             activity.promoter = dataa.nickName
             activity.promoterUrl = dataa.avatarUrl
+            that.setData({
+              activity:activity
+            })
           }
-        })
+        })      
         for(let i = 0;i<activity.participantNum;i++){
           wx.request({
             url:'http://127.0.0.1:8000/user/getDetail/',
@@ -114,6 +156,7 @@ Page({
               var dataa = JSON.parse(res.data)
               activity.participants[i] = dataa.nickName
               if(i == activity.participantNum - 1){
+                console.log(activity)
                 that.setData({
                   activity:activity
                 })
@@ -173,5 +216,27 @@ Page({
    */
   onShareAppMessage() {
 
+  },
+  isValid(start,end,todos,type){
+    var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+    nowTime = parseInt(nowTime.replace(":",""))
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0'),
+    start = parseInt(start.replace(":", ""))
+    end = parseInt(end.replace(":", ""))
+    if(start>end){
+      return false;
+    }
+    if((date == this.data.date)&&((start<=nowTime)||(end<=nowTime))){
+      return false;
+    }
+    for (let i = 0; i < todos.length; i++) {
+      const todo = todos[i];
+      let thestart = parseInt(todo.start.replace(":", ""))
+      let theend = parseInt(todo.end.replace(":", ""))
+      if (!((start <= thestart && end <= thestart) || (end >= theend && start >= theend))) {
+        return false; // 与某一项有重叠，不合法
+      }
+    }
+    return true; // 没有重叠，合法
   }
 })

@@ -1,5 +1,5 @@
 <!--pages/activities/activity/activity.wxml-->
-<swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}">
+<swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}"  wx:if="{{activity.images.length != 0}}">
   <view wx:for="{{activity.images}}" wx:key="index">
     <swiper-item>
       <image src="{{item}}" mode="aspectFill"></image>
@@ -13,7 +13,7 @@
   </view>
 </view>
 <view wx:else>
-  <view class="round-click" bind:tap="handleSignup">
+  <view class="round-click" bind:tap="handleSignup" wx:if="{{activity.state == 0}}">
     <text style="color: white;">报名</text>
   </view>
 </view>
@@ -97,7 +97,7 @@
   link-type="navigateTo"
   url="../../personal/personal?id={{activity.participantsId[index]}}">
   <view slot="title">
-    <image class="avatar" src="{{ activity.promoterUrl }}"></image>
+    <image class="avatar" src="{{activity.promoterUrl}}"></image>
     <text class="name">{{ activity.promoter }}（发起人）</text>
   </view>
 </van-cell>
