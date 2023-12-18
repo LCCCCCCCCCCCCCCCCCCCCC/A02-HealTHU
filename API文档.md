@@ -389,12 +389,12 @@ wx.request({
 #### 申请信息 application
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|id|int|申请者id|
-|nickName|string|申请者昵称|
-|url|string|申请者头像|
-|message|string|申请时附带的一段信息|
-|actId|int|活动id|
 |title|string|活动标题|
+|applyerId|int|申请者id|
+|actId|int|活动id|
+|nickName|string|申请者昵称|
+|avatarUrl|string|申请者头像|
+|message|string|申请时附带的一段信息|
 
 #### 同意/不同意申请
 ```HTTP
