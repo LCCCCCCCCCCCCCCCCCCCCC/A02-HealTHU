@@ -8,6 +8,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from .models import Schedule
 from .models import Todo
 from .models import Appointment
+from .models import Comment
+from .models import Application
 from .models import Activity
 from user.models import User
 from .__init__ import access_token
@@ -304,13 +306,8 @@ def addAct(request):
         start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + actStart
         end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + actEnd
         remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + actStart + ":00"
-        print(touser)
-        print(todoTitle)
-        print(start_time)
-        print(end_time)
-        print(remind_time)
         global todo_schedule
-        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
+        job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,actTitle,start_time,end_time])
         print(job)
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
@@ -506,6 +503,7 @@ def changeAct(request):
 
 def findAct(request):
     if request.method == 'GET':
+        ansArray = []
         promoterId = request.GET.get("promoter") # optional
         participantsId = request.GET.get("participants") # optional
         keyForSearch = request.GET.get("keyForSearch") # optional
@@ -759,20 +757,17 @@ def partAct(request):
                 receiverSchedule.save()
                 # next: put a todo in senderSchedule.todos
                 # try check the corresponding todo in receiverSchedule.todos
+
                 user = User.objects.filter(id=id).first()
                 touser = user.userid
                 todo_year, todo_month, todo_day = targetAct.date.split("/")
                 start_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.start
                 end_time = todo_year + "年" + todo_month + "月" + todo_day + "日" + " " + targetAct.end
                 remind_time = todo_year + "-" + todo_month + "-" + todo_day + " " + targetAct.start + ":00"
-                print(touser)
-                print(todoTitle)
-                print(start_time)
-                print(end_time)
-                print(remind_time)
                 global todo_schedule
-                job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,todoTitle,start_time,end_time])
+                job = todo_schedule.add_job(wx_reminder, 'date', run_date=remind_time,args=[touser,targetAct.title,start_time,end_time])
                 print(job)
+
                 newTodo = Todo.objects.create(\
                     title="(申请中)"+targetAct.title,\
                     date=targetAct.date,\
