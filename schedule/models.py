@@ -53,7 +53,7 @@ class Application(models.Model):
     title = models.CharField(max_length=100)
     
 class Schedule(models.Model):
-    id = models.AutoField(primary_key=True) # an int automatically incremented
+    id = models.IntegerField(primary_key=True) # an int automatically incremented
     userid = models.CharField(max_length=20) # the openid from wechat
     todos = models.JSONField()
     partiActs = models.JSONField()
