@@ -19,7 +19,10 @@
 |healthDailies|healthDaily[]|健康日报|
 |healthWeeklies|healthWeekly[]|健康周报 注：健康周报动态变化，为过去一周的集中统计，每日更新|
 |achievements|achievement[]|用户成就|
-|posts|post[]|个人帖子|
+|posts|post[]|帖子|
+|achRange|int|成就可见范围(全部可见/粉丝可见/自己可见)0/1/2 初始为0|
+|actRange|int|活动可见范围|
+|postRange|int|帖子可见范围|
 #### 个人信息 UserInfo
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -34,19 +37,30 @@
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |updateTime|string|最近更新日期|
-|age|int|年龄|
+|birthday|string|生日|
 |gender|string|性别|
 |height|double|身高|
 |weight|double|体重|
+|vitalCapacity|int|肺活量|
+|beizhu|string|备注|
 |bmi|double|BMI指数|
 |grade|double|体测成绩|
-|grade_800m|double|800m成绩|
-|grade_1000m|double|1000m成绩|
-|grade_50m|double|50m成绩|
+|ehundred|string|800m|
+|grade_ehundred|double|800m成绩|
+|thousand|string|1000m|
+|grade_thousand|double|1000m成绩|
+|fifty|string|50m|
+|grade_fifty|double|50m成绩|
+|jump|string|立定跳远|
 |grade_jump|double|立定跳远|
+|sar|string|坐位体前屈|
 |grade_sar|double|坐位体前屈|
+|situp|string|仰卧起坐|
 |grade_situp|int|仰卧起坐|
+|pullup|string|引体向上|
 |grade_pullup|int|引体向上|
+
+grade前缀的为分数成绩
 #### 个性化设置 customSettings
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -98,7 +112,6 @@ state不为0或为公共活动时，todo均只读
 |likesId|int[]|点赞者的Id|
 |pubTime|string|发布时间|
 
-
 #### 预约的场馆 appoint
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -132,6 +145,24 @@ state不为0或为公共活动时，todo均只读
 |type|int|成就类型|
 |icon|string|图标|
 |state|完成情况|
+#### 帖子 post
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|帖子id|
+|LZ|int|楼主|
+|title|string|标题|
+|content|string|内容|
+|images|string[]|图片|
+|likesId|int[]|点赞人的id|
+|replies|reply[]|回复|
+#### 回复 reply
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|楼层|
+|publisher|int|发布人|
+|text|string|内容|
+|likesId|int[]|点赞人的id|
+|aboveId|int|(如果楼层间回复)回复的楼层,初始为0|
 ### 一、用户管理部分
 #### 首次登录时生成id
 ```HTTP
@@ -229,7 +260,147 @@ wx.request({
 |bindTHU|bool|绑定清华身份情况|
 * 通过清华身份获取信息后，定时在后端添加到事项等中，不在前端处理
 
+#### 解绑清华身份
+```HTTP
+[POST] /user/{id}/unbindTHU
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+
+将bindTHU设置为false，清空学号和密码
+
+#### 搜索用户
+```HTTP
+[GET] /user/search
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|key|string|搜索关键字|
+
+查找用户nickName包含key的用户||用户id与key相等的用户
+
+##### 响应数据
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|ids|int|得到的id|
+
+#### 得到健康状况
+```HTTP
+[GET] /user/getHealthInfo
+```
+
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+
+##### 响应数据
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|healthInfo|healthInfo|健康状况(见上)|
+
+#### 同步体测信息
+```HTTP
+[GET] /user/tongbu
+```
+
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+
+##### 响应数据
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|isOK|int|是否成功(bindTHU不为true等)|
+
+#### 修改健康状况
+```HTTP
+[POST] /user/changeHealthInfo
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|gender|string|性别|
+|birthday|string|生日|
+|height|double|身高|
+|weight|double|体重|
+|bmi|double|bmi|
+|beizhu|string|备注|
+
+#### 获取个人主页信息
+```HTTP
+[GET] /user/getPersonal
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|hostId|int||
+|customerId|int||
+
+##### 响应数据
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|nickName|string||
+|avatarUrl|string||
+|signature|string||
+|followings|int[]|关注|
+|followers|int[]|粉丝|
+|following_state|string|关注情况|
+|achievements|achievement[]|成就|
+|iniActs|iniAct[]|发起的活动|
+|partActs|partAct[]|参与的活动|
+|posts|post[]|发布的帖子|
+
+这四个都是预览，包括
+##### achievement
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|isShow|int|根据隐私设置判断的是否展示|
+|avatarUrl|string|图片|
+
+##### iniAct
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|title|string|标题|
+|participants|int[]|参与人|
+|partNumMin|int|人数最小值|
+|partNumMax|int|人数最大值|
+|date|string|日期|
+|start|string|开始时间|
+|end|string|结束时间|
+|label|string|备注|
+|tags|string[]|标签|
+|state|int|活动状态|
+|id|int|活动id|
+
+##### partAct
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|title|string|标题|
+|promoter|int|发起人|
+|participants|int[]|参与人|
+|partNumMin|int|人数最小值|
+|partNumMax|int|人数最大值|
+|date|string|日期|
+|start|string|开始时间|
+|end|string|结束时间|
+|label|string|备注|
+|tags|string[]|标签|
+|state|int|活动状态|
+|id|int|活动id|
+
+#### post
+|参数|类型|说明|
+|-------------|-------------|-------------|
+
 ### 二、计划处理部分
+
 #### 获取指定日期的事务
 ```HTTP
 [GET] /schedule/{id}/todos
@@ -534,5 +705,6 @@ TODO
 |senderUrl|string|发件者头像|
 |toUrl|string|(可选)跳转到的具体位置，比如帖子下的评论|
 
-将帖子标记为已读略，同样传两个Id
+也就是message的结构
+将消息标记为已读略，同样传两个Id
 
