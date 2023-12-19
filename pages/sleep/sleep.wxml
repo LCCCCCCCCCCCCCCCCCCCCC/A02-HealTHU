@@ -2,6 +2,8 @@
 <view class="today-text">
   <view class="today-number">{{score}}</view>
   <view>本周睡眠质量评分</view>
+  <button bind:tap="startSleep" wx:if="{{isSleep == false}}">开始睡眠</button>
+  <button bind:tap="endSleep" wx:if="{{isSleep == true}}">结束睡眠</button>
 </view>
 <van-cell-group class="suggestion" inset>
     <van-cell wx:if="{{isShort == true}}" title="睡眠时间较少" icon="question"/>

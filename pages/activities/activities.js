@@ -80,7 +80,8 @@ Page({
               data[i].promoter = dataa.nickName
               if(j == data.length - 1){
                 that.setData({
-                  activities2: data
+                  activities2: data,
+                  active: 1
                 })
               }
               j++

@@ -50,7 +50,78 @@ Page({
     isMainChartDisplay: true,
     score:"",
     isShort:false,//睡眠时间是否不足
-    isLate:false//是否熬夜
+    isLate:false,//是否熬夜
+    isSleep: false,
+    startDate:'2023/12/20',
+    startHour:22,
+    endDate:'2023/12/21',
+    endHour:6,
+    sleepData:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  startSleep(){
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var currentHour = new Date().getHours()
+    if(new Date().getMinutes > 30){
+      currentHour ++
+    }
+    console.log(currentHour)
+    this.setData({
+      isSleep:true,
+      startDate: date,
+      startHour: currentHour
+    })
+    console.log(this.data.startDate)
+    //播放音乐
+  },
+  endSleep(){
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var currentHour = new Date().getHours()
+    if(new Date().getMinutes > 30){
+      currentHour ++
+    }
+    this.setData({
+      isSleep:false,
+      endDate: date,
+      endHour: currentHour
+    })
+    this.setData({
+      startHour: 0,
+      endHour:5,
+      sleepData:[0,0,0,0,0,0,0,0,0,0,0,0]
+    })
+    //提前获取start天的sleepData
+    var sleepData = this.data.sleepData
+    if(this.data.startDate == this.data.endDate){
+      for(var i = this.data.startHour;i<this.data.endHour;i++){
+        if(i == 0){sleepData[0] ++}
+        else{sleepData[((i-1)/2).toFixed(0)] ++}
+      }
+      console.log(sleepData)
+      //向后端传入修改指令
+      this.setData({
+        sleepData:sleepData
+      })
+    }
+    else{
+      //提前获取start天的sleepData
+      for(var i = this.data.startHour;i<24;i++){
+        if(i == 0){sleepData[0] ++}
+        else{sleepData[((i-1)/2).toFixed(0)] ++}
+      }
+      //向后端传入修改指令
+      this.setData({
+        sleepData:sleepData
+      })
+      //提前获取end天的sleepData
+      for(var i = 0;i<this.data.endHour;i++){
+        if(i == 0){sleepData[0] ++}
+        else{sleepData[((i-1)/2).toFixed(0)] ++}
+      }
+      //向后端传入修改指令
+      this.setData({
+        sleepData:sleepData
+      })
+    }
   },
   backToMainChart: function () {
     this.setData({
