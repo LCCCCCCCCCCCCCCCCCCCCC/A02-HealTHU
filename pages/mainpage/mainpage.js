@@ -22,6 +22,19 @@ Page({
     currentTab: 0,
     userInfo: {},
     exitshow: false,
+    bbsactivate: 0,
+    noticeList: [
+      {state:0, title:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 18:20", url: '../activities/activities'},
+      {state:1, title:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 9:49", url: '../personal/personal'},
+    ]
+  },
+  // 修改消息阅读状态，但是不好使ing
+  delUnread(event){
+    const tempList = this.data.notcieList;
+    const personindex = event.currentTarget.dataset.index;
+    const tempItem = tempList[personindex];
+    tempItem.state = 1;
+    this.setData({noticeList: tempList});
   },
   handleTabChange(event){
     this.setData({ currentTab: event.detail });

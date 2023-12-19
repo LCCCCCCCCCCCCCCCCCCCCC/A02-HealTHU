@@ -61,15 +61,30 @@
     </view>
 
   </view>
-  <view wx:if="{{currentTab == 1}}" class = "mainpage">
-  <van-calendar
-    title="功能开发中"
-    poppable="{{ false }}"
-    show-confirm="{{ false }}"
-    class="calendar"
-  />
-  </view>
+</view>
 
+<view wx:if="{{currentTab == 1}}">
+<van-tabs active="{{ bbsactive }}" bind:change="onbbsChange">
+  <van-tab title="最新">内容 1</van-tab>
+  <van-tab title="关注">
+    <van-empty description="关注的人还没有动态" />
+  </van-tab>
+  <van-tab title="消息">
+    <van-cell-group wx:for="{{noticeList}}" wx:key="index" inset>
+      <van-cell title="{{item.title}}" label="{{item.time}}"
+        is-link link-type="navigateTo"
+        url="{{item.url}}"
+        bind:click="delUnread" data-index="{{index}}"
+      >
+        <view slot="icon" wx:if="{{item.state == 0}}">
+          <van-icon name="stop" color="red" /></view>
+      </van-cell>
+    </van-cell-group>
+  </van-tab>
+</van-tabs>
+</view>
+
+<view class="container">
   <view wx:if="{{currentTab == 2}}" class="mainpage">
   <van-row>
     <van-col span="8">

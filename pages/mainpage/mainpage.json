@@ -12,6 +12,9 @@
     "van-calendar": "@vant/weapp/calendar/index",
     "van-image": "@vant/weapp/image/index",
     "van-divider": "@vant/weapp/divider/index",
-    "van-dialog": "@vant/weapp/dialog/index"
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-empty": "@vant/weapp/empty/index"
   }
 }
