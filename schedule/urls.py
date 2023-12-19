@@ -19,5 +19,6 @@ urlpatterns=[
     path('exitAct/',views.exitAct),
     path('commentAct/',views.commentAct),
     path('likeComment/',views.likeComment),
+    path('dislikeComment/',views.dislikeComment),
     path('deleteComment/',views.deleteComment),
 ]

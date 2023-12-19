@@ -1103,10 +1103,108 @@ def commentAct(request):
 @csrf_exempt
 def likeComment(request):
     if request.method == 'POST':
-        return HttpResponse("DEBUG: likeComment")
+        id = int(request.POST.get("id"))
+        actId = int(request.POST.get("actId"))
+        likerId = int(request.POST.get("likerId"))
+        # likerId likes the comment id in activity actId
+        targetAct = Activity.objects.filter(id=actId).first()
+        if targetAct:
+            # found
+             # first, change the corresponding Comment object in Comment.objects as well
+            targetComment = Comment.objects.filter(id=id).first()
+            if targetComment:
+                # found
+                # check if already liked
+                if likerId in targetComment.likesId:
+                    # already liked
+                    return HttpResponse("Already liked")
+                # else: not liked
+                targetComment.likesId.append(likerId)
+                targetComment.likes += 1
+                targetComment.save()
+            allComments = targetAct.comments
+            for comment in allComments:
+                # print out the comment
+                if comment['id'] == id:
+                    # found
+                    # then check if likerId is in comment.likesId
+                    if likerId in comment['likesId']:
+                        # likerId is already in comment.likesId
+                        continue
+                    # else: likerId is not in comment.likesId
+                    # append likerId to comment.likesId
+                    comment['likesId'].append(likerId)
+                    comment['likes'] += 1
+                    targetAct.save()
+                    return HttpResponse("Like successfully")
+            # else: not found
+            return HttpResponse("Comment not found")
+        # else: not found
+        return HttpResponse("Activity not found")
 
+
+
+@csrf_exempt
+def dislikeComment(request):
+    if request.method == 'POST':
+        id = int(request.POST.get("id"))
+        actId = int(request.POST.get("actId"))
+        dislikerId = int(request.POST.get("dislikerId"))
+        # dislikerId dislikes the comment id in activity actId
+        targetAct = Activity.objects.filter(id=actId).first()
+        if targetAct:
+            # found
+             # first, change the corresponding Comment object in Comment.objects as well
+            targetComment = Comment.objects.filter(id=id).first()
+            if targetComment:
+                # found
+                # check if already liked
+                if dislikerId not in targetComment.likesId:
+                    # already disliked
+                    return HttpResponse("Already disliked")
+                # else: not disliked
+                targetComment.likesId.remove(dislikerId)
+                targetComment.likes -= 1
+                targetComment.save()
+            allComments = targetAct.comments
+            for comment in allComments:
+                if comment['id'] == id:
+                    # found
+                    # then check if dislikerId is in comment.likesId
+                    if dislikerId not in comment['likesId']:
+                        # dislikerId is already not in comment.likesId
+                        continue
+                    # else: dislikerId is in comment.likesId
+                    # remove dislikerId from comment.likesId
+                    comment['likesId'].remove(dislikerId)
+                    comment['likes'] -= 1
+                    targetAct.save()
+                    return HttpResponse("Dislike successfully")
+            # else: not found
+            return HttpResponse("Comment not found")
+        # else: not found
+        return HttpResponse("Activity not found")
 
 @csrf_exempt
 def deleteComment(request):
     if request.method == 'POST':
-        return HttpResponse("DEBUG: deleteComment")
+        id = int(request.POST.get("id"))
+        actId = int(request.POST.get("actId"))
+        targetAct = Activity.objects.filter(id=actId).first()
+        targetComment = Comment.objects.filter(id=id).first()
+        if targetAct:
+            if targetComment:
+                # both found
+                # delete the comment in Activity.objects
+                for comment in targetAct.comments:
+                    if comment['id'] == id:
+                        # found
+                        targetAct.comments.remove(comment)
+                        targetAct.save()
+                        # delete the comment itself in Comment.objects
+                        targetComment.delete()
+                        return HttpResponse("Delete successfully")
+            # else: not found
+            return HttpResponse("Comment not found")
+        # else: not found
+        return HttpResponse("Activity not found")
