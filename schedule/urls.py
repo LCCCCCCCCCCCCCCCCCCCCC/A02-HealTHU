@@ -16,4 +16,8 @@ urlpatterns=[
     path('getActDetail/',views.getActDetail),
     path('getApplication/',views.getApplication),
     path('appReply/',views.appReply),
+    path('exitAct/',views.exitAct),
+    path('commentAct/',views.commentAct),
+    path('likeComment/',views.likeComment),
+    path('deleteComment/',views.deleteComment),
 ]

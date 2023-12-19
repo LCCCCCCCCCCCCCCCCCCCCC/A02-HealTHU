@@ -1012,3 +1012,46 @@ def getddl(request):
             return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
         # else: not found
         return HttpResponse(json.dumps([], ensure_ascii=False))
+    
+ 
+@csrf_exempt   
+def exitAct(request):
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        exitId = request.POST.get("exitId")
+        actId = request.POST.get("actId")
+        # the exitId wishes to exit the actId promoted by id
+        promoterSchedule = Schedule.objects.filter(id=id).first()
+        exiterSchedule = Schedule.objects.filter(id=exitId).first()
+        targetAct = Activity.objects.filter(id=actId).first()
+        if promoterSchedule and exiterSchedule and targetAct:
+            # all three found
+            # remove this participant from targetAct.participants
+            targetAct.participants.remove(exitId)
+            targetAct.save()
+            # then, remove the corresponding todo in exiterSchedule.todos
+            allTodos = exiterSchedule.todos
+            todoFound = False
+            for todoId in allTodos:
+                todo = Todo.objects.filter(id=todoId).first()
+                if todo:
+                    # found
+                    if (todo.title == "(我参与的)" + targetAct.title \
+                        or todo.title == "(申请中)" + targetAct.title) \
+                        and todo.date == targetAct.date \
+                        and todo.start == targetAct.start \
+                        and todo.end == targetAct.end:
+                        # found
+                        # delete the corresponding todo
+                        todoFound = True
+                        global todo_schedule
+                        todo_schedule.remove_job(todo.jobId)
+                        exiterSchedule.todos.remove(todoId)
+                        exiterSchedule.save()
+                        todo.delete()
+            if todoFound:
+                return HttpResponse("Exit successfully")
+            # else: todo not found
+            return HttpResponse("Todo not found")
+        # else: not found
+        return HttpResponse("Schedule or activity not found")
