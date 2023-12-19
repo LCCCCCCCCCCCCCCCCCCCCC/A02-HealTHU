@@ -1,5 +1,5 @@
 <!--pages/changehealth/changehealth.wxml-->
-<van-nav-bar title="最近更新时间：{{update.time}}" 
+<van-nav-bar title="最近更新时间：{{update.updateTime}}" 
   right-text="编辑"
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"

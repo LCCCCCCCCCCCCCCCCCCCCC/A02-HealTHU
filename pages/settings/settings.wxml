@@ -1,16 +1,16 @@
 <!--pages/settings/settings.wxml-->
 <van-cell-group title="可见范围" inset>
-  <van-field label="个人主页">
-    <van-dropdown-menu slot="input">
-      <van-dropdown-item value="{{ optionvalue1 }}" options="{{ option1 }}" bind:change="onTypeConfirm"/>
-    </van-dropdown-menu>
-  </van-field>
   <van-field label="成就">
     <van-dropdown-menu slot="input">
       <van-dropdown-item value="{{ optionvalue1 }}" options="{{ option1 }}" bind:change="onTypeConfirm"/>
     </van-dropdown-menu>
   </van-field>
-  <van-field label="参与活动">
+  <van-field label="参与的活动">
+    <van-dropdown-menu slot="input">
+      <van-dropdown-item value="{{ optionvalue1 }}" options="{{ option1 }}" bind:change="onTypeConfirm"/>
+    </van-dropdown-menu>
+  </van-field>
+  <van-field label="发布的帖子">
     <van-dropdown-menu slot="input">
       <van-dropdown-item value="{{ optionvalue1 }}" options="{{ option1 }}" bind:change="onTypeConfirm"/>
     </van-dropdown-menu>

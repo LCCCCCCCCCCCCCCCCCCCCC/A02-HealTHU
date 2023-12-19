@@ -6,57 +6,61 @@ Page({
     signshow: false,
     reviewshow: false,
     signtext: '',
-    activities3:[
-      {title: "软件学院2023秋第10周集体锻炼", promoter:"NLno", participantNum:2,partNumMin:2,partNumMax:4,date:"2023/12/18",start:"17:00",end:"18:00",label:"打卡统计",tags:["紫荆操场","飞盘","集体锻炼"],state:0,id:3734},
-      {title: "寻找网球等球类搭子", promoter:"NLno", participantNum:0,partNumMin:1,partNumMax:2,date:"2023/12/19",start:"15:00",end:"18:00",label:"初学者，水平一般，周末都有空，希望不嫌我菜",tags:["紫荆网球场","网球","羽毛球","交友"],state:1,id:6852},
-    ],
-    activities:[
-      {title: "软件学院2023秋第10周集体锻炼", promoter:"NLno", participantNum:2,partNumMin:2,partNumMax:4,date:"2023/12/18",start:"17:00",end:"18:00",label:"打卡统计",tags:["紫荆操场","飞盘","集体锻炼"],state:0,id:3734},
-      {title: "寻找网球等球类搭子", promoter:"NLno", participantNum:0,partNumMin:1,partNumMax:2,date:"2023/12/19",start:"15:00",end:"18:00",label:"初学者，水平一般，周末都有空，希望不嫌我菜",tags:["紫荆网球场","网球","羽毛球","交友"],state:1,id:6852},
-    ],
     reviewList: [
       {id: 1, nickname:"GUMI", text:"软院 2022012222 张三", state:1},
       {id: 2, nickname:"teto",  text:"软件学院 2021011111 李四，请让我参加活动，我什么都会做的！", state: 0},
       {id: 404, nickname:"anonymous",  text:"让我看看", state: 2}
     ],
     // 0未处理，1接受，2拒绝
-    activities2:[]
+    activities1:[],
+    activities3:[],
+    activities2:[],
+    activities4:[]
   },
   onClickRight() {
     wx.navigateTo({
       url: '../addactivity/addactivity',
     })
   },
-  showdetail(event) {
+  showdetail1(event) {
     const id = event.currentTarget.dataset.index;
-    wx.redirectTo({
-      url: './activity/activity?actid=' + this.data.activities[id].id
+    wx.navigateTo({
+      url: './activity/activity?actid=' + this.data.activities1[id].id
+    })
+  },
+  showdetail2(event) {
+    const id = event.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: './activity/activity?actid=' + this.data.activities2[id].id
+    })
+  },
+  showdetail3(event) {
+    const id = event.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: './activity/activity?actid=' + this.data.activities3[id].id
+    })
+  },
+  showdetail4(event) {
+    const id = event.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: './activity/activity?actid=' + this.data.activities4[id].id
     })
   },
   signupConfirm() {
 
   },
-  // onChange(e) {
-  //   this.setData({
-  //     value: e.detail,
-  //   });
-  // },
-  // onSearch() {
-  //   Toast('搜索' + this.data.value);
-  // },
-  // onClick() {
-  //   Toast('搜索' + this.data.value);
-  // },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
+  onChange(e) {
+    this.setData({
+       value: e.detail,
+    });
+   },
+   onClick() {
     var that = this
     let id = wx.getStorageSync('id')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/findAct/',
       data:{
-        'maxDate': '2024/02/19'
+        'keyForSearch': this.data.value
       },
       method:'GET',
       success:function(res){
@@ -74,13 +78,51 @@ Page({
             success:function(res){
               var dataa = JSON.parse(res.data)
               data[i].promoter = dataa.nickName
-              j++
-              console.log(j)
               if(j == data.length - 1){
                 that.setData({
-                  activities: data
+                  activities2: data
                 })
               }
+              j++
+            }
+          })
+        }
+      }
+    })
+   },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+    var that = this
+    let id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/findAct/',
+      data:{
+        'isRandom': 1
+      },
+      method:'GET',
+      success:function(res){
+        let data = res.data
+        for(let i = 0;i<data.length;i++){
+          var j = 0
+          data[i].participantNum = data[i].participants.length
+          wx.request({
+            url:'http://127.0.0.1:8000/user/getDetail/',
+            data:{
+              'hostId': data[i].promoter,
+              'customerId':data[i].promoter
+            },
+            method:'GET',
+            success:function(res){
+              var dataa = JSON.parse(res.data)
+              data[i].promoter = dataa.nickName
+              if(j == data.length - 1){
+                that.setData({
+                  activities2: data
+                })
+              }
+              j++
             }
           })
         }
@@ -165,6 +207,137 @@ Page({
   },
   onsignClose() {
     this.setData({ signshow : false });     
+  },
+  onactiveChange(event){
+    this.setData({active: event.detail.index})
+    var that = this
+    let id = wx.getStorageSync('id')
+    if(this.data.active == 0){
+      this.setData({
+        activities1:[]
+      })
+      wx.request({
+        url:'http://127.0.0.1:8000/user/getDetail/',
+        data:{
+          'hostId': id,
+          'customerId':id
+        },
+        method:'GET',
+        success:function(res){
+          var dat = JSON.parse(res.data)
+          for(let k = 0;k < dat.followings.length;k++){
+            wx.request({
+              url:'http://127.0.0.1:8000/schedule/findAct/',
+              data:{
+                'promoter': dat.followings[k]
+              },
+              method:'GET',
+              success:function(res){
+                let data = res.data
+                for(let i = 0;i<data.length;i++){
+                  var j = 0
+                  data[i].participantNum = data[i].participants.length
+                  wx.request({
+                    url:'http://127.0.0.1:8000/user/getDetail/',
+                    data:{
+                      'hostId': data[i].promoter,
+                      'customerId':data[i].promoter
+                    },
+                    method:'GET',
+                    success:function(res){
+                      var dataa = JSON.parse(res.data)
+                      data[i].promoter = dataa.nickName
+                      if(j == data.length - 1){
+                        var newdata = that.data.activities1
+                        newdata = newdata.concat(data)
+                        that.setData({
+                          activities1: newdata
+                        })
+                      }
+                      j++
+                    }
+                  })
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+    else if(this.data.active == 2){
+      var that = this
+      let id = wx.getStorageSync('id')
+      wx.request({
+        url:'http://127.0.0.1:8000/schedule/findAct/',
+        data:{
+          'promoter': id
+        },
+        method:'GET',
+        success:function(res){
+          let data = res.data
+          for(let i = 0;i<data.length;i++){
+            var j = 0
+            data[i].participantNum = data[i].participants.length
+            wx.request({
+              url:'http://127.0.0.1:8000/user/getDetail/',
+              data:{
+                'hostId': data[i].promoter,
+                'customerId':data[i].promoter
+              },
+              method:'GET',
+              success:function(res){
+                var dataa = JSON.parse(res.data)
+                data[i].promoter = dataa.nickName
+                if(j == data.length - 1){
+                  that.setData({
+                    activities3: data
+                  })
+                }
+                j++
+              }
+            })
+          }
+        }
+      })
+    }
+    else if(this.data.active == 3){
+      var that = this
+      let id = wx.getStorageSync('id')
+      var ids = []
+      ids.push(id)
+      wx.request({
+        url:'http://127.0.0.1:8000/schedule/findAct/',
+        data:{
+          'participants': ids
+        },
+        method:'GET',
+        success:function(res){
+          let data = res.data
+          for(let i = 0;i<data.length;i++){
+            var j = 0
+            data[i].participantNum = data[i].participants.length
+            wx.request({
+              url:'http://127.0.0.1:8000/user/getDetail/',
+              data:{
+                'hostId': data[i].promoter,
+                'customerId':data[i].promoter
+              },
+              method:'GET',
+              success:function(res){
+                var dataa = JSON.parse(res.data)
+                data[i].promoter = dataa.nickName
+                if(j == data.length - 1){
+                  that.setData({
+                    activities4: data
+                  })
+                }
+                j++
+              }
+            })
+          }
+        }
+      })
+    }
   },
   handleSignInput(event) {
     this.setData({

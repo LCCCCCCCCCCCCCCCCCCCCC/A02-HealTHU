@@ -7,7 +7,8 @@ Page({
   data: {
     show: false,
     update:{
-      time: '2023-11-20',
+      updateTime: '2023-11-20',
+      birthday: '2003/08/28',
       age:'20',
       height: '170',
       weight: '62.2',
@@ -42,7 +43,7 @@ Page({
     var date = new Date();
     var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-'+ date.getDate();
     this.setData({
-      'update.time': dateString,
+      'update.updateTime': dateString,
       'update.bmi': bmiNumber
     });
     // wx.setStorageSync('age', this.data.update.age);

@@ -139,7 +139,6 @@ Page({
             var dataa = JSON.parse(res.data)
             activity.promoter = dataa.nickName
             activity.promoterUrl = dataa.avatarUrl
-            console.log(activity.images)
             that.setData({
               activity:activity
             })
