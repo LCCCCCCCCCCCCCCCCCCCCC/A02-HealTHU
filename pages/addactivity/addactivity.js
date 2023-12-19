@@ -9,61 +9,100 @@ Page({
     minNum: 0,
     maxNum: 1,
     title:"",
-    label: "", //活动类型
+    label: "", //活动简介
     detail: "", //活动介绍
     tagtext: "",
     tags: [],
     showpicker: false,
     fileList: [],
+    images:[],
+    todos: []
   },
 
-  // 示例的上传图片到服务器并显示在界面
-  // afterRead(event) {
-  //   const { file } = event.detail;
-  //   // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-  //   wx.uploadFile({
-  //     url: 'https://example.weixin.qq.com/upload', // 仅为示例，非真实的接口地址
-  //     filePath: file.url,
-  //     name: 'file',
-  //     formData: { user: 'test' },
-  //     success(res) {
-  //       // 上传完成需要更新 fileList
-  //       const { fileList = [] } = this.data;
-  //       fileList.push({ ...file, url: res.data });
-  //       this.setData({ fileList });
-  //     },
-  //   });
-  // },
+   //示例的上传图片到服务器并显示在界面
+  afterRead(event) {
+     const { file } = event.detail;
+      //当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+     /*
+     wx.uploadFile({
+       url: 'https://example.weixin.qq.com/upload', // 仅为示例，非真实的接口地址
+       filePath: file.url,
+       name: 'file',
+       formData: { user: 'test' },
+       success(res) {
+         */
+         // 上传完成需要更新 fileList
+         const { fileList = [] } = this.data;
+         //fileList.push({ ...file, url: res.url });
+         fileList.push({ ...file, url: file[0].url });
+         var images = this.data.images
+         images.push(file[0].url)
+         this.setData({ fileList });
+         this.setData({
+           images:images
+         }) 
+         /*
+       },
+     });
+     */
+   },
 
   addAct(){
-    var id = wx.getStorageSync('id')
+    let that = this
+    let id = wx.getStorageSync('id')
+    if((this.data.title == "")||(this.data.label == "")||(this.data.date == "")||(this.data.start == "")||(this.data.end == "")){
+      wx.showToast({
+        title: '请填写完整信息',
+      })
+      return;
+    }
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/addAct/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://127.0.0.1:8000/schedule/todos/',
       data:{
-        id: id,
-        pubTime: "2023/12/19 13:00",
-        title: "原神",
-        promoter: id,
-        participants: '[1,2]',
-        partNumMin: 2,
-        partNumMax: 4,
-        date: "2023/12/20",
-        start: "14:00",
-        end: "15:00",
-        label: "我要玩原神！",
-        detail: "",
-        images: '["../../images/swiper1.jpg", "../../images/swiper2.jpg", "../../images/swiper3.jpg"]',
-        tags: '["原神","op","玩原神玩的"]',
-        state: 0,
-        comments:[]
+        'id': id,
+        'date': that.data.date
       },
-      method:'POST',
+      method:'GET',
       success:function(res){
-        console.log(res)
-        wx.showToast({ title: '添加成功', icon: 'success' });
+        var data = res.data
+        that.setData({
+          todos: data
+        });
+        if(that.isValid(that.data.start,that.data.end,that.data.todos,"活动")){
+          var pubTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + new Date().getHours().toString().padStart(2, '0') + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+          wx.request({
+            url:'http://127.0.0.1:8000/schedule/addAct/',
+            header:{ 'content-type': 'application/x-www-form-urlencoded'},
+            data:{
+              id: id,
+              pubTime: pubTime,
+              title: that.data.title,
+              promoter: id,
+              participants: '[]',
+              partNumMin: that.data.minNum,
+              partNumMax: that.data.maxNum,
+              date: that.data.date,
+              start: that.data.start,
+              end: that.data.end,
+              label: that.data.label,
+              detail: that.data.detail,
+              images: `${JSON.stringify(that.data.images)}`,
+              tags: `${JSON.stringify(that.data.tags)}`,
+              state: 0,
+              comments:[]
+            },
+            method:'POST',
+            success:function(res){
+              console.log(res)
+              wx.showToast({ title: '添加成功', icon: 'success' });
+            }
+          })
+        }
       }
     })
+    /*
+    
+    */
   },
   onLoad(options) {
 
@@ -156,13 +195,11 @@ Page({
       tags: tags,
       tagtext: ''
     });
-    console.log(this.data.tags);
   },
   ontagClose(event) {
     const tags = this.data.tags;
     tags.splice(event.currentTarget.dataset.index, 1); 
     this.setData({tags: tags});
-    console.log(this.data.tags);
   },
   handleStartTimeInput(event) {
     this.setData({
@@ -208,4 +245,26 @@ Page({
       date: this.formatDate(event.detail),
     });
   },
+  isValid(start,end,todos,type){
+    var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+    nowTime = parseInt(nowTime.replace(":",""))
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0'),
+    start = parseInt(start.replace(":", ""))
+    end = parseInt(end.replace(":", ""))
+    if(start>end){
+      return false;
+    }
+    if((date == this.data.date)&&((start<=nowTime)||(end<=nowTime))){
+      return false;
+    }
+    for (let i = 0; i < todos.length; i++) {
+      const todo = todos[i];
+      let thestart = parseInt(todo.start.replace(":", ""))
+      let theend = parseInt(todo.end.replace(":", ""))
+      if (!((start <= thestart && end <= thestart) || (end >= theend && start >= theend))) {
+        return false; // 与某一项有重叠，不合法
+      }
+    }
+    return true; // 没有重叠，合法
+  }
 })

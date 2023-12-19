@@ -7,6 +7,18 @@ Page({
     userList: []
   },
   onClickRight() {
+
+    wx.request({
+      url:'http://127.0.0.1:8000/user/addAttention/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        hostId: 2,
+        customerId: 1
+      },
+      method:'POST',
+      success:function(res){
+      }
+    })
     wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
   },
   followUser(event) {
@@ -94,6 +106,7 @@ Page({
     //console.log(ids.length)
     var that = this
     for(let i = 0; i < ids.length; i++){
+      let j = 0
       wx.request({
         url:'http://127.0.0.1:8000/user/getDetail/',
         data:{
@@ -118,7 +131,8 @@ Page({
             signature: data.signature
           }
           that.data.userList.push(user)
-          if(i == ids[i] - 1){
+          j++
+          if(j == ids.length - 1){
             that.setData({
               userList: that.data.userList
             })
