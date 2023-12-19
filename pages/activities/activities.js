@@ -3,9 +3,17 @@ Page({
   data: {
     active: 1,
     value: '',
-    activities2:[
+    signshow: false,
+    reviewshow: false,
+    signtext: '',
+    activities3:[
       {title: "软件学院2023秋第10周集体锻炼", promoter:"NLno", participantNum:2,partNumMin:2,partNumMax:4,date:"2023/12/18",start:"17:00",end:"18:00",label:"打卡统计",tags:["紫荆操场","飞盘","集体锻炼"],state:0,id:3734},
       {title: "寻找网球等球类搭子", promoter:"NLno", participantNum:0,partNumMin:1,partNumMax:2,date:"2023/12/19",start:"15:00",end:"18:00",label:"初学者，水平一般，周末都有空，希望不嫌我菜",tags:["紫荆网球场","网球","羽毛球","交友"],state:1,id:6852},
+    ],
+    reviewList: [
+      {id: 1, nickname:"GUMI", text:"软院 2022012222 张三", state:1},
+      {id: 2, nickname:"teto",  text:"软件学院 2021011111 李四，请让我参加活动，我什么都会做的！", state: 0},
+      {id: 404, nickname:"anonymous",  text:"让我看看", state: 2}
     ],
     activities2:[]
   },
@@ -21,8 +29,8 @@ Page({
       url: './activity/activity?actid=' + this.data.activities2[id].id
     })
   },
-  signup(){
-    wx.showToast({ title: '报名成功！TODO:signup', icon: 'success' });
+  signupConfirm() {
+
   },
   // onChange(e) {
   //   this.setData({
@@ -120,5 +128,29 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+  handleReview() {
+    this.setData({ reviewshow : true }); 
+    // TODO：请求获取申请信息（需要对重复提交的进行筛选吗？）
+
+  },
+  agreeHandle() {
+    //TODO: 同意并更新userList状态
+    
+  },
+  rejectHandle() {
+    //TODO: 拒绝并更新userList状态
+
+  },
+  handleSignup() {
+    this.setData({ signshow : true }); 
+  },
+  onsignClose() {
+    this.setData({ signshow : false });     
+  },
+  handleSignInput(event) {
+    this.setData({
+      signtext: event.detail.value
+    });
+  },
 })

@@ -42,7 +42,7 @@ Page({
 
   },
   handleSignup() {
-    if(this.data.activity.state == 1){
+    if(this.data.activity.state == 0){
       wx.showToast({ title: '活动已结束', icon: 'cross' });
     }
     else{
