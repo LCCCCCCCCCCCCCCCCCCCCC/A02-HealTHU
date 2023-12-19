@@ -15,6 +15,7 @@ Page({
     tags: [],
     showpicker: false,
     fileList: [],
+    images:[],
     todos: []
   },
 
@@ -22,19 +23,28 @@ Page({
   afterRead(event) {
      const { file } = event.detail;
       //当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+     /*
      wx.uploadFile({
        url: 'https://example.weixin.qq.com/upload', // 仅为示例，非真实的接口地址
        filePath: file.url,
        name: 'file',
        formData: { user: 'test' },
        success(res) {
+         */
          // 上传完成需要更新 fileList
          const { fileList = [] } = this.data;
-        fileList.push({ ...file, url: res.data });
+         //fileList.push({ ...file, url: res.url });
+         fileList.push({ ...file, url: file[0].url });
+         var images = this.data.images
+         images.push(file[0].url)
          this.setData({ fileList });
-
+         this.setData({
+           images:images
+         }) 
+         /*
        },
      });
+     */
    },
 
   addAct(){
@@ -76,7 +86,7 @@ Page({
               end: that.data.end,
               label: that.data.label,
               detail: that.data.detail,
-              images: `${JSON.stringify(that.data.fileList)}`,
+              images: `${JSON.stringify(that.data.images)}`,
               tags: `${JSON.stringify(that.data.tags)}`,
               state: 0,
               comments:[]

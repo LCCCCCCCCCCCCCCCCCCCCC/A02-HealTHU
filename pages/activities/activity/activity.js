@@ -78,8 +78,8 @@ Page({
           that.setData({
             todos: data
           });
-          if(that.isValid(that.data.activity.start,that.data.activity.end,that.data.todos,"活动")){
-            this.setData({ signshow : true }); 
+          if(!that.isValid(that.data.activity.start,that.data.activity.end,that.data.todos,"活动")){
+            that.setData({ signshow : true }); 
           }
           else{
             wx.showToast({ title: '时间冲突'})
@@ -124,7 +124,7 @@ Page({
       },
       method:'GET',
       success:function(res){
-        var activity = res.data
+        let activity = res.data
         activity.promoterId = activity.promoter
         activity.participantNum = activity.participants.length
         activity.participantsId = activity.participants
@@ -139,12 +139,14 @@ Page({
             var dataa = JSON.parse(res.data)
             activity.promoter = dataa.nickName
             activity.promoterUrl = dataa.avatarUrl
+            console.log(activity.images)
             that.setData({
               activity:activity
             })
           }
         })      
         for(let i = 0;i<activity.participantNum;i++){
+          let j = 0
           wx.request({
             url:'http://127.0.0.1:8000/user/getDetail/',
             data:{
@@ -155,8 +157,7 @@ Page({
             success:function(res){
               var dataa = JSON.parse(res.data)
               activity.participants[i] = dataa.nickName
-              if(i == activity.participantNum - 1){
-                console.log(activity)
+              if(j == activity.participantNum - 1){
                 that.setData({
                   activity:activity
                 })

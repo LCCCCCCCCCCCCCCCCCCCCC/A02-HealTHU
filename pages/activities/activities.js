@@ -49,6 +49,7 @@ Page({
       success:function(res){
         let data = res.data
         for(let i = 0;i<data.length;i++){
+          var j = 0
           data[i].participantNum = data[i].participants.length
           wx.request({
             url:'http://127.0.0.1:8000/user/getDetail/',
@@ -60,7 +61,9 @@ Page({
             success:function(res){
               var dataa = JSON.parse(res.data)
               data[i].promoter = dataa.nickName
-              if(i == data.length - 1){
+              j++
+              console.log(j)
+              if(j == data.length - 1){
                 that.setData({
                   activities: data
                 })

@@ -99,6 +99,7 @@ Page({
     //console.log(ids.length)
     var that = this
     for(let i = 0; i < ids.length; i++){
+      let j = 0
       wx.request({
         url:'http://127.0.0.1:8000/user/getDetail/',
         data:{
@@ -123,7 +124,8 @@ Page({
             signature: data.signature
           }
           that.data.userList.push(user)
-          if(i == ids[i] - 1){
+          j++
+          if(j == ids.length - 1){
             that.setData({
               userList: that.data.userList
             })
