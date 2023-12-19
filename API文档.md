@@ -625,8 +625,7 @@ wx.request({
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|id|int|发起人id|
-|commentId|int|评价人id|
+|commenterId|int|评价人id|
 |actId|int|活动id|
 |comment|string|评价内容|
 |pubTime|string|评价时间|
