@@ -579,9 +579,10 @@ def findAct(request):
         maxDate = request.GET.get("maxDate")  # optional, <= maxDate
         # note that the preceding five params are filters that are conencted by OR
         # i.e. activities satisfiying any of the five filters will be returned
-        isRandom = int(request.GET.get("isRandom"))
+        isRandom = request.GET.get("isRandom")
+        if isRandom != None:
+            isRandom = int(isRandom)
         if isRandom == 1:
-            print(isRandom)
             # randomly pick up to 20 activities
             # get the number of objects in Activity.objects
 
