@@ -580,9 +580,12 @@ def findAct(request):
         # note that the preceding five params are filters that are conencted by OR
         # i.e. activities satisfiying any of the five filters will be returned
         isRandom = request.GET.get("isRandom")
+        if isRandom != None:
+            isRandom = int(isRandom)
         if isRandom == 1:
             # randomly pick up to 20 activities
             # get the number of objects in Activity.objects
+
             num_of_acts = Activity.objects.count()
             # if num_of_acts <= 20, then return all the activities
             if num_of_acts <= 20:
