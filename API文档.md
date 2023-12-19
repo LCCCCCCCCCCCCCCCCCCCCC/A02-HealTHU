@@ -630,8 +630,26 @@ wx.request({
 |comment|string|评价内容|
 |pubTime|string|评价时间|
 
-点赞略，按照活动id和评价id令点赞数+1即可
-删除略，同样按两个id索引
+#### 对评价进行点赞
+```HTTP
+[POST] /activity/{id}/likeComment
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|评价本身的id|
+|actId|int|活动id|
+|likerid|int|点赞人id|
+
+#### 对评价进行删除
+```HTTP
+[POST] /activity/{id}/deleteComment
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|评价本身的id|
+|actId|int|活动id|
 
 ### 四、运动处理部分
 
