@@ -823,12 +823,11 @@ def partAct(request):
             if targetAct:
                 # found
                 # then, append a new Application to receiverSchedule.appoints
-                newApplication = {
-                    'applyerId': id,
-                    'actId': actId,
-                    'message': message,
-                    'title': targetAct.title
-                }
+                newApplication = Application.objects.create( \
+                    applyerId=id, \
+                    actId=actId, \
+                    message=message, \
+                    title="关于活动\'" + targetAct.title + "\'的申请")
                 receiverSchedule.applications.append(newApplication.id)
                 receiverSchedule.save()
                 # next: put a todo in senderSchedule.todos
