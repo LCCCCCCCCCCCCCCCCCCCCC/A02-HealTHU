@@ -639,7 +639,7 @@ wx.request({
 |-------------|-------------|-------------|
 |id|int|评价本身的id|
 |actId|int|活动id|
-|likerid|int|点赞人id|
+|likerId|int|点赞人id|
 
 #### 对评价进行删除
 ```HTTP
