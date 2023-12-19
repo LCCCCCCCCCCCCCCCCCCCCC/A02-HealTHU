@@ -641,6 +641,17 @@ wx.request({
 |actId|int|活动id|
 |likerId|int|点赞人id|
 
+#### 对评价取消点赞
+```HTTP
+[POST] /activity/{id}/dislikeComment
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|评价本身的id|
+|actId|int|活动id|
+|dislikerId|int|点赞人id|
+
 #### 对评价进行删除
 ```HTTP
 [POST] /activity/{id}/deleteComment
