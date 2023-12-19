@@ -1058,3 +1058,21 @@ def exitAct(request):
             return HttpResponse("Todo not found")
         # else: not found
         return HttpResponse("Schedule or activity not found")
+    
+
+@csrf_exempt
+def commentAct(request):
+    if request.method == 'POST':
+        return HttpResponse("DEBUG: commentAct")
+    
+
+@csrf_exempt
+def likeComment(request):
+    if request.method == 'POST':
+        return HttpResponse("DEBUG: likeComment")
+
+
+@csrf_exempt
+def deleteComment(request):
+    if request.method == 'POST':
+        return HttpResponse("DEBUG: deleteComment")
