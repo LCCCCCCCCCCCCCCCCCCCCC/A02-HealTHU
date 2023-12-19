@@ -17,10 +17,12 @@ class Todo(models.Model):
 
 class Comment(models.Model):
     commenterId = models.IntegerField()
+    nickname = models.CharField(max_length=20)
+    avatarUrl = models.CharField(max_length=200)
     actId = models.IntegerField()
     comment = models.CharField(max_length=200)
     likes = models.IntegerField()
-    likesID = models.JSONField()
+    likesId = models.JSONField()
     pubTime = models.CharField(max_length=50)
 
 class Activity(models.Model):

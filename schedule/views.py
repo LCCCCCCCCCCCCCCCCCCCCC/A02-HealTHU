@@ -1063,9 +1063,43 @@ def exitAct(request):
 @csrf_exempt
 def commentAct(request):
     if request.method == 'POST':
-        return HttpResponse("DEBUG: commentAct")
+        commenterId = request.POST.get("commenterId")
+        actId = request.POST.get("actId")
+        comment = request.POST.get("comment")
+        pubTime = request.POST.get("pubTime")
+        targetUser = User.objects.filter(id=commenterId).first()
+        targetAct = Activity.objects.filter(id=actId).first()
+        if targetUser and targetAct:
+            commenterAvatarUrl = targetUser.userInfo.avatarUrl
+            commenterNickName = targetUser.userInfo.nickName
+            newComment = Comment.objects.create( \
+                commenterId=commenterId, \
+                nickname=commenterNickName, \
+                avatarUrl=commenterAvatarUrl, \
+                actId=actId, \
+                comment=comment, \
+                likes=0, \
+                likesId=[], \
+                pubTime=pubTime)
+            newCommentDict = {
+                'id': newComment.id,
+                'commenterId': newComment.commenterId,
+                'nickname': newComment.nickname,
+                'avatarUrl': newComment.avatarUrl,
+                'actId': newComment.actId,
+                'comment': newComment.comment,
+                'likes': newComment.likes,
+                'likesId': newComment.likesId,
+                'pubTime': newComment.pubTime
+            }
+            targetAct.comments.append(newCommentDict)
+            targetAct.save()
+            return HttpResponse("Comment successfully")
+        # else: not found
+        return HttpResponse("User or activity not found")
+                
+        
     
-
 @csrf_exempt
 def likeComment(request):
     if request.method == 'POST':
