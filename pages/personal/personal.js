@@ -4,7 +4,7 @@ Page({
     userInfo: {
       avatarUrl: '',
       nickName: '微信用户',
-      id:"4",
+      id:"3",
       sign:"这个人很懒，即使这样也没有留下签名"
     },
     id:'3', // 用于确定是否为自己主页
@@ -19,9 +19,10 @@ Page({
     ],
     bbsList: [
       {title:"今天真冷啊..", time:"2023-12-18 13:56", url: '../bbs/bbs?bbsid=103'},
-      {title:"[活动报名]2023秋软件学院集体锻炼", time:"2023-12-18 9:20", url: '../activities/activity/activity?actid=1'},
+      {title:"[活动报名] 2023秋软件学院集体锻炼", time:"2023-12-18 9:20", url: '../activities/activity/activity?actid=1'},
       {title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", url: '../bbs/bbs?bbsid=102'},
       {title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", url: '../bbs/bbs?bbsid=101'},
+      // {title:"[新成就] “一年的坚持与守望”", time:"2023-11-31 10:02", url: '../bbs/bbs?bbsid=100'}
     ]
   },
 
@@ -40,7 +41,7 @@ Page({
     wx.getStorage({
       key: 'id',
       success: function(res) {
-        that.setData({'id': res.data});
+        this.setData({'id': res.data});
       }
     });
   },

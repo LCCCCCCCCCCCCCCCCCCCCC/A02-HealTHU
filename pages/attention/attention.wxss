@@ -12,7 +12,6 @@
   color: #333333;
 }
 .signature {
-  margin-left:12px;
   font-size: 26rpx;
   color: #999999;
 }

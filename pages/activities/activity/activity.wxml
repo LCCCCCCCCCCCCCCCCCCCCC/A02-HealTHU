@@ -92,7 +92,7 @@
         bind:click="likeAct" data-index="{{index}}">
         <van-icon name="like-o" /> {{item.likeNum}}
       </van-button>
-      <van-button wx:else size="small" class="labeltag" 
+      <van-button wx:else size="small"
         bind:click="dislikeAct" data-index="{{index}}">
         <van-icon name="like" /> {{item.likeNum}}
       </van-button>

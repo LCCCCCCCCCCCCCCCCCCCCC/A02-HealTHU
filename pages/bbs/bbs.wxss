@@ -1,0 +1,36 @@
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+.name {
+  position: absolute;
+  margin-left:12px;
+  margin-top: 12px;
+  font-size: 18px;
+  color: #333333;
+}
+.signature {
+  font-size: 14px;
+  color: black;
+}
+.title{
+  font-size: 20px;
+  font-weight: bold;
+}
+.image{
+  padding-left: 16px;
+}
+.funcline{
+  padding: 4px;
+  padding-bottom: 12px;
+}
+.lnum {
+  margin-left: 20px;
+  margin-right: 8px;
+  color: grey;
+  font-size: 12px;
+}
+.button {
+  margin-right: 4px;
+}

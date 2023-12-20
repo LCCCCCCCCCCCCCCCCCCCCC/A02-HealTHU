@@ -69,7 +69,7 @@
 <van-tabs active="{{ bbsactive }}" bind:change="onbbsChange">
   <van-tab title="最新">
     <van-cell-group wx:for="{{bbsList}}" wx:key="index">
-      <van-cell size="large" 
+      <van-cell clickable size="large" 
       title="{{item.title}}" label="{{item.time}}"
       link-type="navigateTo"
       url="{{item.url}}"/>
@@ -81,7 +81,7 @@
   <van-tab title="消息">
     <van-cell-group wx:for="{{noticeList}}" wx:key="index" inset>
       <van-cell title="{{item.title}}" label="{{item.time}}"
-        is-link link-type="navigateTo"
+        is-link clickable link-type="navigateTo"
         url="{{item.url}}"
         bind:click="delUnread" data-index="{{index}}"
       >
@@ -108,7 +108,7 @@
   <view>签名：{{userInfo.sign}}</view>
   <van-grid column-num="3" gutter="{{ 32 }}" border="{{false}}" direction="horizontal">
     <van-grid-item link-type="navigateTo"
-      url='../personal/personal' text="0 动态" />
+      url='../personal/personal' text="4 动态" />
       <van-grid-item link-type="navigateTo"
       url='../attention/attention' text="{{attentionnum}} 关注" />
       <van-grid-item link-type="navigateTo"

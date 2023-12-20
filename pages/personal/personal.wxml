@@ -37,9 +37,10 @@
   <van-cell-group title="动态" inset>
     <van-empty wx:if="{{bbsList.length == 0}}" description="还没有参加过活动"></van-empty>
     <van-cell wx:for="{{bbsList}}" wx:key="index" 
-      size="large" 
+      clickable size="large" 
       title="{{item.title}}" label="{{item.time}}"
       link-type="navigateTo"
       url="{{item.url}}"/>
   </van-cell-group>
+  <van-divider />
 </view>
