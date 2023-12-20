@@ -15,12 +15,12 @@ Page({
     activities1:[],
     activities3:[],
     activities2:[],
-    activities4:[]
+    activities4:[],
+    id: ''
   },
   onClickRight() {
-    wx.navigateTo({
-      url: '../addactivity/addactivity',
-    })
+    this.setData({active:1})
+    this.onLoad()
   },
   showdetail1(event) {
     const id = event.currentTarget.dataset.index;
@@ -65,6 +65,9 @@ Page({
       method:'GET',
       success:function(res){
         let data = res.data
+        that.setData({
+          active: 1
+        })
         for(let i = 0;i<data.length;i++){
           var j = 0
           data[i].participantNum = data[i].participants.length
@@ -77,6 +80,7 @@ Page({
             method:'GET',
             success:function(res){
               var dataa = JSON.parse(res.data)
+              data[i].promoterId = data[i].promoter
               data[i].promoter = dataa.nickName
               if(j == data.length - 1){
                 that.setData({
@@ -97,6 +101,9 @@ Page({
   onLoad(options) {
     var that = this
     let id = wx.getStorageSync('id')
+    this.setData({
+      id:id
+    })
     wx.request({
       url:'http://127.0.0.1:8000/schedule/findAct/',
       data:{
@@ -117,6 +124,7 @@ Page({
             method:'GET',
             success:function(res){
               var dataa = JSON.parse(res.data)
+              data[i].promoterId = data[i].promoter
               data[i].promoter = dataa.nickName
               if(j == data.length - 1){
                 that.setData({
@@ -247,6 +255,7 @@ Page({
                     method:'GET',
                     success:function(res){
                       var dataa = JSON.parse(res.data)
+                      data[i].promoterId = data[i].promoter
                       data[i].promoter = dataa.nickName
                       if(j == data.length - 1){
                         var newdata = that.data.activities1
@@ -288,6 +297,7 @@ Page({
               method:'GET',
               success:function(res){
                 var dataa = JSON.parse(res.data)
+                data[i].promoterId = data[i].promoter
                 data[i].promoter = dataa.nickName
                 if(j == data.length - 1){
                   that.setData({
@@ -326,6 +336,7 @@ Page({
               method:'GET',
               success:function(res){
                 var dataa = JSON.parse(res.data)
+                data[i].promoterId = data[i].promoter
                 data[i].promoter = dataa.nickName
                 if(j == data.length - 1){
                   that.setData({

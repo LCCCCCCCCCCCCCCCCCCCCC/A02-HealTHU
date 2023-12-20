@@ -1,8 +1,11 @@
 <!--pages/activities/activities.wxml-->
 <!-- page-meta 只能是页面内的第一个节点 -->
 <page-meta page-style="{{ show ? 'overflow: hidden;' : '' }}" />
+<view class="round-click">
+    <navigator url='../addactivity/addactivity'>+</navigator >
+</view>
 <van-nav-bar
-  right-text="发起"
+  right-text="刷新"
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
   placeholder="{{true}}"
@@ -21,7 +24,7 @@
 </van-nav-bar>
 <van-tabs active="{{ active }}" bind:change="onactiveChange">
 <van-tab title="关注">
-  <van-empty description="关注的人还没有参加过活动" wx:if="{{activities1.length == 0}}"></van-empty>
+  <van-empty description="关注的人还没有发起过活动" wx:if="{{activities1.length == 0}}"></van-empty>
   <view wx:for="{{activities1}}" wx:key="index">
     <van-card 
     desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
@@ -44,6 +47,7 @@
 </van-tab>
 
   <van-tab title="活动">
+    <van-empty description="没有找到对应的活动" wx:if="{{activities2.length == 0}}"></van-empty>
   <view wx:for="{{activities2}}" wx:key="index">
   <!-- <view wx:for="{{activities}}" wx:key="index"> -->
     <van-card 
@@ -67,6 +71,7 @@
 </van-tab>
 
 <van-tab title="发起">
+  <van-empty description="你还没有发起过活动" wx:if="{{activities3.length == 0}}"></van-empty>
   <view wx:for="{{activities3}}" wx:key="index">
     <van-card 
     desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
@@ -88,6 +93,7 @@
   </view>
 </van-tab>
 <van-tab title="参与">
+  <van-empty description="你还没有参与过活动" wx:if="{{activities4.length == 0}}"></van-empty>
   <view wx:for="{{activities4}}" wx:key="index">
     <van-card 
     desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
