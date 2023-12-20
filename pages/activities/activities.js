@@ -1,6 +1,7 @@
 // pages/activities/activities.js
 Page({
   data: {
+    exitshow: false,
     canlendarshow: false,
     canlendardate: '',
     minDate:new Date(2023, 10, 1).getTime(),
@@ -19,6 +20,11 @@ Page({
     //   {title: "寻找网球等球类搭子", promoter:"NLno", participantNum:0,partNumMin:1,partNumMax:2,date:"2023/12/19",start:"15:00",end:"18:00",label:"约球",tags:["紫荆网球场","网球","羽毛球","交友"],state:1,id:6852},
     // ],
     id: '',
+  },
+  // TODO: 退出活动
+  handleExit(event) {
+    const id = event.currentTarget.dataset.index;
+
   },
   handleReview(event) {
     const id = event.currentTarget.dataset.index;

@@ -11,6 +11,7 @@
     "van-dropdown-item": "@vant/weapp/dropdown-item/index",
     "van-uploader": "@vant/weapp/uploader/index",
     "van-tag": "@vant/weapp/tag/index",
-    "van-stepper": "@vant/weapp/stepper/index"
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-dialog": "@vant/weapp/dialog/index"
   }
 }

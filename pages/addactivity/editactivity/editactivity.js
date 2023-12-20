@@ -1,6 +1,7 @@
 // pages/addactivity/editactivity/editactivity.js
 Page({
   data: {
+    deleteshow: false,
     actId:0,
     selfid: 3,
     date: "",
@@ -26,6 +27,9 @@ Page({
   afterRead(event){
 
   },
+  deleteConfirm() {
+
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -33,7 +37,7 @@ Page({
   onLoad(options) {
     if(options.actid){
       console.log(options.actid)
-      this.setData({ actId: options.actid })
+      this.setData({ actId: options.actid });
     }
   },
 
@@ -195,5 +199,11 @@ Page({
       }
     }
     return true; // 没有重叠，合法
+  },
+  handleDelete() {
+    this.setData({ deleteshow: true });
+  },
+  deleteClose() {
+    this.setData({ deleteshow: false });
   }
 })

@@ -83,4 +83,13 @@
   <textarea class="textinput"
       bindinput="handleSignInput" placeholder="请填写相关信息"></textarea>
 </van-cell-group>
+<button class="delete-btn" bindtap="handleDelete">删除活动</button>
+<van-dialog
+  title="确认删除活动？"
+  show="{{ deleteshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="deleteClose"
+  bind:getuserinfo="deleteConfirm"
+/>
 </view>

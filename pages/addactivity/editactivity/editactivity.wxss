@@ -18,3 +18,7 @@
   border-radius: 10px;
   padding: 8px;
 }
+.delete-btn{
+  margin: 32rpx;
+  background-color: white;
+}
