@@ -2017,7 +2017,6 @@ Charts.prototype.scrollStart = function (e) {
 };
 
 Charts.prototype.scroll = function (e) {
-    // TODO throtting...
     if (e.touches[0] && this.opts.enableScroll === true) {
         var _distance = e.touches[0].x - this.scrollOption.startTouchX;
         var currentOffset = this.scrollOption.currentOffset;

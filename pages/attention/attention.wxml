@@ -5,6 +5,7 @@
   placeholder="{{true}}"
   bind:click-right="onClickRight">
 </van-nav-bar>
+<van-empty description="关注清华大学喵" wx:if="{{userList.length == 0}}"></van-empty>
 <van-cell-group wx:for="{{userList}}" wx:key="index">
    <van-cell use-label-slot>
     <view slot="title">
@@ -20,3 +21,4 @@
     </view>
    </van-cell>
   </van-cell-group>
+  <van-divider />

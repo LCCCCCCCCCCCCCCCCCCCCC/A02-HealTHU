@@ -31,11 +31,12 @@
     </van-grid>    
 
     <view class="header">
-      <view class="title">今日计划</view>
+      <view class="title">本日计划</view>
       <!--可以展示当前开始一部分最近的，到编辑界面展示全部-->
       <button class="edit" bind:tap="gotoedit">管理</button>
     </view>
     <view class="todo-list">
+      <van-empty description="本日计划已完成" wx:if="{{todos.length == 0}}"></van-empty>
       <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
         <van-cell wx:if="{{ item.type !== 'ddl' }}" label="{{item.label}}" value="{{item.start}}—{{item.end}}" >
           <view slot="title">
@@ -55,7 +56,8 @@
       <view class="title">倒计时提醒</view>
     </view>
     <view class="ddl-list">
-     <van-cell-group wx:for="{{ddls}}" wx:key="index">
+      <van-empty description="最近没有倒计时提醒" wx:if="{{ddls.length == 0}}"></van-empty>
+      <van-cell-group wx:for="{{ddls}}" wx:key="index">
       <van-cell title="{{item.title}}" value="{{item.date}} {{item.start}}" label="{{item.label}}" />
      </van-cell-group>
     </view>

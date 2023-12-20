@@ -38,12 +38,13 @@
 <van-tab title="关注">
   <van-empty description="关注的人还没有发起过活动" wx:if="{{activities1.length == 0}}"></van-empty>
   <view wx:for="{{activities1}}" wx:key="index">
-    <van-card 
-    desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
-    title="{{item.title}}"
-    thumb="../images/swiper2.jpg"
-    url='./activity/activity'
-    >
+    <van-card>
+    <view slot="title">
+      <text class="acttitle">{{item.title}}</text>
+    </view>
+    <view slot="desc">
+      ({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}
+    </view>
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>
         <span wx:for="{{item.tags}}">
@@ -60,13 +61,15 @@
   <van-tab title="活动">
     <van-empty description="没有找到对应的活动" wx:if="{{activities2.length == 0}}"></van-empty>
   <view wx:for="{{activities2}}" wx:key="index">
-  <!-- <view wx:for="{{activities}}" wx:key="index"> -->
-    <van-card 
-    desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
-    title="{{item.title}}"
-    thumb="../images/swiper2.jpg"
-    url='./activity/activity'
-    >
+    <van-card>
+    <view slot="title">
+      <text class="acttitle">{{item.title}}</text>
+    </view>
+    <view slot="desc">
+      <view class="actperson">#{{item.label}}</view>
+      <text class="acttime">{{item.date}} {{item.start}}-{{item.end}}</text>
+      <view class="actperson">发起人：{{item.promoter}}</view>
+    </view>
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>
         <span wx:for="{{item.tags}}">
@@ -74,6 +77,7 @@
         </span>
       </view>
       <view slot="footer">
+        <text class="actperson">共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}} </text>
         <van-button size="mini" bind:click="showdetail2" data-index="{{index}}">查看</van-button>
       </view>
     </van-card>
@@ -86,8 +90,6 @@
     <van-card 
     desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
     title="{{item.title}}"
-    thumb="../images/swiper2.jpg"
-    url='./activity/activity'
     >
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>
@@ -108,8 +110,6 @@
     <van-card 
     desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
     title="{{item.title}}"
-    thumb="../images/swiper2.jpg"
-    url='./activity/activity'
     >
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>

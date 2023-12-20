@@ -46,7 +46,6 @@ Page({
   formatDate(date) {
     date = new Date(date);
     return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
-    //TODO：把todos里的值改为该天的todos
   },
   onConfirm(event) {
     this.setData({

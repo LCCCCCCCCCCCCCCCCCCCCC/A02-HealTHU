@@ -11,32 +11,33 @@
   <!-- 不太确定做不做成就展示选择（森空岛展示n张卡在个人界面那种） -->
   <van-checkbox-group wx:for="{{ achList }}" wx:key="index" 
     value="{{ checkresult }}" >
-    <van-grid-item use-slot bind:click="achShow" bind:change="oncheckChange" data-index="{{index}}">
+    <van-grid-item use-slot 
+      bind:click="achShow" bind:change="oncheckChange" data-index="{{index}}">
       <image wx:if="{{item.state == 100}}" src="{{item.img}}"
-      style="width: 90%; height: 108px;"/>
+      style="width: 80%; height: 96px;"/>
       <image wx:else src="{{item.img}}"
-      style="width: 90%; height: 108px; filter: grayscale(90%);"/>
+      style="width: 80%; height: 96px; filter: grayscale(90%);"/>
       <text class="achname">{{item.text}}</text>
       <text class="achtime" wx:if="{{item.state == 100}}">{{item.time}}</text>
       <text class="achtime" wx:else>{{item.state}}%</text>
-
     </van-grid-item>
   </van-checkbox-group>
 </van-grid>
 
 <van-popup round
   show="{{ achshow }}"
-  custom-style="height: 50%; width: 70%"
+  custom-style="height: 65%; width: 80%"
   bind:close="onachClose"
-  class="popup"
+  custom-class="popup"
 >
-<van-grid-item use-slot>
-  <image style="width: 168px; height: 168px;"
-    src="{{achNow.img}}"/>
-  <text class="achname">{{achNow.text}}</text>
-  <text class="achtime" wx:if="{{achNow.state == 100}}">{{achNow.time}}</text>
-  <text class="achtime" wx:else>{{achNow.state}}%</text>
-</van-grid-item>
+  <van-grid-item use-slot>
+    <image style="width: 168px; height: 180px;"
+      src="{{achNow.img}}"/>
+    <text class="achname2">{{achNow.text}}</text>
+    <text class="achtime2" wx:if="{{achNow.state == 100}}">达成时间 {{achNow.time}}</text>
+    <text class="achtime2">{{achNow.detail}}</text>
+    <van-progress color="linear-gradient(to right, grey, black)" percentage="{{achNow.state}}" />
+  </van-grid-item>
 </van-popup>
 
 <van-dialog use-slot

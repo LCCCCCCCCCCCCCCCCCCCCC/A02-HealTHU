@@ -1,15 +1,45 @@
 <!--pages/personal/personal.wxml-->
 <van-row>
-    <van-col span="8">
-      <van-image round width="6rem" height="6rem" src="../images/avatar4.png"/>
-    </van-col>
-    <van-col span="12" offset="2">
-      <view class="userinfo-nick">{{userInfo.nickName}}</view>
-      <view class="userinfo-id">UID：{{userInfo.id}}</view>
-      <button wx:if="{{userInfo.id!=id}}" class="infobutton" bind:tap="changeInfo">关注</button>
-    </van-col>
-  </van-row>
-  <van-grid clickable square column-num="3">
-  <van-grid-item icon="photo-o" text="成就" wx:for="{{ 3 }}" />
-</van-grid>
-  <van-empty description="还没有参加过活动"></van-empty>
+  <van-col span="8">
+    <van-image round width="6rem" height="6rem" src="../images/avatar4.png"/>
+  </van-col>
+  <van-col span="12" offset="2">
+    <view class="userinfo-nick">{{userInfo.nickName}}</view>
+    <view class="userinfo-id">UID：{{userInfo.id}}</view>
+    <button wx:if="{{userInfo.id!=id}}" class="infobutton" bind:tap="changeInfo">关注</button>
+    <view wx:else class="empty-line"></view>
+  </van-col>
+</van-row>
+
+<view class="pages">
+  <van-cell-group inset>
+    <van-cell class="userinto-sign" title="{{userInfo.sign}}" />
+  </van-cell-group>
+  <van-cell-group title="成就展示" inset>
+    <van-cell is-link>
+      <van-row slot="title">
+        <van-col span="4">
+          <image src="{{achList[0].img}}" style="width: 36px; height: 40px;"/></van-col>
+        <van-col span="4">
+          <image src="{{achList[1].img}}" style="width: 36px; height: 40px;"/></van-col>
+        <van-col span="4">
+          <image src="{{achList[2].img}}" style="width: 36px; height: 40px;"/></van-col>
+        <van-col span="4">
+          <image src="{{achList[3].img}}" style="width: 36px; height: 40px;"/></van-col>
+        <van-col span="4">
+          <image src="{{achList[4].img}}" style="width: 36px; height: 40px;"/></van-col>
+        <van-col span="4">
+          <image src="{{achList[5].img}}" style="width: 36px; height: 40px;"/></van-col>
+      </van-row>
+    </van-cell>
+  </van-cell-group>
+
+  <van-cell-group title="动态" inset>
+    <van-empty wx:if="{{bbsList.length == 0}}" description="还没有参加过活动"></van-empty>
+    <van-cell wx:for="{{bbsList}}" wx:key="index" 
+      size="large" 
+      title="{{item.title}}" label="{{item.time}}"
+      link-type="navigateTo"
+      url="{{item.url}}"/>
+  </van-cell-group>
+</view>

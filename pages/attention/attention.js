@@ -12,37 +12,6 @@ Page({
     console.log(this.data.userList)
     wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
   },
-// 粉丝界面处理程序，取消关注+回关操作实现需修改一下
-  // followUser(event) {
-  //   var fans = wx.getStorageSync('fans');
-  //   const userId = event.currentTarget.dataset.id;
-  //   var user = fans.find(function(u) {
-  //     return u.id === userId;
-  //   });
-  //   console.log(user);
-  //   if (user) {
-  //     user.followed = true;
-  //     wx.setStorage({
-  //       key: 'fans',
-  //       data: fans,
-  //       success: function(res) {
-  //       }
-  //     });
-  //     var attention = wx.getStorageSync('attention');
-  //     attention.push(user);
-  //     console.log(user);
-  //     wx.setStorage({
-  //       key: 'attention',
-  //       data: attention,
-  //       success: function(res) {
-  //       // TODO:调用后端接口发送关注请求,并更新对应用户项的状态
-  //       }
-  //     });
-  //   } 
-
-  //   console.log('关注用户', userId);
-  //   wx.showToast({ title: '关注成功', icon: 'success' });
-  // },
   
   unfollowUser(event) {
     const userId = event.currentTarget.dataset.id
