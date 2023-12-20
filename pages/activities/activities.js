@@ -3,8 +3,10 @@ Page({
   data: {
     canlendarshow: false,
     canlendardate: '',
-    minDate: new Date(2023, 10, 1).getTime(),
-    maxDate: new Date(2024, 0, 31).getTime(),
+    minDate:new Date(2023, 10, 1).getTime(),
+    maxDate:new Date(2024, 5, 10).getTime(),
+    startDate:"2023/12/20",
+    endDate:"2024/05/10",
     active: 1,
     value: '',
     activities1:[],
@@ -64,7 +66,9 @@ Page({
     wx.request({
       url:'http://127.0.0.1:8000/schedule/findAct/',
       data:{
-        'keyForSearch': this.data.value
+        'keyForSearch': this.data.value,
+        minDate: that.data.startDate,
+        maxDate: that.data.endDate
       },
       method:'GET',
       success:function(res){
@@ -112,7 +116,9 @@ Page({
     wx.request({
       url:'http://127.0.0.1:8000/schedule/findAct/',
       data:{
-        'isRandom': 1
+        'isRandom': 1,
+        minDate: that.data.startDate,
+        maxDate: that.data.endDate
       },
       method:'GET',
       success:function(res){
@@ -124,7 +130,7 @@ Page({
             url:'http://127.0.0.1:8000/user/getDetail/',
             data:{
               'hostId': data[i].promoter,
-              'customerId':data[i].promoter
+              'customerId':data[i].promoter,
             },
             method:'GET',
             success:function(res){
@@ -214,7 +220,9 @@ Page({
             wx.request({
               url:'http://127.0.0.1:8000/schedule/findAct/',
               data:{
-                'promoter': dat.followings[k]
+                'promoter': dat.followings[k],
+                minDate: that.data.startDate,
+                maxDate: that.data.endDate
               },
               method:'GET',
               success:function(res){
@@ -226,7 +234,7 @@ Page({
                     url:'http://127.0.0.1:8000/user/getDetail/',
                     data:{
                       'hostId': data[i].promoter,
-                      'customerId':data[i].promoter
+                      'customerId':data[i].promoter,
                     },
                     method:'GET',
                     success:function(res){
@@ -257,7 +265,9 @@ Page({
       wx.request({
         url:'http://127.0.0.1:8000/schedule/findAct/',
         data:{
-          'promoter': id
+          'promoter': id,
+          minDate: that.data.startDate,
+          maxDate: that.data.endDate
         },
         method:'GET',
         success:function(res){
@@ -269,7 +279,7 @@ Page({
               url:'http://127.0.0.1:8000/user/getDetail/',
               data:{
                 'hostId': data[i].promoter,
-                'customerId':data[i].promoter
+                'customerId':data[i].promoter,
               },
               method:'GET',
               success:function(res){
@@ -297,7 +307,9 @@ Page({
       wx.request({
         url:'http://127.0.0.1:8000/schedule/findAct/',
         data:{
-          'participants': ids
+          'participants': ids,
+          minDate: that.data.startDate,
+          maxDate: that.data.endDate
         },
         method:'GET',
         success:function(res){
@@ -309,7 +321,7 @@ Page({
               url:'http://127.0.0.1:8000/user/getDetail/',
               data:{
                 'hostId': data[i].promoter,
-                'customerId':data[i].promoter
+                'customerId':data[i].promoter,
               },
               method:'GET',
               success:function(res){
@@ -350,7 +362,8 @@ Page({
     const [start, end] = event.detail;
     this.setData({
       canlendarshow: false,
-      canlendardate: `${this.formatDate(start)} - ${this.formatDate(end)}`,
+      startDate: this.formatDate(start),
+      endDate: this.formatDate(end)
     });
     // TODO: 传递日期筛选
 
@@ -363,6 +376,6 @@ Page({
   },
   formatDate(date) {
     date = new Date(date);
-    return `${date.getMonth() + 1}/${date.getDate()}`;
+    return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
   }
 })

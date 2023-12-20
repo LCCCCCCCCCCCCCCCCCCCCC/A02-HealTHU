@@ -46,7 +46,8 @@
       ({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}
     </view>
     <view slot="tags">
-      <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
         <span wx:for="{{item.tags}}">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
@@ -71,7 +72,8 @@
       <view class="actperson">发起人：{{item.promoter}}</view>
     </view>
     <view slot="tags">
-      <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
         <span wx:for="{{item.tags}}">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
@@ -92,7 +94,8 @@
     title="{{item.title}}"
     >
     <view slot="tags">
-      <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
         <span wx:for="{{item.tags}}">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
@@ -112,7 +115,8 @@
     title="{{item.title}}"
     >
     <view slot="tags">
-      <van-tag plain type="danger" wx:if="{{item.state == 1}}">已结束</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
+      <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
         <span wx:for="{{item.tags}}">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
