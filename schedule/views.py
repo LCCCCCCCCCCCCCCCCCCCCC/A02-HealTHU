@@ -580,64 +580,6 @@ def findAct(request):
         # note that the preceding five params are filters that are conencted by OR
         # i.e. activities satisfiying any of the five filters will be returned
         isRandom = request.GET.get("isRandom")
-        if isRandom != None:
-            isRandom = int(isRandom)
-        if isRandom == 1:
-            # randomly pick up to 20 activities
-            # get the number of objects in Activity.objects
-
-            num_of_acts = Activity.objects.count()
-            # if num_of_acts <= 20, then return all the activities
-            if num_of_acts <= 20:
-                all_acts = Activity.objects.all()
-                ansArray = []
-                for act in all_acts:
-                    newAct = {
-                        'id': act.id,
-                        'title': act.title,
-                        'promoter': act.promoter,
-                        'participants': act.participants,
-                        'partNumMin': act.partNumMin,
-                        'partNumMax': act.partNumMax,
-                        'date': act.date,
-                        'start': act.start,
-                        'end': act.end,
-                        'label': act.label,
-                        'tags': act.tags,
-                        'state': act.state,
-                        'comments': act.comments
-                    }  # remove the detail and images, to save space
-                    ansArray.append(newAct)
-                # now ansArray contains all the activities
-                return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
-            # else: num_of_acts > 20
-            # then: act.id = 1,2,...,num_of_acts
-            # pick 20 random different numbers from 1,2,...,num_of_acts
-            # and find the corresponding activities
-            selected_actIDs = random.sample(range(1, num_of_acts + 1), 20)
-            for selected_actID in selected_actIDs:
-                # for each randomly picked actid:
-                # find the corresponding act
-                act = Activity.objects.filter(id=selected_actID).first()
-                newAct = {
-                    'id': act.id,
-                    'title': act.title,
-                    'promoter': act.promoter,
-                    'participants': act.participants,
-                    'partNumMin': act.partNumMin,
-                    'partNumMax': act.partNumMax,
-                    'date': act.date,
-                    'start': act.start,
-                    'end': act.end,
-                    'label': act.label,
-                    'tags': act.tags,
-                    'state': act.state,
-                    'comments': act.comments
-                }  # remove the detail and images, to save space
-                ansArray.append(newAct)
-            # now ansArray contains all the activities
-            return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
-        # isRandom == False
         ansArray = []
         # find in Activity.objects by the five filters
         if participantsId:
@@ -719,54 +661,43 @@ def findAct(request):
                     }  # remove the detail and images, to save space
                     ansArray.append(newAct)
                     continue  # continue to avoid repeated appending
-            if minDate:
-                # minDate is not None
-                # filter by minDate
-                # act.date and minDate are in the form of "yyyy/mm/dd"
-                # append iff date >= minDate
-                if act.date >= minDate:
-                    newAct = {
-                        'id': act.id,
-                        'title': act.title,
-                        'promoter': act.promoter,
-                        'participants': act.participants,
-                        'partNumMin': act.partNumMin,
-                        'partNumMax': act.partNumMax,
-                        'date': act.date,
-                        'start': act.start,
-                        'end': act.end,
-                        'label': act.label,
-                        'tags': act.tags,
-                        'state': act.state,
-                        'comments': act.comments
-                    }  # remove the detail and images, to save space
-                    ansArray.append(newAct)
-                    continue  # continue to avoid repeated appending
-            if maxDate:
-                # similar to minDate:
-                # maxDate is not None
-                # filter by maxDate
-                # act.date and maxDate are in the form of "yyyy/mm/dd"
-                # append iff date <= maxDate
-                if act.date <= maxDate:
-                    newAct = {
-                        'id': act.id,
-                        'title': act.title,
-                        'promoter': act.promoter,
-                        'participants': act.participants,
-                        'partNumMin': act.partNumMin,
-                        'partNumMax': act.partNumMax,
-                        'date': act.date,
-                        'start': act.start,
-                        'end': act.end,
-                        'label': act.label,
-                        'tags': act.tags,
-                        'state': act.state,
-                        'comments': act.comments
-                    }  # remove the detail and images, to save space
-                    ansArray.append(newAct)
-                    continue  # continue to avoid repeated appending
+            if not minDate:
+                # no minDate
+                minDate = "0000/00/00"
+            if not maxDate:
+                # no maxDate
+                maxDate = "9999/99/99"
+            # filter by minDate and maxDate
+            if minDate <= act.date and act.date <= maxDate:
+                newAct = {
+                    'id': act.id,
+                    'title': act.title,
+                    'promoter': act.promoter,
+                    'participants': act.participants,
+                    'partNumMin': act.partNumMin,
+                    'partNumMax': act.partNumMax,
+                    'date': act.date,
+                    'start': act.start,
+                    'end': act.end,
+                    'label': act.label,
+                    'tags': act.tags,
+                    'state': act.state,
+                    'comments': act.comments
+                }
+                ansArray.append(newAct)
         # now ansArray contains all the activities that satisfy the filters
+        # now check id isRandom == 1
+        if isRandom and isRandom == "1":
+            # isRandom == 1
+            # if ansArray has <= 20 elems: just shuffle
+            # else: shuffle and cut
+            if len(ansArray) <= 20:
+                # just shuffle
+                random.shuffle(ansArray)
+            else:
+                # shuffle and cut
+                random.shuffle(ansArray)
+                ansArray = ansArray[:20]
         # return ansArray
         return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
 
