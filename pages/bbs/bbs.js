@@ -30,7 +30,7 @@ Page({
     likeLabels: [],
     replyshow: false,
     replytext: '',
-    // 当前回复的楼层
+    // 当前回复的楼层，0为lz，1为第一个回复
     replyindex: 0,
   },
   onClickRight(){

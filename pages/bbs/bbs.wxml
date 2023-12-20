@@ -67,12 +67,15 @@
       bind:click="dislikeAct" data-index="{{index}}">
       <van-icon name="like" /> {{item.likeList.length}}
     </van-button>
-    <van-button bind:click="handleReply" data-index="{{index}}" size="mini">
+    <van-button bind:click="handleReply" data-index="{{index + 1}}" size="mini">
       <van-icon name="chat-o" /> 回复
     </van-button>
   </van-cell>
 </van-cell-group>
 
+<view class="round-click" bind:tap="handleReply" data-index="0">
+    <text style="color: white;">评论</text>
+  </view>
 <van-dialog use-slot
   title="回复 #{{replyindex}}"
   show="{{ replyshow }}"
