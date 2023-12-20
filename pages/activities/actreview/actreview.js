@@ -41,7 +41,6 @@ Page({
         method:'POST',
         success:function(res){
           wx.showToast({ title: '操作成功', icon: 'success' });
-          that.onLoad()
         }
       })
     }
