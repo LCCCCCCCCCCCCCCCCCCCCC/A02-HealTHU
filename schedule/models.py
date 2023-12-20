@@ -21,6 +21,7 @@ class Comment(models.Model):
     avatarUrl = models.CharField(max_length=200)
     actId = models.IntegerField()
     comment = models.CharField(max_length=200)
+    score = models.IntegerField()
     likes = models.IntegerField()
     likesId = models.JSONField()
     pubTime = models.CharField(max_length=50)

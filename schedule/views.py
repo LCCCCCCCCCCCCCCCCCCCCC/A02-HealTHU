@@ -934,6 +934,7 @@ def commentAct(request):
         actId = request.POST.get("actId")
         comment = request.POST.get("comment")
         pubTime = request.POST.get("pubTime")
+        score = request.POST.get("score")
         targetUser = User.objects.filter(id=commenterId).first()
         targetAct = Activity.objects.filter(id=actId).first()
         if targetUser and targetAct:
@@ -945,6 +946,7 @@ def commentAct(request):
                 avatarUrl=commenterAvatarUrl, \
                 actId=actId, \
                 comment=comment, \
+                score=score, \
                 likes=0, \
                 likesId=[], \
                 pubTime=pubTime)
@@ -955,6 +957,7 @@ def commentAct(request):
                 'avatarUrl': newComment.avatarUrl,
                 'actId': newComment.actId,
                 'comment': newComment.comment,
+                'score': newComment.score,
                 'likes': newComment.likes,
                 'likesId': newComment.likesId,
                 'pubTime': newComment.pubTime
