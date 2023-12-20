@@ -7,11 +7,11 @@ Page({
   data: {
     userInfo: {
       avatarUrl: '',
-      nickName: '',
-      id:"",
-      sign:""
+      nickName: 'NLno',
+      id:"3",
+      sign:"这个人很懒，宁愿这样也没签名"
     },
-    id:''
+    id:'3'
     // id为用户自身id，打开主页时传递一个参数userInfo.id并请求后端获取对应信息
     // 用于确定是否为自己主页
   },
@@ -20,43 +20,43 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    var that = this;
-    wx.getStorage({
-      key: 'id',
-      success: function(res) {
-        console.log(res.data);
-        that.setData({
-          'userInfo.id': res.data
-        });
-      }
-    });
-    wx.getStorage({
-      key: 'nickName',
-      success: function(res) {
-        console.log(res.data);
-        that.setData({
-          'userInfo.nickName': res.data
-        });
-      }
-    });
-    wx.getStorage({
-      key: 'sign',
-      success: function(res) {
-        console.log(res.data);
-        that.setData({
-          'userInfo.sign': res.data
-        });
-      }
-    });
-    wx.getStorage({
-      key: 'avatarUrl',
-      success: function(res) {
-        console.log(res.data);
-        that.setData({
-          'userInfo.avatarUrl': res.data
-        });
-      }
-    });
+    // var that = this;
+    // wx.getStorage({
+    //   key: 'id',
+    //   success: function(res) {
+    //     console.log(res.data);
+    //     that.setData({
+    //       'userInfo.id': res.data
+    //     });
+    //   }
+    // });
+    // // wx.getStorage({
+    // //   key: 'nickName',
+    // //   success: function(res) {
+    // //     console.log(res.data);
+    // //     that.setData({
+    // //       'userInfo.nickName': res.data
+    // //     });
+    // //   }
+    // // });
+    // // wx.getStorage({
+    // //   key: 'sign',
+    // //   success: function(res) {
+    // //     console.log(res.data);
+    // //     that.setData({
+    // //       'userInfo.sign': res.data
+    // //     });
+    // //   }
+    // // });
+    // // wx.getStorage({
+    // //   key: 'avatarUrl',
+    // //   success: function(res) {
+    // //     console.log(res.data);
+    // //     that.setData({
+    // //       'userInfo.avatarUrl': res.data
+    // //     });
+    // //   }
+    // // });
   },
 
   /**

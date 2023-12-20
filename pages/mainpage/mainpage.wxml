@@ -65,7 +65,14 @@
 
 <view wx:if="{{currentTab == 1}}">
 <van-tabs active="{{ bbsactive }}" bind:change="onbbsChange">
-  <van-tab title="最新">内容 1</van-tab>
+  <van-tab title="最新">
+    <van-cell-group wx:for="{{bbsList}}" wx:key="index">
+      <van-cell size="large" 
+      title="{{item.title}}" label="{{item.time}}"
+      link-type="navigateTo"
+      url="{{item.url}}"/>
+    </van-cell-group>
+  </van-tab>
   <van-tab title="关注">
     <van-empty description="关注的人还没有动态" />
   </van-tab>

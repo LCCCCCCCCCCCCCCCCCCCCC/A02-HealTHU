@@ -6,13 +6,26 @@ Page({
    */
   data: {
     optionvalue1: 0,
+    optionvalue2: 0,
+    optionvalue3: 0,
     option1: [
       { text: '全部可见', value: 0 },
       { text: '仅粉丝可见', value: 1 },
       { text: '仅自己可见', value: 2 },
     ],
   },
-
+  //成就可见
+  onTypeConfirm1({ detail }) {
+    this.setData({ optionvalue1: detail });
+  },
+  //活动可见
+  onTypeConfirm2({ detail }) {
+    this.setData({ optionvalue2: detail });
+  },
+  //帖子可见
+  onTypeConfirm3({ detail }) {
+    this.setData({ optionvalue3: detail });
+  },
   /**
    * 生命周期函数--监听页面加载
    */

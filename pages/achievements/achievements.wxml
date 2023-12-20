@@ -6,6 +6,33 @@
   placeholder="{{true}}"
   bind:click-right="onClickRight">
 </van-nav-bar>
-<van-grid van-grid square column-num="3">
-  <van-grid-item icon="photo-o" text="成就" wx:for="{{ 18 }}" />
+
+<van-grid custom-class="pages" column-num="3">
+  <!-- 不太确定做不做成就展示选择（森空岛展示n张卡在个人界面那种） -->
+  <van-checkbox-group wx:for="{{ achList }}" wx:key="index" 
+    value="{{ checkresult }}" bind:change="oncheckChange" >
+    <van-grid-item use-slot>
+      <image 
+        style="width: 90%; height: 108px;"
+        src="{{item.img}}"/>
+      <text class="achname">{{item.text}}</text>
+      <text class="achtime" wx:if="{{item.state == 100}}">{{item.time}}</text>
+      <text class="achtime" wx:else>{{item.state}}%</text>
+    </van-grid-item>
+  </van-checkbox-group>
 </van-grid>
+
+<van-dialog use-slot
+  title="修改成就可见范围"
+  show="{{ show }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="onClose"
+  bind:getuserinfo="privacyChange"
+>
+  <van-radio-group class="select" value="{{ radio }}" bind:change="onTypeChange">
+    <van-radio name="1">所有人可见</van-radio>
+    <van-radio name="2">仅粉丝可见</van-radio>
+    <van-radio name="2">仅自己可见</van-radio>
+  </van-radio-group>
+  </van-dialog>

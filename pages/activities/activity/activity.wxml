@@ -13,7 +13,7 @@
   </view>
 </view>
 <view wx:else>
-  <view class="round-click" bind:tap="handleSignup" wx:if="{{activity.state == 0}}">
+  <view class="round-click" bind:tap="handleSignup">
     <text style="color: white;">报名</text>
   </view>
 </view>

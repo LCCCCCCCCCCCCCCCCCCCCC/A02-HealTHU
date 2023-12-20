@@ -1,1 +1,15 @@
 /* pages/achievements/achievements.wxss */
+.pages{
+  background-color: #f2f2f2;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+}
+.achname{
+  font-size: 13px;
+}
+.achtime{
+  font-size: 12px;
+}
+.select{
+  padding: 16px;
+}
