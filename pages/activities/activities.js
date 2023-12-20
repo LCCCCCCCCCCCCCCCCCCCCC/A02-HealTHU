@@ -7,12 +7,8 @@ Page({
     activities2:[],
     activities3:[],
     activities4:[],
-    activities3:[
-      {title: "软件学院2023秋第10周集体锻炼", promoter:"NLno", participantNum:2,partNumMin:2,partNumMax:4,date:"2023/12/18",start:"17:00",end:"18:00",label:"打卡统计",tags:["紫荆操场","飞盘","集体锻炼"],state:0,id:3734},
-      {title: "寻找网球等球类搭子", promoter:"NLno", participantNum:0,partNumMin:1,partNumMax:2,date:"2023/12/19",start:"15:00",end:"18:00",label:"初学者，水平一般，周末都有空，希望不嫌我菜",tags:["紫荆网球场","网球","羽毛球","交友"],state:1,id:6852},
-    ],
-    //保留用来测试
-    id: ''
+    id: '',
+
   },
   handleReview(event) {
     const id = event.currentTarget.dataset.index;
@@ -82,6 +78,7 @@ Page({
               var dataa = JSON.parse(res.data)
               data[i].promoterId = data[i].promoter
               data[i].promoter = dataa.nickName
+              data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
               if(j == data.length - 1){
                 that.setData({
                   activities2: data,
@@ -126,6 +123,7 @@ Page({
               var dataa = JSON.parse(res.data)
               data[i].promoterId = data[i].promoter
               data[i].promoter = dataa.nickName
+              data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
               if(j == data.length - 1){
                 that.setData({
                   activities2: data
@@ -227,6 +225,7 @@ Page({
                       var dataa = JSON.parse(res.data)
                       data[i].promoterId = data[i].promoter
                       data[i].promoter = dataa.nickName
+                      data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
                       if(j == data.length - 1){
                         var newdata = that.data.activities1
                         newdata = newdata.concat(data)
@@ -269,6 +268,7 @@ Page({
                 var dataa = JSON.parse(res.data)
                 data[i].promoterId = data[i].promoter
                 data[i].promoter = dataa.nickName
+                data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
                 if(j == data.length - 1){
                   that.setData({
                     activities3: data
@@ -308,6 +308,7 @@ Page({
                 var dataa = JSON.parse(res.data)
                 data[i].promoterId = data[i].promoter
                 data[i].promoter = dataa.nickName
+                data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
                 if(j == data.length - 1){
                   that.setData({
                     activities4: data
@@ -321,4 +322,25 @@ Page({
       })
     }
   },
+  handleSignInput(event) {
+    this.setData({
+      signtext: event.detail.value
+    });
+  },
+  getState(date,start,end){
+    var nowTime = parseInt(new Date().getHours() + (new Date().getMinutes()).toString().padStart(2, '0'))
+    var nowDate = parseInt(new Date().getFullYear() + (new Date().getMonth() + 1).toString().padStart(2, '0') + new Date().getDate().toString().padStart(2, '0')),
+    start = parseInt(start.replace(":", ""))
+    end = parseInt(end.replace(":", ""))
+    date = parseInt(date.replace(/\//g, ""));
+    if((date>nowDate)||((date == nowDate)&&(start>nowTime))){
+      return 0
+    }
+    else if((date<nowDate)||((date == nowDate)&&(end<nowTime))){
+      return 2
+    }
+    else{
+      return 1
+    }
+  }
 })

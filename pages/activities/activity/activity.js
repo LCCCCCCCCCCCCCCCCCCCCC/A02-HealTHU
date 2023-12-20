@@ -60,7 +60,7 @@ Page({
     })
   },
   handleSignup() {
-    if(this.data.activity.state == 0){
+    if(this.data.activity.state == 1){
       wx.showToast({ title: '活动已结束', icon: 'cross' });
     }
     else{
@@ -78,7 +78,7 @@ Page({
           that.setData({
             todos: data
           });
-          if(!that.isValid(that.data.activity.start,that.data.activity.end,that.data.todos,"活动")){
+          if(that.isValid(that.data.activity.start,that.data.activity.end,that.data.todos,"活动")){
             that.setData({ signshow : true }); 
           }
           else{
@@ -139,6 +139,7 @@ Page({
             var dataa = JSON.parse(res.data)
             activity.promoter = dataa.nickName
             activity.promoterUrl = dataa.avatarUrl
+            activity.state = that.getState(activity.date,activity.start,activity.end)
             that.setData({
               activity:activity
             })
@@ -238,5 +239,21 @@ Page({
       }
     }
     return true; // 没有重叠，合法
+  },
+  getState(date,start,end){
+    var nowTime = parseInt(new Date().getHours() + (new Date().getMinutes()).toString().padStart(2, '0'))
+    var nowDate = parseInt(new Date().getFullYear() + (new Date().getMonth() + 1).toString().padStart(2, '0') + new Date().getDate().toString().padStart(2, '0')),
+    start = parseInt(start.replace(":", ""))
+    end = parseInt(end.replace(":", ""))
+    date = parseInt(date.replace(/\//g, ""));
+    if((date>nowDate)||((date == nowDate)&&(start>nowTime))){
+      return 0
+    }
+    else if((date<nowDate)||((date == nowDate)&&(end<nowTime))){
+      return 2
+    }
+    else{
+      return 1
+    }
   }
 })
