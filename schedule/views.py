@@ -586,105 +586,36 @@ def findAct(request):
             participantsId = json.loads(participantsId)
             set_of_participantsId = set(participantsId)
         for act in Activity.objects.all():
-            if promoterId:
-                # promoterId is not None
-                # filter by promoterId
-                promoterId = int(promoterId)
-                if act.promoter == promoterId:
-                    newAct = {
-                        'id': act.id,
-                        'title': act.title,
-                        'promoter': act.promoter,
-                        'participants': act.participants,
-                        'partNumMin': act.partNumMin,
-                        'partNumMax': act.partNumMax,
-                        'date': act.date,
-                        'start': act.start,
-                        'end': act.end,
-                        'label': act.label,
-                        'tags': act.tags,
-                        'state': act.state,
-                        'comments': act.comments
-                    }  # remove the detail and images, to save space
-                    ansArray.append(newAct)
-                    continue  # continue to avoid repeated appending
-            if participantsId:
-                # participantsId is not None
-                # filter by participantsId, i.e.
-                # if participantsId is in act.participants (i.e. a subset of act.participants):
-                # then append act to ansArray
-                set_of_act_participants = set(act.participants)
-                if set_of_participantsId.issubset(set_of_act_participants):
-                    # participantsId is a subset of act.participants
-                    newAct = {
-                        'id': act.id,
-                        'title': act.title,
-                        'promoter': act.promoter,
-                        'participants': act.participants,
-                        'partNumMin': act.partNumMin,
-                        'partNumMax': act.partNumMax,
-                        'date': act.date,
-                        'start': act.start,
-                        'end': act.end,
-                        'label': act.label,
-                        'tags': act.tags,
-                        'state': act.state,
-                        'comments': act.comments
-                    }  # remove the detail and images, to save space
-                    ansArray.append(newAct)
-                    continue  # continue to avoid repeated appending
-            if keyForSearch:
-                # keyForSearch is not None
-                # filter by keyForSearch
-                # append iff:
-                # 1. act.title contains keyForSearch, OR:
-                # 2. act.label contains keyForSearch, OR:
-                # 3. act.tags contains keyForSearch
-                if keyForSearch in act.title \
-                        or keyForSearch in act.label \
-                        or keyForSearch in act.tags:
-                    # keyForSearch is in act.title, act.label or act.tags
-                    newAct = {
-                        'id': act.id,
-                        'title': act.title,
-                        'promoter': act.promoter,
-                        'participants': act.participants,
-                        'partNumMin': act.partNumMin,
-                        'partNumMax': act.partNumMax,
-                        'date': act.date,
-                        'start': act.start,
-                        'end': act.end,
-                        'label': act.label,
-                        'tags': act.tags,
-                        'state': act.state,
-                        'comments': act.comments
-                    }  # remove the detail and images, to save space
-                    ansArray.append(newAct)
-                    continue  # continue to avoid repeated appending
-            if not minDate:
-                # no minDate
-                minDate = "0000/00/00"
-            if not maxDate:
-                # no maxDate
-                maxDate = "9999/99/99"
-            # filter by minDate and maxDate
-            if minDate <= act.date and act.date <= maxDate:
-                newAct = {
-                    'id': act.id,
-                    'title': act.title,
-                    'promoter': act.promoter,
-                    'participants': act.participants,
-                    'partNumMin': act.partNumMin,
-                    'partNumMax': act.partNumMax,
-                    'date': act.date,
-                    'start': act.start,
-                    'end': act.end,
-                    'label': act.label,
-                    'tags': act.tags,
-                    'state': act.state,
-                    'comments': act.comments
-                }
-                ansArray.append(newAct)
+            # check if the activity satisfies the filters
+            if promoterId and act.promoter != promoterId:
+                continue
+            if participantsId and not set_of_participantsId.intersection(set(act.participants)):
+                continue
+            if keyForSearch and keyForSearch not in act.title and keyForSearch not in act.detail:
+                continue
+            if minDate and act.date < minDate:
+                continue
+            if maxDate and act.date > maxDate:
+                continue
+            # if the activity satisfies the filters, put it into ansArray
+            newAct = {
+                'id': act.id,
+                'title': act.title,
+                'promoter': act.promoter,
+                'participants': act.participants,
+                'partNumMin': act.partNumMin,
+                'partNumMax': act.partNumMax,
+                'date': act.date,
+                'start': act.start,
+                'end': act.end,
+                'label': act.label,
+                'detail': act.detail,
+                'images': act.images,
+                'tags': act.tags,
+                'state': act.state,
+                'comments': act.comments
+            }
+            ansArray.append(newAct)  
         # now ansArray contains all the activities that satisfy the filters
         # now check id isRandom == 1
         if isRandom and isRandom == "1":
