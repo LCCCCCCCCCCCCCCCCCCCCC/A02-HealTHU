@@ -5,14 +5,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    selflikeLabel: 0, //onLoad时候也获取comment,检验一下用户id是否在likeList里
-    comment: {
-      likeNum: 0,
-      likeList: ['3'],
-      scoreValue: 4.2,
-      nameList: ['tete', 'GUMI'],
-      textList: ['非常好活动，即使是我也得到体育分数', '阳光体育ddl提醒小助手'],
-    },
+    likeLabel: [0, 1], //onLoad时候也获取comment,检验一下用户id是否在likeList里,来显示点赞状态
+    meanscore: 4.5,
+    comment: [
+        {likeNum: 1, likeList: ['9'], scoreValue: 4, name: 'teto', text: '非常好活动，即使是我也得到体育分数', time:'2023/12/18'},
+        {likeNum: 2, likeList: ['3', '9'], scoreValue: 5, name: 'GUMI', text: '阳光锻炼ddl提醒小助手', time:'2023/12/18'},
+      ],
     userscore: 0,
     userid:3,
     actid:3734,
@@ -45,19 +43,25 @@ Page({
   },
 
   //  TODO: 点赞和取消
-  likeAct() {
+  likeAct(event) {
+    const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
-    like.likeNum++;
+    like[personindex].likeNum++;
+    var likeLabel = this.data.likeLabel;
+    likeLabel[personindex] = 1;
     this.setData({
-      selflikeLabel: 1,
+      likeLabel: likeLabel,
       comment: like
     })
   },
-  dislikeAct() {
+  dislikeAct(event) {
+    const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
-    like.likeNum--;
+    like[personindex].likeNum--;
+    var likeLabel = this.data.likeLabel;
+    likeLabel[personindex] = 0;
     this.setData({
-      selflikeLabel: 0,
+      likeLabel: likeLabel,
       comment: like
     })
   },

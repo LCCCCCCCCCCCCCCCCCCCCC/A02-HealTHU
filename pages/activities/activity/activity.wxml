@@ -55,12 +55,6 @@
 <van-cell-group inset>
   <van-cell border="{{ false }}">
     <van-button size="small" class="labeltag">#{{activity.label}}</van-button>
-    <van-button wx:if="{{selflikeLabel == 0}}" size="small" class="labeltag" bind:click="likeAct">
-      <van-icon name="like-o" /> {{comment.likeNum}}
-    </van-button>
-    <van-button wx:else size="small" class="labeltag" bind:click="dislikeAct">
-      <van-icon name="like" /> {{comment.likeNum}}
-    </van-button>
   </van-cell>
   <van-cell icon="success" border="{{ false }}">
     <view slot="title">
@@ -87,12 +81,28 @@
 <view class="detail">{{activity.detail}}</view>
 <van-cell-group inset>
   <van-cell icon="fire-o">
-    <view slot="title">活动评价
-      <van-rate value="{{ comment.scoreValue }}" readonly /> {{ comment.scoreValue }}/5
+    <view slot="title">
+      <text class="comment-title">活动评价 </text>
+      <van-rate value="{{ meanscore }}" readonly /> {{ meanscore }}/5
     </view>
   </van-cell>
-  <view wx:for="{{comment.nameList}}" wx:key="index">
-    <van-cell title="{{item}}" label="{{comment.textList[index]}}"></van-cell>
+  <view wx:for="{{comment}}" wx:key="index">
+    <van-cell border="{{false}}" use-label-slot>
+      <van-button wx:if="{{likeLabel[index] == 0}}" size="small" class="likebtn" 
+        bind:click="likeAct" data-index="{{index}}">
+        <van-icon name="like-o" /> {{item.likeNum}}
+      </van-button>
+      <van-button wx:else size="small" class="labeltag" 
+        bind:click="dislikeAct" data-index="{{index}}">
+        <van-icon name="like" /> {{item.likeNum}}
+      </van-button>
+      <view slot="title">
+        <text class="comname">{{item.name}} </text>
+        <text class="comtime">{{item.time}}</text>
+      </view>
+      <van-rate slot="label" value="{{ item.scoreValue }}" readonly />
+    </van-cell>
+    <van-cell title="{{item.text}}"></van-cell>
   </view>
 </van-cell-group>
 

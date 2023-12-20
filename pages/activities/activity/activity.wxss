@@ -75,3 +75,15 @@ swiper.item{
   border-radius: 10px;
   padding: 8px;
 }
+.comment-title{
+  font-weight: bold;
+  font-size: 18px;
+}
+.comname{
+  color: grey;
+  font-size: 15px;
+}
+.comtime{
+  color: grey;
+  font-size: 12px;
+}
