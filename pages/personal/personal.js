@@ -10,12 +10,12 @@ Page({
     id:'3', // 用于确定是否为自己主页
     // 展示最近获得的6个成就好了
     achList: [
-      {img: "../images/ach7.png",text: "月度纪念2023", time: "2023/7", detail:"当月打卡日期超过10天", state: 100},
-      {img: "../images/ach8.png",text: "月度纪念2023", time: "2023/8", detail:"当月打卡日期超过10天", state: 100},
-      {img: "../images/ach9.png",text: "月度纪念2023", time: "2023/9", detail:"当月打卡日期超过10天", state: 100},
-      {img: "../images/ach10.png", text: "月度纪念2023", time: "2023/10", detail:"当月打卡日期超过10天", state: 100},
-      {img: "../images/ach11.png", text: "月度纪念2023", time: "2023/11", detail:"当月打卡日期超过10天", state: 100},
       {img: "../images/oneyear.png",text: "一年的坚持与守望", time: "2023/11", detail:"注册满一年", state: 100},
+      {img: "../images/ach11.png", text: "月度纪念2023", time: "2023/11", detail:"当月打卡日期超过10天", state: 100},
+      {img: "../images/ach10.png", text: "月度纪念2023", time: "2023/10", detail:"当月打卡日期超过10天", state: 100},
+      {img: "../images/ach9.png",text: "月度纪念2023", time: "2023/9", detail:"当月打卡日期超过10天", state: 100},
+      {img: "../images/ach8.png",text: "月度纪念2023", time: "2023/8", detail:"当月打卡日期超过10天", state: 100},
+      {img: "../images/ach7.png",text: "月度纪念2023", time: "2023/7", detail:"当月打卡日期超过10天", state: 100},
     ],
     bbsList: [
       {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 13:56", url: '../bbs/bbs?bbsid=103'},

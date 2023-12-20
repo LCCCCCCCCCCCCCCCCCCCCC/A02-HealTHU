@@ -1,9 +1,9 @@
 <!--pages/personal/personal.wxml-->
 <van-row>
-  <van-col span="8">
-    <van-image round width="6rem" height="6rem" src="../images/avatar4.png"/>
+  <van-col span="8" offset="2">
+    <van-image round width="6rem" height="6rem" src=""/>
   </van-col>
-  <van-col span="12" offset="2">
+  <van-col span="10">
     <view class="userinfo-nick">{{userInfo.nickName}}</view>
     <view class="userinfo-id">UID：{{userInfo.id}}</view>
     <button wx:if="{{userInfo.id!=id}}" class="infobutton" bind:tap="changeInfo">关注</button>
@@ -16,7 +16,9 @@
     <van-cell class="userinto-sign" title="{{userInfo.sign}}" />
   </van-cell-group>
   <van-cell-group title="成就展示" inset>
-    <van-cell is-link>
+    <van-cell is-link clickable
+      link-type="navigateTo"
+      url="../achievements/achievements?id={{userInfo.id}}">
       <van-row slot="title">
         <van-col span="4">
           <image src="{{achList[0].img}}" style="width: 36px; height: 40px;"/></van-col>

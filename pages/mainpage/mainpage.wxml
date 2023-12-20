@@ -74,6 +74,9 @@
       link-type="navigateTo"
       url="{{item.url}}"/>
     </van-cell-group>
+    <view class="round-click">
+      <navigator url='../bbs/addbbs/addbbs'>+</navigator >
+    </view>
   </van-tab>
   <van-tab title="关注">
     <van-empty description="关注的人还没有动态" />

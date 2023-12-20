@@ -4,15 +4,15 @@
   padding-bottom: 20rpx;
 }
 .avatar {
-  width: 100rpx;
-  height: 100rpx;
+  width: 80rpx;
+  height: 80rpx;
   border-radius: 50%;
 }
 .name {
   position: absolute;
   margin-left:12px;
-  margin-top: 12px;
-  font-size: 18px;
+  margin-top: 9px;
+  font-size: 16px;
   color: #333333;
 }
 .signature {
@@ -31,4 +31,17 @@
   margin-right: 8px;
   color: grey;
   font-size: 12px;
+}
+.toflex{
+  display: flex; 
+  justify-content: center;
+  margin: 6px; 
+}
+.textinput {
+  margin: 8px;
+  height: 100px;
+  width: 260px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 8px;
 }

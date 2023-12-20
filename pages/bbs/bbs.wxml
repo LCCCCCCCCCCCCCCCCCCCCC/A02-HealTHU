@@ -11,7 +11,9 @@
   <van-cell>
     <view slot="title" class="title">{{post.title}}</view>
   </van-cell>
-  <van-cell>
+  <van-cell clickable
+    link-type="navigateTo"
+    url="../personal/personal?id={{post.userid}}">
     <view slot="title">
       <image class="avatar" src="{{ post.avatar }}"></image>
       <text class="name">{{ post.name }}</text>
@@ -20,6 +22,7 @@
   <van-cell border="{{false}}">
     <text slot="title" class="signature">{{ post.content }}</text>
   </van-cell>
+  <!-- TODO: 图片大小处理 -->
   <van-cell wx:for="{{post.image}}" wx:key="index">
     <image class="image" src="{{item}}"/>
   </van-cell>
@@ -42,7 +45,9 @@
 
 <van-empty description="等待第一个回复" wx:if="{{replyList.length == 0}}"></van-empty>
 <van-cell-group title="回复" wx:for="{{replyList}}" wx:key="index" inset>
-  <van-cell>
+  <van-cell clickable
+    link-type="navigateTo"
+    url="../personal/personal?id={{item.userid}}">
     <view slot="title">
       <image class="avatar" src="{{ item.avatar }}"></image>
       <text class="name">{{ item.name }}</text>
@@ -67,5 +72,20 @@
     </van-button>
   </van-cell>
 </van-cell-group>
+
+<van-dialog use-slot
+  title="回复 #{{replyindex}}"
+  show="{{ replyshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="onreplyClose"
+  bind:getuserinfo="replyConfirm"
+>
+  <van-cell-group class="toflex">
+    <textarea class="textinput"
+      bindinput="handlereplyInput" placeholder="在这里写回复~"></textarea>
+  </van-cell-group>
+</van-dialog>
+
 <van-divider />
 </view>

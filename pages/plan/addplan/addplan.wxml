@@ -56,4 +56,5 @@
         bind:cancel="closePicker"
       />
 </van-cell-group>
+<van-divider />
 </view>

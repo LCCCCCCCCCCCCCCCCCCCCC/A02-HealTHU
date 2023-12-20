@@ -32,7 +32,8 @@ Page({
     radio: '1',
   },
   privacyChange() {
-// 成就可见范围
+// TODO：成就可见范围修改对接
+
   },
   onClickRight() {
     this.setData({ show: true });
@@ -58,7 +59,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    if (options.id) {
+      // TODO：获取options.id对应的用户成就信息&权限信息
 
+    } 
   },
 
   /**

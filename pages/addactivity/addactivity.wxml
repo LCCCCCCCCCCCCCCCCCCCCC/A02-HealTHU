@@ -83,4 +83,5 @@
   <textarea class="textinput"
       bindinput="handleSignInput" placeholder="请填写相关信息"></textarea>
 </van-cell-group>
+<van-divider />
 </view>
