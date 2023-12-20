@@ -16,7 +16,8 @@ Page({
     activities3:[],
     activities2:[],
     activities4:[],
-    id: ''
+    id: '',
+
   },
   onClickRight() {
     this.setData({active:1})
@@ -82,6 +83,7 @@ Page({
               var dataa = JSON.parse(res.data)
               data[i].promoterId = data[i].promoter
               data[i].promoter = dataa.nickName
+              data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
               if(j == data.length - 1){
                 that.setData({
                   activities2: data,
@@ -126,6 +128,7 @@ Page({
               var dataa = JSON.parse(res.data)
               data[i].promoterId = data[i].promoter
               data[i].promoter = dataa.nickName
+              data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
               if(j == data.length - 1){
                 that.setData({
                   activities2: data
@@ -257,6 +260,7 @@ Page({
                       var dataa = JSON.parse(res.data)
                       data[i].promoterId = data[i].promoter
                       data[i].promoter = dataa.nickName
+                      data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
                       if(j == data.length - 1){
                         var newdata = that.data.activities1
                         newdata = newdata.concat(data)
@@ -299,6 +303,7 @@ Page({
                 var dataa = JSON.parse(res.data)
                 data[i].promoterId = data[i].promoter
                 data[i].promoter = dataa.nickName
+                data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
                 if(j == data.length - 1){
                   that.setData({
                     activities3: data
@@ -338,6 +343,7 @@ Page({
                 var dataa = JSON.parse(res.data)
                 data[i].promoterId = data[i].promoter
                 data[i].promoter = dataa.nickName
+                data[i].state = that.getState(data[i].date,data[i].start,data[i].end)
                 if(j == data.length - 1){
                   that.setData({
                     activities4: data
@@ -356,4 +362,20 @@ Page({
       signtext: event.detail.value
     });
   },
+  getState(date,start,end){
+    var nowTime = parseInt(new Date().getHours() + (new Date().getMinutes()).toString().padStart(2, '0'))
+    var nowDate = parseInt(new Date().getFullYear() + (new Date().getMonth() + 1).toString().padStart(2, '0') + new Date().getDate().toString().padStart(2, '0')),
+    start = parseInt(start.replace(":", ""))
+    end = parseInt(end.replace(":", ""))
+    date = parseInt(date.replace(/\//g, ""));
+    if((date>nowDate)||((date == nowDate)&&(start>nowTime))){
+      return 0
+    }
+    else if((date<nowDate)||((date == nowDate)&&(end<nowTime))){
+      return 2
+    }
+    else{
+      return 1
+    }
+  }
 })
