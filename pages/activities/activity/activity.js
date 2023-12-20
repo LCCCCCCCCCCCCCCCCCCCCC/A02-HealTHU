@@ -8,12 +8,12 @@ Page({
     likeLabel: [0, 1], //onLoad时候也获取comment,检验一下用户id是否在likeList里,来显示点赞状态
     meanscore: 4.5,
     comment: [
-        {likeNum: 1, likeList: ['9'], scoreValue: 4, name: 'teto', text: '非常好活动，即使是我也得到体育分数', time:'2023/12/18'},
-        {likeNum: 2, likeList: ['3', '9'], scoreValue: 5, name: 'GUMI', text: '阳光锻炼ddl提醒小助手', time:'2023/12/18'},
+        {likes: 1, likeId: ['9'], score: 4, nickname: 'teto', comment: '非常好活动，即使是我也得到体育分数', pubTime:'2023/12/18'},
+        {likes: 2, likeId: ['3', '9'], score: 5, nickname: 'GUMI', comment: '阳光锻炼ddl提醒小助手', pubTime:'2023/12/18'},
       ],
     userscore: 0,
     userid:3,
-    actid:3734,
+    actId:3734,
     signshow: false,
     scoreshow: false,
     signtext: '',
@@ -46,7 +46,7 @@ Page({
   likeAct(event) {
     const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
-    like[personindex].likeNum++;
+    like[personindex].likes++;
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 1;
     this.setData({
@@ -57,7 +57,7 @@ Page({
   dislikeAct(event) {
     const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
-    like[personindex].likeNum--;
+    like[personindex].likes--;
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 0;
     this.setData({
@@ -67,7 +67,24 @@ Page({
   },
   // TODO：报名和评分处理
   scoreConfirm() {
-
+    var id = wx.getStorageSync('id')
+    var that = this
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/commentAct/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        commenterId: id,
+        actId: that.data.actId,
+        comment: that.data.scoretext,
+        score: that.data.userscore,
+        pubTime: date
+      },
+      method:'POST',
+      success:function(res){
+        wx.showToast({ title: '评论成功', icon: 'success' });
+      }
+    })
   },
   signupConfirm() {
     var id = wx.getStorageSync('id')
@@ -84,12 +101,16 @@ Page({
       method:'POST',
       success:function(res){
         wx.showToast({ title: '报名成功', icon: 'success' });
+        wx.navigateBack({delta:1})
       }
     })
   },
   handleSignup() {
-    if(this.data.activity.state == 1){
+    if(this.data.activity.state == 2){
       wx.showToast({ title: '活动已结束', icon: 'cross' });
+    }
+    else if(this.data.activity.state == 1){
+      wx.showToast({ title: '活动进行中', icon: 'cross' });
     }
     else{
       let that = this
@@ -143,16 +164,37 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    var actid = options.actid;
     var that = this
+    var id = wx.getStorageSync('id')
+    if(options.actid){
+      console.log(options.actid)
+      this.setData({
+        actId: options.actid
+      })
+    }
+    this.setData({
+      userid:id
+    })
     wx.request({
       url:'http://127.0.0.1:8000/schedule/getActDetail/',
       data:{
-        'actId': actid
+        'actId': that.data.actId
       },
       method:'GET',
       success:function(res){
         let activity = res.data
+        that.setData({
+          comment:res.data.comments
+        })
+        var meanscore = 0
+        for(var k = 0;k < that.data.comment.length;k++){
+          meanscore += Number(that.data.comment[k].score)
+        }
+        meanscore = (meanscore/ that.data.comment.length).toFixed(2)
+        that.setData({
+          meanscore:meanscore
+        })
+        console.log(res.data.comments)
         activity.promoterId = activity.promoter
         activity.participantNum = activity.participants.length
         activity.participantsId = activity.participants

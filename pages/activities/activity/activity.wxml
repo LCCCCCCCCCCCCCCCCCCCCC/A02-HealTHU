@@ -6,13 +6,14 @@
     </swiper-item>
   </view>
 </swiper>
-
-<view wx:if="{{activity.promoterId == userid || activity.participantsId.includes(userid)}}">
+<!--
+<view wx:if="{{(activity.participantsId.includes(userid))||(activity.state == 2)}}">-->
+<view>
   <view class="round-click" bind:tap="handleScore">
     <text style="color: white;">评价</text>
   </view>
 </view>
-<view wx:else>
+<view wx:if="{{(!activity.participantsId.includes(userid))&&(activity.promoterId != userid)&&(activity.state == 0)}}">
   <view class="round-click" bind:tap="handleSignup">
     <text style="color: white;">报名</text>
   </view>
@@ -90,19 +91,19 @@
     <van-cell border="{{false}}" use-label-slot>
       <van-button wx:if="{{likeLabel[index] == 0}}" size="small" class="likebtn" 
         bind:click="likeAct" data-index="{{index}}">
-        <van-icon name="like-o" /> {{item.likeNum}}
+        <van-icon name="like-o" /> {{item.likes}}
       </van-button>
       <van-button wx:else size="small" class="labeltag" 
         bind:click="dislikeAct" data-index="{{index}}">
-        <van-icon name="like" /> {{item.likeNum}}
+        <van-icon name="like" /> {{item.likes}}
       </van-button>
       <view slot="title">
-        <text class="comname">{{item.name}} </text>
-        <text class="comtime">{{item.time}}</text>
+        <text class="comname">{{item.nickname}} </text>
+        <text class="comtime">{{item.pubTime}}</text>
       </view>
-      <van-rate slot="label" value="{{ item.scoreValue }}" readonly />
+      <van-rate slot="label" value="{{ item.score }}" readonly />
     </van-cell>
-    <van-cell title="{{item.text}}"></van-cell>
+    <van-cell title="{{item.comment}}"></van-cell>
   </view>
 </van-cell-group>
 
