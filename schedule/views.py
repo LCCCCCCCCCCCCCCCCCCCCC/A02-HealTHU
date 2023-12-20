@@ -587,15 +587,20 @@ def findAct(request):
             set_of_participantsId = set(participantsId)
         for act in Activity.objects.all():
             # check if the activity satisfies the filters
-            if promoterId and act.promoter != promoterId:
+            if promoterId and act.promoter != int(promoterId):
+                print("DEBUG: promoterId not satisfied")
                 continue
             if participantsId and not set_of_participantsId.intersection(set(act.participants)):
+                print("DEBUG: promoterId not satisfied")
                 continue
-            if keyForSearch and keyForSearch not in act.title and keyForSearch not in act.detail:
+            if keyForSearch and (keyForSearch not in act.title) and (keyForSearch not in act.detail):
+                print("DEBUG: promoterId not satisfied")
                 continue
             if minDate and act.date < minDate:
+                print("DEBUG: promoterId not satisfied")
                 continue
             if maxDate and act.date > maxDate:
+                print("DEBUG: promoterId not satisfied")
                 continue
             # if the activity satisfies the filters, put it into ansArray
             newAct = {
