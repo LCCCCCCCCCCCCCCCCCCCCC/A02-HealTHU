@@ -75,9 +75,6 @@ swiper.item{
   height: 36px;
   margin-top: 8px;
   margin-bottom: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 /* .button-act{
   font-size: 12px;

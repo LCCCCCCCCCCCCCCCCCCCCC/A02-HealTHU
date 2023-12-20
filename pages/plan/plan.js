@@ -25,6 +25,8 @@ Page({
     showpicker: false,
     nowId: 0,
     nowtype: "",
+    minDate: new Date(2023, 10, 1).getTime(),
+    maxDate: new Date(2024, 0, 31).getTime(),
   },
   showPicker1(){
     this.setData({

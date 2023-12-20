@@ -9,7 +9,9 @@
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
   placeholder="{{true}}"
+  bind:click-left="onClickLeft"
   bind:click-right="onClickRight">
+  <image slot="left" src="../images/canlendar.svg" class="button-icon"/>
   <view slot="title">
     <van-search
       value="{{ value }}"
@@ -22,6 +24,16 @@
     </van-search> 
   </view>
 </van-nav-bar>
+
+<van-calendar title="选择日期范围"
+  show="{{ canlendarshow }}"
+  type="range"
+  bind:close="oncanClose"
+  bind:confirm="oncanConfirm"
+  min-date="{{ minDate }}"
+  max-date="{{ maxDate }}"
+/>
+
 <van-tabs active="{{ active }}" bind:change="onactiveChange">
 <van-tab title="关注">
   <van-empty description="关注的人还没有发起过活动" wx:if="{{activities1.length == 0}}"></van-empty>

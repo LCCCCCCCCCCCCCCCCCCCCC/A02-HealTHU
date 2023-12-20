@@ -1,4 +1,11 @@
 /* pages/activities/activities.wxss */
+.button-icon {
+  width: 36px;
+  height: 36px;
+  margin-left: 12px;
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
 .toflex{
   display: flex; 
   justify-content: center;
