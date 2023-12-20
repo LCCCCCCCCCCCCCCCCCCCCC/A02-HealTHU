@@ -22,23 +22,74 @@ Page({
   },
 
   editAct(){
-
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/changeAct/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        actId: that.data.actId,
+        newTitle: that.data.title,
+        newPartNumMin: that.data.minNum,
+        newPartNumMax: that.data.maxNum,
+        newLabel: that.data.label,
+        newDetail: that.data.detail,
+        newImages:`${JSON.stringify(that.data.images)}`,
+        newTags:`${JSON.stringify(that.data.tags)}`
+      },
+      method:'POST',
+      success:function(res){
+        console.log(res)
+        wx.showToast({ title: '修改成功', icon: 'success' });
+      }
+    })
   },
   afterRead(event){
 
   },
   deleteConfirm() {
-
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/deleteAct/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        actId:that.data.actId
+      },
+      method:'POST',
+      success:function(res){
+        wx.navigateBack({delta:1})
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    var that = this
     if(options.actid){
-      console.log(options.actid)
       this.setData({ actId: options.actid });
     }
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      data:{
+        'actId': that.data.actId
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          title:data.title,
+          label:data.label,
+          minNum:data.partNumMin,
+          maxNum:data.partNumMax,
+          tags:data.tags,
+          date:data.date,
+          start:data.start,
+          end:data.end,
+          images:data.images
+        })
+      }
+    })
   },
 
   /**

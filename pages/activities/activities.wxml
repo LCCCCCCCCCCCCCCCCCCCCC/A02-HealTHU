@@ -102,7 +102,7 @@
     </view>
     <view slot="footer">
       <van-button size="mini" bind:click="showdetail3" data-index="{{index}}">查看</van-button>
-      <van-button size="mini" bind:click="handleChange" data-index="{{index}}">编辑</van-button>
+      <van-button size="mini" bind:click="handleChange" data-index="{{index}}" wx:if="{{item.state == 0}}">编辑</van-button>
       <van-button size="mini" bind:click="handleReview" data-index="{{index}}">报名审核</van-button>
     </view>
     </van-card>

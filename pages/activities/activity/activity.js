@@ -49,9 +49,22 @@ Page({
     like[personindex].likes++;
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 1;
-    this.setData({
-      likeLabel: likeLabel,
-      comment: like
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/likeComment/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.comment[personindex].id,
+        actId: that.data.actId,
+        likerId: that.data.userid
+      },
+      method:'POST',
+      success:function(res){
+        that.setData({
+          likeLabel: likeLabel,
+          comment: like
+        })
+      }
     })
   },
   dislikeAct(event) {
@@ -60,9 +73,39 @@ Page({
     like[personindex].likes--;
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 0;
-    this.setData({
-      likeLabel: likeLabel,
-      comment: like
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/dislikeComment/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.comment[personindex].id,
+        actId: that.data.actId,
+        dislikerId: that.data.userid
+      },
+      method:'POST',
+      success:function(res){
+        that.setData({
+          likeLabel: likeLabel,
+          comment: like
+        })
+      }
+    })
+  },
+  deleteComment(event){
+    const personindex = event.currentTarget.dataset.index;
+    var like = this.data.comment;
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/deleteComment/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.comment[personindex].id,
+        actId: that.data.actId,
+      },
+      method:'POST',
+      success:function(res){
+        wx.showToast({ title: '删除成功', icon: 'success' });
+      }
     })
   },
   // TODO：报名和评分处理
@@ -167,7 +210,6 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     if(options.actid){
-      console.log(options.actid)
       this.setData({
         actId: options.actid
       })
@@ -187,14 +229,22 @@ Page({
           comment:res.data.comments
         })
         var meanscore = 0
+        var likeLabel = []
         for(var k = 0;k < that.data.comment.length;k++){
           meanscore += Number(that.data.comment[k].score)
+          if(that.data.comment[k].likesId.includes(id)){
+            likeLabel[k] = 1
+          }
+          else{
+            likeLabel[k] = 0
+          }
         }
-        meanscore = (meanscore/ that.data.comment.length).toFixed(2)
+        meanscore = (meanscore/ that.data.comment.length).toFixed(1)
+        if(isNaN(meanscore)){meanscore = 0}
         that.setData({
-          meanscore:meanscore
+          meanscore:meanscore,
+          likeLabel:likeLabel
         })
-        console.log(res.data.comments)
         activity.promoterId = activity.promoter
         activity.participantNum = activity.participants.length
         activity.participantsId = activity.participants
