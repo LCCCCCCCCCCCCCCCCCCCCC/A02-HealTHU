@@ -13,8 +13,8 @@ Page({
     activities2:[],
     activities3:[],
     activities4:[],
-    // remain to frontend debugging
-    // activities2:[
+    // remain for frontend debugging
+    // activities3:[
     //   {title: "2023秋软件学院集体锻炼", promoter:"NLno", participantNum:2,partNumMin:2,partNumMax:4,date:"2023/12/18",start:"17:00",end:"18:00",label:"打卡统计",tags:["紫荆操场","飞盘","集体锻炼"],state:0,id:3734},
     //   {title: "寻找网球等球类搭子", promoter:"NLno", participantNum:0,partNumMin:1,partNumMax:2,date:"2023/12/19",start:"15:00",end:"18:00",label:"约球",tags:["紫荆网球场","网球","羽毛球","交友"],state:1,id:6852},
     // ],
@@ -377,5 +377,11 @@ Page({
   formatDate(date) {
     date = new Date(date);
     return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+  },
+  handleChange(event) {
+    const id = event.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: '../addactivity/editactivity/editactivity?actid=' + this.data.activities3[id].id
+    })
   }
 })

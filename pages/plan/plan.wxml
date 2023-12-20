@@ -23,58 +23,6 @@
     <navigator url='./addplan/addplan'>+</navigator >
   </view>
 
-  <!-- <van-popup show="{{ showedit }}">
-    <view class="editact">
-      <view>名称：</view><input bindinput="handleNameInput" placeholder="{{title}}"/>
-      <view>备注：</view><input bindinput="handleLabelInput" placeholder="{{label}}"/>
-      <view>类型：{{nowtype}}</view>
-      <view>起始时间：{{start}}</view><button bind:tap="showPicker1">编辑</button>
-      <van-datetime-picker
-        wx:if="{{showpicker == 1}}"
-        type="time"
-        value="{{start}}"
-        min-hour="0"
-        max-hour="24"  
-        bind:confirm="handleStartTimeInput"
-        bind:cancel="closePicker"
-      />
-      <view>结束时间：{{end}}</view><button bind:tap="showPicker2">编辑</button>
-      <van-datetime-picker
-        wx:if="{{showpicker == 2}}"
-        type="time"
-        value="{{end}}"
-        min-hour="0"
-        max-hour="24"  
-        bind:confirm="handleEndTimeInput"
-        bind:cancel="closePicker"
-      />
-      <button bindtap="deleteAct">删除</button>
-      <button bindtap="editAct">确定</button>
-    </view>
-  </van-popup> -->
-
-
-  <!-- <view class="todo-list">
-    <block wx:for="{{todos}}" wx:key="index">
-      <view class="todo-item" style="background: linear-gradient(to bottom right, {{item.color}}, #FFFFFF);">
-          {{item.title}} {{item.label}}
-        <span class="item-time">{{item.start}}——{{item.end}}</span>
-        <button class="edit" data-id="{{index}}" bindtap="handleEdit">编辑</button>
-      </view>
-    </block>
-  </view> -->
-
-  <!-- <view class="todo-list">
-    <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
-      <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="handleEdit">
-        <view slot="title">
-          <van-icon name="checked" color="{{item.color}}"/> {{item.title}}
-        </view>
-        <view wx:if="{{ item.type !== 'ddl' }}">{{item.start}}—{{item.end}}</view>
-        <view wx:else>{{item.end}}</view>
-      </van-cell>
-    </van-cell-group>
-  </view> -->
   <view class="todo-list">
     <van-cell-group class="todo-item" wx:for="{{todos}}" wx:key="index">
       <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="tohandleEdit">

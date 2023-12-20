@@ -26,7 +26,8 @@
     "pages/plan/editplan/editplan",
     "pages/addactivity/addactivity",
     "pages/activities/actreview/actreview",
-    "pages/bbs/bbs"
+    "pages/bbs/bbs",
+    "pages/addactivity/editactivity/editactivity"
   ],
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",

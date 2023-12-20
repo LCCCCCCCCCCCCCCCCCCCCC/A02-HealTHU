@@ -70,7 +70,7 @@
   <van-tab title="最新">
     <van-cell-group wx:for="{{bbsList}}" wx:key="index">
       <van-cell clickable size="large" 
-      title="{{item.title}}" label="{{item.time}}"
+      title="{{item.title}}" label="{{item.name}} {{item.time}}"
       link-type="navigateTo"
       url="{{item.url}}"/>
     </van-cell-group>

@@ -2,7 +2,7 @@ Page({
   data: {
     // bbsList: for debug use
     bbsList: [
-      {title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", image: [], likeList:['4', '5'], 
+      {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", image: [], likeList:['4', '5'], 
         replies:[{
           name: "teto",
           avatar: "../images/avatar3.png",
@@ -10,12 +10,12 @@ Page({
           content: "这是我见过最正确的话了",
           likeList:['3'],
         }]},
-      {title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", image: [], likeList:[], replies:[]},
-      {title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", image: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
-      {title:"[新成就] “一年的坚持与守望”", time:"2023-11-31 10:02", id:100, content: "", image: [], likeList:['4', '5'], replies:[]},
+      {name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", image: [], likeList:[], replies:[]},
+      {name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", image: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
+      {name:"NLno", title:"[新成就] “一年的坚持与守望”", time:"2023-11-31 10:02", id:100, content: "", image: [], likeList:['4', '5'], replies:[]},
     ],
     post: {
-      name: "NLno",
+      name: "",
       avatar: "../images/avatar4.png",
       title: "",
       time: "",
@@ -37,6 +37,7 @@ Page({
     const bbsid = options.bbsid;
     const selectedbbs = this.data.bbsList.find(item => item.id == bbsid);
     var post = this.data.post;
+    post.name = selectedbbs.name;
     post.title = selectedbbs.title;
     post.time = selectedbbs.time;
     post.content = selectedbbs.content;

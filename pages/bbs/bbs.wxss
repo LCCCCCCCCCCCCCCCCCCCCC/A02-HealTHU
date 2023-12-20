@@ -1,3 +1,8 @@
+.pages{
+  background-color: #f2f2f2;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+}
 .avatar {
   width: 100rpx;
   height: 100rpx;
@@ -15,22 +20,15 @@
   color: black;
 }
 .title{
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
 .image{
-  padding-left: 16px;
-}
-.funcline{
-  padding: 4px;
-  padding-bottom: 12px;
+  padding-left: 2px;
 }
 .lnum {
   margin-left: 20px;
   margin-right: 8px;
   color: grey;
   font-size: 12px;
-}
-.button {
-  margin-right: 4px;
 }

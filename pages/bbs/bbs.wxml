@@ -6,25 +6,27 @@
   <van-icon name="bars" slot="right" />
 </van-nav-bar>
 
-<van-cell>
-  <view slot="title" class="title">{{post.title}}</view>
-</van-cell>
-<van-cell-group>
-  <van-cell use-label-slot>
-  <view slot="title">
-    <image class="avatar" src="{{ post.avatar }}"></image>
-    <text class="name">{{ post.name }}</text>
-  </view>
-  <view slot="label">
-    <text class="signature">{{ post.content }}</text>
-  </view>
+<view class="pages">
+<van-cell-group inset>
+  <van-cell>
+    <view slot="title" class="title">{{post.title}}</view>
   </van-cell>
-  <view wx:for="{{post.image}}" wx:key="index">
+  <van-cell>
+    <view slot="title">
+      <image class="avatar" src="{{ post.avatar }}"></image>
+      <text class="name">{{ post.name }}</text>
+    </view>
+  </van-cell>
+  <van-cell border="{{false}}">
+    <text slot="title" class="signature">{{ post.content }}</text>
+  </van-cell>
+  <van-cell wx:for="{{post.image}}" wx:key="index">
     <image class="image" src="{{item}}"/>
-  </view>
-  <view class="funcline">
+  </van-cell>
+  <van-cell class="funcline">
   <text class="lnum">#0</text>
-    <van-button custom-class="button" wx:if="{{likeLabel == 0}}" class="likebtn" 
+    <van-button custom-class="button" wx:if="{{likeLabel == 0}}" 
+      size="mini"
       bind:click="likeAct" data-index="0">
       <van-icon name="like-o" /> {{post.likeList.length}}
     </van-button>
@@ -32,35 +34,38 @@
       bind:click="dislikeAct" data-index="0">
       <van-icon name="like" /> {{post.likeList.length}}
     </van-button>
-    <van-button bind:click="handleReply">
+    <van-button bind:click="handleReply" data-index="0" size="mini">
       <van-icon name="chat-o" /> 回复
     </van-button>
-  </view>
+  </van-cell>
 </van-cell-group>
 
 <van-empty description="等待第一个回复" wx:if="{{replyList.length == 0}}"></van-empty>
-<van-cell-group title="回复" wx:for="{{replyList}}" wx:key="index">
-  <van-cell use-label-slot>
-  <view slot="title">
-    <image class="avatar" src="{{ item.avatar }}"></image>
-    <text class="name">{{ item.name }}</text>
-  </view>
-  <view slot="label">
-    <text class="signature">{{ item.content }}</text>
-  </view>
+<van-cell-group title="回复" wx:for="{{replyList}}" wx:key="index" inset>
+  <van-cell>
+    <view slot="title">
+      <image class="avatar" src="{{ item.avatar }}"></image>
+      <text class="name">{{ item.name }}</text>
+    </view>
   </van-cell>
-  <view class="funcline">
+  <van-cell border="{{false}}">
+    <text slot="title" class="signature">{{ item.content }}</text>
+  </van-cell>
+  <van-cell class="funcline">
     <text class="lnum">#{{index + 1}}</text>
-    <van-button custom-class="button" wx:if="{{likeLabels[index] == 0}}" class="likebtn" 
+    <van-button custom-class="button" wx:if="{{likeLabels[index] == 0}}"
+      size="mini"
       bind:click="likeAct" data-index="{{index}}">
       <van-icon name="like-o" /> {{item.likeList.length}}
     </van-button>
-    <van-button custom-class="button" wx:else
+    <van-button custom-class="button" wx:else size="mini"
       bind:click="dislikeAct" data-index="{{index}}">
       <van-icon name="like" /> {{item.likeList.length}}
     </van-button>
-    <van-button bind:click="handleReply" data-index="{{index}}">
+    <van-button bind:click="handleReply" data-index="{{index}}" size="mini">
       <van-icon name="chat-o" /> 回复
     </van-button>
-  </view>
+  </van-cell>
 </van-cell-group>
+<van-divider />
+</view>

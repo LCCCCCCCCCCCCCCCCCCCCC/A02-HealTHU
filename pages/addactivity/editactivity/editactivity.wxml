@@ -1,12 +1,12 @@
-<!--pages/addactivity/addactivity.wxml-->
+<!--pages/addactivity/editactivity/editactivity.wxml-->
 <view class="pages">
 <van-nav-bar
-  title="发起活动"
+  title="编辑活动"
   left-arrow
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
   placeholder="{{true}}"
-  bind:click-right="addAct"
+  bind:click-right="editAct"
   bind:click-left="onClickLeft"
   >
   <view slot="right">
@@ -23,12 +23,12 @@
 <van-cell-group class="addnew" inset>
   <van-field
     label="主题"
-    placeholder="活动主题"
+    value="{{title}}"
     bind:change="handleNameInput"
   />
   <van-field
     label="活动简介"
-    placeholder=""
+    value="{{label}}"
     bind:change="handleLabelInput"
   />
   <van-cell title="人数下限">

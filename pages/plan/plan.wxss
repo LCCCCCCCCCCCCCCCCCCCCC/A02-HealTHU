@@ -50,29 +50,7 @@
   overflow:auto;
   color:white;
 }
-/* .todo-list{
-  width:90%;
-  border-radius: 10px;
-  overflow:auto;
-}
-.todo-item{
-  position:relative;
-  margin-top:2px;
-  margin-left:2px;
-  margin-right:2px;
-  height: 50px;
-  border: 2px solid #000000;
-  border-radius: 5px;
-  font-size: 20px;
-  color:white;
-}
-.item-time{
-  position: relative;
-  margin-left:30px;
-  color: black;
-  font-size: 16px;
-  top: 25rpx;
-} */
+
 .edit{
   position: absolute;
   margin-bottom: 4px;

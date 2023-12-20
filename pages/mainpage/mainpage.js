@@ -24,14 +24,14 @@ Page({
     exitshow: false,
     bbsactivate: 0,
     noticeList: [
-      {state:1, title:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../personal/personal'},
+      {state:1, title:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
       {state:0, title:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 8:20", url: '../activities/activity/activity?actid=1'},
     ],
     bbsList: [
-      {title:"今天真冷啊..", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {title:"[活动报名]2023秋软件学院集体锻炼", time:"2023-12-17 19:20", url: '../activities/activity/activity?actid=1'},
-      {title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", url: '../bbs/bbs?bbsid=102'},
-      {title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", url: '../bbs/bbs?bbsid=101'},
+      {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
+      {name:"NLno", title:"[活动报名]2023秋软件学院集体锻炼", time:"2023-12-17 19:20", url: '../activities/activity/activity?actid=1'},
+      {name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", url: '../bbs/bbs?bbsid=102'},
+      {name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", url: '../bbs/bbs?bbsid=101'},
     ]
   },
   delUnread(event){
