@@ -54,6 +54,12 @@
 <van-cell-group inset>
   <van-cell border="{{ false }}">
     <van-button size="small" class="labeltag">#{{activity.label}}</van-button>
+    <van-button wx:if="{{selflikeLabel == 0}}" size="small" class="labeltag" bind:click="likeAct">
+      <van-icon name="like-o" /> {{comment.likeNum}}
+    </van-button>
+    <van-button wx:else size="small" class="labeltag" bind:click="dislikeAct">
+      <van-icon name="like" /> {{comment.likeNum}}
+    </van-button>
   </van-cell>
   <van-cell icon="success" border="{{ false }}">
     <view slot="title">
@@ -81,11 +87,12 @@
 <van-cell-group inset>
   <van-cell icon="fire-o">
     <view slot="title">活动评价
-      <van-rate value="{{ scoreValue }}" readonly /> {{ scoreValue }}/5
+      <van-rate value="{{ comment.scoreValue }}" readonly /> {{ comment.scoreValue }}/5
     </view>
   </van-cell>
-  <van-cell>“非常好活动，即使是我也得到体育分数”</van-cell>
-  <van-cell>“阳光体育ddl提醒小助手”</van-cell>
+  <view wx:for="{{comment.nameList}}" wx:key="index">
+    <van-cell title="{{item}}" label="{{comment.textList[index]}}"></van-cell>
+  </view>
 </van-cell-group>
 
 <van-divider

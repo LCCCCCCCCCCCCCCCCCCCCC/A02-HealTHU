@@ -5,7 +5,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    scoreValue: 4.2,
+    selflikeLabel: 0, //onLoad时候也获取comment,检验一下用户id是否在likeList里
+    comment: {
+      likeNum: 0,
+      likeList: ['3'],
+      scoreValue: 4.2,
+      nameList: ['tete', 'GUMI'],
+      textList: ['非常好活动，即使是我也得到体育分数', '阳光体育ddl提醒小助手'],
+    },
     userscore: 0,
     userid:3,
     actid:3734,
@@ -37,6 +44,23 @@ Page({
     todos:[]
   },
 
+  //  TODO: 点赞和取消
+  likeAct() {
+    var like = this.data.comment;
+    like.likeNum++;
+    this.setData({
+      selflikeLabel: 1,
+      comment: like
+    })
+  },
+  dislikeAct() {
+    var like = this.data.comment;
+    like.likeNum--;
+    this.setData({
+      selflikeLabel: 0,
+      comment: like
+    })
+  },
   // TODO：报名和评分处理
   scoreConfirm() {
 
@@ -167,7 +191,6 @@ Page({
         }
       }
     })
-    // actid请求和data设置
   },
 
   /**
