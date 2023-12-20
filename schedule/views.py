@@ -753,8 +753,8 @@ def getApplication(request):
 @csrf_exempt
 def appReply(request):
     if request.method == 'POST':
-        id = request.POST.get("id")
-        applicationId = request.POST.get("applicationId")
+        id = int(request.POST.get("id"))
+        applicationId = int(request.POST.get("applicationId"))
         isAgree = request.POST.get("isAgree")  # 0 <--> false, 1 <--> true
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
