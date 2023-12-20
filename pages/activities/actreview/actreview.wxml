@@ -27,12 +27,7 @@
 
 <van-cell-group inset wx:for="{{reviewList}}" wx:key="index">
   <van-cell is-link label="{{item.text}}" bind:click="reviewShow" data-index="{{index}}">
-    <view slot="title">
-      <van-tag type="danger" wx:if="{{item.state == 0}}">待处理</van-tag>
-      <van-tag plain type="primary" wx:if="{{item.state == 1}}">已接受</van-tag>
-      <van-tag plain color="grey" wx:if="{{item.state == 2}}">已拒绝</van-tag>
-      {{item.nickname}}
-    </view>
+    <view slot="title">{{item.nickName}}</view>
 
   </van-cell>
 </van-cell-group>
