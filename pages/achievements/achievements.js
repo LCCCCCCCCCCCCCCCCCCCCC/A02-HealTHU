@@ -5,6 +5,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    achNow: {
+      img: "../images/ach12last.png", text: "月度纪念2022", time: "2022/12", state: 100
+    },
+    //月度纪念就这个月用过月末领，百日和一年按注册算
     achList: [
       {img: "../images/ach12last.png", text: "月度纪念2022", time: "2022/12", state: 100},
       {img: "../images/ach1.png",text: "月度纪念2023", time: "2023/1", state: 100},
@@ -24,6 +28,7 @@ Page({
       {img: "../images/twoyear.png",text: "两年的回顾与探索", time: "", state: 50},
     ],
     show: false,
+    achshow: false,
     radio: '1',
   },
   privacyChange() {
@@ -32,11 +37,22 @@ Page({
   onClickRight() {
     this.setData({ show: true });
   },
-  onTypeConfirm(event) {
+  onTypeChange(event) {
     this.setData({  radio: event.detail });
   },
   onClose() {
     this.setData({ show: false });
+  },
+  onachClose() {
+    this.setData({ achshow: false });
+  },
+  achShow(event) {
+    const achindex = event.currentTarget.dataset.index;
+    var tempItem = this.data.achList[achindex];
+    this.setData({ 
+      achNow: tempItem,
+      achshow: true 
+    });
   },
   /**
    * 生命周期函数--监听页面加载

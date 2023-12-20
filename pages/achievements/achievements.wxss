@@ -13,3 +13,8 @@
 .select{
   padding: 16px;
 }
+.popup{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -10,17 +10,34 @@
 <van-grid custom-class="pages" column-num="3">
   <!-- 不太确定做不做成就展示选择（森空岛展示n张卡在个人界面那种） -->
   <van-checkbox-group wx:for="{{ achList }}" wx:key="index" 
-    value="{{ checkresult }}" bind:change="oncheckChange" >
-    <van-grid-item use-slot>
-      <image 
-        style="width: 90%; height: 108px;"
-        src="{{item.img}}"/>
+    value="{{ checkresult }}" >
+    <van-grid-item use-slot bind:click="achShow" bind:change="oncheckChange" data-index="{{index}}">
+      <image wx:if="{{item.state == 100}}" src="{{item.img}}"
+      style="width: 90%; height: 108px;"/>
+      <image wx:else src="{{item.img}}"
+      style="width: 90%; height: 108px; filter: grayscale(90%);"/>
       <text class="achname">{{item.text}}</text>
       <text class="achtime" wx:if="{{item.state == 100}}">{{item.time}}</text>
       <text class="achtime" wx:else>{{item.state}}%</text>
+
     </van-grid-item>
   </van-checkbox-group>
 </van-grid>
+
+<van-popup round
+  show="{{ achshow }}"
+  custom-style="height: 50%; width: 70%"
+  bind:close="onachClose"
+  class="popup"
+>
+<van-grid-item use-slot>
+  <image style="width: 168px; height: 168px;"
+    src="{{achNow.img}}"/>
+  <text class="achname">{{achNow.text}}</text>
+  <text class="achtime" wx:if="{{achNow.state == 100}}">{{achNow.time}}</text>
+  <text class="achtime" wx:else>{{achNow.state}}%</text>
+</van-grid-item>
+</van-popup>
 
 <van-dialog use-slot
   title="修改成就可见范围"
@@ -33,6 +50,6 @@
   <van-radio-group class="select" value="{{ radio }}" bind:change="onTypeChange">
     <van-radio name="1">所有人可见</van-radio>
     <van-radio name="2">仅粉丝可见</van-radio>
-    <van-radio name="2">仅自己可见</van-radio>
+    <van-radio name="3">仅自己可见</van-radio>
   </van-radio-group>
   </van-dialog>
