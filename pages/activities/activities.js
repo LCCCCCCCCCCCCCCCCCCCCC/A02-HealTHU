@@ -24,7 +24,22 @@ Page({
   // TODO: 退出活动
   handleExit(event) {
     const id = event.currentTarget.dataset.index;
-
+    var that = this
+    var exitId = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/exitAct/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.activities4[id].promoterId,
+        exitId: exitId,
+        actId: that.data.activities4[id].id
+      },
+      method:'POST',
+      success:function(res){
+        wx.showToast({ title: '退出成功', icon: 'success' });
+        that.onLoad()
+      }
+    })
   },
   handleReview(event) {
     const id = event.currentTarget.dataset.index;
