@@ -672,9 +672,9 @@ def getActDetail(request):
 @csrf_exempt
 def partAct(request):
     if request.method == 'POST':
-        id = request.POST.get("id")
-        otherId = request.POST.get("otherId")
-        actId = request.POST.get("actId")
+        id = int(request.POST.get("id"))
+        otherId = int(request.POST.get("otherId"))
+        actId = int(request.POST.get("actId"))
         message = request.POST.get("message")
         # send a apply message about actId from id to otherId
         # first, find id and otherId in Schedule.objects
@@ -725,7 +725,7 @@ def partAct(request):
 
 def getApplication(request):
     if request.method == 'GET':
-        id = request.GET.get("id")
+        id = int(request.GET.get("id"))
         # find the schedule (if any) according to the id
         targetSchedule = Schedule.objects.filter(id=id).first()
         if targetSchedule:
@@ -845,7 +845,7 @@ def nDays(date, n):
 
 def getddl(request):
     if request.method == 'GET':
-        id = request.GET.get("id")
+        id = int(request.GET.get("id"))
         date = request.GET.get("date")
         ddlRange = int(request.GET.get("range"))
         # find the schedule (if any) according to the id
@@ -887,9 +887,9 @@ def getddl(request):
 @csrf_exempt   
 def exitAct(request):
     if request.method == 'POST':
-        id = request.POST.get("id")
-        exitId = request.POST.get("exitId")
-        actId = request.POST.get("actId")
+        id = int(request.POST.get("id"))
+        exitId = int(request.POST.get("exitId"))
+        actId = int(request.POST.get("actId"))
         # the exitId wishes to exit the actId promoted by id
         promoterSchedule = Schedule.objects.filter(id=id).first()
         exiterSchedule = Schedule.objects.filter(id=exitId).first()
@@ -930,8 +930,8 @@ def exitAct(request):
 @csrf_exempt
 def commentAct(request):
     if request.method == 'POST':
-        commenterId = request.POST.get("commenterId")
-        actId = request.POST.get("actId")
+        commenterId = int(request.POST.get("commenterId"))
+        actId = int(request.POST.get("actId"))
         comment = request.POST.get("comment")
         pubTime = request.POST.get("pubTime")
         score = request.POST.get("score")
