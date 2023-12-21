@@ -8,5 +8,7 @@ db.sqlite3
 # ignore all .pyc files, whereever they are
 **/*.pyc
 
-*.txt
+#ignore all testing files
+backend/test.py
+backend/*.txt
 ```
