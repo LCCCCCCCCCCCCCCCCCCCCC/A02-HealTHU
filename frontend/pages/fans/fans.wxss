@@ -1,0 +1,34 @@
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left: 12px;
+}
+.name {
+  position: absolute;
+  margin-left:12px;
+  margin-top: 12px;
+  font-size: 36rpx;
+  color: #333333;
+}
+.signature {
+  font-size: 26rpx;
+  color: #999999;
+}
+.follow-btn {
+  font-size: 26rpx;
+  color: #ffffff;
+  background-color: #007aff;
+  border-radius: 4rpx;
+  margin-right: 12px;
+  margin-top: 8px;
+  width:72px;
+}
+.followed-text {
+  font-size: 26rpx;
+  color: #999999;
+  border-radius: 4rpx;
+  margin-right: 12px;
+  margin-top: 8px;
+  width:72px;
+}

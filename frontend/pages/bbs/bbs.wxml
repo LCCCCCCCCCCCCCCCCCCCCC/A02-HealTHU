@@ -1,0 +1,105 @@
+<van-nav-bar title="动态"
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="onClickRight">
+  <van-icon name="bars" slot="right" />
+</van-nav-bar>
+
+<view class="pages">
+<van-cell-group inset>
+  <van-cell>
+    <view slot="title" class="title">{{post.title}}</view>
+  </van-cell>
+  <van-cell clickable
+    link-type="navigateTo"
+    url="../personal/personal?id={{post.userid}}">
+    <view slot="title">
+      <image class="avatar" src="{{ post.avatar }}"></image>
+      <text class="name">{{ post.name }}</text>
+    </view>
+  </van-cell>
+  <van-cell border="{{false}}">
+    <text slot="title" class="signature">{{ post.content }}</text>
+  </van-cell>
+  <!-- TODO: 图片大小处理 -->
+  <van-cell wx:for="{{post.image}}" wx:key="index">
+    <image class="image" src="{{item}}"/>
+  </van-cell>
+  <van-cell class="funcline">
+    <view class="lnum">{{post.time}}</view>
+    <text class="lnum">#0</text>
+    <van-button custom-class="button" wx:if="{{likeLabel == 0}}" 
+      size="mini"
+      bind:click="likeAct" data-index="0">
+      <van-icon name="like-o" /> {{post.likeList.length}}
+    </van-button>
+    <van-button custom-class="button" wx:else
+      bind:click="dislikeAct" data-index="0">
+      <van-icon name="like" /> {{post.likeList.length}}
+    </van-button>
+    <van-button bind:click="handleReply" data-index="0" size="mini">
+      <van-icon name="chat-o" /> 回复
+    </van-button>
+  </van-cell>
+</van-cell-group>
+
+<van-empty description="等待第一个回复" wx:if="{{replyList.length == 0}}"></van-empty>
+<van-cell-group title="回复" inset>
+  <view wx:for="{{replyList}}" wx:key="index">
+  <van-cell clickable
+    link-type="navigateTo"
+    url="../personal/personal?id={{item.userid}}">
+    <view slot="title">
+      <image class="avatar" src="{{ item.avatar }}"></image>
+      <text class="name">{{ item.name }}</text>
+    </view>
+  </van-cell>
+  <van-cell border="{{false}}">
+    <view slot="title">
+      <view class="above" wx:if="{{ item.aboveid != 0 }}">
+        回复 #{{item.aboveid}} {{replyList[item.aboveid - 1].name}}
+        <view>{{ replyList[item.aboveid - 1].content }}</view>
+      </view>
+      <text class="signature">{{ item.content }}</text>
+    </view>
+  </van-cell>
+  <van-cell class="funcline">
+    <view class="lnum">{{item.time}}</view>
+    <text class="lnum">#{{index + 1}}</text>
+    <van-button custom-class="button" wx:if="{{likeLabels[index] == 0}}"
+      size="mini"
+      bind:click="likeAct" data-index="{{index}}">
+      <van-icon name="like-o" /> {{item.likeList.length}}
+    </van-button>
+    <van-button custom-class="button" wx:if="{{likeLabels[index] == 1}}" 
+      size="mini"
+      bind:click="dislikeAct" data-index="{{index}}">
+      <van-icon name="like" /> {{item.likeList.length}}
+    </van-button>
+    <van-button bind:click="handleReply" data-index="{{index + 1}}" size="mini">
+      <van-icon name="chat-o" /> 回复
+    </van-button>
+  </van-cell>
+</view>
+</van-cell-group>
+
+<view class="round-click" bind:tap="handleReply" data-index="0">
+    <text style="color: white;">评论</text>
+  </view>
+<van-dialog use-slot
+  title="回复 #{{replyindex}}"
+  show="{{ replyshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="onreplyClose"
+  bind:getuserinfo="replyConfirm"
+>
+  <van-cell-group class="toflex">
+    <textarea class="textinput"
+      bindinput="handlereplyInput" placeholder="在这里写回复~"></textarea>
+  </van-cell-group>
+</van-dialog>
+
+<van-divider />
+</view>

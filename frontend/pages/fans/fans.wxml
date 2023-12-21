@@ -1,0 +1,25 @@
+<van-nav-bar title="粉丝" 
+  right-text="搜索"
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="onClickRight">
+</van-nav-bar>
+
+<van-empty description="等待第一个粉丝.." wx:if="{{userList.length == 0}}"></van-empty>
+<van-cell-group wx:for="{{ userList }}" wx:key="id">
+   <van-cell use-label-slot>
+    <view slot="title">
+      <image class="avatar" src="{{ item.avatar }}"></image>
+      <text class="name">{{ item.nickName }}</text>
+    </view>
+    <view slot="label">
+      <text class="signature">{{ item.signature }}</text>
+    </view>
+    <view slot="right-icon">
+      <button class="follow-btn" wx:if="{{ item.followed == false}}" bind:tap="followUser" data-id="{{ item.id }}">关注</button>
+      <button class="followed-text" wx:else bind:tap="unfollowUser" data-id="{{ item.id }}">已关注</button>
+    </view>
+   </van-cell>
+  </van-cell-group>
+  <van-divider />

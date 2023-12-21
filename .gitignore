@@ -1,0 +1,14 @@
+# ignore db.sqlite3
+db
+db.sqlite3
+
+# ignore .dbeaver
+.dbeaver/
+
+# ignore all .pyc files, whereever they are
+**/*.pyc
+
+#ignore all testing files
+backend/test.py
+backend/*.txt
+```
