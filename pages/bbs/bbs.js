@@ -67,6 +67,17 @@ Page({
    */
   onLoad(options) {
     const bbsid = options.bbsid;
+    if (options.floor) {
+      wx.nextTick(() => {
+        const query = wx.createSelectorQuery()
+        query.select('#floor-' + options.floor).boundingClientRect(res => {
+          wx.pageScrollTo({
+            scrollTop: res.top - 60,
+            duration: 300
+          })
+        }).exec()
+      })
+    }
     const selectedbbs = this.data.bbsList.find(item => item.id == bbsid);
     var post = this.data.post;
     post.userid = selectedbbs.userid;
@@ -81,7 +92,19 @@ Page({
       replyList: selectedbbs.replies,
     });
   },
-
+  toFloor(event){
+    var floor = event.currentTarget.dataset.index
+    wx.nextTick(() => {
+      const query = wx.createSelectorQuery()
+        query.select('#floor-' + floor).boundingClientRect(res => {
+          console.log(res)
+          wx.pageScrollTo({
+            scrollTop: res.top - 60,
+            duration: 300
+          })
+      }).exec()
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
