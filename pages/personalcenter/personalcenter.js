@@ -41,7 +41,7 @@ Page({
                 method:'GET',
                 success:function(res){
                   wx.setStorageSync('id', res.data);
-                  wx.navigateTo({
+                  wx.redirectTo({
                     url: '../mainpage/mainpage'
                   })
                 }

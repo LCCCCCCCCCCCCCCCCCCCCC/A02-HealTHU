@@ -40,14 +40,31 @@ Page({
         },
         method:'POST',
         success:function(res){
-          wx.showToast({ title: '操作成功', icon: 'success' });
+          wx.showToast({ title: '已同意', icon: 'success' });
+          that.onLoad()
         }
       })
     }
     else if(this.data.radio === "2"){
-      //拒绝请求
-
-      wx.showToast({ title: '已拒绝', icon: 'success' });
+      var id = wx.getStorageSync('id')
+      var applicationId = this.data.tempItem.id
+      console.log(this.data.tempItem)
+      var that = this
+      console.log(id + " " + applicationId)
+      wx.request({
+        url:'http://127.0.0.1:8000/schedule/appReply/',
+        header:{ 'content-type': 'application/x-www-form-urlencoded'},
+        data:{
+          id:id,
+          applicationId:applicationId,
+          isAgree: 2
+        },
+        method:'POST',
+        success:function(res){
+          wx.showToast({ title: '已拒绝'});
+          that.onLoad()
+        }
+      })
     }
   },
   reviewShow(event) {
@@ -71,10 +88,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    if(options.actid){
+    if(options){
       var actid = options.actid;
       this.setData({actId:actid})
     }
+    console.log(111)
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({

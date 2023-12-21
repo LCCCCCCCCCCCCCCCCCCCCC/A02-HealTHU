@@ -64,6 +64,7 @@ Page({
           likeLabel: likeLabel,
           comment: like
         })
+        that.onLoad()
       }
     })
   },
@@ -88,6 +89,7 @@ Page({
           likeLabel: likeLabel,
           comment: like
         })
+        that.onLoad()
       }
     })
   },
@@ -105,13 +107,14 @@ Page({
       method:'POST',
       success:function(res){
         wx.showToast({ title: '删除成功', icon: 'success' });
+        that.onLoad()
       }
     })
   },
   // TODO：报名和评分处理
   scoreConfirm() {
     var id = wx.getStorageSync('id')
-    var that = this
+    let that = this
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/commentAct/',
@@ -126,6 +129,7 @@ Page({
       method:'POST',
       success:function(res){
         wx.showToast({ title: '评论成功', icon: 'success' });
+        that.onLoad()
       }
     })
   },
@@ -209,7 +213,7 @@ Page({
   onLoad(options) {
     var that = this
     var id = wx.getStorageSync('id')
-    if(options.actid){
+    if(options){
       this.setData({
         actId: options.actid
       })
