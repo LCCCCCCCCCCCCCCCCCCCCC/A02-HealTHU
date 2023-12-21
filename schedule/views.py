@@ -297,7 +297,7 @@ def doTodo(request):
 @csrf_exempt
 def addAct(request):
     if request.method == 'POST':
-        id = request.POST.get("id")
+        id = int(request.POST.get("id"))
         actPubTime = request.POST.get("pubTime")
         actTitle = request.POST.get("title")
         actPromoter = request.POST.get("promoter")
