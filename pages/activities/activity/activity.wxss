@@ -35,7 +35,7 @@ swiper.item{
   color: #333333;
 }
 .tags {
-  padding-left: 16px;
+  padding-left: 2px;
 }
 .progress-down {
   padding-top: 9px;
@@ -54,9 +54,10 @@ swiper.item{
   z-index: 9;
 }
 .labeltag{
-  color: blue;
+  color: #194dfa;
+  font-size: 14px;
+  padding: 2px;
 }
-/* 颜色改不动，之后再试试 */
 .detail{
   margin-left: 24px;
   margin-right:24px;

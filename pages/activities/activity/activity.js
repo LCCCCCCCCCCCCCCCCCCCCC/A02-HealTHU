@@ -18,15 +18,16 @@ Page({
     scoreshow: false,
     signtext: '',
     scoretext: '',
-    activity:{
-      /*
+    activity:{},
+    todos:[],
+    debugact: {
       title: "软件学院2023秋第10周集体锻炼",
       promoter:"NLno", 
       promoterId:3,
       promoterUrl:'../../images/avatar4.jpg',
       participantNum:2,
       participants:["teto","GUMI"],
-      participantsId:[5,7],
+      participantsId:[4,5],
       partNumMin:2,
       partNumMax:4,
       date:"2023/12/18",
@@ -36,10 +37,8 @@ Page({
       detail:"可以作为阳光体育打卡的凭证，报名时请填写姓名、学号信息，便于助教统计",
       images:['../../images/swiper1.jpg', '../../images/swiper2.jpg', '../../images/swiper3.jpg'],
       tags:["紫荆操场","飞盘","集体锻炼"],
-      state:0
-      */
-    },
-    todos:[]
+      state:2
+    }
   },
 
   //  TODO: 点赞和取消
@@ -128,7 +127,7 @@ Page({
       },
       method:'POST',
       success:function(res){
-        wx.showToast({ title: '评论成功', icon: 'success' });
+        wx.showToast({ title: '评价成功', icon: 'success' });
         that.onLoad()
       }
     })
@@ -213,12 +212,8 @@ Page({
   onLoad(options) {
     var that = this
     var id = wx.getStorageSync('id')
-    if(options){
-      this.setData({
-        actId: options.actid
-      })
-    }
     this.setData({
+      actId: options.actid,
       userid:id
     })
     wx.request({
@@ -292,6 +287,13 @@ Page({
         }
       }
     })
+    // debug: only shown use
+    if(options.actid == 10001) {
+      this.setData({
+        activity: this.data.debugact
+      })
+    }
+    console.log(activity)
   },
 
   /**

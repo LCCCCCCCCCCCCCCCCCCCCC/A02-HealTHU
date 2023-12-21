@@ -27,7 +27,8 @@
     <image class="image" src="{{item}}"/>
   </van-cell>
   <van-cell class="funcline">
-  <text class="lnum">#0</text>
+    <view class="lnum">{{post.time}}</view>
+    <text class="lnum">#0</text>
     <van-button custom-class="button" wx:if="{{likeLabel == 0}}" 
       size="mini"
       bind:click="likeAct" data-index="0">
@@ -44,7 +45,8 @@
 </van-cell-group>
 
 <van-empty description="等待第一个回复" wx:if="{{replyList.length == 0}}"></van-empty>
-<van-cell-group title="回复" wx:for="{{replyList}}" wx:key="index" inset>
+<van-cell-group title="回复" inset>
+  <view wx:for="{{replyList}}" wx:key="index">
   <van-cell clickable
     link-type="navigateTo"
     url="../personal/personal?id={{item.userid}}">
@@ -54,16 +56,24 @@
     </view>
   </van-cell>
   <van-cell border="{{false}}">
-    <text slot="title" class="signature">{{ item.content }}</text>
+    <view slot="title">
+      <view class="above" wx:if="{{ item.aboveid != 0 }}">
+        回复 #{{item.aboveid}} {{replyList[item.aboveid - 1].name}}
+        <view>{{ replyList[item.aboveid - 1].content }}</view>
+      </view>
+      <text class="signature">{{ item.content }}</text>
+    </view>
   </van-cell>
   <van-cell class="funcline">
+    <view class="lnum">{{item.time}}</view>
     <text class="lnum">#{{index + 1}}</text>
     <van-button custom-class="button" wx:if="{{likeLabels[index] == 0}}"
       size="mini"
       bind:click="likeAct" data-index="{{index}}">
       <van-icon name="like-o" /> {{item.likeList.length}}
     </van-button>
-    <van-button custom-class="button" wx:else size="mini"
+    <van-button custom-class="button" wx:if="{{likeLabels[index] == 1}}" 
+      size="mini"
       bind:click="dislikeAct" data-index="{{index}}">
       <van-icon name="like" /> {{item.likeList.length}}
     </van-button>
@@ -71,6 +81,7 @@
       <van-icon name="chat-o" /> 回复
     </van-button>
   </van-cell>
+</view>
 </van-cell-group>
 
 <view class="round-click" bind:tap="handleReply" data-index="0">

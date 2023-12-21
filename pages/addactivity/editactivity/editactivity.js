@@ -20,7 +20,40 @@ Page({
     images:[],
     todos: []
   },
-
+  afterRead(event) {
+    const { file } = event.detail;
+    const { fileList = [] } = this.data;
+    fileList.push({ ...file, url: file[0].url })
+    var images = this.data.images
+    images.push(file[0].url)
+    this.setData({ fileList });
+    this.setData({
+     images:images
+   }) 
+    /*
+    wx.uploadFile({
+      url: 'http://127.0.0.1:8000/images', // 仅为示例，非真实的接口地址
+      filePath: file[0].url,
+      name: 'file',
+      formData: { user: 'test' },
+      success(res) {
+        console.log(res)
+        // 上传完成需要更新 fileList
+        const { fileList = [] } = this.data;
+        fileList.push({ ...file, url: res.url });
+        //fileList.push({ ...file, url: file[0].url });
+        var images = this.data.images
+        images.push(file[0].url)
+        this.setData({ fileList });
+        this.setData({
+          images:images
+        }) 
+        
+      },
+    });
+    */
+    
+  },
   editAct(){
     var that = this
     wx.request({
@@ -38,8 +71,8 @@ Page({
       },
       method:'POST',
       success:function(res){
-        console.log(res)
         wx.showToast({ title: '修改成功', icon: 'success' });
+        wx.navigateBack({delta:1})
       }
     })
   },

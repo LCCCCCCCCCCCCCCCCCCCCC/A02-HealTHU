@@ -37,7 +37,9 @@ Page({
       method:'POST',
       success:function(res){
         wx.showToast({ title: '退出成功', icon: 'success' });
-        that.onLoad()
+        that.setData({
+          active: 2
+        })
       }
     })
   },
@@ -94,6 +96,11 @@ Page({
       method:'GET',
       success:function(res){
         let data = res.data
+        if(data.length == 0){
+          that.setData({
+            activities2: []
+          })
+        }
         that.setData({
           active: 1
         })
@@ -144,6 +151,11 @@ Page({
       method:'GET',
       success:function(res){
         let data = res.data
+        if(data.length == 0){
+          that.setData({
+            activities2: []
+          })
+        }
         for(let i = 0;i<data.length;i++){
           var j = 0
           data[i].participantNum = data[i].participants.length
@@ -248,6 +260,11 @@ Page({
               method:'GET',
               success:function(res){
                 let data = res.data
+                if(data.length == 0){
+                  that.setData({
+                    activities1: []
+                  })
+                }
                 for(let i = 0;i<data.length;i++){
                   var j = 0
                   data[i].participantNum = data[i].participants.length
@@ -294,6 +311,11 @@ Page({
         success:function(res){
           let data = res.data
           for(let i = 0;i<data.length;i++){
+            if(data.length == 0){
+              that.setData({
+                activities3: []
+              })
+            }
             var j = 0
             data[i].participantNum = data[i].participants.length
             wx.request({
@@ -335,6 +357,11 @@ Page({
         method:'GET',
         success:function(res){
           let data = res.data
+          if(data.length == 0){
+            that.setData({
+              activities4: []
+            })
+          }
           for(let i = 0;i<data.length;i++){
             var j = 0
             data[i].participantNum = data[i].participants.length

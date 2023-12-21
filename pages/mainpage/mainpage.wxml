@@ -81,7 +81,7 @@
   <van-tab title="关注">
     <van-empty description="关注的人还没有动态" />
   </van-tab>
-  <van-tab title="消息">
+  <van-tab title="消息" dot="{{ unreadNum != 0 }}">
     <van-cell-group wx:for="{{noticeList}}" wx:key="index" inset>
       <van-cell title="{{item.title}}" label="{{item.time}}"
         is-link clickable link-type="navigateTo"

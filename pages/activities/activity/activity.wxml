@@ -6,9 +6,7 @@
     </swiper-item>
   </view>
 </swiper>
-<!--
-<view wx:if="{{(activity.participantsId.includes(userid))||(activity.state == 2)}}">-->
-<view>
+<view wx:if="{{(activity.participantsId.includes(userid))||(activity.state == 2)}}">
   <view class="round-click" bind:tap="handleScore">
     <text style="color: white;">评价</text>
   </view>
@@ -54,24 +52,25 @@
 
 <view class="pages">
 <van-cell-group inset>
-  <van-cell border="{{ false }}">
-    <van-button size="small" class="labeltag">#{{activity.label}}</van-button>
-  </van-cell>
+  <!-- <van-cell border="{{ false }}">
+    
+  </van-cell> -->
   <van-cell icon="success" border="{{ false }}">
     <view slot="title">
       <view class="title-text">{{activity.title}}</view>
     </view>
   </van-cell>
-  <can-cell class="tags" wx:for="{{activity.tags}}" wx:key="index">
-    <van-tag plain type="primary">{{item}}</van-tag>
-  </can-cell>
-  <!-- can-cell是写错了，但是改了会换行，先不改了 -->
   <van-cell border="{{ false }}" icon="clock-o" title="活动时间 {{activity.date}} {{activity.start}}-{{activity.end}}"></van-cell>
   <van-cell border="{{ false }}" icon="friends-o"  label="报名人数：{{activity.participantNum}} / 计划人数：{{activity.partNumMin}}-{{activity.partNumMax}}">
     <view slot="title" class="progress-down">
       <van-progress show-pivot="{{false}}" percentage="{{activity.participantNum*100/activity.partNumMax}}" />
     </view>
   </van-cell>
+  <text size="small" class="labeltag">#{{activity.label}}</text>
+  <can-cell class="tags" wx:for="{{activity.tags}}" wx:key="index">
+    <van-tag plain type="primary">{{item}}</van-tag>
+  </can-cell>
+  <!-- can-cell是写错了，但是改了会换行，先不改了 -->
 </van-cell-group>
 
 <van-divider
@@ -122,12 +121,13 @@
     </view>
   </van-cell>
 </van-cell-group>
-<van-cell-group inset title="参与者：{{activity.participantNum}}"
-  wx:for="{{activity.participants}}" wx:key="index">
+<van-cell-group inset title="参与者：{{activity.participantNum}}">
+    <view wx:for="{{activity.participants}}" wx:key="index">
     <van-cell is-link
       title="{{item}}" 
       link-type="navigateTo"
       url="../../personal/personal?id={{activity.participantsId[index]}}"></van-cell>
+    </view>
 </van-cell-group>
 <van-divider />
 </view>
