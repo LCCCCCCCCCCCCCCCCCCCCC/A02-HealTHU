@@ -22,6 +22,15 @@ Page({
    //示例的上传图片到服务器并显示在界面
   afterRead(event) {
      const { file } = event.detail;
+     const { fileList = [] } = this.data;
+     fileList.push({ ...file, url: file[0].url })
+     var images = this.data.images
+     images.push(file[0].url)
+     this.setData({ fileList });
+     this.setData({
+      images:images
+    }) 
+     /*
      wx.uploadFile({
        url: 'http://127.0.0.1:8000/images', // 仅为示例，非真实的接口地址
        filePath: file[0].url,
@@ -42,6 +51,7 @@ Page({
          
        },
      });
+     */
      
    },
 
@@ -68,6 +78,7 @@ Page({
         });
         if(that.isValid(that.data.start,that.data.end,that.data.todos,"活动")){
           var pubTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + new Date().getHours().toString().padStart(2, '0') + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+          console.log(that.data.detail)
           wx.request({
             url:'http://127.0.0.1:8000/schedule/addAct/',
             header:{ 'content-type': 'application/x-www-form-urlencoded'},
@@ -165,6 +176,11 @@ Page({
   handleLabelInput(event) {
     this.setData({
       label: event.detail
+    });
+  },
+  handleSignInput(event) {
+    this.setData({
+      detail: event.detail.value
     });
   },
   handleMin(event) {

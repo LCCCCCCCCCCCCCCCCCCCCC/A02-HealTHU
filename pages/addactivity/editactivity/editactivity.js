@@ -86,7 +86,8 @@ Page({
           date:data.date,
           start:data.start,
           end:data.end,
-          images:data.images
+          images:data.images,
+          detail:data.detail
         })
       }
     })
@@ -151,6 +152,11 @@ Page({
   handleLabelInput(event) {
     this.setData({
       label: event.detail
+    });
+  },
+  handleSignInput(event) {
+    this.setData({
+      detail: event.detail.value
     });
   },
   handleMin(event) {

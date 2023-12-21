@@ -260,6 +260,7 @@ Page({
             activity.promoter = dataa.nickName
             activity.promoterUrl = dataa.avatarUrl
             activity.state = that.getState(activity.date,activity.start,activity.end)
+            console.log(activity)
             that.setData({
               activity:activity
             })
