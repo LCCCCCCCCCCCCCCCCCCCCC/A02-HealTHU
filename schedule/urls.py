@@ -8,7 +8,7 @@ urlpatterns=[
     path('changeTodo/',views.changeTodo),
     path('addAct/',views.addAct),
     path('deleteAct/',views.addAct),
-    path('changeAct/',views.addAct),
+    path('changeAct/',views.changeAct),
     path('findAct/',views.findAct),
     path('partAct/',views.partAct),
     path('getddl/',views.getddl),
