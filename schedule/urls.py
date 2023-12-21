@@ -7,7 +7,7 @@ urlpatterns=[
     path('deleteTodo/',views.deleteTodo),
     path('changeTodo/',views.changeTodo),
     path('addAct/',views.addAct),
-    path('deleteAct/',views.addAct),
+    path('deleteAct/',views.deleteAct),
     path('changeAct/',views.changeAct),
     path('findAct/',views.findAct),
     path('partAct/',views.partAct),
