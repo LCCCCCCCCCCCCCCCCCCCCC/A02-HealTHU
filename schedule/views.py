@@ -399,7 +399,7 @@ def addAct(request):
 @csrf_exempt
 def deleteAct(request):
     if request.method == 'POST':
-        actId = request.POST.get("actId")
+        actId = int(request.POST.get("actId"))
         # find the activity (if any) according to the actId
         targetAct = Activity.objects.filter(id=actId).first()
         if targetAct:
