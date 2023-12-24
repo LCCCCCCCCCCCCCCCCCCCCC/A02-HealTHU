@@ -147,19 +147,25 @@ state不为0或为公共活动时，todo均只读
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|帖子id|
-|LZ|int|楼主|
+|LZId|int|楼主id|
+|LZ|string|楼主昵称|
+|LZAvatar|string|楼主头像|
 |title|string|标题|
+|time|string|发布时间|
 |content|string|内容|
 |images|string[]|图片|
-|likesId|int[]|点赞人的id|
+|likeList|int[]|点赞人的id|
 |replies|reply[]|回复|
 #### 回复 reply
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|楼层|
 |publisher|int|发布人|
-|text|string|内容|
-|likesId|int[]|点赞人的id|
+|pubName|string|发布人名称|
+|pubAvatar|string|发布人头像|
+|time|string|发布时间|
+|content|string|内容|
+|likeList|int[]|点赞人的id|
 |aboveId|int|(如果楼层间回复)回复的楼层,初始为0|
 ### 一、用户管理部分
 #### 首次登录时生成id
@@ -722,44 +728,193 @@ TODO
 |start|int|从第x条|
 |end|int|到第y条|
 
-比如获取最近的20条消息，则x=1，y=20，按时间倒序返回
+比如获取最近的20条消息，则x=1，y=20，按消息id倒序返回
 
 ##### 返回参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|messages|message[]|简略message|
+|messages|message[]|消息|
 |unread|int|未读消息数量(所有)|
 
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|id|int|同样累加|
+|id|int|消息id，每个人对应若干消息|
 |date|string|时间|
 |state|int|0表示未读,1表示已读|
-|title|string|标题|
-|label|string|简略内容,只回复前若干个字符和...|
-|sender|string|发件者名称|
+|content|string|消息内容|
+|toUrl|string|跳转到的具体位置，比如帖子下的评论|
 
-#### 查看具体消息
+#### 将消息设置为已读
 ```HTTP
-[GET] /message/{id}/getMessage
+[POST] /message/read
+```
+
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|messageId|int|帖子id|
+
+#### 向某个人发送消息
+```HTTP
+[POST] /message/sendMessage
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|recieverId|int|接收者id|
+|date|string|时间|
+|content|string|消息内容|
+|toUrl|string|跳转到的具体位置，比如帖子下的评论|
+
+#### 删除消息
+```HTTP
+[POST] /message/deleteMessage
 ```
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
-|messageId|int|消息Id|
+|messageId|int|消息id|
+
+### 六、论坛部分
+#### 发布帖子
+```HTTP
+[POST] /bbs/addPost
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|title|string|标题|
+|time|string|发布时间|
+|content|string|内容|
+|images|string[]|图片|
+
+#### 删除帖子
+```HTTP
+[POST] /bbs/deletePost
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|postId|int|帖子id|
+
+#### 给帖子点赞
+```HTTP
+[POST] /bbs/likePost
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|postId|int|帖子id|
+
+#### 给帖子取消点赞
+```HTTP
+[POST] /bbs/dislikePost
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|postId|int|帖子id|
+
+#### 发布评论
+```HTTP
+[POST] /bbs/addReply
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|postId|int|帖子id|
+|id|int|评论人|
+|time|string|评论时间|
+|content|string|内容|
+|aboveId|int|(如果楼层间回复)回复的楼层,初始为0|
+
+#### 删除评论
+```HTTP
+[POST] /bbs/deleteReply
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|postId|int|帖子id|
+|floor|int|楼层|
+
+(回复楼层从1开始)
+
+#### 点赞评论
+```HTTP
+[POST] /bbs/likeReply
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|postId|int|帖子id|
+|floor|int|楼层|
+
+#### 取消点赞评论
+```HTTP
+[POST] /bbs/dislikeReply
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|postId|int|帖子id|
+|floor|int|楼层|
+
+#### 获取帖子
+```HTTP
+[GET] /bbs/getPost
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|type|int|获取模式|
+|id|int|用户id|
+
+0:id倒序获取最新50条帖子
+1:点赞数倒序获取一周内的50条帖子
+2:获取用户关注的人发布的所有帖子
 
 ##### 返回参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|date|string|时间|
+|comments[]|见下|
+|id|int|帖子id|
 |title|string|标题|
-|label|string|完整内容|
-|sender|string|发件者名称|
-|senderId|int|发件者Id|
-|senderUrl|string|发件者头像|
-|toUrl|string|(可选)跳转到的具体位置，比如帖子下的评论|
+|time|string|发布时间|
+|LZ|string|发布人姓名|
+|likeNum|int|点赞数|
 
-也就是message的结构
-将消息标记为已读略，同样传两个Id
+#### 搜索帖子
+```HTTP
+[GET] /bbs/searchPost
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|key|string|关键词|
 
+查找标题与内容匹配的帖子，返回格式同上
+
+#### 查看帖子
+```HTTP
+[GET] /bbs/getPost
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|postId|int|帖子id|
+|page|int|页数(1对应1到20楼),以此类推|
+
+##### 返回参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|replies|reply[]|最上边定义的reply，楼层顺序返回|
