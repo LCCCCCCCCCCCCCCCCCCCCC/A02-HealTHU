@@ -1,0 +1,11 @@
+http://127.0.0.1:8000
+POST
+schedule
+dislikeComment
+id
+5
+dislikerId
+1
+actId
+1
+0
