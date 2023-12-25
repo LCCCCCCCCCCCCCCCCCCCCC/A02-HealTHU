@@ -1,0 +1,78 @@
+<!--pages/addactivity/editactivity/editactivity.wxml-->
+<view class="pages">
+<van-nav-bar
+  title="编辑活动"
+  left-arrow
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="editAct"
+  bind:click-left="onClickLeft"
+  >
+  <view slot="right">
+    <van-icon name="success" color="blue"/>
+  </view>
+</van-nav-bar>
+
+<swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}"  wx:if="{{images.length != 0}}">
+  <view wx:for="{{images}}" wx:key="index">
+    <swiper-item>
+      <image src="{{item}}" mode="aspectFill"></image>
+    </swiper-item>
+  </view>
+</swiper>
+
+<van-cell-group class="addnew" inset>
+  <van-field
+    label="主题"
+    value="{{title}}"
+    bind:change="handleNameInput"
+  />
+  <van-field
+    label="活动简介"
+    value="{{label}}"
+    bind:change="handleLabelInput"
+  />
+  <van-cell title="人数下限">
+    <van-stepper value="{{ minNum }}" min="0" bind:change="handleMin"/>
+  </van-cell>
+  <van-cell title="人数上限">
+    <van-stepper value="{{ maxNum }}" min="1" bind:change="handleMax"/>
+  </van-cell>
+  <van-field clearable
+    label="标签"
+    placeholder="可多次添加"
+    bind:change="handleTagInput"
+    maxlength="8"
+    use-button-slot>
+    <van-button slot="button" size="mini" type="primary" bind:click="tagAdd">添加</van-button>
+  </van-field>
+  <can-cell class="tags" wx:for="{{tags}}" wx:key="index">
+    <van-tag plain closeable round
+      size="medium" type="primary"
+      bind:close="ontagClose" data-index="{{index}}"
+    >{{tags[index]}}
+    </van-tag>
+  </can-cell>
+</van-cell-group>
+
+<van-cell-group class="addnew" title="活动时间" inset>
+  <van-cell title="日期" value="{{ date }}"/>
+  <van-cell title="开始时间" value="{{start}}" bind:click="showPicker1"/>
+  <van-cell title="结束时间" value="{{end}}" bind:click="showPicker2"/>
+</van-cell-group>
+
+<van-cell-group class="addnew" title="活动介绍" inset>
+  <textarea class="textinput"
+      bindinput="handleSignInput" placeholder="{{detail}}"></textarea>
+</van-cell-group>
+<button class="delete-btn" bindtap="handleDelete">删除活动</button>
+<van-dialog
+  title="确认删除活动？"
+  show="{{ deleteshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="deleteClose"
+  bind:getuserinfo="deleteConfirm"
+/>
+</view>

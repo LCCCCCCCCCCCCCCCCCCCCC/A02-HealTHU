@@ -1,0 +1,23 @@
+<!--pages/sleep/sleep.wxml-->
+<view class="today-text">
+  <view class="today-number">{{score}}</view>
+  <view>本周睡眠质量评分</view>
+  <button bind:tap="startSleep" wx:if="{{isSleep == false}}">开始睡眠</button>
+  <button bind:tap="endSleep" wx:if="{{isSleep == true}}">结束睡眠</button>
+</view>
+<van-cell-group class="suggestion" inset>
+    <van-cell wx:if="{{isShort == true}}" title="睡眠时间较少" icon="question"/>
+    <van-cell wx:if="{{isLate == true}}" title="睡眠时间较晚" icon="clock"/>
+    <van-cell wx:if="{{score >= 80}}" title="总体睡眠质量不错，继续保持" icon="checked"/>
+    <van-cell wx:if="{{score >= 80}}" title="作息规律" icon="checked"/>
+  </van-cell-group>
+
+<view class="sleepchart">
+	<view class="title">
+		<view wx:if="{{!isMainChartDisplay}}" class="back-btn" bindtap="backToMainChart">点击返回</view>
+    <view wx:if="{{isMainChartDisplay}}">点击条形图查看单日睡眠详情</view>
+	</view>
+  <view>{{chartTitle}}</view>
+    <canvas canvas-id="columnCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
+    <view wx:if="{{isMainChartDisplay}}" style="text-align:center">点击数据每一项查看详情</view>
+</view>

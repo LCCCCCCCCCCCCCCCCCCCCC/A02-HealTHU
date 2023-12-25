@@ -1,0 +1,30 @@
+/* pages/sports/sports.wxss */
+.today-text{
+  padding-left:24px;
+  padding-top:12px;
+  font-weight: bold;
+}
+.today-number{
+  font-size: 48px;
+}
+.buttons-grid{
+  width:90%;
+}
+.button-icon {
+  width: 36px;
+  height: 36px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.width{
+  padding-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+.ringgrid{
+  margin-left: 4px;
+  margin-right: 4px;
+}

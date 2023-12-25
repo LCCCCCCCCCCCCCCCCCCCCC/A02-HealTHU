@@ -1,0 +1,9 @@
+<!--pages/bindthu/bindthu.wxml-->
+<view>目前绑定身份：{{ID}}</view>
+<van-button wx:if="{{isbind == false}}" bind:tap="bindthu">绑定清华身份</van-button>
+<van-button wx:if="{{isbind == true}}" bind:tap="unbindthu">解除绑定</van-button>
+<view wx:if="{{showbind == true}}">
+  <view>学号：</view><input bindinput="handleIDInput" placeholder="{{studentID}}"/>
+  <view>密码：</view><input bindinput="handlePasswordInput" type="password" placeholder="{{password}}"/>
+  <van-button bind:tap="change">确认修改</van-button>
+</view>
