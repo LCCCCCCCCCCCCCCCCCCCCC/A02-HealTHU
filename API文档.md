@@ -150,9 +150,9 @@ state不为0或为公共活动时，todo均只读
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|帖子id|
-|LZId|int|楼主id|
-|LZ|string|楼主昵称|
-|LZAvatar|string|楼主头像|
+|userId|int|楼主id|
+|name|string|楼主昵称|
+|avatar|string|楼主头像|
 |title|string|标题|
 |time|string|发布时间|
 |content|string|内容|
@@ -162,14 +162,16 @@ state不为0或为公共活动时，todo均只读
 #### 回复 reply
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|id|int|楼层|
-|publisher|int|发布人|
-|pubName|string|发布人名称|
-|pubAvatar|string|发布人头像|
+|floor|int|楼层|
+|userId|int|发布人|
+|name|string|发布人名称|
+|avatar|string|发布人头像|
 |time|string|发布时间|
 |content|string|内容|
 |likeList|int[]|点赞人的id|
 |aboveId|int|(如果楼层间回复)回复的楼层,初始为0|
+|aboveName|string|回复楼层发布人|
+|aboveContent|string|回复楼层的内容|
 ### 一、用户管理部分
 #### 首次登录时生成id
 ```HTTP
@@ -267,18 +269,7 @@ wx.request({
 |bindTHU|bool|绑定清华身份情况|
 * 通过清华身份获取信息后，定时在后端添加到事项等中，不在前端处理
 
-#### 解绑清华身份
-```HTTP
-[POST] /user/{id}/unbindTHU
-```
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-
-将bindTHU设置为false，清空学号和密码
-
-#### 搜索用户
+#### (重要)搜索用户
 ```HTTP
 [GET] /user/search
 ```
@@ -355,7 +346,7 @@ wx.request({
 
 改变那天的sleepDaily,没有就添加
 
-#### 获取个人主页信息
+#### (重要)获取个人主页信息
 ```HTTP
 [GET] /user/getPersonal
 ```
@@ -748,7 +739,7 @@ wx.request({
 
 ### 五、消息部分
 
-#### 获取消息
+#### (很重要)获取消息
 ```HTTP
 [GET] /message/{id}/getMessages
 ```
@@ -756,24 +747,21 @@ wx.request({
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
-|choice|int|选择模式|
 
-按消息id倒序返回,当choice为1只返回未读消息
+按消息id倒序返回
 
 ##### 返回参数
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|messages|message[]|消息|
+下面的列表
 
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|消息id，每个人对应若干消息|
-|date|string|时间|
+|time|string|时间|
 |state|int|0表示未读,1表示已读|
 |content|string|消息内容|
-|toUrl|string|跳转到的具体位置，比如帖子下的评论|
+|url|string|跳转到的具体位置，比如帖子下的评论|
 
-#### 将消息设置为已读
+#### (重要)将消息设置为已读
 ```HTTP
 [POST] /message/read
 ```
@@ -784,7 +772,7 @@ wx.request({
 |id|int|用户id|
 |messageId|int|帖子id|
 
-#### 向某个人发送消息
+#### (很重要)向某个人发送消息
 ```HTTP
 [POST] /message/sendMessage
 ```
@@ -807,7 +795,7 @@ wx.request({
 |messageId|int|消息id|
 
 ### 六、论坛部分
-#### 发布帖子
+#### (很重要)发布帖子
 ```HTTP
 [POST] /bbs/addPost
 ```
@@ -820,7 +808,7 @@ wx.request({
 |content|string|内容|
 |images|string[]|图片|
 
-#### 删除帖子
+#### (重要)删除帖子
 ```HTTP
 [POST] /bbs/deletePost
 ```
@@ -830,7 +818,7 @@ wx.request({
 |id|int|用户id|
 |postId|int|帖子id|
 
-#### 给帖子点赞
+#### (重要)给帖子点赞
 ```HTTP
 [POST] /bbs/likePost
 ```
@@ -840,7 +828,7 @@ wx.request({
 |id|int|用户id|
 |postId|int|帖子id|
 
-#### 给帖子取消点赞
+#### (重要)给帖子取消点赞
 ```HTTP
 [POST] /bbs/dislikePost
 ```
@@ -850,7 +838,7 @@ wx.request({
 |id|int|用户id|
 |postId|int|帖子id|
 
-#### 发布评论
+#### (重要)发布评论
 ```HTTP
 [POST] /bbs/addReply
 ```
@@ -863,7 +851,7 @@ wx.request({
 |content|string|内容|
 |aboveId|int|(如果楼层间回复)回复的楼层,初始为0|
 
-#### 删除评论
+#### (重要)删除评论
 ```HTTP
 [POST] /bbs/deleteReply
 ```
@@ -875,7 +863,7 @@ wx.request({
 
 (回复楼层从1开始)
 
-#### 点赞评论
+#### (重要)点赞评论
 ```HTTP
 [POST] /bbs/likeReply
 ```
@@ -886,7 +874,7 @@ wx.request({
 |postId|int|帖子id|
 |floor|int|楼层|
 
-#### 取消点赞评论
+#### (重要)取消点赞评论
 ```HTTP
 [POST] /bbs/dislikeReply
 ```
@@ -897,7 +885,7 @@ wx.request({
 |postId|int|帖子id|
 |floor|int|楼层|
 
-#### 获取帖子
+#### (很重要)获取帖子
 ```HTTP
 [GET] /bbs/getPost
 ```
@@ -918,11 +906,11 @@ wx.request({
 |id|int|帖子id|
 |title|string|标题|
 |time|string|发布时间|
-|LZ|string|发布人姓名|
+|name|string|发布人姓名|
 |likeNum|int|点赞数|
 |commentNum|int|评论数|
 
-#### 搜索帖子
+#### (很重要)搜索帖子
 ```HTTP
 [GET] /bbs/searchPost
 ```
@@ -933,7 +921,7 @@ wx.request({
 
 查找标题与内容匹配的帖子，返回格式同上
 
-#### 查看帖子
+#### (很重要)查看帖子
 ```HTTP
 [GET] /bbs/getPost
 ```
@@ -946,5 +934,4 @@ wx.request({
 ##### 返回参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|replyNum|int|总评论数|
-|replies|reply[]|最上边定义的reply，楼层顺序返回|
+|post|post|最上边定义的post结构|
