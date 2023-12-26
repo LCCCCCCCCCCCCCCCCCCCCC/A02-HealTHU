@@ -112,7 +112,7 @@
   </van-row>
   <van-grid column-num="3" gutter="{{ 32 }}"  border="{{false}}" direction="horizontal">
     <van-grid-item link-type="navigateTo"
-      url='../personal/personal' text="3 动态" />
+      url='../personal/personal?id={{id}}' text="3 动态" />
       <van-grid-item link-type="navigateTo"
       url='../attention/attention' text="{{attentionnum}} 关注" />
       <van-grid-item link-type="navigateTo"
