@@ -123,9 +123,10 @@
     <van-cell-group>
       <van-cell is-link title="  健康状况" icon="manager-o"
         link-type="navigateTo" url='../changehealth/changehealth'/>
+        <!--
       <van-cell is-link title="  个性化" icon="records-o"
       link-type="navigateTo" url='../settings/selfset/selfset'/>
-      <view class="empty-line"></view>
+      <view class="empty-line"></view>-->
       <van-cell is-link title="  账号绑定" icon="link-o"  
         link-type="navigateTo" url='../bindthu/bindthu'/>
       <van-cell is-link title="  隐私设置" icon="setting-o"  
