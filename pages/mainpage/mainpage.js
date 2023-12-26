@@ -26,7 +26,7 @@ Page({
     unreadNum: 1,
     noticeList: [
       {state:1, title:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {state:0, title:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 8:20", url: '../activities/activity/activity?actid=1'},
+      {state:0, title:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 8:20", url: '../activities/activity/activity?actid=10001'},
     ],
     bbsList: [
       {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
