@@ -415,6 +415,34 @@ wx.request({
 |likeNum|int|点赞数|
 |commentNum|int|评论数|
 
+#### (重要)获取隐私范围
+```HTTP
+[POST] /user/getRange
+```
+#### 传入参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+
+#### 返回参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|achRange|int|成就可见范围(全部可见/粉丝可见/自己可见)0/1/2 初始为0|
+|actRange|int|活动可见范围|
+|postRange|int|帖子可见范围|
+
+#### (重要)改变隐私范围
+```HTTP
+[POST] /user/changeRange
+```
+#### 传入参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|achRange|int|成就可见范围(全部可见/粉丝可见/自己可见)0/1/2 初始为0|
+|actRange|int|活动可见范围|
+|postRange|int|帖子可见范围|
+
 ### 二、计划处理部分
 
 #### 获取指定日期的事务
@@ -780,7 +808,7 @@ wx.request({
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |recieverId|int|接收者id|
-|date|string|时间|
+|time|string|时间|
 |content|string|消息内容|
 |toUrl|string|跳转到的具体位置，比如帖子下的评论|
 
@@ -849,7 +877,7 @@ wx.request({
 |id|int|评论人|
 |time|string|评论时间|
 |content|string|内容|
-|aboveId|int|(如果楼层间回复)回复的楼层,初始为0|
+|aboveId|int|(如果楼层间回复)回复的楼层,初始为1|
 
 #### (重要)删除评论
 ```HTTP
@@ -858,6 +886,7 @@ wx.request({
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
+|id|int|用户id|
 |postId|int|帖子id|
 |floor|int|楼层|
 
@@ -923,7 +952,7 @@ wx.request({
 
 #### (很重要)查看帖子
 ```HTTP
-[GET] /bbs/getPost
+[GET] /bbs/getPostDetail
 ```
 ##### 传入参数
 |字段|类型|说明|
