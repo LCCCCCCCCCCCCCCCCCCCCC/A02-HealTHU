@@ -72,7 +72,7 @@
       <van-cell clickable size="large" 
       title="{{item.title}}" label="{{item.name}} {{item.time}}"
       link-type="navigateTo"
-      url="{{item.url}}"/>
+      url="../bbs/bbs?bbsid={{item.id}}"/>
     </van-cell-group>
     <view class="round-click">
       <navigator url='../bbs/addbbs/addbbs'>+</navigator >
@@ -83,7 +83,7 @@
   </van-tab>
   <van-tab title="消息" dot="{{ unreadNum != 0 }}">
     <van-cell-group wx:for="{{noticeList}}" wx:key="index" inset>
-      <van-cell title="{{item.title}}" label="{{item.time}}"
+      <van-cell title="{{item.content}}" label="{{item.time}}"
         is-link clickable link-type="navigateTo"
         url="{{item.url}}"
         bind:click="delUnread" data-index="{{index}}"

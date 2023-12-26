@@ -23,7 +23,7 @@
     <text slot="title" class="signature">{{ post.content }}</text>
   </van-cell>
   <!-- TODO: 图片大小处理 -->
-  <van-cell wx:for="{{post.image}}" wx:key="index">
+  <van-cell wx:for="{{post.images}}" wx:key="index">
     <image class="image" src="{{item}}"/>
   </van-cell>
   <van-cell class="funcline">
@@ -60,10 +60,10 @@
   </van-cell>
   <van-cell border="{{false}}">
     <view slot="title">
-      <!-- <view class="above" wx:if="{{ item.aboveid != 0 }}" bind:tap="toFloor" data-index="{{item.aboveid}}">
-        回复 #{{item.aboveid}} {{ aboveid2floor(item.aboveid).name }}
-        <view>{{ aboveid2floor(item.aboveid).content }}</view>
-      </view> -->
+       <view class="above" wx:if="{{ item.aboveId != 0 }}" bind:tap="toFloor" data-index="{{item.aboveId}}">
+        回复 #{{item.aboveId}} {{item.aboveName}}
+        <view>{{ item.aboveContent }}</view>
+      </view> 
       <text class="signature">{{ item.content }}</text>
     </view>
   </van-cell>

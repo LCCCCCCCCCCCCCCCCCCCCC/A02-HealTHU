@@ -3,51 +3,54 @@ Page({
     id:4, // 用于确定是否为自己主页
     // bbsList: for debug use
     bbsList: [
-      {userid:1, name:"NLno", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", image: ['../images/swiper4.jpg'], likeList:['4', '5'], 
+      {userId:1, name:"NLno", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeList:['4', '5'], 
         replies:[
           {
             floor: 1,
-            userid:[4],
+            userId:[4],
             name: "teto",
             avatar: "../images/avatar3.png",
             time: "2023-12-18 14:02",
             content: "这是我见过最正确的话了",
             likeList:[3],
-            aboveid: 0
+            aboveId: 0
           },
           {
             floor: 2,
-            userid:[5],
+            userId:[5],
             name: "GUMI",
             avatar: "../images/avatar2.png",
             time: "2023-12-18 14:09",
             content: "水贴长经验呢",
             likeList:[],
-            aboveid: 1
+            aboveId: 1,
+            aboveName:"teto",
+            aboveContent: "这是我见过最正确的话了"
           },
           {
             floor: 3,
-            userid:[4],
+            userId:[4],
             name: "teto",
             avatar: "../images/avatar3.png",
             time: "2023-12-18 14:15",
             content: "要你管",
             likeList:[],
-            aboveid: 2
+            aboveId: 2,
+            aboveContent: "要你管"
           },
       ]},
-      {userid:1, name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", image: [], likeList:[], replies:[]},
-      {userid:1, name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", image: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
-      {userid:3, name:"NLno", title:"[新成就] “一年的坚持与守望”", time:"2023-11-31 10:02", id:100, content: "", image: [], likeList:['4', '5'], replies:[]},
+      {userId:1, name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeList:[], replies:[]},
+      {userId:1, name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
+      {userId:3, name:"NLno", title:"[新成就] “一年的坚持与守望”", time:"2023-11-31 10:02", id:100, content: "", images: [], likeList:['4', '5'], replies:[]},
     ],
     post: {
-      userid: 3,
+      userId: 3,
       name: "",
       avatar: "../images/avatar4.png",
       title: "",
       time: "",
       content: "",
-      image: [],
+      images: [],
       likeList:[],
     },
     replyList: [],
@@ -62,12 +65,7 @@ Page({
     deleteindex: 0,
   },
 
-  // aboveid2floor(aboveid){
-  //   var replyList = this.data.replyList;
-  //   item = replyList.find(item => item.floor == aboveid);
-  //   console.log(item)
-  //   return item;
-  // },
+
   onClickRight(){
     wx.showToast({ title: '便于后续功能添加', icon: 'none' });
     // 屏蔽某层发言人?
@@ -107,7 +105,7 @@ Page({
     post.title = selectedbbs.title;
     post.time = selectedbbs.time;
     post.content = selectedbbs.content;
-    post.image = selectedbbs.image;
+    post.images = selectedbbs.images;
     post.likeList = selectedbbs.likeList;
     this.setData({
       post: post,
