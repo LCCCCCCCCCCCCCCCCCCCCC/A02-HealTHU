@@ -6,7 +6,7 @@ Page({
       {userId:1, name:"NLno", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeList:['4', '5'], 
         replies:[
           {
-            floor: 1,
+            floor: 3,
             userId:[4],
             name: "teto",
             avatar: "../images/avatar3.png",
@@ -44,7 +44,7 @@ Page({
       {userId:3, name:"NLno", title:"[新成就] “一年的坚持与守望”", time:"2023-11-31 10:02", id:100, content: "", images: [], likeList:['4', '5'], replies:[]},
     ],
     post: {
-      userId: 3,
+      userId: 1,
       name: "",
       avatar: "../images/avatar4.png",
       title: "",
@@ -63,42 +63,227 @@ Page({
     deleteallshow: false,
     deleteshow: false,
     deleteindex: 0,
+    bbsId: 0
   },
-
-
+  likePost(){
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/likePost/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.id,
+        postId:that.data.bbsId
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
+  dislikePost(){
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/dislikePost/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.id,
+        postId:that.data.bbsId
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
+  likeAct(event){
+    var floor = event.target.dataset.index
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/likeReply/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.id,
+        postId:that.data.bbsId,
+        floor: floor
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
+  dislikeAct(event){
+    var floor = event.target.dataset.index
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/dislikeReply/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.id,
+        postId:that.data.bbsId,
+        floor: floor
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
   onClickRight(){
     wx.showToast({ title: '便于后续功能添加', icon: 'none' });
     // 屏蔽某层发言人?
   },
   // TODO: 回复功能的对接
   replyConfirm() {
-    wx.showToast({ title: 'TODO：后端对接', icon: 'none' });
+    var floor = this.data.replyindex
+    var that = this
+    var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/addReply/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.id,
+        postId:that.data.bbsId,
+        time: nowTime,
+        content: that.data.replytext,
+        floor: floor
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+    wx.request({
+      url:'http://127.0.0.1:8000/user/getDetail/',
+      data:{
+        'hostId': that.data.id,
+        'customerId':that.data.id
+      },
+      method:'GET',
+      success:function(res){
+        var data = JSON.parse(res.data)
+        var nickName = data.nickName
+        if(floor == 1){
+          var messageContent = nickName + "评论了你的动态“" + that.data.post.title + "”"
+          var toUrl = '../bbs/bbs?bbsid=' + that.data.bbsId
+          var recieverId = that.data.post.userId
+        }
+        else{
+          var messageContent = nickName + "回复了你在“" + that.data.post.title + "”下的评论"
+          var toUrl = '../bbs/bbs?bbsid=' + that.data.bbsId + '&floor=' + floor
+          recieverId = that.getIdByFloor(floor)
+        }
+        wx.request({
+          url:'http://127.0.0.1:8000/message/sendMessage/',
+          header:{ 'content-type': 'application/x-www-form-urlencoded'},
+          data:{
+            recieverId: recieverId,
+            time: nowTime,
+            content: messageContent,
+            toUrl: toUrl
+          },
+          method:'POST',
+          success:function(res){
+            that.onLoad()
+          }
+        })
+      }
+    })
   },
   deleteConfirm() {
-    var replyList = this.data.replyList;
-    replyList = replyList.filter(reply => reply.floor !== this.data.deleteindex);
-    this.setData({ replyList: replyList });
+    var floor = this.data.deleteindex
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/deleteReply/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.id,
+        postId:that.data.bbsId,
+        floor: floor
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
   },
   deleteallConfirm() {
-    wx.redirectTo({ url: '../personal/personal' });
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/deletePost/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:that.data.id,
+        postId:that.data.bbsId
+      },
+      method:'POST',
+      success:function(res){
+        wx.navigateBack({delta:1})
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    const bbsid = options.bbsid;
-    if (options.floor) {
-      wx.nextTick(() => {
-        const query = wx.createSelectorQuery()
-        query.select('#floor-' + options.floor).boundingClientRect(res => {
-          wx.pageScrollTo({
-            scrollTop: res.top - 60,
-            duration: 300
-          })
-        }).exec()
+    if(options){
+      const bbsid = options.bbsid;
+      this.setData({
+        bbsId:bbsid
       })
+      if (options.floor) {
+        wx.nextTick(() => {
+          const query = wx.createSelectorQuery()
+          query.select('#floor-' + options.floor).boundingClientRect(res => {
+            wx.pageScrollTo({
+              scrollTop: res.top - 60,
+              duration: 300
+            })
+          }).exec()
+        })
+      }
     }
-    const selectedbbs = this.data.bbsList.find(item => item.id == bbsid);
+    const selectedbbs = this.data.bbsList.find(item => item.id == this.data.bbsId);
+    var id = wx.getStorageSync('id')
+    var that = this
+    this.setData({
+      id:id
+    })
+    /*
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/getPostDetail/',
+      data:{
+        id:id,
+        postId: that.data.bbsId
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          post: data,
+          replyList: data.replies
+        })
+        var likeLabel = []
+        if(that.data.post.likeList.includes(id)){
+          likeLabel[0] = 1
+        }
+        else{
+          likeLabel[0] = 0
+        }
+        for(var k = 0;k < that.data.replyList.length;k++){
+          if(that.data.replyList[k].likeList.includes(id)){
+            likeLabel[that.data.replyList[k].floor] = 1
+          }
+          else{
+            likeLabel[that.data.replyList[k].floor] = 1
+          }
+        }
+        that.setData({
+          likeLabels: likeLabel
+        })
+      }
+    })
+    */
     var post = this.data.post;
     post.userid = selectedbbs.userid;
     post.name = selectedbbs.name;
@@ -131,6 +316,20 @@ Page({
     //     this.setData({'id': res.data});
     //   }
     // });
+  },
+  getNameByFloor(floor){
+    for(var i = 0;i<this.data.replyList.length;i++){
+      if(this.data.replyList[i].floor == floor){
+        return this.data.replyList[i].name
+      }
+    }
+  },
+  getIdByFloor(floor){
+    for(var i = 0;i<this.data.replyList.length;i++){
+      if(this.data.replyList[i].floor == floor){
+        return this.data.replyList[i].userId
+      }
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

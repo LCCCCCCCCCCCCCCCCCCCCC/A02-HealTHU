@@ -26,7 +26,6 @@ Page({
     ],
     bbsList: [
       {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 14:02", id:103},
-      {name:"NLno", title:"[活动报名] 2023秋软件学院集体锻炼", time:"2023-12-17 19:20", url: '../activities/activity/activity?actid=10001'},
       {name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102},
       {name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101},
     ],
@@ -46,6 +45,20 @@ Page({
         unreadNum: unread
       });
     }
+    var id = wx.getStorageSync('id')
+    /*
+    wx.request({
+      url:'http://127.0.0.1:8000/message/read/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:id,
+        messageId: tempList[personindex].id
+      },
+      method:'POST',
+      success:function(res){
+      }
+    })
+    */
   },
 
   handleTabChange(event){
@@ -158,6 +171,52 @@ Page({
         });
       }
     })
+    /*
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/getPost/',
+      data:{
+        id:id,
+        type: 0
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          bbsList: data,
+        });
+      }
+    })
+    */
+   /*
+   wx.request({
+      url:'http://127.0.0.1:8000/message/getMessages/',
+      data:{
+        id:id,
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          noticeList: data,
+        });
+      }
+    })
+    */
+   /*
+   wx.request({
+    url:'http://127.0.0.1:8000/message/getMessages/',
+    data:{
+      id:id,
+    },
+    method:'GET',
+    success:function(res){
+      var data = res.data
+      that.setData({
+        noticeList:data
+      });
+    }
+  })
+  */
   },
 
   /**

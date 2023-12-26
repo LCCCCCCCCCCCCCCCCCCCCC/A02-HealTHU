@@ -28,20 +28,17 @@
   </van-cell>
   <van-cell class="funcline">
     <view class="lnum">{{post.time}}</view>
-    <text class="lnum">#0</text>
+    <text class="lnum">#1</text>
     <van-button custom-class="button" wx:if="{{likeLabels[0] == 0}}" 
       size="mini"
-      bind:click="likeAct" data-index="0">
+      bind:click="likePost" data-index="0">
       <van-icon name="like-o" /> {{post.likeList.length}}
     </van-button>
     <van-button custom-class="button" wx:else
-      bind:click="dislikeAct" data-index="0">
+      bind:click="dislikePost" data-index="0">
       <van-icon name="like" /> {{post.likeList.length}}
     </van-button>
-    <van-button custom-class="button" bind:click="handleReply" data-index="0" size="mini">
-      <van-icon name="chat-o" /> 回复
-    </van-button>
-    <van-button custom-class="button" bind:click="handleDeleteAll" size="mini" wx:if="{{post.userid == id}}">
+    <van-button custom-class="button" bind:click="handleDeleteAll" size="mini" wx:if="{{post.userId == id}}">
       <van-icon name="cross" /> 删除
     </van-button>
   </van-cell>
@@ -54,7 +51,7 @@
     link-type="navigateTo"
     url="../personal/personal?id={{item.userid}}">
     <view slot="title">
-      <image class="avatar" src="{{ item.avatar }}" id="floor-{{index + 1}}"></image>
+      <image class="avatar" src="{{ item.avatar }}" id="floor-{{item.floor}}"></image>
       <text class="name">{{ item.name }}</text>
     </view>
   </van-cell>
@@ -90,7 +87,7 @@
 </view>
 </van-cell-group>
 
-<view class="round-click" bind:tap="handleReply" data-index="0">
+<view class="round-click" bind:tap="handleReply" data-index="1">
     <text style="color: white;">评论</text>
   </view>
 <van-dialog use-slot

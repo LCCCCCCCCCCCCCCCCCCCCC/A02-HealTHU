@@ -147,7 +147,36 @@ Page({
       method:'POST',
       success:function(res){
         wx.showToast({ title: '报名成功', icon: 'success' });
-        wx.navigateBack({delta:1})
+        wx.request({
+          url:'http://127.0.0.1:8000/user/getDetail/',
+          data:{
+            'hostId': id,
+            'customerId':id
+          },
+          method:'GET',
+          success:function(res){
+            var data = JSON.parse(res.data)
+            var nickName = data.nickName
+            var messageContent = nickName + "报名了你的活动"
+            var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+            var recieverId = that.data.activity.promoterId
+            var toUrl = '../activities/actreview/actreview?actid=' + that.data.activity.id
+            wx.request({
+              url:'http://127.0.0.1:8000/message/sendMessage/',
+              header:{ 'content-type': 'application/x-www-form-urlencoded'},
+              data:{
+                recieverId: recieverId,
+                time: nowTime,
+                content: messageContent,
+                toUrl: toUrl
+              },
+              method:'POST',
+              success:function(res){
+                that.onLoad()
+              }
+            })
+          }
+        })
       }
     })
   },
@@ -293,7 +322,6 @@ Page({
         activity: this.data.debugact
       })
     }
-    console.log(activity)
   },
 
   /**
