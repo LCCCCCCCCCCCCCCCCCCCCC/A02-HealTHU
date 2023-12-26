@@ -1,4 +1,3 @@
-const { ParticleDefaultComponents } = require("XrFrame/elements");
 
 // pages/personal/personal.js
 Page({
@@ -44,6 +43,7 @@ Page({
     } 
     var id = wx.getStorageSync('id')
     var that = this
+    /*
     if(1 == 0){
       wx.request({
         url:'http://127.0.0.1:8000/user/getPersonal/',
@@ -77,6 +77,7 @@ Page({
         }
       })
     }
+    */
     var id = wx.getStorageSync('id')
     this.setData({
       id:id
