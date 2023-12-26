@@ -1,5 +1,4 @@
 # ignore db.sqlite3
-db
 db.sqlite3
 
 # ignore .dbeaver
@@ -8,7 +7,7 @@ db.sqlite3
 # ignore all .pyc files, whereever they are
 **/*.pyc
 
-#ignore all testing files
-backend/test.py
-backend/*.txt
+backend/test.pyc
+
+.idea/*
 ```
