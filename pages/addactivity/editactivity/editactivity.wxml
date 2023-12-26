@@ -14,11 +14,13 @@
   </view>
 </van-nav-bar>
 
-<van-uploader class="upload"
-  file-list="{{ fileList }}" 
-  deletable="{{ true }}"
-  multiple="{{ true }}"
-  bind:after-read="afterRead" />
+<swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}"  wx:if="{{images.length != 0}}">
+  <view wx:for="{{images}}" wx:key="index">
+    <swiper-item>
+      <image src="{{item}}" mode="aspectFill"></image>
+    </swiper-item>
+  </view>
+</swiper>
 
 <van-cell-group class="addnew" inset>
   <van-field

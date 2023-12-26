@@ -121,6 +121,9 @@ Page({
           return actid == data.actId
         });
         console.log(filteredApps)
+        if(filteredApps.length == 0){
+          that.setData({reviewList:[]})
+        }
         for(let i = 0;i< filteredApps.length;i++){
           var j = 0
           filteredApps[i].text = filteredApps[i].message

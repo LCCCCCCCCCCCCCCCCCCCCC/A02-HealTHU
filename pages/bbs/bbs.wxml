@@ -49,7 +49,7 @@
   <view wx:for="{{replyList}}" wx:key="index">
   <van-cell clickable
     link-type="navigateTo"
-    url="../personal/personal?id={{item.userid}}">
+    url="../personal/personal?id={{item.userid}}" id="floor-{{index + 1}}">
     <view slot="title">
       <image class="avatar" src="{{ item.avatar }}"></image>
       <text class="name">{{ item.name }}</text>
@@ -57,7 +57,7 @@
   </van-cell>
   <van-cell border="{{false}}">
     <view slot="title">
-      <view class="above" wx:if="{{ item.aboveid != 0 }}">
+      <view class="above" wx:if="{{ item.aboveid != 0 }}" bind:tap="toFloor" data-index="{{item.aboveid}}">
         回复 #{{item.aboveid}} {{replyList[item.aboveid - 1].name}}
         <view>{{ replyList[item.aboveid - 1].content }}</view>
       </view>

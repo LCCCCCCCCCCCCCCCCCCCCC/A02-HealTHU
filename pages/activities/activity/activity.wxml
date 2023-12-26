@@ -6,9 +6,7 @@
     </swiper-item>
   </view>
 </swiper>
-<!--
-<view wx:if="{{(activity.participantsId.includes(userid))||(activity.state == 2)}}">-->
-<view>
+<view wx:if="{{(activity.participantsId.includes(userid))||(activity.state == 2)}}">
   <view class="round-click" bind:tap="handleScore">
     <text style="color: white;">评价</text>
   </view>
