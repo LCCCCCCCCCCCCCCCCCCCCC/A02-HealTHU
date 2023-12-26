@@ -79,6 +79,9 @@ grade前缀的为分数成绩
 |type|string|类型|
 |state|int|状态(0代表未完成，1代表已完成)|
 |readOnly|bool|是否能被修改|
+|sportType|string|运动类型|
+|sportState|int|运动状态(初始为0)|
+|sportTime|int|实际运动时长(分钟)|
 
 state不为0或为公共活动时，todo均只读
 #### 活动 activity
@@ -290,7 +293,7 @@ wx.request({
 ##### 响应数据
 |参数|类型|说明|
 |-------------|-------------|-------------|
-|ids|int|得到的id|
+|ids|int[]|用户id|
 
 #### 得到健康状况
 ```HTTP
@@ -307,20 +310,6 @@ wx.request({
 |-------------|-------------|-------------|
 |healthInfo|healthInfo|健康状况(见上)|
 
-#### 同步体测信息
-```HTTP
-[GET] /user/tongbu
-```
-
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-
-##### 响应数据
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|isOK|int|是否成功(bindTHU不为true等)|
 
 #### 修改健康状况
 ```HTTP
@@ -409,7 +398,6 @@ wx.request({
 |end|string|结束时间|
 |label|string|备注|
 |tags|string[]|标签|
-|state|int|活动状态|
 |id|int|活动id|
 
 ##### partAct
@@ -425,12 +413,16 @@ wx.request({
 |end|string|结束时间|
 |label|string|备注|
 |tags|string[]|标签|
-|state|int|活动状态|
 |id|int|活动id|
 
 #### post
 |参数|类型|说明|
 |-------------|-------------|-------------|
+|id|int|帖子id|
+|title|string|标题|
+|time|string|发布时间|
+|likeNum|int|点赞数|
+|commentNum|int|评论数|
 
 ### 二、计划处理部分
 
@@ -712,12 +704,51 @@ wx.request({
 |-------------|-------------|-------------|
 |appoints|appoint[]|七天内的场馆预约|
 
-#### 获取运动信息
-TODO
+#### 改变运动类型
+```HTTP
+[POST] /sport/changeSportType
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|date|string|日期|
+|start|string|开始时间|
+|end|string|结束时间|
+|sportType|string|运动类型|
+
+将对应事项的sportType变为某值
+
+#### 改变运动状态
+```HTTP
+[POST] /sport/changeSportState
+```
+##### 传入参数
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|date|string|日期|
+|start|string|开始时间|
+|end|string|结束时间|
+|sportState|int|运动状态|
+
+#### 结束运动
+```HTTP
+[POST] /sport/endSport
+```
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|date|string|日期|
+|start|string|开始时间|
+|end|string|结束时间|
+|sportTime|int|实际运动时长(分钟)|
+
+也会让事项的state变为1
 
 ### 五、消息部分
 
-#### 获取距今一定范围的若干条消息
+#### 获取消息
 ```HTTP
 [GET] /message/{id}/getMessages
 ```
@@ -725,16 +756,14 @@ TODO
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
-|start|int|从第x条|
-|end|int|到第y条|
+|choice|int|选择模式|
 
-比如获取最近的20条消息，则x=1，y=20，按消息id倒序返回
+按消息id倒序返回,当choice为1只返回未读消息
 
 ##### 返回参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |messages|message[]|消息|
-|unread|int|未读消息数量(所有)|
 
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -883,14 +912,15 @@ TODO
 2:获取用户关注的人发布的所有帖子
 
 ##### 返回参数
+下面格式的数组
 |字段|类型|说明|
 |-------------|-------------|-------------|
-|comments[]|见下|
 |id|int|帖子id|
 |title|string|标题|
 |time|string|发布时间|
 |LZ|string|发布人姓名|
 |likeNum|int|点赞数|
+|commentNum|int|评论数|
 
 #### 搜索帖子
 ```HTTP
@@ -912,7 +942,6 @@ TODO
 |-------------|-------------|-------------|
 |id|int|用户id|
 |postId|int|帖子id|
-|page|int|页数(1对应1到20楼),以此类推|
 
 ##### 返回参数
 |字段|类型|说明|
