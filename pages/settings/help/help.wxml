@@ -1,0 +1,20 @@
+<!--pages/settings/help/help.wxml-->
+<van-cell-group title="帮助">
+  <van-cell title="反馈1" is-link value="2023-11-30" />
+  <van-cell title="问题2" is-link value="2023-12-2" />
+  <!-- 先定以弹窗形式展示问题答案（使用说明）/反馈结果 -->
+</van-cell-group>
+
+<van-cell-group title="反馈">
+  <van-field
+    label="联系方式"
+    placeholder="（可选填，便于进一步沟通）"
+    bind:change="onChangeTele"
+  /> 
+  <van-field
+    label="意见"
+    placeholder="欢迎对 HealTHU 提出意见，看到你的反馈后，我们会第一时间在上方帮助栏进行解答"
+    bind:change="onChangeText"
+  />
+</van-cell-group>
+<van-button type="primary">提交</van-button>

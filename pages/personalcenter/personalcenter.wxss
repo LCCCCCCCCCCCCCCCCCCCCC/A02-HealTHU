@@ -1,0 +1,10 @@
+/* pages/personalCenter/personalcenter.wxss */
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login{
+  position: relative; 
+  top: 10px;
+}

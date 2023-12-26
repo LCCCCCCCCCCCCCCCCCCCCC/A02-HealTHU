@@ -1,0 +1,78 @@
+<!--pages/sports/sports.wxml-->
+<!-- 大致想法是上半边展示体育场馆预约情况，以及跳转到场馆预约系统
+下半边手动设置运动类型与时间，并展示运动层面的建议
+以及展示体育相关新闻
+当运动为可以手动记录的类型（如跑步、乐动力打卡）时，到开始时间会弹出记录界面，不记录视为未完成自动放弃，点击开始记录后绑定里程记录 -->
+<view class="today-text">
+  <view class="today-number">{{today_cal | toFixed(1)}}
+  <!-- 效果是只显示整数位？也行 -->
+    <van-icon name="replay" size="16px" bind:click="today_replay"/>
+  </view>
+  <text>今日运动/千卡</text>
+</view>
+
+<!-- 1给一些准备/结束活动指导（播片），23打卡，4看自己参加的体育比赛 -->
+<view class="width">
+  <van-grid clickable class="buttons-grid" column-num="4" border="{{false}}">
+    <van-grid-item text="拉伸"  link-type="navigateTo">
+        <image slot="icon" src="../images/lag.svg" class="button-icon"/>
+      </van-grid-item>
+      <van-grid-item text="跑步"  link-type="navigateTo" >
+        <image slot="icon" src="../images/run.svg" class="button-icon"/>
+      </van-grid-item>
+      <van-grid-item text="打卡"  link-type="navigateTo" >
+        <image slot="icon" src="../images/record.svg" class="button-icon"/>
+      </van-grid-item>
+      <van-grid-item text="比赛"  link-type="navigateTo" >
+        <image slot="icon" src="../images/race.svg" class="button-icon"/>
+      </van-grid-item>
+    </van-grid>    
+</view>
+
+<view class="width">
+  <van-grid column-num="3" border="{{false}}">
+    <van-grid-item use-slot>
+      <van-circle  stroke-width="6" layer-color="#eeeeee" 
+        value="{{ value_step }}" color="{{ gradientColor1 }}" text="3910" />
+      <text>今日步数</text>
+      <text>5000</text>
+    </van-grid-item>
+    <van-grid-item use-slot>
+      <van-circle  stroke-width="6" layer-color="#eeeeee" 
+        value="{{ value_run }}" color="{{ gradientColor2 }}" text="5" />
+      <text>校园跑次数</text>
+      <text>12</text>
+    </van-grid-item>
+    <van-grid-item use-slot>
+      <van-circle  stroke-width="6" layer-color="#eeeeee" 
+        value="{{ value_km }}" color="{{ gradientColor3 }}" text="20km" />
+      <text>学期里程</text>
+      <text>42km</text>
+    </van-grid-item>
+  </van-grid>
+</view>
+
+<view>
+  <van-cell-group title="场馆信息">
+    <van-card
+      tag="可预约"
+      desc="介绍信息"
+      title="紫荆网球场"
+      thumb="{{ imageURL }}"
+    >
+      <view slot="footer">
+        <van-button size="mini">预约详情</van-button>
+      </view>
+    </van-card> 
+    <van-card
+      tag="可预约"
+      desc="介绍信息"
+      title="西体育馆台球"
+      thumb="{{ imageURL }}"
+    >
+      <view slot="footer">
+        <van-button size="mini">预约详情</van-button>
+      </view>
+    </van-card> 
+  </van-cell-group>
+</view>

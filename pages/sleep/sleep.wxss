@@ -1,0 +1,22 @@
+/* pages/sleep/sleep.wxss */
+.today-text{
+  padding-left:24px;
+  padding-top:12px;
+  font-weight: bold;
+}
+.today-number{
+  font-size: 48px;
+}
+.suggestion{
+  padding-top:16px;
+  font-weight: bold;
+}
+.title {
+	margin-top: 20rpx;
+  padding-bottom: 12px;
+  margin-left: 12px;
+}
+.back-btn {
+  margin-left: 12px;
+  width: 100px;
+}

@@ -1,0 +1,133 @@
+<!--pages/activities/activity/activity.wxml-->
+<swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}"  wx:if="{{activity.images.length != 0}}">
+  <view wx:for="{{activity.images}}" wx:key="index">
+    <swiper-item>
+      <image src="{{item}}" mode="aspectFill"></image>
+    </swiper-item>
+  </view>
+</swiper>
+<view wx:if="{{(activity.participantsId.includes(userid))||(activity.state == 2)}}">
+  <view class="round-click" bind:tap="handleScore">
+    <text style="color: white;">评价</text>
+  </view>
+</view>
+<view wx:if="{{(!activity.participantsId.includes(userid))&&(activity.promoterId != userid)&&(activity.state == 0)}}">
+  <view class="round-click" bind:tap="handleSignup">
+    <text style="color: white;">报名</text>
+  </view>
+</view>
+<van-dialog
+  use-slot
+  title="报名信息填写"
+  show="{{ signshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="onsignClose"
+  bind:getuserinfo="signupConfirm"
+>
+  <van-cell-group class="toflex">
+    <textarea class="textinput"
+      bindinput="handleSignInput" placeholder="请填写相关信息"></textarea>
+  </van-cell-group>
+</van-dialog>
+<van-dialog
+  use-slot
+  title="活动评价"
+  show="{{ scoreshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="onscoreClose"
+  bind:getuserinfo="scoreConfirm"
+>
+  <van-cell-group class="toflex">
+    <van-cell>
+      <view slot="title">评分
+        <van-rate class="rate" value="{{ userscore }}" bind:change="handleScoreGiven" />
+      </view>
+    </van-cell>
+    <textarea class="textinput"
+      bindinput="handleScoreInput" placeholder="请输入评价"></textarea>
+  </van-cell-group>
+</van-dialog>
+
+<view class="pages">
+<van-cell-group inset>
+  <!-- <van-cell border="{{ false }}">
+    
+  </van-cell> -->
+  <van-cell icon="success" border="{{ false }}">
+    <view slot="title">
+      <view class="title-text">{{activity.title}}</view>
+    </view>
+  </van-cell>
+  <van-cell border="{{ false }}" icon="clock-o" title="活动时间 {{activity.date}} {{activity.start}}-{{activity.end}}"></van-cell>
+  <van-cell border="{{ false }}" icon="friends-o"  label="报名人数：{{activity.participantNum}} / 计划人数：{{activity.partNumMin}}-{{activity.partNumMax}}">
+    <view slot="title" class="progress-down">
+      <van-progress show-pivot="{{false}}" percentage="{{activity.participantNum*100/activity.partNumMax}}" />
+    </view>
+  </van-cell>
+  <text size="small" class="labeltag">#{{activity.label}}</text>
+  <can-cell class="tags" wx:for="{{activity.tags}}" wx:key="index">
+    <van-tag plain type="primary">{{item}}</van-tag>
+  </can-cell>
+  <!-- can-cell是写错了，但是改了会换行，先不改了 -->
+</van-cell-group>
+
+<van-divider
+  contentPosition="center"
+  customStyle="color: #1989fa; border-color: #1989fa; font-size: 16px;"
+>活动详情
+</van-divider>
+<view class="detail">{{activity.detail}}</view>
+<van-cell-group inset>
+  <van-cell icon="fire-o">
+    <view slot="title">
+      <text class="comment-title">活动评价 </text>
+      <van-rate value="{{ meanscore }}" readonly /> {{ meanscore }}/5
+    </view>
+  </van-cell>
+  <view wx:for="{{comment}}" wx:key="index">
+    <van-cell border="{{false}}" use-label-slot>
+      <van-button wx:if="{{likeLabel[index] == 0}}" size="small" class="likebtn" 
+        bind:click="likeAct" data-index="{{index}}">
+        <van-icon name="like-o" /> {{item.likes}}
+      </van-button>
+      <van-button wx:else size="small"
+        bind:click="dislikeAct" data-index="{{index}}">
+        <van-icon name="like" /> {{item.likes}}
+      </van-button>
+      <van-button bind:click="deleteComment" data-index="{{index}}" wx:if="{{item.commenterId == userid}}">删除</van-button>
+      <view slot="title">
+        <text class="comname">{{item.nickname}} </text>
+        <text class="comtime">{{item.pubTime}}</text>
+      </view>
+      <van-rate slot="label" value="{{ item.score }}" readonly />
+    </van-cell>
+    <van-cell title="{{item.comment}}"></van-cell>
+  </view>
+</van-cell-group>
+
+<van-divider
+  contentPosition="center"
+  customStyle="color: #1989fa; border-color: #1989fa; font-size: 16px;"
+>参与详情
+</van-divider>
+<van-cell-group inset>
+  <van-cell link-type="navigateTo"
+    url="../../personal/personal?id={{activity.participantsId[index]}}">
+    <view slot="title">
+      <image class="avatar" src="{{activity.promoterUrl}}"></image>
+      <text class="name">{{ activity.promoter }}（发起人）</text>
+    </view>
+  </van-cell>
+</van-cell-group>
+<van-cell-group inset title="参与者：{{activity.participantNum}}">
+    <view wx:for="{{activity.participants}}" wx:key="index">
+    <van-cell is-link
+      title="{{item}}" 
+      link-type="navigateTo"
+      url="../../personal/personal?id={{activity.participantsId[index]}}"></van-cell>
+    </view>
+</van-cell-group>
+<van-divider />
+</view>
