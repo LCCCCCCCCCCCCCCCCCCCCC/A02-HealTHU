@@ -105,13 +105,14 @@
     <van-col span="12" offset="2">
       <view class="userinfo-nick">{{userInfo.nickName}}</view>
       <view class="userinfo-id">UID：{{userInfo.id}}</view>
+      <view class="userinfo-id" wx:if="{{userInfo.sign===''}}">这个人什么也没有留下</view>
+      <view class="userinfo-id" wx:else>{{userInfo.sign}}</view>
       <button class="infobutton" bind:tap="changeInfo">编辑个人信息</button>
     </van-col>
   </van-row>
-  <view>签名：{{userInfo.sign}}</view>
-  <van-grid column-num="3" gutter="{{ 32 }}" border="{{false}}" direction="horizontal">
+  <van-grid column-num="3" gutter="{{ 32 }}"  border="{{false}}" direction="horizontal">
     <van-grid-item link-type="navigateTo"
-      url='../personal/personal' text="4 动态" />
+      url='../personal/personal' text="3 动态" />
       <van-grid-item link-type="navigateTo"
       url='../attention/attention' text="{{attentionnum}} 关注" />
       <van-grid-item link-type="navigateTo"

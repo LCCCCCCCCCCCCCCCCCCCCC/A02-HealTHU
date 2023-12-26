@@ -1,9 +1,5 @@
 // pages/mainpage/mainpage.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     switchColorbyType: {
       "课程": "#BBBB00",
@@ -26,7 +22,7 @@ Page({
     unreadNum: 1,
     noticeList: [
       {state:1, title:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {state:0, title:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 8:20", url: '../activities/activity/activity?actid=1'},
+      {state:0, title:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 8:20", url: '../activities/activity/activity?actid=10001'},
     ],
     bbsList: [
       {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103&floor=2'},
@@ -35,7 +31,7 @@ Page({
       {name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", url: '../bbs/bbs?bbsid=101'},
     ]
   },
-  // TODO：维度消息阅读更新
+  // TODO：未读消息阅读更新
   delUnread(event){
     var tempList = this.data.noticeList;
     const personindex = event.currentTarget.dataset.index;

@@ -80,7 +80,8 @@ van-row{
 }
 .userinfo-id{
   color: grey;
-  font-size: 16px;
+  font-size: 14px;
+  padding-top: 2px;
 }
 .infobutton{
   margin-top: 12px;

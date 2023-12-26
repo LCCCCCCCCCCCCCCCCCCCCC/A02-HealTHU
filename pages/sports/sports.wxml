@@ -55,20 +55,16 @@
 <view>
   <van-cell-group title="场馆信息">
     <van-card
-      tag="可预约"
       desc="介绍信息"
       title="紫荆网球场"
-      thumb="{{ imageURL }}"
     >
       <view slot="footer">
         <van-button size="mini">预约详情</van-button>
       </view>
     </van-card> 
     <van-card
-      tag="可预约"
       desc="介绍信息"
       title="西体育馆台球"
-      thumb="{{ imageURL }}"
     >
       <view slot="footer">
         <van-button size="mini">预约详情</van-button>

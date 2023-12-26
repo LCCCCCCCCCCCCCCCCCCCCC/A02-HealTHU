@@ -37,12 +37,33 @@
   </van-cell-group>
 
   <van-cell-group title="动态" inset>
-    <van-empty wx:if="{{bbsList.length == 0}}" description="还没有参加过活动"></van-empty>
-    <van-cell wx:for="{{bbsList}}" wx:key="index" 
-      clickable size="large" 
-      title="{{item.title}}" label="{{item.time}}"
-      link-type="navigateTo"
-      url="{{item.url}}"/>
+    <van-tabs active="{{ active }}" bind:change="onChange">
+      <van-tab title="发帖">
+        <van-empty wx:if="{{bbsList.length == 0}}" description="还没有发表过帖子"></van-empty>
+        <van-cell wx:for="{{bbsList}}" wx:key="index" 
+          clickable size="large" 
+          title="{{item.title}}" label="{{item.time}}"
+          link-type="navigateTo"
+          url="{{item.url}}"/>
+      </van-tab>
+      <van-tab title="发起活动">
+        <van-empty wx:if="{{actaddList.length == 0}}" description="还没有参加过活动"></van-empty>
+        <van-cell wx:for="{{actaddList}}" wx:key="index" 
+          clickable size="large" 
+          title="{{item.title}}" label="{{item.time}}"
+          link-type="navigateTo"
+          url="{{item.url}}"/>
+      </van-tab>
+      <van-tab title="参与活动">
+        <van-empty wx:if="{{actList.length == 0}}" description="还没有参加过活动"></van-empty>
+        <van-cell wx:for="{{actList}}" wx:key="index" 
+          clickable size="large" 
+          title="{{item.title}}" label="{{item.time}}"
+          link-type="navigateTo"
+          url="{{item.url}}"/>
+      </van-tab>
+    </van-tabs>
+
   </van-cell-group>
   <van-divider />
 </view>

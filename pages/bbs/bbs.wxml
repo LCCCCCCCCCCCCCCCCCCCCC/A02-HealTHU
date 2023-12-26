@@ -29,7 +29,7 @@
   <van-cell class="funcline">
     <view class="lnum">{{post.time}}</view>
     <text class="lnum">#0</text>
-    <van-button custom-class="button" wx:if="{{likeLabel == 0}}" 
+    <van-button custom-class="button" wx:if="{{likeLabels[0] == 0}}" 
       size="mini"
       bind:click="likeAct" data-index="0">
       <van-icon name="like-o" /> {{post.likeList.length}}
@@ -38,47 +38,53 @@
       bind:click="dislikeAct" data-index="0">
       <van-icon name="like" /> {{post.likeList.length}}
     </van-button>
-    <van-button bind:click="handleReply" data-index="0" size="mini">
+    <van-button custom-class="button" bind:click="handleReply" data-index="0" size="mini">
       <van-icon name="chat-o" /> 回复
+    </van-button>
+    <van-button custom-class="button" bind:click="handleDeleteAll" size="mini" wx:if="{{post.userid == id}}">
+      <van-icon name="cross" /> 删除
     </van-button>
   </van-cell>
 </van-cell-group>
 
 <van-empty description="等待第一个回复" wx:if="{{replyList.length == 0}}"></van-empty>
-<van-cell-group title="回复" inset>
+<van-cell-group wx:else title="回复" inset>
   <view wx:for="{{replyList}}" wx:key="index">
   <van-cell clickable
     link-type="navigateTo"
-    url="../personal/personal?id={{item.userid}}" id="floor-{{index + 1}}">
+    url="../personal/personal?id={{item.userid}}">
     <view slot="title">
-      <image class="avatar" src="{{ item.avatar }}"></image>
+      <image class="avatar" src="{{ item.avatar }}" id="floor-{{index + 1}}"></image>
       <text class="name">{{ item.name }}</text>
     </view>
   </van-cell>
   <van-cell border="{{false}}">
     <view slot="title">
-      <view class="above" wx:if="{{ item.aboveid != 0 }}" bind:tap="toFloor" data-index="{{item.aboveid}}">
-        回复 #{{item.aboveid}} {{replyList[item.aboveid - 1].name}}
-        <view>{{ replyList[item.aboveid - 1].content }}</view>
-      </view>
+      <!-- <view class="above" wx:if="{{ item.aboveid != 0 }}" bind:tap="toFloor" data-index="{{item.aboveid}}">
+        回复 #{{item.aboveid}} {{ aboveid2floor(item.aboveid).name }}
+        <view>{{ aboveid2floor(item.aboveid).content }}</view>
+      </view> -->
       <text class="signature">{{ item.content }}</text>
     </view>
   </van-cell>
   <van-cell class="funcline">
     <view class="lnum">{{item.time}}</view>
-    <text class="lnum">#{{index + 1}}</text>
-    <van-button custom-class="button" wx:if="{{likeLabels[index] == 0}}"
+    <text class="lnum">#{{item.floor}}</text>
+    <van-button custom-class="button" wx:if="{{likeLabels[item.floor] == 0}}"
       size="mini"
-      bind:click="likeAct" data-index="{{index}}">
+      bind:click="likeAct" data-index="{{item.floor}}">
       <van-icon name="like-o" /> {{item.likeList.length}}
     </van-button>
-    <van-button custom-class="button" wx:if="{{likeLabels[index] == 1}}" 
+    <van-button custom-class="button" wx:if="{{likeLabels[item.floor] == 1}}" 
       size="mini"
-      bind:click="dislikeAct" data-index="{{index}}">
+      bind:click="dislikeAct" data-index="{{item.floor}}">
       <van-icon name="like" /> {{item.likeList.length}}
     </van-button>
-    <van-button bind:click="handleReply" data-index="{{index + 1}}" size="mini">
+    <van-button custom-class="button" bind:click="handleReply" data-index="{{item.floor}}" size="mini">
       <van-icon name="chat-o" /> 回复
+    </van-button>
+    <van-button custom-class="button" bind:click="handleDelete" data-index="{{item.floor}}" size="mini" wx:if="{{item.userid == id}}">
+      <van-icon name="cross" /> 删除
     </van-button>
   </van-cell>
 </view>
@@ -100,6 +106,25 @@
       bindinput="handlereplyInput" placeholder="在这里写回复~"></textarea>
   </van-cell-group>
 </van-dialog>
+
+<van-dialog
+  title="删除 #{{deleteindex}}"
+  show="{{ deleteshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="ondeleteClose"
+  bind:getuserinfo="deleteConfirm"
+>
+</van-dialog>
+
+<van-dialog
+  message="将删除帖子及其所有回复，确认删除吗？"
+  show="{{ deleteallshow }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="ondeleteallClose"
+  bind:getuserinfo="deleteallConfirm"
+></van-dialog>
 
 <van-divider />
 </view>
