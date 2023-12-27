@@ -1,14 +1,13 @@
-# Windows
-[Dd]esktop.ini
-Thumbs.db
-$RECYCLE.BIN/
+# ignore db.sqlite3
+db.sqlite3
 
-# macOS
-.DS_Store
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
+# ignore .dbeaver
+.dbeaver/
 
-# Node.js
-node_modules/
+# ignore all .pyc files, whereever they are
+**/*.pyc
+
+backend/test.pyc
+
+.idea/*
+```
