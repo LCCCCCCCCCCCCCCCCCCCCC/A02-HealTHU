@@ -21,38 +21,30 @@ Page({
 
    //示例的上传图片到服务器并显示在界面
   afterRead(event) {
-     const { file } = event.detail;
-     const { fileList = [] } = this.data;
-     fileList.push({ ...file, url: file[0].url })
-     var images = this.data.images
-     images.push(file[0].url)
-     this.setData({ fileList });
-     this.setData({
-      images:images
-    }) 
-     /*
+    const { file } = event.detail;
+    var that = this
+    var id = wx.getStorageSync('id')
      wx.uploadFile({
-       url: 'http://127.0.0.1:8000/images', // 仅为示例，非真实的接口地址
+       url: 'http://43.138.52.97:8001/user/postImage/',
        filePath: file[0].url,
-       name: 'file',
-       formData: { user: 'test' },
+       name: 'image',
+       formData: { id: id },
+       header:{ 'content-type': 'application/x-www-form-urlencoded'},
+       method:"POST",
        success(res) {
-         console.log(res)
          // 上传完成需要更新 fileList
-         const { fileList = [] } = this.data;
-         fileList.push({ ...file, url: res.url });
+         var data = res.data.split('/')
+         const { fileList = [] } = that.data;
+         fileList.push({ ...file, url: 'http://43.138.52.97:8001/media/' + data[1] });
          //fileList.push({ ...file, url: file[0].url });
-         var images = this.data.images
-         images.push(file[0].url)
-         this.setData({ fileList });
-         this.setData({
+         var images = that.data.images
+         images.push('http://43.138.52.97:8001/media/' + data[1])
+         that.setData({ fileList });
+         that.setData({
            images:images
-         }) 
-         
+         })
        },
      });
-     */
-     
    },
 
   addAct(){
@@ -65,7 +57,7 @@ Page({
       return;
     }
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/todos/',
+      url:'http://43.138.52.97:8001/schedule/todos/',
       data:{
         'id': id,
         'date': that.data.date
@@ -80,7 +72,7 @@ Page({
           var pubTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + new Date().getHours().toString().padStart(2, '0') + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
           console.log(that.data.detail)
           wx.request({
-            url:'http://127.0.0.1:8000/schedule/addAct/',
+            url:'http://43.138.52.97:8001/schedule/addAct/',
             header:{ 'content-type': 'application/x-www-form-urlencoded'},
             data:{
               id: id,

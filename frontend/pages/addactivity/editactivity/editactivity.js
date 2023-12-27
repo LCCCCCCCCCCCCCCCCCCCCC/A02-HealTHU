@@ -57,7 +57,7 @@ Page({
   editAct(){
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/changeAct/',
+      url:'http://43.138.52.97:8001/schedule/changeAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         actId: that.data.actId,
@@ -82,7 +82,7 @@ Page({
   deleteConfirm() {
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/deleteAct/',
+      url:'http://43.138.52.97:8001/schedule/deleteAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         actId:that.data.actId
@@ -103,7 +103,7 @@ Page({
       this.setData({ actId: options.actid });
     }
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
       data:{
         'actId': that.data.actId
       },

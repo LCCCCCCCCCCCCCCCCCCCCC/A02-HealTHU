@@ -3,13 +3,10 @@
   <view wx:if="{{currentTab == 0}}" class = "mainpage">
     <swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}">
       <swiper-item>
-        <image src="../images/swiper1.jpg" mode="aspectFill"></image>
+        <image src="../images/szijing.png" mode="aspectFill"></image>
       </swiper-item>
       <swiper-item>
-        <image src="../images/swiper2.jpg" mode="aspectFill"></image>
-      </swiper-item>
-      <swiper-item>
-        <image src="../images/swiper3.jpg" mode="aspectFill"></image>
+        <image src="../images/sqimo.png" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
     <van-grid clickable class="buttons-grid" column-num="5" border="{{false}}">
@@ -68,22 +65,86 @@
 <view wx:if="{{currentTab == 1}}">
 <van-tabs active="{{ bbsactive }}" bind:change="onbbsChange">
   <van-tab title="最新">
-    <van-cell-group wx:for="{{bbsList}}" wx:key="index">
-      <van-cell clickable size="large" 
-      title="{{item.title}}" label="{{item.name}} {{item.time}}"
+    <van-search use-action-slot
+      placeholder="查找帖子主题或用户"
+      bind:change="onsearchChange"
+    >
+      <view slot="action" class="searchbox" bind:tap="onSearch">搜索</view>
+    </van-search>
+    <van-dialog title="搜索内容不能为空"
+      show="{{ noneshow }}"/>
+      <van-empty description="什么都没找到呢" wx:if="{{bbsList1.length == 0}}"/>
+    <van-cell-group wx:for="{{bbsList1}}" wx:key="index">
+      <van-cell clickable
+      size="large" 
+      title="{{item.title}}"
       link-type="navigateTo"
-      url="{{item.url}}"/>
+      use-label-slot
+      url="../bbs/bbs?bbsid={{item.id}}"
+      border="{{false}}">
+        <view slot="label">
+          <view wx:if="{{item.images.length !== 0}}" class="image-container">
+            <image class="image" src="{{item.images[0]}}"/>
+          </view>
+          <text>{{item.name}} {{item.time}}</text>
+          <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
+        </view> 
+      </van-cell>
     </van-cell-group>
+    <van-divider />
     <view class="round-click">
       <navigator url='../bbs/addbbs/addbbs'>+</navigator >
     </view>
   </van-tab>
+  <van-tab title="热门">
+    <van-empty description="什么都没找到呢" wx:if="{{bbsList2.length == 0}}"/>
+    <van-cell-group wx:for="{{bbsList2}}" wx:key="index">
+      <van-cell clickable
+      size="large" 
+      title="{{item.title}}"
+      link-type="navigateTo"
+      use-label-slot
+      url="../bbs/bbs?bbsid={{item.id}}"
+      border="{{false}}">
+        <view slot="label">
+          <view wx:if="{{item.images.length !== 0}}" class="image-container">
+            <image class="image" src="{{item.images[0]}}"/>
+          </view>
+          <text>{{item.name}} {{item.time}}</text>
+          <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
+        </view> 
+      </van-cell>
+    </van-cell-group>
+    <van-divider />
+  </van-tab>
   <van-tab title="关注">
-    <van-empty description="关注的人还没有动态" />
+    <van-empty description="关注的人还没有动态" wx:if="{{bbsList3.length == 0}}"/>
+    <van-cell-group wx:for="{{bbsList3}}" wx:key="index">
+      <van-cell clickable
+      size="large" 
+      title="{{item.title}}"
+      link-type="navigateTo"
+      use-label-slot
+      url="../bbs/bbs?bbsid={{item.id}}"
+      border="{{false}}">
+        <view slot="label">
+          <view wx:if="{{item.images.length !== 0}}" class="image-container">
+            <image class="image" src="{{item.images[0]}}"/>
+          </view>
+          <text>{{item.name}} {{item.time}}</text>
+          <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
+        </view> 
+      </van-cell>
+    </van-cell-group>
+    <van-divider />
   </van-tab>
   <van-tab title="消息" dot="{{ unreadNum != 0 }}">
-    <van-cell-group wx:for="{{noticeList}}" wx:key="index" inset>
-      <van-cell title="{{item.title}}" label="{{item.time}}"
+    <van-cell border="{{false}}">
+      <van-checkbox value="{{ readchecked }}" bind:change="unreadChange">仅查看未读</van-checkbox>
+    </van-cell>
+    <van-cell-group wx:if="{{readchecked}}" wx:for="{{noticeList}}" wx:key="index" inset>
+      <van-cell wx:if="{{item.state == 0}}"
+        title="{{item.content}}" label="{{item.time}}"
         is-link clickable link-type="navigateTo"
         url="{{item.url}}"
         bind:click="delUnread" data-index="{{index}}"
@@ -92,6 +153,18 @@
           <van-icon name="stop" color="red" /></view>
       </van-cell>
     </van-cell-group>
+    <van-cell-group wx:if="{{readchecked == false}}"wx:for="{{noticeList}}" wx:key="index" inset>
+      <van-cell
+        title="{{item.content}}" label="{{item.time}}"
+        is-link clickable link-type="navigateTo"
+        url="{{item.url}}"
+        bind:click="delUnread" data-index="{{index}}"
+      >
+        <view slot="icon" wx:if="{{item.state == 0}}">
+          <van-icon name="stop" color="red" /></view>
+      </van-cell>
+    </van-cell-group>
+    <van-divider />
   </van-tab>
 </van-tabs>
 </view>
@@ -105,13 +178,14 @@
     <van-col span="12" offset="2">
       <view class="userinfo-nick">{{userInfo.nickName}}</view>
       <view class="userinfo-id">UID：{{userInfo.id}}</view>
+      <view class="userinfo-id" wx:if="{{userInfo.sign===''}}">这个人什么也没有留下</view>
+      <view class="userinfo-id" wx:else>{{userInfo.sign}}</view>
       <button class="infobutton" bind:tap="changeInfo">编辑个人信息</button>
     </van-col>
   </van-row>
-  <view>签名：{{userInfo.sign}}</view>
-  <van-grid column-num="3" gutter="{{ 32 }}" border="{{false}}" direction="horizontal">
+  <van-grid column-num="3" gutter="{{ 32 }}"  border="{{false}}" direction="horizontal">
     <van-grid-item link-type="navigateTo"
-      url='../personal/personal' text="4 动态" />
+      url='../personal/personal?id={{id}}' text="3 动态" />
       <van-grid-item link-type="navigateTo"
       url='../attention/attention' text="{{attentionnum}} 关注" />
       <van-grid-item link-type="navigateTo"
@@ -122,9 +196,10 @@
     <van-cell-group>
       <van-cell is-link title="  健康状况" icon="manager-o"
         link-type="navigateTo" url='../changehealth/changehealth'/>
+        <!--
       <van-cell is-link title="  个性化" icon="records-o"
       link-type="navigateTo" url='../settings/selfset/selfset'/>
-      <view class="empty-line"></view>
+      <view class="empty-line"></view>-->
       <van-cell is-link title="  账号绑定" icon="link-o"  
         link-type="navigateTo" url='../bindthu/bindthu'/>
       <van-cell is-link title="  隐私设置" icon="setting-o"  

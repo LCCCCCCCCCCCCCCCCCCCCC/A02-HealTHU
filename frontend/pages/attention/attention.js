@@ -19,7 +19,7 @@ Page({
     var ids = wx.getStorageSync('attentionId');
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/user/delAttention/',
+      url:'http://43.138.52.97:8001/user/delAttention/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         hostId: id,
@@ -63,6 +63,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    this.setData({
+      userList:[]
+    })
     var ids = wx.getStorageSync('attentionId');
     var id = wx.getStorageSync('id')
     //console.log(ids.length)
@@ -70,7 +73,7 @@ Page({
     for(let i = 0; i < ids.length; i++){
       var j = 0
       wx.request({
-        url:'http://127.0.0.1:8000/user/getDetail/',
+        url:'http://43.138.52.97:8001/user/getDetail/',
         data:{
           'hostId': id,
           'customerId':ids[i]

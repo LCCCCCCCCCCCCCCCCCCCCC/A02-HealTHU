@@ -1,34 +1,18 @@
 // pages/changehealth/changehealth.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     show: false,
-    update:{
-      updateTime: '2023-11-20',
-      birthday: '2003/08/28',
+    updateTime: '2023/12/28',
+    age:'20',
+    gender: '男',
+    beizhu:'',
+    grade: '70.8',
+    update:{},
+    current:{
       age:'20',
       height: '170',
       weight: '62.2',
-      bmi: '21.52',
-      grade: '60.7',
-      thousand: '4:30',
-      grade_thousand: '8.9',
-      ehundred: '',
-      grade_ehundred: '',
       gender: '男',
-      fifty:'6.9',
-      grade_fifty:'18',
-      jump:'2.36',
-      grade_jump:'15',
-      sar:'10.6',
-      grade_sar:'6',
-      situp:'10',
-      grade_situp:'10',
-      pullup:'5',
-      grade_pullup:'8',
       beizhu:''
     }
   },
@@ -39,56 +23,80 @@ Page({
     this.setData({ show: false });
   },
   change(){
-    var bmiNumber = (this.data.update.weight*10000/this.data.update.height/this.data.update.height).toFixed(2);
-    var date = new Date();
-    var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-'+ date.getDate();
-    this.setData({
-      'update.updateTime': dateString,
-      'update.bmi': bmiNumber
-    });
-    // wx.setStorageSync('age', this.data.update.age);
-    // wx.setStorageSync('height', this.data.update.height);
-    // wx.setStorageSync('weight', this.data.update.weight);
-    // wx.setStorageSync('bmi', this.data.update.bmi);
-    wx.showToast({
-      title: "修改成功",
-      icon: "success"
-    });
+    if(typeof this.data.update.weight !== 'number' || typeof this.data.update.height !== 'number' || typeof this.data.age !== 'number'){
+      wx.showToast({
+        title: "输入数据不合法",
+        icon: "none"
+      });
+    }
+    else{
+      var bmiNumber = (this.data.update.weight*10000/this.data.update.height/this.data.update.height).toFixed(2);
+      var date = new Date();
+      var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-'+ date.getDate();
+      this.setData({
+        'updateTime': dateString,
+        'update.bmi': bmiNumber,
+        'gender': current.gender,
+        'age': current.age,
+        'update.height': current.height,
+        'update.weight': current.weight,
+        'beizu': current.beizu,
+      });
+      wx.showToast({
+        title: "修改成功",
+        icon: "success"
+      });
+    }
+
     // 后端更新数据（以及重新计算体测分数）
     // 想画变化曲线的话要后端都存起来x
-    // 年龄的话还是根据生日计算比较合适？；性别的修改
   },
-  // 需要把本页的data.update改为storage
   ChangeGender(event){
     this.setData({
-      'update.gender': event.detail
+      'current.gender': event.detail
     });
   },
   ChangeAge(event){
     this.setData({
-      'update.age': event.detail
+      'current.age': event.detail
     });
   },
   ChangeHeight(event){
     this.setData({
-      'update.height': event.detail
+      'current.height': event.detail
     });
   },
   ChangeWeight(event){
     this.setData({
-      'update.weight': event.detail
+      'current.weight': event.detail
     });
   },
   ChangeBeizhu(event){
     this.setData({
-      'update.beizhu': event.detail
+      'current.beizhu': event.detail
     });
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    var id = wx.getStorageSync('id')
+    var that = this
+    wx.request({
+      url:'http://43.138.52.97:8001/thuInfo/getHealthInfo/',
+      data:{
+        id:id
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        data.bmi = data.bmi.toFixed(2)
+        that.setData({
+          update:data
+        })
+        that.setData
+      }
+    })
   },
 
   /**

@@ -1,8 +1,4 @@
 <!--pages/sports/sports.wxml-->
-<!-- 大致想法是上半边展示体育场馆预约情况，以及跳转到场馆预约系统
-下半边手动设置运动类型与时间，并展示运动层面的建议
-以及展示体育相关新闻
-当运动为可以手动记录的类型（如跑步、乐动力打卡）时，到开始时间会弹出记录界面，不记录视为未完成自动放弃，点击开始记录后绑定里程记录 -->
 <view class="today-text">
   <view class="today-number">{{today_cal | toFixed(1)}}
   <!-- 效果是只显示整数位？也行 -->
@@ -10,9 +6,43 @@
   </view>
   <text>今日运动/千卡</text>
 </view>
+<view class="progress-out">
+  <van-progress custom-class="progress"
+    percentage="{{percentage}}"
+    pivot-text="每日步数目标: 5000"
+    pivot-color="#7232dd"
+    color="linear-gradient(to right, #be99ff, #7232dd)"
+  />
+</view>
+<van-cell-group custom-class="suggestion" inset>
+  <van-cell title="今日步数 {{walknum | toFixed(1)}}，已完成目标 {{percentage}}%" icon="checked"/>
+  <van-cell title="今日运动计划" icon="arrow-down"/>
+  <view wx:for="{{todos}}" wx:key="index">
+    <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="handleBegin">
+      <view slot="title"> {{item.title}}</view>
+      <view>{{item.start}}—{{item.end}}</view>
+      <view wx:if="{{ (item.state == 0)}}">未开始</view>
+      <view wx:if="{{ (item.state == 1)}}">已完成</view>
+      <view wx:if="{{ (item.state == 2)}}">进行中</view>
+    </van-cell>
+  </view>
+</van-cell-group>
 
+<van-dialog title="已经完成啦" message="打卡时间：9:05~9:17" show="{{ onlyshow }}"/>
+<van-dialog use-title-slot use-slot
+  showCancelButton
+  show="{{ beginshow }}"
+  confirm-button-open-type="getUserInfo"
+  bind:getuserinfo="confirm"
+  >
+  <view wx:if="{{currentstate == 0}}" slot="title">开始打卡吗？</view>
+  <view wx:else slot="title">结束打卡吗？</view>
+  <view class="timetext" wx:if="{{currentstate == 0}}">计划开始时间：22:00</view>
+  <view class="timetext" wx:else>开始时间：16:47</view>
+</van-dialog>
+<van-divider />
 <!-- 1给一些准备/结束活动指导（播片），23打卡，4看自己参加的体育比赛 -->
-<view class="width">
+<!-- <view class="width">
   <van-grid clickable class="buttons-grid" column-num="4" border="{{false}}">
     <van-grid-item text="拉伸"  link-type="navigateTo">
         <image slot="icon" src="../images/lag.svg" class="button-icon"/>
@@ -27,52 +57,18 @@
         <image slot="icon" src="../images/race.svg" class="button-icon"/>
       </van-grid-item>
     </van-grid>    
-</view>
+</view> -->
 
-<view class="width">
-  <van-grid column-num="3" border="{{false}}">
-    <van-grid-item use-slot>
-      <van-circle  stroke-width="6" layer-color="#eeeeee" 
-        value="{{ value_step }}" color="{{ gradientColor1 }}" text="3910" />
-      <text>今日步数</text>
-      <text>5000</text>
-    </van-grid-item>
-    <van-grid-item use-slot>
-      <van-circle  stroke-width="6" layer-color="#eeeeee" 
-        value="{{ value_run }}" color="{{ gradientColor2 }}" text="5" />
-      <text>校园跑次数</text>
-      <text>12</text>
-    </van-grid-item>
-    <van-grid-item use-slot>
-      <van-circle  stroke-width="6" layer-color="#eeeeee" 
-        value="{{ value_km }}" color="{{ gradientColor3 }}" text="20km" />
-      <text>学期里程</text>
-      <text>42km</text>
-    </van-grid-item>
-  </van-grid>
+<van-cell-group title="场馆信息（学校每日8:00开放第4天场地预约）" inset>
+<view wx:for="{{gymList}}" wx:key="index">
+  <van-card desc="{{item.detail}}" title="{{item.title}}">
+    <view slot="thumb" class="image">
+      <image src="{{item.url}}" class="image_content"></image>
+    </view>
+    <view slot="footer">
+      <van-button size="mini" bind:tap="toGym">进入预约</van-button>
+    </view>
+  </van-card>
 </view>
-
-<view>
-  <van-cell-group title="场馆信息">
-    <van-card
-      tag="可预约"
-      desc="介绍信息"
-      title="紫荆网球场"
-      thumb="{{ imageURL }}"
-    >
-      <view slot="footer">
-        <van-button size="mini">预约详情</van-button>
-      </view>
-    </van-card> 
-    <van-card
-      tag="可预约"
-      desc="介绍信息"
-      title="西体育馆台球"
-      thumb="{{ imageURL }}"
-    >
-      <view slot="footer">
-        <van-button size="mini">预约详情</van-button>
-      </view>
-    </van-card> 
-  </van-cell-group>
-</view>
+</van-cell-group>
+<van-divider />

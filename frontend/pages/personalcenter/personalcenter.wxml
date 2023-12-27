@@ -1,5 +1,14 @@
 <!--pages/personalCenter/personalcenter.wxml-->
 <view class="container">
-  <van-empty description="TODO: app logo" />
-  <van-button type="primary" bindtap="sign" class="login">点击一键登录</van-button>
+  <van-empty>
+    <image slot="image" class="logo" src="../images/logowhite.png"></image>
+    <image class="text" src="../images/logotextwhite.png"></image>
+  </van-empty>
+  <!-- <van-empty>
+    <image slot="image" class="logo" src="../images/logo.png"></image>
+    <image class="text" src="../images/logotext.png"></image>
+  </van-empty> -->
+  <van-button round color="white" type="primary" bindtap="sign">
+    <text class="logintext">点击一键登录</text>
+  </van-button>
 </view>

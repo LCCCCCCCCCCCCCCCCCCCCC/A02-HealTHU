@@ -27,11 +27,9 @@ Page({
       // 同意请求,操作对象为tempItem,更新reviewList状态
       var id = wx.getStorageSync('id')
       var applicationId = this.data.tempItem.id
-      console.log(this.data.tempItem)
       var that = this
-      console.log(id + " " + applicationId)
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/appReply/',
+        url:'http://43.138.52.97:8001/schedule/appReply/',
         header:{ 'content-type': 'application/x-www-form-urlencoded'},
         data:{
           id:id,
@@ -41,6 +39,36 @@ Page({
         method:'POST',
         success:function(res){
           wx.showToast({ title: '已同意', icon: 'success' });
+          wx.request({
+            url:'http://43.138.52.97:8001/user/getDetail/',
+            data:{
+              'hostId': id,
+              'customerId':id
+            },
+            method:'GET',
+            success:function(res){
+              var data = JSON.parse(res.data)
+              var nickName = data.nickName
+              var messageContent = nickName + "同意了你的报名请求"
+              var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+              var recieverId = applicationId
+              var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
+              wx.request({
+                url:'http://43.138.52.97:8001/message/sendMessage/',
+                header:{ 'content-type': 'application/x-www-form-urlencoded'},
+                data:{
+                  recieverId: recieverId,
+                  time: nowTime,
+                  content: messageContent,
+                  toUrl: toUrl
+                },
+                method:'POST',
+                success:function(res){
+                  that.onLoad()
+                }
+              })
+            }
+          })
           that.onLoad()
         }
       })
@@ -52,7 +80,7 @@ Page({
       var that = this
       console.log(id + " " + applicationId)
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/appReply/',
+        url:'http://43.138.52.97:8001/schedule/appReply/',
         header:{ 'content-type': 'application/x-www-form-urlencoded'},
         data:{
           id:id,
@@ -62,6 +90,36 @@ Page({
         method:'POST',
         success:function(res){
           wx.showToast({ title: '已拒绝'});
+          wx.request({
+            url:'http://43.138.52.97:8001/user/getDetail/',
+            data:{
+              'hostId': id,
+              'customerId':id
+            },
+            method:'GET',
+            success:function(res){
+              var data = JSON.parse(res.data)
+              var nickName = data.nickName
+              var messageContent = nickName + "拒绝了你的报名请求"
+              var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+              var recieverId = applicationId
+              var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
+              wx.request({
+                url:'http://43.138.52.97:8001/message/sendMessage/',
+                header:{ 'content-type': 'application/x-www-form-urlencoded'},
+                data:{
+                  recieverId: recieverId,
+                  time: nowTime,
+                  content: messageContent,
+                  toUrl: toUrl
+                },
+                method:'POST',
+                success:function(res){
+                  that.onLoad()
+                }
+              })
+            }
+          })
           that.onLoad()
         }
       })
@@ -92,11 +150,10 @@ Page({
       var actid = options.actid;
       this.setData({actId:actid})
     }
-    console.log(111)
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
       data:{
         actId: that.data.actId
       },
@@ -110,7 +167,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getApplication/',
+      url:'http://43.138.52.97:8001/schedule/getApplication/',
       data:{
         id: id
       },
@@ -120,7 +177,7 @@ Page({
         var filteredApps = data.filter(function(data) {
           return actid == data.actId
         });
-        console.log(filteredApps)
+
         if(filteredApps.length == 0){
           that.setData({reviewList:[]})
         }
@@ -129,7 +186,7 @@ Page({
           filteredApps[i].text = filteredApps[i].message
           //filteredApps[i].id = filteredApps[i].applyerId
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             data:{
               'hostId': id,
               'customerId':filteredApps[i].applyerId

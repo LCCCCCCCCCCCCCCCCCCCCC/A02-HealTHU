@@ -13,7 +13,6 @@
     <van-icon name="success" color="blue"/>
   </view>
 </van-nav-bar>
-
 <van-uploader class="upload"
   file-list="{{ fileList }}" 
   deletable="{{ true }}"
