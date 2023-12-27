@@ -1,15 +1,15 @@
 <!--pages/personal/personal.wxml-->
 <van-row>
   <van-col span="8" offset="2">
-    <van-image round width="6rem" height="6rem" src=""/>
+    <van-image round width="6rem" height="6rem" src="{{avatarUrl}}"/>
   </van-col>
   <van-col span="10">
     <view class="userinfo-nick">{{nickName}}</view>
     <view class="userinfo-id">UID：{{userId}}</view>
     <view wx:if="{{userId == id}}" class="empty-line"></view>
     <view wx:else>
-      <button wx:if="{{followed == false}}" class="infobutton" bind:tap="changeInfo">关注</button>
-      <button wx:if="{{followed == true}}" class="infobutton" bind:tap="changeInfo">取消关注</button>
+      <button wx:if="{{followed == false}}" class="infobutton" bind:tap="follow">关注</button>
+      <button wx:if="{{followed == true}}" class="infobutton" bind:tap="unfollow">取消关注</button>
     </view>
   </van-col>
 </van-row>
@@ -52,11 +52,8 @@
           url="../bbs/bbs?bbsid={{item.id}}"
           border="{{false}}">
             <view slot="label">
-              <view wx:if="{{item.images.length !== 0}}" class="image-container">
-                <image class="image" src="{{item.images[0]}}"/>
-              </view>
               <text>{{item.name}} {{item.time}}</text>
-              <view class="lnum">{{item.likeList.length}}点赞 {{item.replies.length}}回复</view>
+              <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
             </view> 
           </van-cell>
         </van-cell-group>

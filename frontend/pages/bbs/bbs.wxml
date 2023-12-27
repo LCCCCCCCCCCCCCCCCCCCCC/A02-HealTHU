@@ -13,7 +13,7 @@
   </van-cell>
   <van-cell clickable
     link-type="navigateTo"
-    url="../personal/personal?id={{post.userid}}">
+    url="../personal/personal?id={{post.userId}}">
     <view slot="title">
       <image class="avatar" src="{{ post.avatar }}"></image>
       <text class="name">{{ post.name }}</text>
@@ -49,7 +49,7 @@
   <view wx:for="{{replyList}}" wx:key="index">
   <van-cell clickable
     link-type="navigateTo"
-    url="../personal/personal?id={{item.userid}}">
+    url="../personal/personal?id={{item.userId}}">
     <view slot="title">
       <image class="avatar" src="{{ item.avatar }}" id="floor-{{item.floor}}"></image>
       <text class="name">{{ item.name }}</text>
@@ -57,7 +57,7 @@
   </van-cell>
   <van-cell border="{{false}}">
     <view slot="title">
-       <view class="above" wx:if="{{ item.aboveId != 0 }}" bind:tap="toFloor" data-index="{{item.aboveId}}">
+       <view class="above" wx:if="{{ item.aboveId != 1 }}" bind:tap="toFloor" data-index="{{item.aboveId}}">
         回复 #{{item.aboveId}} {{item.aboveName}}
         <view>{{ item.aboveContent }}</view>
       </view> 
@@ -80,7 +80,7 @@
     <van-button custom-class="button" bind:click="handleReply" data-index="{{item.floor}}" size="mini">
       <van-icon name="chat-o" /> 回复
     </van-button>
-    <van-button custom-class="button" bind:click="handleDelete" data-index="{{item.floor}}" size="mini" wx:if="{{item.userid == id}}">
+    <van-button custom-class="button" bind:click="handleDelete" data-index="{{item.floor}}" size="mini" wx:if="{{item.userId == id}}">
       <van-icon name="cross" /> 删除
     </van-button>
   </van-cell>

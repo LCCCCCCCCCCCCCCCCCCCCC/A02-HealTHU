@@ -165,7 +165,7 @@ Page({
               url:'http://43.138.52.97:8001/message/sendMessage/',
               header:{ 'content-type': 'application/x-www-form-urlencoded'},
               data:{
-                recieverId: recieverId,
+                receiverId: recieverId,
                 time: nowTime,
                 content: messageContent,
                 toUrl: toUrl
