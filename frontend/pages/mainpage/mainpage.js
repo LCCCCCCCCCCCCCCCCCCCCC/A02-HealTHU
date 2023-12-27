@@ -21,9 +21,9 @@ Page({
     // 未读消息数量
     unreadNum: 1,
     noticeList: [
-      {state:1, content:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {state:0, content:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 8:20", url: '../activities/activity/activity?actid=10001'},
-      {state:1, content:"teto报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 9:37", url: '../activities/activity/activity?actid=10001'},
+      {state:1, content:"teto 评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
+      {state:0, content:"GUMI 报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 8:20", url: '../activities/activity/activity?actid=10001'},
+      {state:1, content:"teto 报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 9:37", url: '../activities/activity/activity?actid=10001'},
     ],
     bbsList: [
       {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeList:['4', '5'],
@@ -63,23 +63,23 @@ Page({
             aboveContent: "水贴长经验呢"
           },
       ]},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeList:[], replies:[]},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵] 西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeList:[], replies:[]},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领] 在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
     ],
     bbsList1: [
       {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:2,commentNum:3},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵] 西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领] 在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
     ],
     bbsList2: [
       {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:5,commentNum:3},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵] 西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领] 在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
     ],
     bbsList3: [
       {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:2,commentNum:3},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵] 西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领] 在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
     ],
     id:0,
     readchecked: false,
@@ -101,7 +101,6 @@ Page({
       });
     }
     var id = wx.getStorageSync('id')
-    /*
     wx.request({
       url:'http://127.0.0.1:8000/message/read/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
@@ -113,13 +112,11 @@ Page({
       success:function(res){
       }
     })
-    */
   },
   onbbsChange(event){
     var choice = event.detail.index
     var that = this
     var id = wx.getStorageSync('id')
-    /*
     if(choice != 3){
       wx.request({
         url:'http://127.0.0.1:8000/bbs/getPost/',
@@ -156,14 +153,20 @@ Page({
         },
         method:'GET',
         success:function(res){
-          var data = res.data
-          that.setData({
-            noticeList: data,
-          });
-        }
+          var data = res.data
+          var unreadNum = 0
+          for(var i = 0;i< data.size; i++){
+            if(data[i].state == 0){
+              unreadNum ++
+            }
+          }
+          that.setData({
+            noticeList: data,
+            unreadNum: unreadNum
+          });
+        }
       })
     }
-    */
   },
   unreadChange(event){
     this.setData({ readchecked: event.detail });
@@ -222,7 +225,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    // datas.filter is not a function, 没有在首页登录的话就会没有storage，所以其他页面应该先检查一下登陆状态（以及后端）
+    // datas.filter is not a function, 没有在首页登录的话就会没有 storage，所以其他页面应该先检查一下登陆状态（以及后端）
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     var currentTime = parseInt(new Date().getHours() + "" + (new Date().getMinutes()).toString().padStart(2, '0'))
     var that = this
@@ -293,7 +296,6 @@ Page({
         });
       }
     })
-    /*
     wx.request({
       url:'http://127.0.0.1:8000/bbs/getPost/',
       data:{
@@ -308,37 +310,20 @@ Page({
         });
       }
     })
-    */
-   /*
-   wx.request({
-      url:'http://127.0.0.1:8000/message/getMessages/',
-      data:{
-        id:id,
-      },
-      method:'GET',
-      success:function(res){
-        var data = res.data
-        that.setData({
-          noticeList: data,
-        });
-      }
-    })
-    */
-   /*
-   wx.request({
-    url:'http://127.0.0.1:8000/message/getMessages/',
-    data:{
-      id:id,
-    },
-    method:'GET',
-    success:function(res){
-      var data = res.data
-      that.setData({
-        noticeList:data
-      });
-    }
-  })
-  */
+  //  wx.request({
+  //     url:'http://127.0.0.1:8000/message/getMessages/',
+  //     data:{
+  //       id:id,
+  //     },
+  //     method:'GET',
+  //     success:function(res){
+  //       var data = res.data
+  //       that.setData({
+  //         noticeList: data,
+  //       });
+  //     }
+  //   })
+
   },
 
   /**

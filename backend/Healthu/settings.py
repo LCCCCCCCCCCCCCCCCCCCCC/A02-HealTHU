@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
     'healthInfo.apps.HealthinfoConfig',
-    'schedule.apps.ScheduleConfig'
+    'schedule.apps.ScheduleConfig',
+    'bbs.apps.BbsConfig',
+    'message.apps.MessageConfig'
 ]
 
 MIDDLEWARE = [

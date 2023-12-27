@@ -19,8 +19,8 @@ Page({
         id:id,
         title: that.data.title,
         time:nowTime,
-        content: that.data.content,
-        images: `${that.data.images}`
+        content: that.data.content.value,
+        images: `${JSON.stringify(that.data.images)}`
       },
       method:'POST',
       success:function(res){
@@ -29,7 +29,16 @@ Page({
     })
   },
   afterRead(event) {
-
+    const { file } = event.detail;
+    console.log(file[0].url)
+    const { fileList = [] } = this.data;
+    fileList.push({ ...file, url: file[0].url });
+    var images = this.data.images
+    images.push(file[0].url)
+    this.setData({ fileList });
+    this.setData({
+      images:images
+    })
   },
   /**
    * 生命周期函数--监听页面加载

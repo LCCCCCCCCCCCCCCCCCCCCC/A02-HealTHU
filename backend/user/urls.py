@@ -9,4 +9,5 @@ urlpatterns=[
     path('getFans/', views.getFans),
     path('addAttention/', views.addAttention),
     path('delAttention/', views.delAttention),
+    path('search/', views.search),
 ]

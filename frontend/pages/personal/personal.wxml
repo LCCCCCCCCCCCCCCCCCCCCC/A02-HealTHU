@@ -8,8 +8,8 @@
     <view class="userinfo-id">UID：{{userId}}</view>
     <view wx:if="{{userId == id}}" class="empty-line"></view>
     <view wx:else>
-      <button wx:if="{{followed == false}}" class="infobutton" bind:tap="changeInfo">关注</button>
-      <button wx:if="{{followed == true}}" class="infobutton" bind:tap="changeInfo">取消关注</button>
+      <button wx:if="{{followed == false}}" class="infobutton" bind:tap="follow">关注</button>
+      <button wx:if="{{followed == true}}" class="infobutton" bind:tap="unfollow">取消关注</button>
     </view>
   </van-col>
 </van-row>

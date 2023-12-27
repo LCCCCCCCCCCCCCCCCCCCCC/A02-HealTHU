@@ -65,6 +65,36 @@ Page({
       {name:"NLno", title:"[活动报名] 2023秋软件学院集体锻炼", time:"2023-12-18 9:20", id: 10001},
     ]
   },
+  follow(){
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/user/addAttention/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        hostId: that.id,
+        customerId: that.userId
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
+  unfollow(){
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/user/delAttention/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        hostId: that.id,
+        customerId: that.userId
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
   onChange(event) {
   // event.detail.name
   },
@@ -78,8 +108,6 @@ Page({
     } 
     var id = wx.getStorageSync('id')
     var that = this
-    /*
-    if(1 == 0){
       wx.request({
         url:'http://127.0.0.1:8000/user/getPersonal/',
         data:{
@@ -111,8 +139,6 @@ Page({
           });
         }
       })
-    }
-    */
     var id = wx.getStorageSync('id')
     this.setData({
       id:id

@@ -120,7 +120,7 @@ def getAttention(request):
             attentionList = user.userInfo.followings
             result = []
             for id in attentionList:
-                # 根据id查找相应的avatarUrl, nickName和signature
+                # 根据 id 查找相应的 avatarUrl, nickName 和 signature
                 user = User.objects.filter(id=id).first()
                 avatarUrl = user.userInfo.avatarUrl
                 nickName = user.userInfo.nickName
@@ -146,7 +146,7 @@ def getFans(request):
             fansList = user.userInfo.followers
             result = []
             for id in fansList:
-                # 根据id查找相应的avatarUrl, nickName和signature
+                # 根据 id 查找相应的 avatarUrl, nickName 和 signature
                 user = User.objects.filter(id=id).first()
                 avatarUrl = user.userInfo.avatarUrl
                 nickName = user.userInfo.nickName
@@ -178,7 +178,7 @@ def getFans(request):
 @csrf_exempt
 def addAttention(request):
     if request.method == 'POST':
-        #host关注customer
+        #host 关注 customer
         hostid = request.POST.get("hostId")
         customerid = request.POST.get("customerId")
         if hostid == customerid:
@@ -200,7 +200,7 @@ def addAttention(request):
 @csrf_exempt
 def delAttention(request):
     if request.method == 'POST':
-        #host取消关注customer
+        #host 取消关注 customer
         hostid = request.POST.get("hostId")
         customerid = request.POST.get("customerId")
         if hostid == customerid:
@@ -226,3 +226,22 @@ def delAttention(request):
                 return HttpResponse("Delete Attention Success", status=200)
             else:
                 return HttpResponse("User not found", status=400)
+
+def search(request):
+    if request.method == "GET":
+        key = request.GET.get("key")
+        # find a user that
+        # (1) contains key in his or her nickName, or:
+        # (2) id == key
+        ansarray = []
+        all_users_whose_id_is_key = User.objects.filter(id=int(key))
+        all_users_whose_nickName_contains_key = []
+        for user in User.objects.all():
+            if str(key) in user.userInfo.nickName:
+                all_users_whose_nickName_contains_key.append(user)
+        for user in all_users_whose_id_is_key:
+            ansarray.append(user.id)
+        for user in all_users_whose_nickName_contains_key:
+            ansarray.append(user.id)
+        ansarray = list(set(ansarray)) # remove duplicates
+        return HttpResponse(json.dumps(ansarray, ensure_ascii=False))

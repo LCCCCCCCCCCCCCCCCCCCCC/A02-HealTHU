@@ -17,7 +17,6 @@ Page({
   onLoad(options) {
     var that = this
     if(options.key){
-      /*
       wx.request({
         url:'http://127.0.0.1:8000/bbs/searchPost/',
         data:{
@@ -31,6 +30,7 @@ Page({
           });
         }
       })
+      /*
       wx.request({
         url:'http://127.0.0.1:8000/user/search/',
         data:{
