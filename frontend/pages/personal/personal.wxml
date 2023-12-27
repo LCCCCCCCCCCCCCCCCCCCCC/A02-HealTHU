@@ -37,7 +37,7 @@
         <van-col span="4">
           <image src="{{achList[5].img}}" style="width: 36px; height: 40px;"/></van-col>
       </van-row>
-      <text slot="title">暂无成就或用户设置不展示</text>
+      <text wx:else slot="title">暂无成就或用户设置不展示</text>
     </van-cell>
   </van-cell-group>
 

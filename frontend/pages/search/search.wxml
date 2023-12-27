@@ -9,8 +9,8 @@
 
 <view class="pages">
 <van-cell-group inset title="用户">
-<van-empty description="等待第一个粉丝.." wx:if="{{userList.length == 0}}"></van-empty>
-  <van-grid column-num="5" border="{{false}}" clickable>
+  <van-empty description="无相关用户" wx:if="{{userList.length == 0}}"></van-empty>
+  <van-grid wx:else column-num="5" border="{{false}}" clickable>
     <van-grid-item use-slot wx:for="{{ userList }}" wx:key="id"
       link-type="navigateTo"
       url="../personal/personal?id={{item.userId}}">
