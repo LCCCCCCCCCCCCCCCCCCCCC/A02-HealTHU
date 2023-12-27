@@ -284,7 +284,7 @@ def getPersonal(request):
                 'partActs': [],
                 'posts': []
             }
-            if homeUserId in visitorUser.userInfo.followings:
+            if str(homeUserId) in visitorUser.userInfo.followings:
                 responseDict['following_state'] = 1
             else:
                 responseDict['following_state'] = 0
@@ -373,7 +373,7 @@ def changeRange(request):
         actRange = int(request.POST.get("actRange"))
         postRange = int(request.POST.get("postRange"))
         targetUser = User.objects.filter(id=id).first()
-        if targetUser:)
+        if targetUser:
             targetUser.customSettings.achRange = achRange
             targetUser.customSettings.actRange = actRange
             targetUser.customSettings.postRange = postRange
