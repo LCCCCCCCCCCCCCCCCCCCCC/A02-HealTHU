@@ -9,6 +9,26 @@ Page({
     nickName: '',
     sign:'',
   },
+  afterRead(event) {
+    console.log(event.detail)
+    const { file } = event.detail;
+    var that = this
+    var id = wx.getStorageSync('id')
+     wx.uploadFile({
+       url: 'http://127.0.0.1:8000/user/postImage/',
+       filePath: file.url,
+       name: 'image',
+       formData: { id: id },
+       header:{ 'content-type': 'application/x-www-form-urlencoded'},
+       method:"POST",
+       success(res) {
+         console.log('http://43.138.52.97:8001/' + res.data)
+         that.setData({
+           avatarUrl:'http://43.138.52.97:8001/' + res.data
+         })
+       },
+     });
+    },
   handleNameInput(event) {
     this.setData({
       nickName: event.detail
