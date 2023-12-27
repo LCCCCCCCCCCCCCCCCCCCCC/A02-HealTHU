@@ -21,8 +21,15 @@
   font-weight: bold;
 }
 .image{
-  height: 108px;
-  width: 80px;
+  width: 90px;
+  height: 112px;
+  overflow: hidden;
+}
+.image_content{
+  position: relative; /* 设置定位方式为相对定位 */
+  top: 50%; /* 将图片顶部与父元素的50%处对齐 */
+  left: 50%; /* 将图片左边与父元素的50%处对齐 */
+  transform: translate(-50%, -50%); /* 使用transform属性将图片上下左右居中 */
 }
 .timetext{
   padding: 24px;

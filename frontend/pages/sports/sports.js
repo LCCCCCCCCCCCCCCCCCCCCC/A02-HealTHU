@@ -10,11 +10,11 @@ Page({
     goal: 5000,
     today_cal: 7.5,
     gymList: [
-      {title:"气膜馆", detail:"羽毛球场7:00~22:00", url:"../images/sqimo.png"},
       {title:"综合体育馆", detail:"羽毛球场13:00~22:30", url:"../images/szonghe.png"},
       {title:"西体育馆", detail:"羽毛球场11:30~22:30", url:"../images/sxi.png"},
       {title:"北体育馆", detail:"乒乓球场11:30~22:00", url:"../images/sbei.png"},
       {title:"紫荆学生区", detail:"网球场12:00~22:00", url:"../images/szijing.png"},
+      {title:"气膜馆", detail:"羽毛球场7:00~22:00", url:"../images/sqimo.png"},
     ],
     todos: [
       {title:"晨跑", start:"9:00", end:"9:15", label:"紫荆操场", state: 1},
