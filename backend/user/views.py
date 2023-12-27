@@ -263,7 +263,6 @@ def search(request):
             ansarray.append(newDict)
         # then, ensure that there is no duplicate
         ansarray = list({v['userId']:v for v in ansarray}.values())
-        print(ansarray)
         return HttpResponse(json.dumps(ansarray, ensure_ascii=False))
     
 def getPersonal(request):
@@ -348,7 +347,6 @@ def getPersonal(request):
                             'commentNum': topic.floorCnt - 1
                         }
                         responseDict['posts'].append(topicDict)
-            print(responseDict)
             return HttpResponse(json.dumps(responseDict, ensure_ascii=False))              
         else:
             return HttpResponse("User not found")
@@ -375,18 +373,11 @@ def changeRange(request):
         actRange = int(request.POST.get("actRange"))
         postRange = int(request.POST.get("postRange"))
         targetUser = User.objects.filter(id=id).first()
-        if targetUser:
-            print("targetUser.id: ", targetUser.id)
-            print("targetUser.customSettings.achRange: ", targetUser.customSettings.achRange)
-            print("targetUser.customSettings.actRange: ", targetUser.customSettings.actRange)
-            print("targetUser.customSettings.postRange: ", targetUser.customSettings.postRange)
+        if targetUser:)
             targetUser.customSettings.achRange = achRange
             targetUser.customSettings.actRange = actRange
             targetUser.customSettings.postRange = postRange
             targetUser.customSettings.save()
-            print("targetUser.customSettings.achRange: ", targetUser.customSettings.achRange)
-            print("targetUser.customSettings.actRange: ", targetUser.customSettings.actRange)
-            print("targetUser.customSettings.postRange: ", targetUser.customSettings.postRange)
             return HttpResponse("Change Range Success")
         return HttpResponse("User not found")
     
