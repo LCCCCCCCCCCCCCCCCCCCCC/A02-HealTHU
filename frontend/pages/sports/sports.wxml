@@ -62,9 +62,11 @@
 <van-cell-group title="场馆信息（学校每日8:00开放第4天场地预约）" inset>
 <view wx:for="{{gymList}}" wx:key="index">
   <van-card desc="{{item.detail}}" title="{{item.title}}">
-    <image slot="thumb" src="{{item.url}}" class="image"></image>
+    <view slot="thumb" class="image">
+      <image src="{{item.url}}" class="image_content"></image>
+    </view>
     <view slot="footer">
-      <van-button size="mini">预约详情</van-button>
+      <van-button size="mini" bind:tap="toGym">进入预约</van-button>
     </view>
   </van-card>
 </view>

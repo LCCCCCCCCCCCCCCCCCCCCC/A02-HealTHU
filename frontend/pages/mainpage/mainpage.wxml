@@ -3,13 +3,10 @@
   <view wx:if="{{currentTab == 0}}" class = "mainpage">
     <swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}">
       <swiper-item>
-        <image src="../images/swiper1.jpg" mode="aspectFill"></image>
+        <image src="../images/szijing.png" mode="aspectFill"></image>
       </swiper-item>
       <swiper-item>
-        <image src="../images/swiper2.jpg" mode="aspectFill"></image>
-      </swiper-item>
-      <swiper-item>
-        <image src="../images/swiper3.jpg" mode="aspectFill"></image>
+        <image src="../images/sqimo.png" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
     <van-grid clickable class="buttons-grid" column-num="5" border="{{false}}">

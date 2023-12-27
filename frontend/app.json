@@ -29,7 +29,8 @@
     "pages/bbs/bbs",
     "pages/addactivity/editactivity/editactivity",
     "pages/bbs/addbbs/addbbs",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/gym/gym"
   ],
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
