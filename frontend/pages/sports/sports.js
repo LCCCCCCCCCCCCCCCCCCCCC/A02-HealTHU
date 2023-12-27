@@ -1,38 +1,66 @@
 // pages/sports/sports.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    currentstate: 0,
+    onlyshow: false,
+    beginshow: false,
+    percentage: 78,
+    percentage_real: 100,
+    walknum: 3910,
+    goal: 5000,
     today_cal: 7.5,
-    value_step: 78,
-    gradientColor1: {
-      '0%': '#ffd01e',
-      '100%': '#ee0a24',
-    },
-    value_run: 42,
-    gradientColor2: {
-      '0%': '#ee0a24',
-      '100%': '#ee0a24',
-    },
-    value_km: 48,
-    gradientColor3: {
-      '0%': '#07c160',
-      '100%': '#ee0a24',
-    },
+    gymList: [
+      {title:"气膜馆", detail:"羽毛球场7:00~22:00", url:"../images/sqimo.png"},
+      {title:"综合体育馆", detail:"羽毛球场13:00~22:30", url:"../images/szonghe.png"},
+      {title:"西体育馆", detail:"羽毛球场11:30~22:30", url:"../images/sxi.png"},
+      {title:"北体育馆", detail:"乒乓球场11:30~22:00", url:"../images/sbei.png"},
+      {title:"紫荆学生区", detail:"网球场12:00~22:00", url:"../images/szijing.png"},
+    ],
+    todos: [
+      {title:"晨跑", start:"9:00", end:"9:15", label:"紫荆操场", state: 1},
+      {title:"集体锻炼", start:"17:00", end:"18:00", label:"紫荆操场东南角", state: 2},
+      {title:"月光长骑", start:"22:00", end:"22:30", label:"3km", state: 0},
+    ]
   },
+
+  // 热量换算
+  getcal() {
+    var cal = 0.03*this.data.walknum;
+    return cal;
+  },
+  // 微信步数获取刷新
   today_replay(){
-    var today_calnew = parseFloat(this.data.today_cal + 1);
-    this.setData({
-      today_cal: today_calnew
+    var newwalk = this.data.walknum + Math.random()*50+10;
+    var per = (newwalk/this.data.goal * 100);
+    var cal = this.getcal();
+    this.setData({ 
+      today_cal: cal,
+      walknum: newwalk,
+      percentage: per,
     });
+  },
+  handleBegin(event) {
+    const id = event.currentTarget.dataset.id;
+    if(this.data.todos[id].state == 1){
+      this.setData({ onlyshow:true });
+    } else{
+      this.setData({ 
+        beginshow: true,
+        currentstate: this.data.todos[id].state,
+      });
+    }
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+  // TODO: 微信步数获取
+    var per = (this.data.walknum/this.data.goal * 100);
+    var cal = this.getcal();
+    this.setData({
+      percentage: per, 
+      today_cal: cal,
+     });
   },
 
   /**

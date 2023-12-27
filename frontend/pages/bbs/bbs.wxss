@@ -50,6 +50,9 @@
   border-radius: 10px;
   padding: 8px;
 }
+.button{
+  margin-left: 2px;
+}
 .round-click{
   height: 120rpx;
   width: 120rpx;

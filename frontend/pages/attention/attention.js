@@ -63,6 +63,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    this.setData({
+      userList:[]
+    })
     var ids = wx.getStorageSync('attentionId');
     var id = wx.getStorageSync('id')
     //console.log(ids.length)

@@ -1,9 +1,5 @@
 // pages/changehealth/changehealth.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     show: false,
     update:{
@@ -30,6 +26,13 @@ Page({
       pullup:'5',
       grade_pullup:'8',
       beizhu:''
+    },
+    current:{
+      age:'20',
+      height: '170',
+      weight: '62.2',
+      gender: '男',
+      beizhu:''
     }
   },
   ChangeHealthClick() {
@@ -39,49 +42,57 @@ Page({
     this.setData({ show: false });
   },
   change(){
-    var bmiNumber = (this.data.update.weight*10000/this.data.update.height/this.data.update.height).toFixed(2);
-    var date = new Date();
-    var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-'+ date.getDate();
-    this.setData({
-      'update.updateTime': dateString,
-      'update.bmi': bmiNumber
-    });
-    // wx.setStorageSync('age', this.data.update.age);
-    // wx.setStorageSync('height', this.data.update.height);
-    // wx.setStorageSync('weight', this.data.update.weight);
-    // wx.setStorageSync('bmi', this.data.update.bmi);
-    wx.showToast({
-      title: "修改成功",
-      icon: "success"
-    });
+    if(typeof this.data.update.weight !== 'number' || typeof this.data.update.height !== 'number' || typeof this.data.update.age !== 'number'){
+      wx.showToast({
+        title: "输入数据不合法",
+        icon: "none"
+      });
+    }
+    else{
+      var bmiNumber = (this.data.update.weight*10000/this.data.update.height/this.data.update.height).toFixed(2);
+      var date = new Date();
+      var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-'+ date.getDate();
+      this.setData({
+        'update.updateTime': dateString,
+        'update.bmi': bmiNumber,
+        'update.gender': current.gender,
+        'update.age': current.age,
+        'update.height': current.height,
+        'update.weight': current.weight,
+        'update.beizu': current.beizu,
+      });
+      wx.showToast({
+        title: "修改成功",
+        icon: "success"
+      });
+    }
+
     // 后端更新数据（以及重新计算体测分数）
     // 想画变化曲线的话要后端都存起来x
-    // 年龄的话还是根据生日计算比较合适？；性别的修改
   },
-  // 需要把本页的data.update改为storage
   ChangeGender(event){
     this.setData({
-      'update.gender': event.detail
+      'current.gender': event.detail
     });
   },
   ChangeAge(event){
     this.setData({
-      'update.age': event.detail
+      'current.age': event.detail
     });
   },
   ChangeHeight(event){
     this.setData({
-      'update.height': event.detail
+      'current.height': event.detail
     });
   },
   ChangeWeight(event){
     this.setData({
-      'update.weight': event.detail
+      'current.weight': event.detail
     });
   },
   ChangeBeizhu(event){
     this.setData({
-      'update.beizhu': event.detail
+      'current.beizhu': event.detail
     });
   },
   /**

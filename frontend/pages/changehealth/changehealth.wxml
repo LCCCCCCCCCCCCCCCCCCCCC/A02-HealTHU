@@ -25,7 +25,8 @@
   <van-cell wx:if="{{update.gender == '女'}}" title="仰卧起坐" value="{{update.situp}} 成绩:{{update.grade_situp}}" />
 </van-cell-group>
 
-<van-popup show="{{ show }}" bind:close="onClose">
+<van-popup show="{{ show }}" bind:close="onClose"
+  closable round custom-style="width: 80%">
   <van-cell-group>
   <van-field
     label="性别"

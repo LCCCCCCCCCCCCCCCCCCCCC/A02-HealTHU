@@ -105,6 +105,9 @@ Page({
     var id = wx.getStorageSync('id')
     //console.log(ids.length)
     var that = this
+    this.setData({
+      userList:[]
+    })
     for(let i = 0; i < ids.length; i++){
       var j = 0
       wx.request({

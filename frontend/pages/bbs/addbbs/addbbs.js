@@ -4,11 +4,29 @@ Page({
     fileList: [],
     time: '',
     title: '',
-    content: ''
+    content: '',
+    images: []
   },
   // TODO: 发送帖子对接
   addbbs() {
-    wx.showToast({ title: 'TODO：后端对接', icon: 'none' });
+    var id = wx.getStorageSync('id')
+    var that = this
+    var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+    wx.request({
+      url:'http://127.0.0.1:8000/bbs/addPost/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id:id,
+        title: that.data.title,
+        time:nowTime,
+        content: that.data.content,
+        images: `${that.data.images}`
+      },
+      method:'POST',
+      success:function(res){
+        wx.navigateBack({delta:1})
+      }
+    })
   },
   afterRead(event) {
 
