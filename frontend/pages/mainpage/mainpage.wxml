@@ -76,7 +76,8 @@
     </van-search>
     <van-dialog title="搜索内容不能为空"
       show="{{ noneshow }}"/>
-    <van-cell-group wx:for="{{bbsList}}" wx:key="index">
+      <van-empty description="什么都没找到呢" wx:if="{{bbsList1.length == 0}}"/>
+    <van-cell-group wx:for="{{bbsList1}}" wx:key="index">
       <van-cell clickable
       size="large" 
       title="{{item.title}}"
@@ -89,7 +90,7 @@
             <image class="image" src="{{item.images[0]}}"/>
           </view>
           <text>{{item.name}} {{item.time}}</text>
-          <view class="lnum">{{item.likeList.length}}点赞 {{item.replies.length}}回复</view>
+          <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
         </view> 
       </van-cell>
     </van-cell-group>
@@ -98,8 +99,46 @@
       <navigator url='../bbs/addbbs/addbbs'>+</navigator >
     </view>
   </van-tab>
+  <van-tab title="热门">
+    <van-empty description="什么都没找到呢" wx:if="{{bbsList2.length == 0}}"/>
+    <van-cell-group wx:for="{{bbsList2}}" wx:key="index">
+      <van-cell clickable
+      size="large" 
+      title="{{item.title}}"
+      link-type="navigateTo"
+      use-label-slot
+      url="../bbs/bbs?bbsid={{item.id}}"
+      border="{{false}}">
+        <view slot="label">
+          <view wx:if="{{item.images.length !== 0}}" class="image-container">
+            <image class="image" src="{{item.images[0]}}"/>
+          </view>
+          <text>{{item.name}} {{item.time}}</text>
+          <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
+        </view> 
+      </van-cell>
+    </van-cell-group>
+    <van-divider />
+  </van-tab>
   <van-tab title="关注">
-    <van-empty description="关注的人还没有动态" />
+    <van-empty description="关注的人还没有动态" wx:if="{{bbsList3.length == 0}}"/>
+    <van-cell-group wx:for="{{bbsList3}}" wx:key="index">
+      <van-cell clickable
+      size="large" 
+      title="{{item.title}}"
+      link-type="navigateTo"
+      use-label-slot
+      url="../bbs/bbs?bbsid={{item.id}}"
+      border="{{false}}">
+        <view slot="label">
+          <view wx:if="{{item.images.length !== 0}}" class="image-container">
+            <image class="image" src="{{item.images[0]}}"/>
+          </view>
+          <text>{{item.name}} {{item.time}}</text>
+          <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
+        </view> 
+      </van-cell>
+    </van-cell-group>
     <van-divider />
   </van-tab>
   <van-tab title="消息" dot="{{ unreadNum != 0 }}">

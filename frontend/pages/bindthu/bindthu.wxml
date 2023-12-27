@@ -1,6 +1,7 @@
 <!--pages/bindthu/bindthu.wxml-->
 <view class="pages">
 <van-cell-group title="如需修改绑定账户，请先解除，再重新绑定" inset>
+<van-cell title="绑定中，请勿离开..." wx:if="{{showLoad}}"></van-cell>
   <van-cell title="清华账号">{{ID}}</van-cell>
   <van-cell>
     <van-button wx:if="{{isbind == false}}" bind:tap="bindthu">绑定清华身份</van-button>
