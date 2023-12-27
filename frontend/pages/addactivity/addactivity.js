@@ -21,38 +21,29 @@ Page({
 
    //示例的上传图片到服务器并显示在界面
   afterRead(event) {
-     const { file } = event.detail;
-     const { fileList = [] } = this.data;
-     fileList.push({ ...file, url: file[0].url })
-     var images = this.data.images
-     images.push(file[0].url)
-     this.setData({ fileList });
-     this.setData({
-      images:images
-    }) 
-     /*
+    const { file } = event.detail;
+    var that = this
+    var id = wx.getStorageSync('id')
      wx.uploadFile({
-       url: 'http://127.0.0.1:8000/images', // 仅为示例，非真实的接口地址
+       url: 'http://127.0.0.1:8000/user/postImage/',
        filePath: file[0].url,
-       name: 'file',
-       formData: { user: 'test' },
+       name: 'image',
+       formData: { id: id },
+       header:{ 'content-type': 'application/x-www-form-urlencoded'},
+       method:"POST",
        success(res) {
-         console.log(res)
          // 上传完成需要更新 fileList
-         const { fileList = [] } = this.data;
-         fileList.push({ ...file, url: res.url });
+         const { fileList = [] } = that.data;
+         fileList.push({ ...file, url: 'http://43.138.52.97:8001/' + res.data });
          //fileList.push({ ...file, url: file[0].url });
-         var images = this.data.images
-         images.push(file[0].url)
-         this.setData({ fileList });
-         this.setData({
+         var images = that.data.images
+         images.push('http://43.138.52.97:8001/' + res.data)
+         that.setData({ fileList });
+         that.setData({
            images:images
-         }) 
-         
+         })
        },
      });
-     */
-     
    },
 
   addAct(){
