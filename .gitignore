@@ -9,5 +9,8 @@ db.sqlite3
 
 backend/test.pyc
 
+#ignore images
+backend/images/*
+
 .idea/*
 ```

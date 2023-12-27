@@ -9,8 +9,29 @@ from .models import UserInfo
 from .models import CustomSettings
 import requests
 import json
+import os
 # Create your views here.
 
+@csrf_exempt
+def postImage(request):
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        print(id)
+        user = User.objects.filter(id=id).first()
+        if user:
+            # 找到匹配的用户
+            image = request.FILES['image']
+            #获取images文件夹下的文件数量
+            num = len(os.listdir('images'))
+            #将图片存储到images文件夹下，并且给每个id都自动编号命名，如id_1.jpg
+            with open('images/'+str(id)+'_'+str(num+1)+'.jpg', 'wb') as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
+            #返回图片的存储路径
+            return HttpResponse('images/'+str(id)+'_'+str(num+1)+'.jpg')
+        else:
+            # 用户不存在的情况下返回错误的响应
+            return HttpResponse("User not found")
 def getId(request):
     if request.method == 'GET':
         code = request.GET.get("code")
