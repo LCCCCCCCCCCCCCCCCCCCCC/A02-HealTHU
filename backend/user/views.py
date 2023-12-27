@@ -27,6 +27,7 @@ def postImage(request):
             with open('images/'+str(id)+'_'+str(num+1)+'.jpg', 'wb') as f:
                 for chunk in image.chunks():
                     f.write(chunk)
+                f.close()
             #返回图片的存储路径
             return HttpResponse('images/'+str(id)+'_'+str(num+1)+'.jpg')
         else:
@@ -63,7 +64,7 @@ def getDetail(request):
             user = User.objects.filter(id=customerid).first()
             if user:
                 # 找到匹配的用户
-                #为了新加最后一项新建一个字典
+                # 为了新加最后一项新建一个字典
                 user_info_dict = {
                     'avatarUrl': user.userInfo.avatarUrl,
                     'nickName': user.userInfo.nickName,
