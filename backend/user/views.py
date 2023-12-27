@@ -284,7 +284,7 @@ def getPersonal(request):
                 'partActs': [],
                 'posts': []
             }
-            if homeUserId in visitorUser.userInfo.followings:
+            if str(homeUserId) in visitorUser.userInfo.followings:
                 responseDict['following_state'] = 1
             else:
                 responseDict['following_state'] = 0
