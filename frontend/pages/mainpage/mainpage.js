@@ -22,14 +22,16 @@ Page({
     unreadNum: 1,
     noticeList: [
       {state:1, content:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {state:0, content:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 8:20", url: '../activities/activity/activity?actid=10001'},
+      {state:0, content:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 8:20", url: '../activities/activity/activity?actid=10001'},
+      {state:1, content:"teto报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 9:37", url: '../activities/activity/activity?actid=10001'},
     ],
     bbsList: [
       {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 14:02", id:103},
       {name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102},
       {name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101},
     ],
-    id:0
+    id:0,
+    readchecked: false,
   },
   // TODO：未读消息阅读更新
   delUnread(event){
@@ -60,7 +62,10 @@ Page({
     })
     */
   },
-
+  unreadChange(event){
+    this.setData({ readchecked: event.detail });
+    console.log(newList);
+  },
   handleTabChange(event){
     this.setData({ currentTab: event.detail });
   },
