@@ -124,6 +124,7 @@ Page({
           if(data.following_state == "false"){
             followed = false
           }
+          console.log(data)
           that.setData({
             nickName: data.nickName,
             avatarUrl: data.avatarUrl,
@@ -131,7 +132,7 @@ Page({
             followings: data.followings,
             followers: data.followers,
             following_state: data.following_state,
-            achList:data.achievements,
+            // achList:data.achievements,
             bbsList:data.posts,
             actList:data.partActs,
             actaddList: data.iniActs,
