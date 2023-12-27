@@ -32,6 +32,8 @@ Page({
     ],
     id:0,
     readchecked: false,
+    searchvalue: '',
+    noneshow: false,
   },
   // TODO：未读消息阅读更新
   delUnread(event){
@@ -64,8 +66,21 @@ Page({
   },
   unreadChange(event){
     this.setData({ readchecked: event.detail });
-    console.log(newList);
   },
+  onsearchChange(event){
+    this.setData({ searchvalue: event.detail });
+  },
+  onSearch(){
+    if(this.data.searchvalue.length == 0){
+      this.setData({ noneshow: true });
+    }
+    else {
+      wx.navigateTo({
+        url: '../search/search?str=' + this.data.searchvalue
+      })
+    }
+  },
+
   handleTabChange(event){
     this.setData({ currentTab: event.detail });
   },

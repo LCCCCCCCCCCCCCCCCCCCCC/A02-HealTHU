@@ -68,6 +68,14 @@
 <view wx:if="{{currentTab == 1}}">
 <van-tabs active="{{ bbsactive }}" bind:change="onbbsChange">
   <van-tab title="最新">
+    <van-search use-action-slot
+      placeholder="查找帖子主题或用户"
+      bind:change="onsearchChange"
+    >
+      <view slot="action" class="searchbox" bind:tap="onSearch">搜索</view>
+    </van-search>
+    <van-dialog title="搜索内容不能为空"
+      show="{{ noneshow }}"/>
     <van-cell-group wx:for="{{bbsList}}" wx:key="index">
       <van-cell clickable size="large" 
       title="{{item.title}}" label="{{item.name}} {{item.time}}"

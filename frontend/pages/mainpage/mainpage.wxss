@@ -127,3 +127,7 @@ van-row{
   color: #fff;
   text-align: center;
 }
+.searchbox{
+  padding-right: 12px;
+  padding-left: 12px;
+}
