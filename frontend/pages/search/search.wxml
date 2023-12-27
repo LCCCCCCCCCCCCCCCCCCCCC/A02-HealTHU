@@ -13,7 +13,7 @@
   <van-grid column-num="5" border="{{false}}" clickable>
     <van-grid-item use-slot wx:for="{{ userList }}" wx:key="id"
       link-type="navigateTo"
-      url="../personal/personal?id={{item.userid}}">
+      url="../personal/personal?id={{item.userId}}">
       <image class="avatar" src="{{ item.avatar }}" style="width: 80%; height: 42px; border-radius: 50%;"></image>
       <view class="achname" wx:if="{{item.name.length <= 6}}">{{item.name}}</view>
       <view class="achname" wx:elif="{{item.name.length > 6}}">{{item.name.slice(0,6)}}...</view>

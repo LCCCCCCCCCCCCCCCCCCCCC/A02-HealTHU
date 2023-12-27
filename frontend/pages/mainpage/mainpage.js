@@ -66,6 +66,21 @@ Page({
       {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeList:[], replies:[]},
       {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
     ],
+    bbsList1: [
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:2,commentNum:3},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
+    ],
+    bbsList2: [
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:5,commentNum:3},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
+    ],
+    bbsList3: [
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:2,commentNum:3},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
+    ],
     id:0,
     readchecked: false,
     searchvalue: '',
@@ -100,6 +115,56 @@ Page({
     })
     */
   },
+  onbbsChange(event){
+    var choice = event.detail.index
+    var that = this
+    var id = wx.getStorageSync('id')
+    /*
+    if(choice != 3){
+      wx.request({
+        url:'http://127.0.0.1:8000/bbs/getPost/',
+        data:{
+          id:id,
+          type: choice
+        },
+        method:'GET',
+        success:function(res){
+          var data = res.data
+          if(choice == 0){
+            that.setData({
+              bbsList1: data,
+            });
+          }
+          else if (choice == 1){
+            that.setData({
+              bbsList2: data,
+            });
+          }
+          else{
+            that.setData({
+              bbsList3: data,
+            });
+          }
+        }
+      })
+    }
+    else{
+      wx.request({
+        url:'http://127.0.0.1:8000/message/getMessages/',
+        data:{
+          id:id,
+        },
+        method:'GET',
+        success:function(res){
+          var data = res.data
+          that.setData({
+            noticeList: data,
+          });
+        }
+      })
+    }
+    */
+  },
   unreadChange(event){
     this.setData({ readchecked: event.detail });
   },
@@ -107,6 +172,7 @@ Page({
     this.setData({ searchvalue: event.detail });
   },
   onSearch(){
+    console.log(this.data.searchvalue)
     if(this.data.searchvalue.length == 0){
       this.setData({ noneshow: true });
     }
@@ -238,7 +304,7 @@ Page({
       success:function(res){
         var data = res.data
         that.setData({
-          bbsList: data,
+          bbsList1: data,
         });
       }
     })
