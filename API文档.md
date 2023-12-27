@@ -276,7 +276,6 @@ wx.request({
 ##### 请求参数
 |参数|类型|说明|
 |-------------|-------------|-------------|
-|id|int|用户id|
 |key|string|搜索关键字|
 
 查找用户nickName包含key的用户||用户id与key相等的用户
@@ -938,6 +937,7 @@ wx.request({
 |name|string|发布人姓名|
 |likeNum|int|点赞数|
 |commentNum|int|评论数|
+|images|string[]|图片|
 
 #### (很重要)搜索帖子
 ```HTTP
