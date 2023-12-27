@@ -128,6 +128,20 @@ van-row{
   text-align: center;
 }
 .searchbox{
-  padding-right: 12px;
+  padding-right: 16px;
   padding-left: 12px;
+}
+.image-container {
+  padding-top: 2px;
+  padding-bottom: 4px;
+  height: 160px; 
+  overflow: hidden;
+}
+/* .image {
+  width: auto;
+  height: 100%; 
+  transform: scale(1.5);
+} */
+.lnum {
+  text-align: right;
 }

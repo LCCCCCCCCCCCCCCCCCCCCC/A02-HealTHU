@@ -24,3 +24,13 @@
 .empty-line{
   height: 54px;
 }
+.image-container {
+  padding-top: 2px;
+  padding-bottom: 4px;
+  height: 120px; 
+  overflow: hidden;
+  width: 98%
+}
+.lnum {
+  text-align: right;
+}

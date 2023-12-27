@@ -3,7 +3,7 @@ Page({
     id:4, // 用于确定是否为自己主页
     // bbsList: for debug use
     bbsList: [
-      {userId:1, name:"NLno", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeList:['4', '5'], 
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeList:['4', '5'],
         replies:[
           {
             floor: 3,
@@ -36,23 +36,14 @@ Page({
             content: "要你管",
             likeList:[],
             aboveId: 2,
-            aboveContent: "要你管"
+            aboveName:"GUMI",
+            aboveContent: "水贴长经验呢"
           },
       ]},
-      {userId:1, name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeList:[], replies:[]},
-      {userId:1, name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
-      {userId:3, name:"NLno", title:"[新成就] “一年的坚持与守望”", time:"2023-11-31 10:02", id:100, content: "", images: [], likeList:['4', '5'], replies:[]},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeList:[], replies:[]},
+      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
     ],
-    post: {
-      userId: 1,
-      name: "",
-      avatar: "../images/avatar4.png",
-      title: "",
-      time: "",
-      content: "",
-      images: [],
-      likeList:[],
-    },
+    post: {},
     replyList: [],
     // todo：点赞和取消处理
     likeLabels: [0, 1, 0, 0],
@@ -243,7 +234,7 @@ Page({
         })
       }
     }
-    const selectedbbs = this.data.bbsList.find(item => item.id == this.data.bbsId);
+
     var id = wx.getStorageSync('id')
     var that = this
     this.setData({
@@ -284,14 +275,8 @@ Page({
       }
     })
     */
-    var post = this.data.post;
-    post.userid = selectedbbs.userid;
-    post.name = selectedbbs.name;
-    post.title = selectedbbs.title;
-    post.time = selectedbbs.time;
-    post.content = selectedbbs.content;
-    post.images = selectedbbs.images;
-    post.likeList = selectedbbs.likeList;
+    const selectedbbs = this.data.bbsList.find(item => item.id == this.data.bbsId);
+    var post = selectedbbs;
     this.setData({
       post: post,
       replyList: selectedbbs.replies,
@@ -309,28 +294,21 @@ Page({
           })
       }).exec()
     })
-
-    // wx.getStorage({
-    //   key: 'id',
-    //   success: function(res) {
-    //     this.setData({'id': res.data});
-    //   }
-    // });
   },
-  getNameByFloor(floor){
-    for(var i = 0;i<this.data.replyList.length;i++){
-      if(this.data.replyList[i].floor == floor){
-        return this.data.replyList[i].name
-      }
-    }
-  },
-  getIdByFloor(floor){
-    for(var i = 0;i<this.data.replyList.length;i++){
-      if(this.data.replyList[i].floor == floor){
-        return this.data.replyList[i].userId
-      }
-    }
-  },
+  // getNameByFloor(floor){
+  //   for(var i = 0;i<this.data.replyList.length;i++){
+  //     if(this.data.replyList[i].floor == floor){
+  //       return this.data.replyList[i].name
+  //     }
+  //   }
+  // },
+  // getIdByFloor(floor){
+  //   for(var i = 0;i<this.data.replyList.length;i++){
+  //     if(this.data.replyList[i].floor == floor){
+  //       return this.data.replyList[i].userId
+  //     }
+  //   }
+  // },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
