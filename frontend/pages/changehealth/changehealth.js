@@ -2,31 +2,12 @@
 Page({
   data: {
     show: false,
-    update:{
-      updateTime: '2023-11-20',
-      birthday: '2003/08/28',
-      age:'20',
-      height: '170',
-      weight: '62.2',
-      bmi: '21.52',
-      grade: '60.7',
-      thousand: '4:30',
-      grade_thousand: '8.9',
-      ehundred: '',
-      grade_ehundred: '',
-      gender: '男',
-      fifty:'6.9',
-      grade_50:'18',
-      jump:'2.36',
-      grade_jump:'15',
-      sar:'10.6',
-      grade_sar:'6',
-      situp:'10',
-      grade_situp:'10',
-      pullup:'5',
-      grade_pullup:'8',
-      beizhu:''
-    },
+    updateTime: '2023/12/28',
+    age:'20',
+    gender: '男',
+    beizhu:'',
+    grade: '70.8',
+    update:{},
     current:{
       age:'20',
       height: '170',
@@ -42,7 +23,7 @@ Page({
     this.setData({ show: false });
   },
   change(){
-    if(typeof this.data.update.weight !== 'number' || typeof this.data.update.height !== 'number' || typeof this.data.update.age !== 'number'){
+    if(typeof this.data.update.weight !== 'number' || typeof this.data.update.height !== 'number' || typeof this.data.age !== 'number'){
       wx.showToast({
         title: "输入数据不合法",
         icon: "none"
@@ -53,13 +34,13 @@ Page({
       var date = new Date();
       var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-'+ date.getDate();
       this.setData({
-        'update.updateTime': dateString,
+        'updateTime': dateString,
         'update.bmi': bmiNumber,
-        'update.gender': current.gender,
-        'update.age': current.age,
+        'gender': current.gender,
+        'age': current.age,
         'update.height': current.height,
         'update.weight': current.weight,
-        'update.beizu': current.beizu,
+        'beizu': current.beizu,
       });
       wx.showToast({
         title: "修改成功",
@@ -100,6 +81,7 @@ Page({
    */
   onLoad(options) {
     var id = wx.getStorageSync('id')
+    var that = this
     wx.request({
       url:'http://43.138.52.97:8001/thuInfo/getHealthInfo/',
       data:{
@@ -108,7 +90,11 @@ Page({
       method:'GET',
       success:function(res){
         var data = res.data
-        console.log(res.data)
+        data.bmi = data.bmi.toFixed(2)
+        that.setData({
+          update:data
+        })
+        that.setData
       }
     })
   },
