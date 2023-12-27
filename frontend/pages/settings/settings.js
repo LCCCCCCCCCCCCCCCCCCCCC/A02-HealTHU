@@ -80,7 +80,6 @@ Page({
   onLoad(options) {
     var id = wx.getStorageSync('id')
     var that = this
-    /*
     wx.request({
       url:'http://127.0.0.1:8000/user/getRange/',
       data:{
@@ -90,13 +89,12 @@ Page({
       success:function(res){
         var data = res.data
         that.setData({
-          optionvalue1: achRange,
-          optionvalue2: actRange,
-          optionvalue3: postRange
+          optionvalue1: data.achRange,
+          optionvalue2: data.actRange,
+          optionvalue3: data.postRange
         });
       }
     })
-    */
   },
 
   /**

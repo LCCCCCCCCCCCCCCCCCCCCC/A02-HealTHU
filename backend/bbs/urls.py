@@ -11,6 +11,7 @@ urlpatterns=[
     path('likeReply/', views.likeReply),
     path('dislikeReply/', views.dislikeReply),
     path('getPost/', views.getPost),
+    path('getPostById/', views.getPostById),
     path('searchPost/', views.searchPost),
     path('getPostDetail/', views.getPostDetail),
 ]

@@ -369,6 +369,24 @@ def getPost(request):
                     targetPost['images'] = topic.images
                     targetPostArray.append(targetPost)
         return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
+    
+def getPostById(request):
+    if request.method == "GET":
+        id = int(request.GET.get('id'))
+        # return all posts whose userId is id
+        targetPostArray = []
+        for topic in Topic.objects.all():
+            if topic.userId == id:
+                targetPost = {}
+                targetPost['id'] = topic.id
+                targetPost['title'] = topic.title
+                targetPost['time'] = topic.time
+                targetPost['name'] = topic.name
+                targetPost['likeNum'] = topic.likes
+                targetPost['commentNum'] = topic.floorCnt - 1
+                targetPost['images'] = topic.images
+                targetPostArray.append(targetPost)
+        return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
         
 def searchPost(request):
     if request.method == "GET":

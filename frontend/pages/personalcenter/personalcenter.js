@@ -36,7 +36,7 @@ Page({
               wx.request({
                 url:'http://127.0.0.1:8000/user/getId/',
                 data:{
-                  'code':res.code + 222
+                  'code':res.code
                 },
                 method:'GET',
                 success:function(res){
