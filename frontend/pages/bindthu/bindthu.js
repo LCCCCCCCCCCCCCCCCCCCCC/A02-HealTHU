@@ -48,11 +48,12 @@ Page({
       this.setData({
         showLoad:true
       })
+      var id = wx.getStorageSync('id')
       wx.request({
         url:'http://43.138.52.97:8001/thuInfo/bindThu/',
         data:{
           id:id,
-          thuId: that.data.studentID,
+          thuID: that.data.studentID,
           thuPass: that.data.password,
         },
         method:'GET',
@@ -60,6 +61,7 @@ Page({
           that.setData({
             showLoad:false
           })
+          console.log(res.data)
           if(res.data == 0){
             that.setData({
               showwrong: true,

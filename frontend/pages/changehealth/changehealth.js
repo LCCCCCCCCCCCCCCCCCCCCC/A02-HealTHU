@@ -16,7 +16,7 @@ Page({
       grade_ehundred: '',
       gender: '男',
       fifty:'6.9',
-      grade_fifty:'18',
+      grade_50:'18',
       jump:'2.36',
       grade_jump:'15',
       sar:'10.6',
@@ -99,7 +99,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://43.138.52.97:8001/thuInfo/getHealthInfo/',
+      data:{
+        id:id
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        console.log(res.data)
+      }
+    })
   },
 
   /**
