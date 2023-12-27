@@ -1,7 +1,7 @@
 <!--pages/personal/personal.wxml-->
 <van-row>
   <van-col span="8" offset="2">
-    <van-image round width="6rem" height="6rem" src=""/>
+    <van-image round width="6rem" height="6rem" src="{{avatarUrl}}"/>
   </van-col>
   <van-col span="10">
     <view class="userinfo-nick">{{nickName}}</view>

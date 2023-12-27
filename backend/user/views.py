@@ -239,22 +239,36 @@ def search(request):
         # (1) contains key in his or her nickName, or:
         # (2) id == key
         ansarray = []
-        all_users_whose_id_is_key = User.objects.filter(id=int(key))
+        # if key can be converted to int, then search by id
+        all_users_whose_id_is_key = []
+        if key.isdigit():
+            all_users_whose_id_is_key = User.objects.filter(id=int(key))
         all_users_whose_nickName_contains_key = []
         for user in User.objects.all():
-            if str(key) in user.userInfo.nickName:
+            if key in user.userInfo.nickName:
                 all_users_whose_nickName_contains_key.append(user)
         for user in all_users_whose_id_is_key:
-            ansarray.append(user.id)
+            newDict = {
+                'userId': user.id,
+                'avatar': user.userInfo.avatarUrl,
+                'name': user.userInfo.nickName,
+            }
+            ansarray.append(newDict)
         for user in all_users_whose_nickName_contains_key:
-            ansarray.append(user.id)
-        ansarray = list(set(ansarray)) # remove duplicates
+            newDict = {
+                'userId': user.id,
+                'avatar': user.userInfo.avatarUrl,
+                'name': user.userInfo.nickName,
+            }
+            ansarray.append(newDict)
+        # then, ensure that there is no duplicate
+        ansarray = list({v['userId']:v for v in ansarray}.values())
         return HttpResponse(json.dumps(ansarray, ensure_ascii=False))
     
 def getPersonal(request):
     if request.method == 'GET':
-        homeUserId = request.GET.get("customerId")
-        visitorUserId = request.GET.get("hostId")
+        homeUserId = int(request.GET.get("customerId"))
+        visitorUserId = int(request.GET.get("hostId"))
         homeUser = User.objects.filter(id=homeUserId).first()
         visitorUser = User.objects.filter(id=visitorUserId).first()
         if homeUser and visitorUser:
@@ -271,13 +285,17 @@ def getPersonal(request):
                 'posts': []
             }
             if homeUserId in visitorUser.userInfo.followings:
-                responseDict['following_state'] = 'true'
+                responseDict['following_state'] = 1
+            else:
+                responseDict['following_state'] = 0
             if (homeUser.customSettings.achRange == 0) or\
-               ((homeUser.customSettings.actRange == 1) and (visitorUserId in homeUser.userInfo.followers)):
+                ((homeUser.customSettings.actRange == 1) and (visitorUserId in homeUser.userInfo.followers)) or\
+                ((homeUser.customSettings.actRange == 2) and (homeUserId == visitorUserId)):
                    # achievement CAN BE seen by visitor
                    responseDict['achievements'] = homeUser.userInfo.achievements
             if (homeUser.customSettings.actRange == 0) or\
-                ((homeUser.customSettingss.actRange == 1) and (visitorUserId in homeUser.userInfo.followers)):
+                ((homeUser.customSettings.actRange == 1) and (visitorUserId in homeUser.userInfo.followers)) or\
+                ((homeUser.customSettings.actRange == 2) and (homeUserId == visitorUserId)):
                      # iniActs and partActs CAN BE seen by visitor
                     correspondingSchedule = Schedule.objects.filter(userid=homeUserId).first()
                     if correspondingSchedule:
@@ -316,7 +334,8 @@ def getPersonal(request):
                                 }
                                 responseDict['partActs'].append(actDict)
             if (homeUser.customSettings.postRange == 0) or\
-                ((homeUser.customSettings.postRange == 1) and (visitorUserId in homeUser.userInfo.followers)):
+                ((homeUser.customSettings.postRange == 1) and (visitorUserId in homeUser.userInfo.followers)) or\
+                ((homeUser.customSettings.postRange == 2) and (homeUserId == visitorUserId)):
                     # posts CAN BE seen by visitor
                     targetTopics = Topic.objects.filter(userId=homeUserId)
                     for topic in targetTopics:
@@ -334,7 +353,7 @@ def getPersonal(request):
         
 def getRange(request):
     if request.method == "GET":
-        id = request.GET.get("id")
+        id = int(request.GET.get("id"))
         targetUser = User.objects.filter(id=id).first()
         if targetUser:
             # targetUser exists
@@ -349,12 +368,12 @@ def getRange(request):
 @csrf_exempt       
 def changeRange(request):
     if request.method == "POST":
-        id = request.GET.get("id")
-        achRange = request.GET.get("achRange")
-        actRange = request.GET.get("actRange")
-        postRange = request.GET.get("postRange")
+        id = int(request.POST.get("id"))
+        achRange = int(request.POST.get("achRange"))
+        actRange = int(request.POST.get("actRange"))
+        postRange = int(request.POST.get("postRange"))
         targetUser = User.objects.filter(id=id).first()
-        if targetUser:
+        if targetUser:)
             targetUser.customSettings.achRange = achRange
             targetUser.customSettings.actRange = actRange
             targetUser.customSettings.postRange = postRange
