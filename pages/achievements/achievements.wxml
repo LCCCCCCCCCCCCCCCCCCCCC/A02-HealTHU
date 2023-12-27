@@ -11,7 +11,7 @@
   <!-- 不太确定做不做成就展示选择（森空岛展示n张卡在个人界面那种） -->
   <van-checkbox-group wx:for="{{ achList }}" wx:key="index" 
     value="{{ checkresult }}" >
-    <van-grid-item use-slot 
+    <van-grid-item use-slot
       bind:click="achShow" bind:change="oncheckChange" data-index="{{index}}">
       <image wx:if="{{item.state == 100}}" src="{{item.img}}"
       style="width: 80%; height: 96px;"/>
