@@ -20,7 +20,7 @@ Page({
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/user/changeRange/',
+      url:'http://43.138.52.97:8001/user/changeRange/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:id,
@@ -40,7 +40,7 @@ Page({
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/user/changeRange/',
+      url:'http://43.138.52.97:8001/user/changeRange/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:id,
@@ -60,7 +60,7 @@ Page({
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/user/changeRange/',
+      url:'http://43.138.52.97:8001/user/changeRange/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:id,
@@ -82,7 +82,7 @@ Page({
     var that = this
     /*
     wx.request({
-      url:'http://127.0.0.1:8000/user/getRange/',
+      url:'http://43.138.52.97:8001/user/getRange/',
       data:{
         id:id,
       },

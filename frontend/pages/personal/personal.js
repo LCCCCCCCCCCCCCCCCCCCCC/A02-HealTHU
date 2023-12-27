@@ -81,7 +81,7 @@ Page({
     /*
     if(1 == 0){
       wx.request({
-        url:'http://127.0.0.1:8000/user/getPersonal/',
+        url:'http://43.138.52.97:8001/user/getPersonal/',
         data:{
           hostId: id,
           customerId: that.data.userId

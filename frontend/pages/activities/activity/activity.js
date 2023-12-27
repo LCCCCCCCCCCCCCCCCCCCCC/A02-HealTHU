@@ -50,7 +50,7 @@ Page({
     likeLabel[personindex] = 1;
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/likeComment/',
+      url:'http://43.138.52.97:8001/schedule/likeComment/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.comment[personindex].id,
@@ -75,7 +75,7 @@ Page({
     likeLabel[personindex] = 0;
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/dislikeComment/',
+      url:'http://43.138.52.97:8001/schedule/dislikeComment/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.comment[personindex].id,
@@ -97,7 +97,7 @@ Page({
     var like = this.data.comment;
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/deleteComment/',
+      url:'http://43.138.52.97:8001/schedule/deleteComment/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.comment[personindex].id,
@@ -116,7 +116,7 @@ Page({
     let that = this
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/commentAct/',
+      url:'http://43.138.52.97:8001/schedule/commentAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         commenterId: id,
@@ -136,7 +136,7 @@ Page({
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/partAct/',
+      url:'http://43.138.52.97:8001/schedule/partAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id: id,
@@ -148,7 +148,7 @@ Page({
       success:function(res){
         wx.showToast({ title: '报名成功', icon: 'success' });
         wx.request({
-          url:'http://127.0.0.1:8000/user/getDetail/',
+          url:'http://43.138.52.97:8001/user/getDetail/',
           data:{
             'hostId': id,
             'customerId':id
@@ -162,7 +162,7 @@ Page({
             var recieverId = that.data.activity.promoterId
             var toUrl = '../activities/actreview/actreview?actid=' + that.data.activity.id
             wx.request({
-              url:'http://127.0.0.1:8000/message/sendMessage/',
+              url:'http://43.138.52.97:8001/message/sendMessage/',
               header:{ 'content-type': 'application/x-www-form-urlencoded'},
               data:{
                 recieverId: recieverId,
@@ -191,7 +191,7 @@ Page({
       let that = this
       let id = wx.getStorageSync('id')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/todos/',
+        url:'http://43.138.52.97:8001/schedule/todos/',
         data:{
           'id': id,
           'date': that.data.activity.date
@@ -246,7 +246,7 @@ Page({
       userid:id
     })
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
       data:{
         'actId': that.data.actId
       },
@@ -277,7 +277,7 @@ Page({
         activity.participantNum = activity.participants.length
         activity.participantsId = activity.participants
         wx.request({
-          url:'http://127.0.0.1:8000/user/getDetail/',
+          url:'http://43.138.52.97:8001/user/getDetail/',
           data:{
             'hostId': activity.promoter,
             'customerId':activity.promoter
@@ -297,7 +297,7 @@ Page({
         for(let i = 0;i<activity.participantNum;i++){
           let j = 0
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             data:{
               'hostId': activity.promoter,
               'customerId':activity.participantsId[i]

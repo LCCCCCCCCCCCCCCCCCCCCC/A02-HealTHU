@@ -29,7 +29,7 @@ Page({
       var applicationId = this.data.tempItem.id
       var that = this
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/appReply/',
+        url:'http://43.138.52.97:8001/schedule/appReply/',
         header:{ 'content-type': 'application/x-www-form-urlencoded'},
         data:{
           id:id,
@@ -40,7 +40,7 @@ Page({
         success:function(res){
           wx.showToast({ title: '已同意', icon: 'success' });
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             data:{
               'hostId': id,
               'customerId':id
@@ -54,7 +54,7 @@ Page({
               var recieverId = applicationId
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
               wx.request({
-                url:'http://127.0.0.1:8000/message/sendMessage/',
+                url:'http://43.138.52.97:8001/message/sendMessage/',
                 header:{ 'content-type': 'application/x-www-form-urlencoded'},
                 data:{
                   recieverId: recieverId,
@@ -80,7 +80,7 @@ Page({
       var that = this
       console.log(id + " " + applicationId)
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/appReply/',
+        url:'http://43.138.52.97:8001/schedule/appReply/',
         header:{ 'content-type': 'application/x-www-form-urlencoded'},
         data:{
           id:id,
@@ -91,7 +91,7 @@ Page({
         success:function(res){
           wx.showToast({ title: '已拒绝'});
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             data:{
               'hostId': id,
               'customerId':id
@@ -105,7 +105,7 @@ Page({
               var recieverId = applicationId
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
               wx.request({
-                url:'http://127.0.0.1:8000/message/sendMessage/',
+                url:'http://43.138.52.97:8001/message/sendMessage/',
                 header:{ 'content-type': 'application/x-www-form-urlencoded'},
                 data:{
                   recieverId: recieverId,
@@ -153,7 +153,7 @@ Page({
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
       data:{
         actId: that.data.actId
       },
@@ -167,7 +167,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getApplication/',
+      url:'http://43.138.52.97:8001/schedule/getApplication/',
       data:{
         id: id
       },
@@ -186,7 +186,7 @@ Page({
           filteredApps[i].text = filteredApps[i].message
           //filteredApps[i].id = filteredApps[i].applyerId
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             data:{
               'hostId': id,
               'customerId':filteredApps[i].applyerId

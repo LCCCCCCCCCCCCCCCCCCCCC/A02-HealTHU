@@ -49,7 +49,7 @@ Page({
         showLoad:true
       })
       wx.request({
-        url:'http://127.0.0.1:8000/thuInfo/bindThu/',
+        url:'http://43.138.52.97:8001/thuInfo/bindThu/',
         data:{
           id:id,
           thuId: that.data.studentID,

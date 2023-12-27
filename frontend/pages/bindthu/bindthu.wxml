@@ -27,11 +27,11 @@
   </van-cell>
 </van-cell-group>
 <van-divider />
-<van-empty
-  class="custom-image"
-  image="../images/logo.png">
+<van-empty>
+    <image slot="image" class="logo" src="../images/logo.png"></image>
   <view slot="description">
     <text>HealTHU V1.0.0</text>
+    <view>您的清华账号信息仅会存储在本地，并经加密</view>
   </view>
 </van-empty>
 <van-divider />
