@@ -34,7 +34,7 @@
       bind:click="likePost" data-index="0">
       <van-icon name="like-o" /> {{post.likeList.length}}
     </van-button>
-    <van-button custom-class="button" wx:else
+    <van-button custom-class="button" wx:else size="mini"
       bind:click="dislikePost" data-index="0">
       <van-icon name="like" /> {{post.likeList.length}}
     </van-button>
