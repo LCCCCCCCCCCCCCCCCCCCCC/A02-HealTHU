@@ -213,7 +213,10 @@ Page({
     }
   },
   handleScore() {
-    this.setData({ scoreshow : true });     
+    this.setData({ 
+      scoreshow : true,
+      signtext:""
+    });     
   },
   onscoreClose() {
     this.setData({ scoreshow : false });     

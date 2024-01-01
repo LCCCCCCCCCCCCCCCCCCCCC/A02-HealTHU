@@ -317,7 +317,8 @@ Page({
     const index = event.currentTarget.dataset.index;
     this.setData({ 
       replyshow : true,
-      replyindex: index
+      replyindex: index,
+      replytext:""
      });
   },
   handleDelete(event) {
@@ -331,7 +332,9 @@ Page({
     this.setData({ deleteallshow : true });   
   },
   onreplyClose(){
-    this.setData({ replyshow : false });    
+    this.setData({ 
+      replyshow : false
+    });    
   },
   ondeleteClose(){
     this.setData({ deleteshow : false });    
