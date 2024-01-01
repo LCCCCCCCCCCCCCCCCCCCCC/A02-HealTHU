@@ -130,14 +130,14 @@ Page({
     var that = this
     var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/addReply/',
+      url:'http://43.138.52.97:8001/bbs/addReply/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
         postId:that.data.bbsId,
         time: nowTime,
         content: that.data.replytext,
-        floor: floor
+        aboveId: floor
       },
       method:'POST',
       success:function(res){
@@ -168,7 +168,7 @@ Page({
           url:'http://43.138.52.97:8001/message/sendMessage/',
           header:{ 'content-type': 'application/x-www-form-urlencoded'},
           data:{
-            recieverId: recieverId,
+            receiverId: recieverId,
             time: nowTime,
             content: messageContent,
             toUrl: toUrl
@@ -240,7 +240,6 @@ Page({
     this.setData({
       id:id
     })
-    /*
     wx.request({
       url:'http://43.138.52.97:8001/bbs/getPostDetail/',
       data:{
@@ -266,7 +265,7 @@ Page({
             likeLabel[that.data.replyList[k].floor] = 1
           }
           else{
-            likeLabel[that.data.replyList[k].floor] = 1
+            likeLabel[that.data.replyList[k].floor] = 0
           }
         }
         that.setData({
@@ -274,7 +273,6 @@ Page({
         })
       }
     })
-    */
     const selectedbbs = this.data.bbsList.find(item => item.id == this.data.bbsId);
     var post = selectedbbs;
     this.setData({
@@ -295,20 +293,20 @@ Page({
       }).exec()
     })
   },
-  // getNameByFloor(floor){
-  //   for(var i = 0;i<this.data.replyList.length;i++){
-  //     if(this.data.replyList[i].floor == floor){
-  //       return this.data.replyList[i].name
-  //     }
-  //   }
-  // },
-  // getIdByFloor(floor){
-  //   for(var i = 0;i<this.data.replyList.length;i++){
-  //     if(this.data.replyList[i].floor == floor){
-  //       return this.data.replyList[i].userId
-  //     }
-  //   }
-  // },
+   getNameByFloor(floor){
+     for(var i = 0;i<this.data.replyList.length;i++){
+       if(this.data.replyList[i].floor == floor){
+         return this.data.replyList[i].name
+       }
+     }
+   },
+   getIdByFloor(floor){
+     for(var i = 0;i<this.data.replyList.length;i++){
+       if(this.data.replyList[i].floor == floor){
+         return this.data.replyList[i].userId
+      }
+     }
+   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

@@ -51,13 +51,13 @@ Page({
               var nickName = data.nickName
               var messageContent = nickName + "同意了你的报名请求"
               var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
-              var recieverId = applicationId
+              var recieverId = that.data.tempItem.applyerId
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
               wx.request({
                 url:'http://43.138.52.97:8001/message/sendMessage/',
                 header:{ 'content-type': 'application/x-www-form-urlencoded'},
                 data:{
-                  recieverId: recieverId,
+                  receiverId: recieverId,
                   time: nowTime,
                   content: messageContent,
                   toUrl: toUrl
@@ -102,13 +102,13 @@ Page({
               var nickName = data.nickName
               var messageContent = nickName + "拒绝了你的报名请求"
               var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
-              var recieverId = applicationId
+              var recieverId = that.data.tempItem.applyerId
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
               wx.request({
                 url:'http://43.138.52.97:8001/message/sendMessage/',
                 header:{ 'content-type': 'application/x-www-form-urlencoded'},
                 data:{
-                  recieverId: recieverId,
+                  receiverId: recieverId,
                   time: nowTime,
                   content: messageContent,
                   toUrl: toUrl

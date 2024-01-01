@@ -12,6 +12,7 @@ Page({
     var id = wx.getStorageSync('id')
     var that = this
     var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+    console.log(this.data.content.value)
     wx.request({
       url:'http://43.138.52.97:8001/bbs/addPost/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
@@ -19,8 +20,8 @@ Page({
         id:id,
         title: that.data.title,
         time:nowTime,
-        content: that.data.content,
-        images: `${that.data.images}`
+        content: that.data.content.value,
+        images: `${JSON.stringify(that.data.images)}`
       },
       method:'POST',
       success:function(res){

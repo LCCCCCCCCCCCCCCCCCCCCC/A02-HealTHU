@@ -22,4 +22,6 @@ urlpatterns = [
     path('user/',include('user.urls')),
     path('schedule/',include('schedule.urls')),
     path('thuInfo/',include('thuInfo.urls')),
+    path('bbs/',include('bbs.urls')),
+    path('message/',include('message.urls')),
 ]

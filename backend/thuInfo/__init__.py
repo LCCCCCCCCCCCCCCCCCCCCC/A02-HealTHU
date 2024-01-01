@@ -279,7 +279,6 @@ def update_info():
 # update_info()
 thuInfo_update_schedule = BackgroundScheduler()
 class_update_schedule = BackgroundScheduler()
-print('1')
 thuInfo_update_schedule.add_job(update_info, 'interval', weeks=1)
 thuInfo_update_schedule.start()
 class_update_schedule.add_job(addClassEveryday, 'cron', hour=0, minute=1)

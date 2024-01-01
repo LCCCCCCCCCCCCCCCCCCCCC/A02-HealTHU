@@ -114,7 +114,7 @@
 </van-divider>
 <van-cell-group inset>
   <van-cell link-type="navigateTo"
-    url="../../personal/personal?id={{activity.participantsId[index]}}">
+    url="../../personal/personal?id={{activity.promoterId}}">
     <view slot="title">
       <image class="avatar" src="{{activity.promoterUrl}}"></image>
       <text class="name">{{ activity.promoter }}（发起人）</text>

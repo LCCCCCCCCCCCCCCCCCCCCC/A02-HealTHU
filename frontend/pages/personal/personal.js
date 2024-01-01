@@ -65,6 +65,36 @@ Page({
       {name:"NLno", title:"[活动报名] 2023秋软件学院集体锻炼", time:"2023-12-18 9:20", id: 10001},
     ]
   },
+  follow(){
+    var that = this
+    wx.request({
+      url:'http://43.138.52.97:8001/user/addAttention/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        hostId: that.data.id,
+        customerId: that.data.userId
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
+  unfollow(){
+    var that = this
+    wx.request({
+      url:'http://43.138.52.97:8001/user/delAttention/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        hostId: that.data.id,
+        customerId: that.data.userId
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
   onChange(event) {
   // event.detail.name
   },
@@ -72,14 +102,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    if (options.id) {
+    if (options) {
       // 获取options.id对应的用户信息
       this.setData({ userId: options.id });
     } 
     var id = wx.getStorageSync('id')
+    this.setData({
+      id:id
+    })
     var that = this
-    /*
-    if(1 == 0){
       wx.request({
         url:'http://43.138.52.97:8001/user/getPersonal/',
         data:{
@@ -90,10 +121,10 @@ Page({
         success:function(res){
           var data = res.data
           var followed = true;
-          if(data.following_state == "true"){
+          if(data.following_state == 1){
             followed = true
           }
-          if(data.following_state == "false"){
+          if(data.following_state == 0){
             followed = false
           }
           that.setData({
@@ -103,7 +134,7 @@ Page({
             followings: data.followings,
             followers: data.followers,
             following_state: data.following_state,
-            achList:data.achievements,
+            //achList:data.achievements,
             bbsList:data.posts,
             actList:data.partActs,
             actaddList: data.iniActs,
@@ -111,8 +142,6 @@ Page({
           });
         }
       })
-    }
-    */
     var id = wx.getStorageSync('id')
     this.setData({
       id:id

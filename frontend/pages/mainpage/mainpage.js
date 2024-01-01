@@ -101,7 +101,6 @@ Page({
       });
     }
     var id = wx.getStorageSync('id')
-    /*
     wx.request({
       url:'http://43.138.52.97:8001/message/read/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
@@ -113,13 +112,11 @@ Page({
       success:function(res){
       }
     })
-    */
   },
   onbbsChange(event){
     var choice = event.detail.index
     var that = this
     var id = wx.getStorageSync('id')
-    /*
     if(choice != 3){
       wx.request({
         url:'http://43.138.52.97:8001/bbs/getPost/',
@@ -157,13 +154,19 @@ Page({
         method:'GET',
         success:function(res){
           var data = res.data
+          var unreadNum = 0
+          for(var i = 0;i< data.size; i++){
+            if(data[i].state == 0){
+              unreadNum ++
+            }
+          }
           that.setData({
             noticeList: data,
+            unreadNum: unreadNum
           });
         }
       })
     }
-    */
   },
   unreadChange(event){
     this.setData({ readchecked: event.detail });
@@ -293,7 +296,6 @@ Page({
         });
       }
     })
-    /*
     wx.request({
       url:'http://43.138.52.97:8001/bbs/getPost/',
       data:{
@@ -308,8 +310,6 @@ Page({
         });
       }
     })
-    */
-   /*
    wx.request({
       url:'http://43.138.52.97:8001/message/getMessages/',
       data:{
@@ -323,8 +323,6 @@ Page({
         });
       }
     })
-    */
-   /*
    wx.request({
     url:'http://43.138.52.97:8001/message/getMessages/',
     data:{
@@ -338,7 +336,6 @@ Page({
       });
     }
   })
-  */
   },
 
   /**
