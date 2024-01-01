@@ -1,7 +1,9 @@
 <!--pages/sleep/sleep.wxml-->
 <view class="pages">
   <van-cell-group title="睡眠记录" inset>
-    <van-cell title="上一次睡眠记录开始时间：{{lasttime}}" icon="success" border="{{false}}"/>
+    <van-cell title="正在睡眠中，开始时间：{{lasttime}}" icon="success" border="{{false}}" wx:if="{{isSleep == true}}"/>
+    <van-cell title="上一次睡眠记录结束时间：{{lasttime}}" icon="success" border="{{false}}" wx:else/>
+    <van-cell title="睡眠时长：{{sleepHour}}h" icon="success" border="{{false}}" wx:if="{{isSleep == false}}"/>
     <van-cell>
       <van-button class="sleepbtn" bind:tap="startSleep" wx:if="{{isSleep == false}}">开始记录睡眠</van-button>
       <van-button class="sleepbtn" bind:tap="endSleep" wx:if="{{isSleep == true}}">结束本次记录</van-button>

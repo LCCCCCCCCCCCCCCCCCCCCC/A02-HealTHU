@@ -14,11 +14,22 @@ Page({
     this.setData({showbind:true})
   },
   unbindthu(){
-    this.setData({
-      ID:"暂未绑定",
-      isbind:false,
-      studentID:"",
-      password:""
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://43.138.52.97:8001/thuInfo/unbindThu/',
+      data:{
+        id:id,
+      },
+      method:'POST',
+      success:function(res){
+        that.setData({
+          ID:"暂未绑定",
+          isbind:false,
+          studentID:"",
+          password:""
+        })
+      }
     })
   },
   handleIDInput(event){
@@ -62,22 +73,21 @@ Page({
           that.setData({
             showLoad:false
           })
-          console.log(res.data)
-          if(res.data == 0){
-            that.setData({
-              showwrong: true,
-              wrongmsg: "绑定失败，请重新输入学号和密码",
-              showbind:false,
-              isbind:false,
-            });
-          }
-          else{
+          if(res.data == 1){
             that.setData({
               showwrong: true,
               wrongmsg: "绑定成功！",
               showbind:false,
               isbind:true,
               ID:that.data.studentID
+            });
+          }
+          else{
+            that.setData({
+              showwrong: true,
+              wrongmsg: "绑定失败，请重新输入学号和密码",
+              showbind:false,
+              isbind:false,
             });
           }
           wx.setStorageSync('isbind', that.data.isbind)
@@ -99,6 +109,24 @@ Page({
         ID:ID
       })
     }
+    // var that = this
+    // var id = wx.getStorageSync('id')
+    // wx.request({
+    //   url:'http://43.138.52.97:8001/thuInfo/getBindThu/',
+    //   data:{
+    //     id:id,
+    //   },
+    //   method:'GET',
+    //   success:function(res){
+    //     var data = res.data
+    //     if(data.isBind){
+    //       that.setData({
+    //         isbind:data.isBind,
+    //         ID:data.studentID
+    //       })
+    //     }
+    //   }
+    // })
   },
 
   /**
