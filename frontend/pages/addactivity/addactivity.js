@@ -43,6 +43,7 @@ Page({
          that.setData({
            images:images
          })
+         console.log(that.data.images)
        },
      });
    },

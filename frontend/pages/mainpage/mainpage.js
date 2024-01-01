@@ -19,68 +19,12 @@ Page({
     exitshow: false,
     bbsactivate: 0,
     // 未读消息数量
-    unreadNum: 1,
-    noticeList: [
-      {state:1, content:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {state:0, content:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 8:20", url: '../activities/activity/activity?actid=10001'},
-      {state:1, content:"teto报名了你的活动“软件学院集体锻炼”", time:"2023-12-17 9:37", url: '../activities/activity/activity?actid=10001'},
-    ],
-    bbsList: [
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeList:['4', '5'],
-        replies:[
-          {
-            floor: 3,
-            userId:[4],
-            name: "teto",
-            avatar: "../images/avatar3.png",
-            time: "2023-12-18 14:02",
-            content: "这是我见过最正确的话了",
-            likeList:[3],
-            aboveId: 0
-          },
-          {
-            floor: 2,
-            userId:[5],
-            name: "GUMI",
-            avatar: "../images/avatar2.png",
-            time: "2023-12-18 14:09",
-            content: "水贴长经验呢",
-            likeList:[],
-            aboveId: 1,
-            aboveName:"teto",
-            aboveContent: "这是我见过最正确的话了"
-          },
-          {
-            floor: 3,
-            userId:[4],
-            name: "teto",
-            avatar: "../images/avatar3.png",
-            time: "2023-12-18 14:15",
-            content: "要你管",
-            likeList:[],
-            aboveId: 2,
-            aboveName:"GUMI",
-            aboveContent: "水贴长经验呢"
-          },
-      ]},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeList:[], replies:[]},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeList:[], replies:[]},
-    ],
-    bbsList1: [
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:2,commentNum:3},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
-    ],
-    bbsList2: [
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:5,commentNum:3},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
-    ],
-    bbsList3: [
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"今天真冷啊..", time:"2023-12-18 13:56", id:103, content: "完全不想出门上课啊啊啊啊啊啊啊", images: ['../images/swiper4.jpg'], likeNum:2,commentNum:3},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", id:102, content: "想去打台球，但是不知道早上几点开门，谢谢大家了！", images: [], likeNum:2,commentNum:4},
-      {userId:1, name:"NLno", avatar: "../images/avatar4.png", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", id:101, content: "如图所示", images: ['../images/swiper1.jpg', '../images/swiper2.jpg'], likeNum:2,commentNum:3},
-    ],
+    unreadNum: 0,
+    noticeList: [],
+    bbsList: [],
+    bbsList1: [],
+    bbsList2: [],
+    bbsList3: [],
     id:0,
     readchecked: false,
     searchvalue: '',
@@ -155,7 +99,7 @@ Page({
         success:function(res){
           var data = res.data
           var unreadNum = 0
-          for(var i = 0;i< data.size; i++){
+          for(var i = 0;i< data.length; i++){
             if(data[i].state == 0){
               unreadNum ++
             }
@@ -310,7 +254,7 @@ Page({
         });
       }
     })
-   wx.request({
+    wx.request({
       url:'http://43.138.52.97:8001/message/getMessages/',
       data:{
         id:id,
@@ -318,24 +262,18 @@ Page({
       method:'GET',
       success:function(res){
         var data = res.data
+        var unreadNum = 0
+        for(var i = 0;i< data.length; i++){
+          if(data[i].state == 0){
+            unreadNum ++
+          }
+        }
         that.setData({
           noticeList: data,
+          unreadNum: unreadNum
         });
       }
     })
-   wx.request({
-    url:'http://43.138.52.97:8001/message/getMessages/',
-    data:{
-      id:id,
-    },
-    method:'GET',
-    success:function(res){
-      var data = res.data
-      that.setData({
-        noticeList:data
-      });
-    }
-  })
   },
 
   /**
