@@ -364,10 +364,9 @@ wx.request({
 |followings|int[]|关注|
 |followers|int[]|粉丝|
 |following_state|string|关注情况|
-|achievements|achievement[]|成就|
-|iniActs|iniAct[]|发起的活动|
-|partActs|partAct[]|参与的活动|
-|posts|post[]|发布的帖子|
+|achRange|int|成就可见范围(全部可见/粉丝可见/自己可见)0/1/2 初始为0|
+|actRange|int|活动可见范围|
+|postRange|int|帖子可见范围|
 
 这四个都是预览，包括
 ##### achievement
