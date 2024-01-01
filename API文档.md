@@ -268,8 +268,31 @@ wx.request({
 |-------------|-------------|-------------|
 |bindTHU|bool|绑定清华身份情况|
 * 通过清华身份获取信息后，定时在后端添加到事项等中，不在前端处理
+  
+#### (未完成)获取绑定情况
+```HTTP
+[GET] /user/getBindTHU
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+##### 响应数据
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|isBind|int|是否绑定|
+|studentID|string|如有返回学号|
 
-#### (重要)搜索用户
+#### (未完成)解除绑定清华身份
+```HTTP
+[POST] /user/unbindTHU
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+
+#### 搜索用户
 ```HTTP
 [GET] /user/search
 ```
@@ -316,7 +339,7 @@ wx.request({
 |bmi|double|bmi|
 |beizhu|string|备注|
 
-#### 获取睡眠情况
+#### (未完成)获取睡眠情况
 ```HTTP
 [GET] /user/getSleep
 ```
@@ -329,9 +352,36 @@ wx.request({
 ##### 响应数据
 |参数|类型|说明|
 |-------------|-------------|-------------|
-|sleepDaily[8]|sleepDaily|今天以及之前七天的，按时间顺序返回，如果当天没有则data项为[0,0,0,0,0,0,0,0,0,0,0,0],不要返回空值|
+|sleepDaily[8]|sleepDaily|今天以及之前七天的，按时间顺序返回，即第0项为七天以前，第7项为今天，如果当天没有则data项为[0,0,0,0,0,0,0,0,0,0,0,0],不要返回空值|
+|以下几点|用于|临时存储|
+|lastTime|string|上次睡眠时间(初始返回空)|
+|sleepHour|int|上次睡眠时长|
+|isSleep|int|是否睡眠中|
+|startDate|string|睡眠开始时间|
+|startHour|int|睡眠开始时|
 
-#### 改变睡眠情况
+#### 睡眠信息 sleepDaily
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|date|string|日期|
+|data|int[12]|睡眠情况|
+
+#### (未完成)改变睡眠状态
+```HTTP
+[POST] /user/changeSleepState
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|以下几点|用于|临时存储|
+|lastTime|string|上次睡眠时间(初始返回空)|
+|sleepHour|int|上次睡眠时长|
+|isSleep|int|是否睡眠中|
+|startDate|string|睡眠开始时间|
+|startHour|int|睡眠开始时|
+
+#### (未完成)改变睡眠条形图
 ```HTTP
 [POST] /user/changeSleep
 ```
@@ -345,7 +395,7 @@ wx.request({
 
 改变那天的sleepDaily,没有就添加
 
-#### (重要)获取个人主页信息
+#### 获取个人主页信息
 ```HTTP
 [GET] /user/getPersonal
 ```
@@ -413,7 +463,7 @@ wx.request({
 |likeNum|int|点赞数|
 |commentNum|int|评论数|
 
-#### (重要)获取隐私范围
+#### 获取隐私范围
 ```HTTP
 [POST] /user/getRange
 ```
@@ -429,7 +479,7 @@ wx.request({
 |actRange|int|活动可见范围|
 |postRange|int|帖子可见范围|
 
-#### (重要)改变隐私范围
+#### 改变隐私范围
 ```HTTP
 [POST] /user/changeRange
 ```
@@ -706,7 +756,7 @@ wx.request({
 
 ### 四、运动处理部分
 
-#### 获取场馆预约信息
+#### (待商榷)获取场馆预约信息
 ```HTTP
 [GET] /sport/{id}/getAppoints
 ```
@@ -721,7 +771,7 @@ wx.request({
 |-------------|-------------|-------------|
 |appoints|appoint[]|七天内的场馆预约|
 
-#### 改变运动类型
+#### (未完成)改变运动类型
 ```HTTP
 [POST] /sport/changeSportType
 ```
@@ -765,7 +815,7 @@ wx.request({
 
 ### 五、消息部分
 
-#### (很重要)获取消息
+#### 获取消息
 ```HTTP
 [GET] /message/{id}/getMessages
 ```
@@ -787,7 +837,7 @@ wx.request({
 |content|string|消息内容|
 |url|string|跳转到的具体位置，比如帖子下的评论|
 
-#### (重要)将消息设置为已读
+#### 将消息设置为已读
 ```HTTP
 [POST] /message/read
 ```
@@ -798,7 +848,7 @@ wx.request({
 |id|int|用户id|
 |messageId|int|帖子id|
 
-#### (很重要)向某个人发送消息
+#### 向某个人发送消息
 ```HTTP
 [POST] /message/sendMessage
 ```
@@ -821,7 +871,7 @@ wx.request({
 |messageId|int|消息id|
 
 ### 六、论坛部分
-#### (很重要)发布帖子
+#### 发布帖子
 ```HTTP
 [POST] /bbs/addPost
 ```
@@ -834,7 +884,7 @@ wx.request({
 |content|string|内容|
 |images|string[]|图片|
 
-#### (重要)删除帖子
+#### 删除帖子
 ```HTTP
 [POST] /bbs/deletePost
 ```
@@ -844,7 +894,7 @@ wx.request({
 |id|int|用户id|
 |postId|int|帖子id|
 
-#### (重要)给帖子点赞
+#### 给帖子点赞
 ```HTTP
 [POST] /bbs/likePost
 ```
@@ -854,7 +904,7 @@ wx.request({
 |id|int|用户id|
 |postId|int|帖子id|
 
-#### (重要)给帖子取消点赞
+#### 给帖子取消点赞
 ```HTTP
 [POST] /bbs/dislikePost
 ```
@@ -864,7 +914,7 @@ wx.request({
 |id|int|用户id|
 |postId|int|帖子id|
 
-#### (重要)发布评论
+#### 发布评论
 ```HTTP
 [POST] /bbs/addReply
 ```
@@ -877,7 +927,7 @@ wx.request({
 |content|string|内容|
 |aboveId|int|(如果楼层间回复)回复的楼层,初始为1|
 
-#### (重要)删除评论
+#### 删除评论
 ```HTTP
 [POST] /bbs/deleteReply
 ```
@@ -890,7 +940,7 @@ wx.request({
 
 (回复楼层从1开始)
 
-#### (重要)点赞评论
+#### 点赞评论
 ```HTTP
 [POST] /bbs/likeReply
 ```
@@ -901,7 +951,7 @@ wx.request({
 |postId|int|帖子id|
 |floor|int|楼层|
 
-#### (重要)取消点赞评论
+#### 取消点赞评论
 ```HTTP
 [POST] /bbs/dislikeReply
 ```
@@ -912,7 +962,7 @@ wx.request({
 |postId|int|帖子id|
 |floor|int|楼层|
 
-#### (很重要)获取帖子
+#### 获取帖子
 ```HTTP
 [GET] /bbs/getPost
 ```
@@ -938,7 +988,7 @@ wx.request({
 |commentNum|int|评论数|
 |images|string[]|图片|
 
-#### (很重要)搜索帖子
+#### 搜索帖子
 ```HTTP
 [GET] /bbs/searchPost
 ```
@@ -949,7 +999,7 @@ wx.request({
 
 查找标题与内容匹配的帖子，返回格式同上
 
-#### (很重要)查看帖子
+#### 查看帖子
 ```HTTP
 [GET] /bbs/getPostDetail
 ```
