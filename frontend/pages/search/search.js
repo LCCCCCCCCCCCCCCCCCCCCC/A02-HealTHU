@@ -17,7 +17,7 @@ Page({
   onLoad(options) {
     var that = this
     if(options.key){
-      /*
+      
       wx.request({
         url:'http://43.138.52.97:8001/bbs/searchPost/',
         data:{
@@ -44,7 +44,7 @@ Page({
           });
         }
       })
-      */
+      
       this.setData({ searchkey: options.key });
     }
   },

@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'healthInfo.apps.HealthinfoConfig',
     'schedule.apps.ScheduleConfig',
     'thuInfo.apps.ThuinfoConfig',
+    'bbs.apps.BbsConfig',
+    'message.apps.MessageConfig'
 ]
 
 MIDDLEWARE = [

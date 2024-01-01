@@ -14,6 +14,7 @@ def my_job():
     response = requests.get(url, params=params)
     global access_token
     access_token = response.json()['access_token']
+    print(access_token)
 
 my_job()
 token_schedule.add_job(my_job, 'interval', seconds=7200)

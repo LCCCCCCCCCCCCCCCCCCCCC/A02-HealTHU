@@ -102,7 +102,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    if (options.id) {
+    if (options) {
       // 获取options.id对应的用户信息
       this.setData({ userId: options.id });
     } 
