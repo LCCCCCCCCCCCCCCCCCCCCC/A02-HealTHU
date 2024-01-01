@@ -46,7 +46,7 @@ Page({
     }
     var id = wx.getStorageSync('id')
     wx.request({
-      url:'http://43.138.52.97:8001/message/read/',
+      url:'http://127.0.0.1:8000/message/read/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:id,
@@ -63,7 +63,7 @@ Page({
     var id = wx.getStorageSync('id')
     if(choice != 3){
       wx.request({
-        url:'http://43.138.52.97:8001/bbs/getPost/',
+        url:'http://127.0.0.1:8000/bbs/getPost/',
         data:{
           id:id,
           type: choice
@@ -91,7 +91,7 @@ Page({
     }
     else{
       wx.request({
-        url:'http://43.138.52.97:8001/message/getMessages/',
+        url:'http://127.0.0.1:8000/message/getMessages/',
         data:{
           id:id,
         },
@@ -175,7 +175,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     wx.request({
-      url:'http://43.138.52.97:8001/user/getDetail/',
+      url:'http://127.0.0.1:8000/user/getDetail/',
       data:{
         'hostId': id,
         'customerId':id
@@ -200,7 +200,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/todos/',
+      url:'http://127.0.0.1:8000/schedule/todos/',
       data:{
         'id': id,
         'date': date
@@ -223,7 +223,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/getddl/',
+      url:'http://127.0.0.1:8000/schedule/getddl/',
       data:{
         'id': id,
         'date': date,
@@ -241,7 +241,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/getPost/',
+      url:'http://127.0.0.1:8000/bbs/getPost/',
       data:{
         id:id,
         type: 0
@@ -255,7 +255,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://43.138.52.97:8001/message/getMessages/',
+      url:'http://127.0.0.1:8000/message/getMessages/',
       data:{
         id:id,
       },

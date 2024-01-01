@@ -17,7 +17,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     wx.request({
-      url:'http://43.138.52.97:8001/thuInfo/unbindThu/',
+      url:'http://127.0.0.1:8000/thuInfo/unbindThu/',
       data:{
         id:id,
       },
@@ -62,7 +62,7 @@ Page({
       })
       var id = wx.getStorageSync('id')
       wx.request({
-        url:'http://43.138.52.97:8001/thuInfo/bindThu/',
+        url:'http://127.0.0.1:8000/thuInfo/bindThu/',
         data:{
           id:id,
           thuID: that.data.studentID,
@@ -112,7 +112,7 @@ Page({
     // var that = this
     // var id = wx.getStorageSync('id')
     // wx.request({
-    //   url:'http://43.138.52.97:8001/thuInfo/getBindThu/',
+    //   url:'http://127.0.0.1:8000/thuInfo/getBindThu/',
     //   data:{
     //     id:id,
     //   },
