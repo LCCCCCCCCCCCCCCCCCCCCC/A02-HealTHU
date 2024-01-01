@@ -5,7 +5,7 @@ var app = getApp();
 var columnChart = null;
 var chartData = {
     main: {
-        title: '睡眠时间',
+        title: '近七日睡眠时间',
         data: [7, 7, 8, 6, 6, 7, 6],
         categories: ['11-30', '12-1', '12-2', '12-3', '12-4', '12-5', '12-6']
     },
@@ -46,7 +46,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    chartTitle: '睡眠时间',
+    lasttime: '2023/12/6 0:53',
+    chartTitle: '近七日睡眠时间',
     isMainChartDisplay: true,
     score:"",
     isShort:false,//睡眠时间是否不足
@@ -66,6 +67,7 @@ Page({
     }
     console.log(currentHour)
     this.setData({
+      lasttime: date + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
       isSleep:true,
       startDate: date,
       startHour: currentHour

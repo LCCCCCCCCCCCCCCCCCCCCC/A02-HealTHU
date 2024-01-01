@@ -3,6 +3,7 @@ Page({
   data: {
     isbind:false,
     showbind:false,
+    showunbind: false,
     ID:"暂未绑定",
     studentID:"",
     password:"",
@@ -147,5 +148,11 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+  onClose() {
+    this.setData({ showunbind: false });
+  },
+  unbindHandle() {
+    this.setData({ showunbind: true });
+  },
 })

@@ -120,6 +120,7 @@ Page({
         method:'GET',
         success:function(res){
           var data = res.data
+          console.log(data)
           var followed = true;
           if(data.following_state == 1){
             followed = true
