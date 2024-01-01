@@ -7,6 +7,9 @@ db.sqlite3
 # ignore all .pyc files, whereever they are
 **/*.pyc
 
+#ignore images
+backend/images/*
+
 .idea/*
 
 backend/*.txt
