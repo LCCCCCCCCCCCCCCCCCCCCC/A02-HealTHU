@@ -224,25 +224,23 @@ def deleteReply(request):
         # floor found
         targetAboveFloorId = targetFloor.aboveId
         targetAboveFloor = Floor.objects.filter(id=targetAboveFloorId).first()
-        if targetAboveFloor is None:
-            return HttpResponse("Above Floor does not exist")
+        if targetAboveFloor is not None:
+            # then remove this from its above's belowIds
+            print("targetAboveFloor.id:", targetAboveFloor.id)
+            print("targetAboveFloor.belowIds:", targetAboveFloor.belowIds)
+            targetAboveFloor.belowIds.remove(targetFloorId)
+            targetAboveFloor.commentNum -= 1
+            targetAboveFloor.save()
         # above floor found
         # first find and set all floors in belowIds to such a degree, that
         # its aboveId being -1, and its aboveName and aboveContent being ""
         for belowId in targetFloor.belowIds:
             targetBelowFloor = Floor.objects.filter(id=belowId).first()
-            if targetBelowFloor is None:
-                continue
-            targetBelowFloor.aboveId = -1
-            targetBelowFloor.aboveName = ""
-            targetBelowFloor.aboveContent = "此评论已被删除"
-            targetBelowFloor.save()
-        # then remove this from its above's belowIds
-        print("targetAboveFloor.id:", targetAboveFloor.id)
-        print("targetAboveFloor.belowIds:", targetAboveFloor.belowIds)
-        targetAboveFloor.belowIds.remove(targetFloorId)
-        targetAboveFloor.commentNum -= 1
-        targetAboveFloor.save()
+            if targetBelowFloor is not None:
+                targetBelowFloor.aboveId = -1
+                targetBelowFloor.aboveName = ""
+                targetBelowFloor.aboveContent = "此评论已被删除"
+                targetBelowFloor.save()
         # then set the floorId in targetTopic.floors to -1
         targetTopic.floors[str(floor)] = -1
         targetTopic.save()
@@ -446,13 +444,20 @@ def getPostDetail(request):
             targetReply['time'] = targetFloor.time
             targetReply['content'] = targetFloor.content
             targetReply['likeList'] = targetFloor.likeList
-            targetReply['aboveId'] = targetFloor.aboveId
-            for key, value in targetTopic.floors.items():
-                if value == targetFloor.aboveId:
-                    targetReply['aboveId'] = key
-                    break
-            targetReply['aboveName'] = targetFloor.aboveName
-            targetReply['aboveContent'] = targetFloor.aboveContent
+            if targetFloor.aboveId == -1:
+                targetReply['aboveId'] = targetFloor.aboveId
+                targetReply['aboveName'] = targetFloor.aboveName
+                targetReply['aboveContent'] = targetFloor.aboveContent
+            else:
+                targetAboveFloor = Floor.objects.filter(id=targetFloor.aboveId).first()
+                if targetAboveFloor is None:
+                    targetReply['aboveId'] = -1
+                    targetReply['aboveName'] = ""
+                    targetReply['aboveContent'] = "此评论已被删除"
+                else:
+                    targetReply['aboveId'] = targetFloor.aboveId
+                    targetReply['aboveName'] = targetFloor.aboveName
+                    targetReply['aboveContent'] = targetFloor.aboveContent
             targetReplyArray.append(targetReply)
         targetPost['id'] = targetTopic.id
         targetPost['userId'] = targetTopic.userId
