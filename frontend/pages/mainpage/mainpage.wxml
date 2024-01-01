@@ -183,13 +183,16 @@
       <button class="infobutton" bind:tap="changeInfo">编辑个人信息</button>
     </van-col>
   </van-row>
-  <van-grid column-num="3" gutter="{{ 32 }}"  border="{{false}}" direction="horizontal">
-    <van-grid-item link-type="navigateTo"
-      url='../personal/personal?id={{id}}' text="3 动态" />
-      <van-grid-item link-type="navigateTo"
-      url='../attention/attention' text="{{attentionnum}} 关注" />
-      <van-grid-item link-type="navigateTo"
-      url='../fans/fans' text="{{fannum}} 粉丝" />
+  <van-grid clickable column-num="3" gutter="{{ 16 }}" border="{{false}}">
+    <van-grid-item link-type="navigateTo" url='../personal/personal?id={{id}}' use-slot>
+      <text style="color: grey;font-size: 14px;">0 动态</text>
+    </van-grid-item>
+    <van-grid-item link-type="navigateTo" url='../attention/attention' use-slot>
+      <text style="color: grey;font-size: 14px;"> {{attentionnum}} 关注</text>
+    </van-grid-item>
+    <van-grid-item link-type="navigateTo" url='../fans/fans' use-slot>
+      <text style="color: grey;font-size: 14px;"> {{fannum}} 粉丝</text>
+    </van-grid-item>
   </van-grid>
   <view class="empty-line"></view>
     <view class="changeinfo">
