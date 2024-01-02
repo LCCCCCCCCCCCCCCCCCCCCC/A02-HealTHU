@@ -4,7 +4,6 @@
   <van-cell title="清华账号">{{ID}}</van-cell>
   <van-cell>
     <van-button wx:if="{{isbind == false}}" bind:tap="bindthu">绑定清华身份</van-button>
-    <van-button wx:if="{{isbind == true}}" bind:tap="unbindHandle">解除绑定</van-button>
   </van-cell>
 </van-cell-group>
 <van-cell-group custom-class="loading" inset>

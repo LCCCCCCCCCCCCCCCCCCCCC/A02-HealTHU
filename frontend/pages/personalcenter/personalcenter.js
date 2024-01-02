@@ -50,6 +50,7 @@ Page({
           }
       },
     })
+    
   },
   
   onChooseAvatar(e){

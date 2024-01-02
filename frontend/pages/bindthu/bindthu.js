@@ -14,23 +14,23 @@ Page({
     this.setData({showbind:true})
   },
   unbindthu(){
-    var that = this
-    var id = wx.getStorageSync('id')
-    wx.request({
-      url:'http://127.0.0.1:8000/thuInfo/unbindThu/',
-      data:{
-        id:id,
-      },
-      method:'POST',
-      success:function(res){
-        that.setData({
-          ID:"暂未绑定",
-          isbind:false,
-          studentID:"",
-          password:""
-        })
-      }
-    })
+    // var that = this
+    // var id = wx.getStorageSync('id')
+    // wx.request({
+    //   url:'http://127.0.0.1:8000/thuInfo/unbindThu/',
+    //   data:{
+    //     id:id,
+    //   },
+    //   method:'POST',
+    //   success:function(res){
+    //     that.setData({
+    //       ID:"暂未绑定",
+    //       isbind:false,
+    //       studentID:"",
+    //       password:""
+    //     })
+    //   }
+    // })
   },
   handleIDInput(event){
     this.setData({ studentID: event.detail });

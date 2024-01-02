@@ -6,39 +6,38 @@
   </view>
   <text>今日运动/千卡</text>
 </view>
-<view class="progress-out">
+<!-- <view class="progress-out">
   <van-progress custom-class="progress"
     percentage="{{percentage}}"
     pivot-text="每日步数目标: 5000"
     pivot-color="#7232dd"
     color="linear-gradient(to right, #be99ff, #7232dd)"
   />
-</view>
+</view> -->
 <van-cell-group custom-class="suggestion" inset>
-  <van-cell title="今日步数 {{walknum | toFixed(1)}}，已完成目标 {{percentage}}%" icon="checked"/>
+  <!-- <van-cell title="今日步数 {{walknum | toFixed(1)}}，已完成目标 {{percentage}}%" icon="checked"/> -->
   <van-cell title="今日运动计划" icon="arrow-down"/>
   <view wx:for="{{todos}}" wx:key="index">
     <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="handleBegin">
       <view slot="title"> {{item.title}}</view>
       <view>{{item.start}}—{{item.end}}</view>
-      <view wx:if="{{ (item.state == 0)}}">未开始</view>
+      <view wx:if="{{ (item.state == 0)}}">未完成</view>
       <view wx:if="{{ (item.state == 1)}}">已完成</view>
-      <view wx:if="{{ (item.state == 2)}}">进行中</view>
+      <view wx:if="{{ (item.state == 2)}}">进行中，点击结束</view>
     </van-cell>
   </view>
 </van-cell-group>
 
-<van-dialog title="已经完成啦" message="打卡时间：9:05~9:17" show="{{ onlyshow }}"/>
+<van-dialog title="已经完成啦" message="{{text}}" show="{{ onlyshow }}"/>
+<van-dialog title="待完成的运动事项" message="{{text}}" show="{{ startshow }}"/>
 <van-dialog use-title-slot use-slot
   showCancelButton
-  show="{{ beginshow }}"
+  show="{{ endshow }}"
   confirm-button-open-type="getUserInfo"
   bind:getuserinfo="confirm"
   >
-  <view wx:if="{{currentstate == 0}}" slot="title">开始打卡吗？</view>
-  <view wx:else slot="title">结束打卡吗？</view>
-  <view class="timetext" wx:if="{{currentstate == 0}}">计划开始时间：22:00</view>
-  <view class="timetext" wx:else>开始时间：16:47</view>
+  <view slot="title">结束打卡吗？</view>
+  <view class="timetext">{{text}}</view>
 </van-dialog>
 <van-divider />
 <!-- 1给一些准备/结束活动指导（播片），23打卡，4看自己参加的体育比赛 -->

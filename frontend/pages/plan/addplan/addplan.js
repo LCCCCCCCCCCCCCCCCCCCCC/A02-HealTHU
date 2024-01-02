@@ -24,7 +24,7 @@ Page({
     showpicker: false,
     isValid:false,
     sportType:0,
-    sportState:""
+    sportState:0
   },
   onTypeConfirm(event){
     this.setData({ optionvalue1: event.detail});
@@ -180,6 +180,8 @@ Page({
               state: 0,
               sportType: that.data.sportType,
               sportState: that.data.sportState,
+              //sportStart: "",
+              //sportEnd: "",
               readOnly: 0
             },
             method:'POST',

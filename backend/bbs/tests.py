@@ -246,6 +246,55 @@ class addAndDeleteReplyTest(TestCase):
         self.assertEqual(Topic.objects.get(title='test').floorCnt, 2)
         self.assertEqual(Topic.objects.get(title='test').floors, {'1':1, '2':-1})
         
+class likeAndDislikeReplyTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create(userid='123456789',
+                                        userInfo= UserInfo.objects.create(avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKicw6iax6kibh4ibic3oicib7XibEwJ3lJ4ib1VZ3cibcic2ZU9pYiaY3icYVib4ZoWuYzJQF1qf6ibw1ibg6j5icicw/132',
+                                                                          nickName='test',
+                                                                          signature='test',
+                                                                          followings=json.dumps([]),
+                                                                          followingNum=0,
+                                                                          followers=json.dumps([]),
+                                                                          followerNum=0,
+                                                                          achievements=json.dumps([])),
+                                        customSettings=CustomSettings.objects.create(displayMode=0,
+                                                                                     ddlRange='2023-12-31',
+                                                                                     storageRange='2024-12-31',
+                                                                                     achRange=0,
+                                                                                     actRange=0,
+                                                                                     postRange=0,
+                                                                                     blackList=json.dumps([])))
+        self.user2 = User.objects.create(userid='1234567890',
+                                        userInfo= UserInfo.objects.create(avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKicw6iax6kibh4ibic3oicib7XibEwJ3lJ4ib1VZ3cibcic2ZU9pYiaY3icYVib4ZoWuYzJQF1qf6ibw1ibg6j5icicw/132',
+                                                                          nickName='test2',
+                                                                          signature='test2',
+                                                                          followings=json.dumps([]),
+                                                                          followingNum=0,
+                                                                          followers=json.dumps([]),
+                                                                          followerNum=0,
+                                                                          achievements=json.dumps([])),
+                                        customSettings=CustomSettings.objects.create(displayMode=0,
+                                                                                     ddlRange='2023-12-31',
+                                                                                     storageRange='2024-12-31',
+                                                                                     achRange=0,
+                                                                                     actRange=0,
+                                                                                     postRange=0,
+                                                                                     blackList=json.dumps([])))
+        
+    def test_like_and_dislike_reply(self):
+        response = self.client.post('/bbs/addPost/', {'id': self.user.id, 'title': 'test', 'content': 'test', 'time': '2020-12-12 12:12:12'})
+        self.assertEqual(response.content.decode(), 'Post added')
+        # make a reply to this
+        response = self.client.post('/bbs/addReply/', {'id': self.user2.id, 'postId': 1, 'content': 'testtest', 'time': '2020-01-01 13:13:13', 'aboveId': 1})
+        self.assertEqual(response.content.decode(), 'Reply added')
+        # try like and dislike
+        response = self.client.post('/bbs/likeReply/', {'id': self.user.id, 'postId': 1, 'floor': 2})
+        self.assertEqual(response.content.decode(), 'Reply liked')
+        targetFloor = Floor.objects.get(id=2)
+        self.assertEqual(targetFloor.likes, 1)
+        self.assertEqual(targetFloor.likeList, [self.user.id])
+        
         
         
         

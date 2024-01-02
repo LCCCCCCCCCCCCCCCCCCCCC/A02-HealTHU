@@ -5,21 +5,21 @@ var app = getApp();
 var columnChart = null;
 var chartData = {}
 var tofix = [
-  {date: "2023/12/30", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2023/12/31", data: [2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 2]},
-  {date: "2024/01/01", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/02", data: [2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/03", data: [2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1]},
-  {date: "2024/01/04", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/05", data: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/06", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2023-12-30", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2023-12-31", data: [2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 2]},
+  {date: "2024-01-01", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-02", data: [2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-03", data: [2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1]},
+  {date: "2024-01-04", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-05", data: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-06", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
 ]
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    lasttime: '2023/12/6 0:53',
+    lasttime: '2023-12-6 0:53',
     chartTitle: '近七日睡眠时间',
     isMainChartDisplay: true,
     sleepHour: 0,
@@ -36,12 +36,11 @@ Page({
     sleepData2:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   },
   startSleep(){
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
     var currentHour = new Date().getHours()
     if(new Date().getMinutes > 30){
       currentHour ++
     }
-    console.log(currentHour)
     this.setData({
       lasttime: date + ' ' + new Date().getHours().toString().padStart(2, '0') + ':' + new Date().getMinutes().toString().padStart(2, '0'),
       isSleep:true,
@@ -49,10 +48,11 @@ Page({
       startHour: currentHour
     })
     this.saveState()
+    var sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
     //播放音乐
   },
   endSleep(){
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
     var currentHour = new Date().getHours()
     if(new Date().getMinutes > 30){
       currentHour ++
@@ -64,16 +64,11 @@ Page({
     })
     //提前获取start天的sleepData
     var sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
-    this.setData({
-      sleepDaily:tofix
-    })
-    console.log(this.data.startDate)
     for(var i = 0; i < 8; i++){
       if(this.data.sleepDaily[i].date == this.data.startDate){
         sleepData = this.data.sleepDaily[i].data
       }
     }
-    console.log(sleepData)
     var sleepHour = 0
     if(this.data.startDate == this.data.endDate){
       for(var i = this.data.startHour;i<this.data.endHour;i++){
@@ -163,29 +158,39 @@ touchHandler: function (e) {
   onLoad(options) {
     var id = wx.getStorageSync('id')
     var that = this
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
-    /*
+    var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
     wx.request({
-      url:'http://127.0.0.1:8000/user/getSleep/',
+      url:'http://127.0.0.1:8000/sleep/getSleep/',
       data:{
         'id': id,
         'date': date
       },
       method:'GET',
       success:function(res){
-        var data = res.data
+        var label = Object.keys(res.data)
+        var data = []
+        for(var i = 0;i<label.length;i++){
+          var newlabel = {}
+          newlabel.date = label[i]
+          newlabel.data = res.data[label[i]]
+          data[7 - i] = newlabel
+        }
+        var lastTime = wx.getStorageSync('lastTime')
+        var sleepHour = wx.getStorageSync('sleepHour')
+        var isSleep = wx.getStorageSync('isSleep')
+        var startDate = wx.getStorageSync('startDate')
+        var startHour = wx.getStorageSync('startHour')
         that.setData({
-          sleepDaily: data.sleepDaily,
-          lastTime: data.lastTime,
-          sleepHour: data.sleepHour,
-          isSleep: data.isSleep,
-          startDate: data.startDate,
-          startHour: data.startHour
+          sleepDaily: data,
+          lasttime: lastTime,
+          sleepHour: sleepHour,
+          isSleep: isSleep,
+          startDate: startDate,
+          startHour: startHour
         })
         that.drawChart()
       }
     })
-    */
    this.drawChart()
   },
   drawChart(){
@@ -196,8 +201,8 @@ touchHandler: function (e) {
     } catch (e) {
       console.error('getSystemInfoSync failed!');
     }
-    chartData = this.tochart(tofix)
-    //chartData = this.tochart(this.data.sleepDaily)
+    //chartData = this.tochart(tofix)
+    chartData = this.tochart(this.data.sleepDaily)
     columnChart = new wxCharts({
         canvasId: 'columnCanvas',
         type: 'column',
@@ -265,30 +270,20 @@ touchHandler: function (e) {
     })
   },
   saveState(){//保存临时睡眠状态
-    var that = this
-    var id = wx.getStorageSync('id')
-    wx.request({
-      url:'http://127.0.0.1:8000/user/changeSleepState/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
-      data:{
-        id: id,
-        lastTime: that.data.lasttime,
-        sleepHour: that.data.sleepHour,
-        isSleep: that.data.isSleep,
-        startDate: that.data.startDate,
-        startHour: that.data.startHour
-      },
-      method:'POST',
-      success:function(res){
-        that.onLoad()
-      }
-    })
+    wx.setStorageSync('lastTime', this.data.lasttime)
+    wx.setStorageSync('sleepHour', this.data.sleepHour)
+    wx.setStorageSync('isSleep', this.data.isSleep)
+    wx.setStorageSync('startDate', this.data.startDate)
+    wx.setStorageSync('startHour', this.data.startHour)
+    this.onLoad()
   },
   saveSleep(date,data){
     var id = wx.getStorageSync('id')
     var that = this
+    console.log(date)
+    console.log(data)
     wx.request({
-      url:'http://127.0.0.1:8000/user/changeSleep/',
+      url:'http://127.0.0.1:8000/sleep/changeSleep/',
       data:{
         id:id,
         date: date,
@@ -302,7 +297,7 @@ touchHandler: function (e) {
     })
   },
   isnext(startDate,endDate){//判断后者是否为前者的后一天
-    var currentDate = startDate.split("/");
+    var currentDate = startDate.split("-");
     var year = parseInt(currentDate[0]);
     var month = parseInt(currentDate[1]);
     var day = parseInt(currentDate[2]);
@@ -310,7 +305,7 @@ touchHandler: function (e) {
     var newYear = newDate.getFullYear();
     var newMonth = (newDate.getMonth() + 1).toString().padStart(2, '0');
     var newDay = newDate.getDate().toString().padStart(2, '0');
-    var dateString = newYear + '/' + newMonth + '/' + newDay;
+    var dateString = newYear + '-' + newMonth + '-' + newDay;
     return (endDate == dateString)
   },
   tochart(dailys){
@@ -322,7 +317,7 @@ touchHandler: function (e) {
     var sub = []
     for(var i = 0;i < 7;i++){
       sub[i] = {}
-      var dates = dailys[i].date.split("/")
+      var dates = dailys[i].date.split("-")
       var shortDate = dates[1] + "-" + dates[2]
       sub[i].title = shortDate + "睡眠时间分布"
       sub[i].data = dailys[i].data

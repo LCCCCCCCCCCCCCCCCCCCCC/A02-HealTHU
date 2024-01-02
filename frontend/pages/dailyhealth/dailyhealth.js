@@ -21,6 +21,7 @@ Page({
   data: {
     active: 0,
     lastNum: 10,
+    wellNum: 6,
     lastHour: 12.6,
     lasting: 8,
     waiting: 2,
@@ -65,14 +66,46 @@ createSimulationData: function () {
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    var that = this
+    var id = wx.getStorageSync('id')
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var currentDate = date.split("/")
+    var year = parseInt(currentDate[0]);
+    var month = parseInt(currentDate[1]);
+    var day = parseInt(currentDate[2]);
+    var newDate = new Date(year, month - 1, day - 1);
+    date = newDate.getFullYear() + "/" + (newDate.getMonth() + 1).toString().padStart(2, '0') + "/" + newDate.getDate().toString().padStart(2, '0')
+    //var date = "2024/01/03"
+    var sleepHour = wx.getStorageSync('sleepHour')
+    var cal = wx.getStorageSync('cal').toFixed(0)
+    this.setData({
+      sleepHour:sleepHour,
+      heatNum: cal
+    })
+    wx.request({
+      url:'http://127.0.0.1:8000/schedule/todos/',
+      data:{
+        'id': id,
+        'date': date
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.changeLastHour(data)
+        that.changeLastNum(data)
+        that.drawChart(data)
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
-    var windowWidth = 320;
+    
+},
+ drawChart(data){
+  var windowWidth = 320;
     try {
         var res = wx.getSystemInfoSync();
         windowWidth = res.windowWidth;
@@ -113,32 +146,40 @@ createSimulationData: function () {
             lineStyle: 'curve'
         }
     });
-
+    var eatNum = data.filter(function(data) {
+      return data.type == "饮食"
+      }).length
+    var sportNum = data.filter(function(data) {
+      return data.type == "运动"
+      }).length
+    var courseNum = data.filter(function(data) {
+        return data.type == "课程"
+        }).length
+    var actNum = data.filter(function(data) {
+          return data.type == "活动"
+        }).length
   pieChart = new wxCharts({
     animation: true,
     canvasId: 'pieCanvas-num',
     type: 'pie',
     series: [{
           name: '吃饭',
-          data: 2,
+          data: eatNum,
       }, {
           name: '运动',
-          data: 1,
-      }, {
-          name: '完成ddl',
-          data: 3,
+          data: sportNum,
       }, {
           name: '课程',
-          data: 3,
+          data: courseNum,
       }, {
           name: '活动',
-          data: 1,
+          data: actNum,
       }],
       width: windowWidth,
       height: 300,
       dataLabel: true,
   });
-
+  this.changeChart(data)
   columnChart = new wxCharts({
     canvasId: 'columnCanvas',
     type: 'column',
@@ -188,14 +229,74 @@ createSimulationData: function () {
         }
     }
 });
-},
+ },
   /**
    * 生命周期函数--监听页面显示
    */
   onShow() {
 
   },
-
+  changeLastHour(data){
+    var res = 0
+    for(var i = 0; i < data.length;i++){
+      if(data[i].state == 1){
+        var start = data[i].start.split(":")
+        var end = data[i].end.split(":")
+        res += (end[0]-start[0])*60 + (end[1]-start[1])
+      }
+    }
+    res = (res / 60).toFixed(1)
+    this.setData({
+      lastHour:res
+    })
+  },
+  changeLastNum(data){
+    var lastNum = 0
+    for(var i = 0; i < data.length;i++){
+      if(data[i].state == 1){
+        lastNum++
+      }
+    }
+    this.setData({
+      wellNum:data.length,
+      lastNum:lastNum
+    })
+  },
+  changeChart(data){
+    console.log(data)
+    var chartHour = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    for(var i = 0; i < data.length;i++){
+      if(data[i].state == 1){
+        var start = data[i].start.split(":")
+        var end = data[i].end.split(":")
+        start[0] = parseInt(start[0])
+        start[1] = parseInt(start[1])
+        end[0] = parseInt(end[0])
+        end[1] = parseInt(end[1])
+        if(start[0] == end[0]){
+          chartHour[start[0]] += end[1] - start[1]
+        }
+        else{
+          for(var j = start[0]; j <= end[0];j++ ){
+            if(j == start[0]){
+              chartHour[start[0]] += 60 - start[1]
+            }
+            else if(j == end[0]){
+              chartHour[end[0]] += end[1]
+            }
+            else{
+              chartHour[j] += 60
+            }
+          }
+        }
+      }
+    }
+    var newChart = [0,0,0,0,0,0,0,0,0,0,0,0]
+    for(var i = 0;i<12;i++){
+      newChart[i] = ((chartHour[2 * i] + chartHour[2 * i + 1]) / 60).toFixed(2)
+    }
+    chartData.lastmain.data = newChart
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

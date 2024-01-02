@@ -6,13 +6,13 @@
       <view class="block1">
         <view class="text">打卡时长</view>
         <view class="today-number">{{lastHour}}h
-          <text class="text">+12.1%</text>
+          <text class="text">+??.?%</text>
         </view>
       </view>
       <view class="block2">
         <view class="text">完成事项</view>
-        <view class="today-number">{{lastNum}}
-          <text class="text">+11.1%</text>
+        <view class="today-number">{{lastNum}}/{{wellNum}}
+          <text class="text">+??.?%</text>
         </view>
       </view>
     </view>
@@ -31,13 +31,13 @@
       <view class="block1">
         <view class="text">睡眠时长</view>
         <view class="today-number">{{sleepHour}}h
-          <text class="text">-13.4%</text>
+          <text class="text">-??.?%</text>
         </view>
       </view>
       <view class="block2">
         <view class="text">消耗热量</view>
         <view class="today-number">{{heatNum}}kJ
-          <text class="text">+11.1%</text>
+          <text class="text">+??.?%</text>
         </view>
       </view>
     </view>
@@ -62,7 +62,7 @@
     <van-divider />
   </van-tab>
 
-  <van-tab title="事件统计">
+  <!-- <van-tab title="事件统计">
     <view class="container_num">
       <view class="lasting-block">
           <view class="text">已连续打卡</view>
@@ -74,22 +74,22 @@
 
     <view class="container_chart">
       <text class="text-black">打卡时长趋势</text>
-      <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
+      <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas> -->
     <!--TODO: 完成不同事件的折线图，能够筛选事件类型和时间范围 -->
     <!-- maybe TODO: 若干周一周二...周日的综合表现 -->
-    </view>
+    <!-- </view>
     <view class="container_chart">
       <text class="text-black">时间掌控度评估</text>
       <canvas canvas-id="radarCanvas" class="canvas" bindtouchstart="touchHandler_radar"></canvas>
-      <text class="text-black">一周内超过一半的日子合理掌控了时间，继续加油</text>   
+      <text class="text-black">一周内超过一半的日子合理掌控了时间，继续加油</text>    -->
           <!--综合工作量和事件完成率评个分，分三档 -->
-    </view>
+    <!-- </view>
     <van-divider />
-  </van-tab>
+  </van-tab> -->
 
-  <van-tab title="历史报告">
+  <!-- <van-tab title="历史报告"> -->
   <!-- 往期的昨日小结和每周事件统计（如果签名不做筛选的话） -->
-    <van-card
+    <!-- <van-card
       tag="未查看"
       desc="描述信息"
       title="2023秋第9周(11/27-12/3)健康周报"
@@ -100,6 +100,6 @@
         <van-button size="mini">删除</van-button>
       </view>
     </van-card> 
-  </van-tab>
+  </van-tab> -->
 </van-tabs>
 </view>
