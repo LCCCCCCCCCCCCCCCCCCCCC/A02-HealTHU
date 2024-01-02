@@ -28,17 +28,16 @@
   </view>
 </van-cell-group>
 
-<van-dialog title="已经完成啦" message="打卡时间：9:05~9:17" show="{{ onlyshow }}"/>
+<van-dialog title="已经完成啦" message="{{text}}" show="{{ onlyshow }}"/>
+<van-dialog title="待完成的运动事项" message="{{text}}" show="{{ startshow }}"/>
 <van-dialog use-title-slot use-slot
   showCancelButton
-  show="{{ beginshow }}"
+  show="{{ endshow }}"
   confirm-button-open-type="getUserInfo"
   bind:getuserinfo="confirm"
   >
-  <view wx:if="{{currentstate == 0}}" slot="title">开始打卡吗？</view>
-  <view wx:else slot="title">结束打卡吗？</view>
-  <view class="timetext" wx:if="{{currentstate == 0}}">计划开始时间：22:00</view>
-  <view class="timetext" wx:else>开始时间：16:47</view>
+  <view slot="title">结束打卡吗？</view>
+  <view class="timetext">{{text}}</view>
 </van-dialog>
 <van-divider />
 <!-- 1给一些准备/结束活动指导（播片），23打卡，4看自己参加的体育比赛 -->

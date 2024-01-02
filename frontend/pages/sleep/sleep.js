@@ -5,21 +5,21 @@ var app = getApp();
 var columnChart = null;
 var chartData = {}
 var tofix = [
-  {date: "2023/12/30", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2023/12/31", data: [2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 2]},
-  {date: "2024/01/01", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/02", data: [2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/03", data: [2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1]},
-  {date: "2024/01/04", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/05", data: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0]},
-  {date: "2024/01/06", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2023-12-30", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2023-12-31", data: [2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 2]},
+  {date: "2024-01-01", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-02", data: [2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-03", data: [2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1]},
+  {date: "2024-01-04", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-05", data: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024-01-06", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
 ]
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    lasttime: '2023/12/6 0:53',
+    lasttime: '2023-12-6 0:53',
     chartTitle: '近七日睡眠时间',
     isMainChartDisplay: true,
     sleepHour: 0,
@@ -36,7 +36,7 @@ Page({
     sleepData2:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   },
   startSleep(){
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
     var currentHour = new Date().getHours()
     if(new Date().getMinutes > 30){
       currentHour ++
@@ -54,7 +54,7 @@ Page({
     //播放音乐
   },
   endSleep(){
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
     var currentHour = new Date().getHours()
     if(new Date().getMinutes > 30){
       currentHour ++
@@ -165,8 +165,8 @@ touchHandler: function (e) {
   onLoad(options) {
     var id = wx.getStorageSync('id')
     var that = this
-    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
-    /*
+    var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
+    console.log(date)
     wx.request({
       url:'http://127.0.0.1:8000/sleep/getSleep/',
       data:{
@@ -176,8 +176,9 @@ touchHandler: function (e) {
       method:'GET',
       success:function(res){
         var data = res.data
-        for(var i = 0;i < data.sleepDaily.length;i++){
-          data.sleepDaily[i].data = data.sleepDaily[i].data.split("")
+        console.log(data)
+        for(var i = 0;i < data.length;i++){
+          data[i].data = data[i].data.split("")
         }
         that.setData({
           sleepDaily: data.sleepDaily,
@@ -190,7 +191,6 @@ touchHandler: function (e) {
         that.drawChart()
       }
     })
-    */
    this.drawChart()
   },
   drawChart(){
@@ -295,7 +295,7 @@ touchHandler: function (e) {
     })
   },
   isnext(startDate,endDate){//判断后者是否为前者的后一天
-    var currentDate = startDate.split("/");
+    var currentDate = startDate.split("-");
     var year = parseInt(currentDate[0]);
     var month = parseInt(currentDate[1]);
     var day = parseInt(currentDate[2]);
@@ -303,7 +303,7 @@ touchHandler: function (e) {
     var newYear = newDate.getFullYear();
     var newMonth = (newDate.getMonth() + 1).toString().padStart(2, '0');
     var newDay = newDate.getDate().toString().padStart(2, '0');
-    var dateString = newYear + '/' + newMonth + '/' + newDay;
+    var dateString = newYear + '-' + newMonth + '-' + newDay;
     return (endDate == dateString)
   },
   tochart(dailys){
@@ -315,7 +315,7 @@ touchHandler: function (e) {
     var sub = []
     for(var i = 0;i < 7;i++){
       sub[i] = {}
-      var dates = dailys[i].date.split("/")
+      var dates = dailys[i].date.split("-")
       var shortDate = dates[1] + "-" + dates[2]
       sub[i].title = shortDate + "睡眠时间分布"
       sub[i].data = dailys[i].data

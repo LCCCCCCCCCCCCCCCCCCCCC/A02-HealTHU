@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import SleepInfo
-from datetime import datetime
+from datetime import datetime,timedelta
 import requests
 import json
 
@@ -42,8 +42,9 @@ def getSleep(request):
         timeDelta = 0
         sleepInfo = {}
         while timeDelta >= -7:
+            print(date)
             # date being a string, get thisDate as a new string that this date += timeDelta
-            thisDate = datetime.strptime(date, '%Y-%m-%d') + datetime.timedelta(days=timeDelta)
+            thisDate = datetime.strptime(date, '%Y-%m-%d') + timedelta(days=timeDelta)
             # if the date is not in the database, put a date, [0,0,0,0,0,0,0,0,0,0,0,0] into the dict
             if targetSleepInfo.sleepingInfo.get(thisDate) is None:
                 sleepInfo[thisDate] = [0,0,0,0,0,0,0,0,0,0,0,0]
