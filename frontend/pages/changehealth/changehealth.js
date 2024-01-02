@@ -83,7 +83,7 @@ Page({
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/thuInfo/getHealthInfo/',
+      url:'http://127.0.0.1:8000/thuInfo/getHealthInfo/',
       data:{
         id:id
       },

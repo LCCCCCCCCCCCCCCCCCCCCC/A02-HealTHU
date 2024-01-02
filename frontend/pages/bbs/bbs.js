@@ -19,7 +19,7 @@ Page({
   likePost(){
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/likePost/',
+      url:'http://127.0.0.1:8000/bbs/likePost/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
@@ -34,7 +34,7 @@ Page({
   dislikePost(){
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/dislikePost/',
+      url:'http://127.0.0.1:8000/bbs/dislikePost/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
@@ -50,7 +50,7 @@ Page({
     var floor = event.target.dataset.index
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/likeReply/',
+      url:'http://127.0.0.1:8000/bbs/likeReply/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
@@ -67,7 +67,7 @@ Page({
     var floor = event.target.dataset.index
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/dislikeReply/',
+      url:'http://127.0.0.1:8000/bbs/dislikeReply/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
@@ -90,7 +90,7 @@ Page({
     var that = this
     var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/addReply/',
+      url:'http://127.0.0.1:8000/bbs/addReply/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
@@ -105,7 +105,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://43.138.52.97:8001/user/getDetail/',
+      url:'http://127.0.0.1:8000/user/getDetail/',
       data:{
         'hostId': that.data.id,
         'customerId':that.data.id
@@ -125,7 +125,7 @@ Page({
           recieverId = that.getIdByFloor(floor)
         }
         wx.request({
-          url:'http://43.138.52.97:8001/message/sendMessage/',
+          url:'http://127.0.0.1:8000/message/sendMessage/',
           header:{ 'content-type': 'application/x-www-form-urlencoded'},
           data:{
             receiverId: recieverId,
@@ -145,7 +145,7 @@ Page({
     var floor = this.data.deleteindex
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/deleteReply/',
+      url:'http://127.0.0.1:8000/bbs/deleteReply/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
@@ -161,7 +161,7 @@ Page({
   deleteallConfirm() {
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/deletePost/',
+      url:'http://127.0.0.1:8000/bbs/deletePost/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.id,
@@ -201,7 +201,7 @@ Page({
       id:id
     })
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/getPostDetail/',
+      url:'http://127.0.0.1:8000/bbs/getPostDetail/',
       data:{
         id:id,
         postId: that.data.bbsId

@@ -15,7 +15,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
      wx.uploadFile({
-       url: 'http://43.138.52.97:8001/user/postImage/',
+       url: 'http://127.0.0.1:8000/user/postImage/',
        filePath: file.url,
        name: 'image',
        formData: { id: id },
@@ -24,7 +24,7 @@ Page({
        success(res) {
          var data = res.data.split('/')
          that.setData({
-           avatarUrl:'http://43.138.52.97:8001/media/' + data[1]
+           avatarUrl:'http://127.0.0.1:8000/media/' + data[1]
          })
        },
      });
@@ -47,7 +47,7 @@ Page({
     var id = wx.getStorageSync('id')
     console.log(that.data)
     wx.request({
-      url:'http://43.138.52.97:8001/user/changeInfo/',
+      url:'http://127.0.0.1:8000/user/changeInfo/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id: id,
@@ -75,7 +75,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     wx.request({
-      url:'http://43.138.52.97:8001/user/getDetail/',
+      url:'http://127.0.0.1:8000/user/getDetail/',
       data:{
         'hostId': id,
         'customerId':id

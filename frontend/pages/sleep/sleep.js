@@ -166,7 +166,7 @@ touchHandler: function (e) {
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     /*
     wx.request({
-      url:'http://43.138.52.97:8001/user/getSleep/',
+      url:'http://127.0.0.1:8000/user/getSleep/',
       data:{
         'id': id,
         'date': date
@@ -268,7 +268,7 @@ touchHandler: function (e) {
     var that = this
     var id = wx.getStorageSync('id')
     wx.request({
-      url:'http://43.138.52.97:8001/user/changeSleepState/',
+      url:'http://127.0.0.1:8000/user/changeSleepState/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id: id,
@@ -288,7 +288,7 @@ touchHandler: function (e) {
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/user/changeSleep/',
+      url:'http://127.0.0.1:8000/user/changeSleep/',
       data:{
         id:id,
         date: date,

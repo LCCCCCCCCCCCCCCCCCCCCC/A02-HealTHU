@@ -14,7 +14,7 @@ Page({
     var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
     console.log(this.data.content.value)
     wx.request({
-      url:'http://43.138.52.97:8001/bbs/addPost/',
+      url:'http://127.0.0.1:8000/bbs/addPost/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:id,
@@ -34,7 +34,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
      wx.uploadFile({
-       url: 'http://43.138.52.97:8001/user/postImage/',
+       url: 'http://127.0.0.1:8000/user/postImage/',
        filePath: file[0].url,
        name: 'image',
        formData: { id: id },
@@ -44,10 +44,10 @@ Page({
          // 上传完成需要更新 fileList
          var data = res.data.split('/')
          const { fileList = [] } = that.data;
-         fileList.push({ ...file, url: 'http://43.138.52.97:8001/media/' + data[1] });
+         fileList.push({ ...file, url: 'http://127.0.0.1:8000/media/' + data[1] });
          //fileList.push({ ...file, url: file[0].url });
          var images = that.data.images
-         images.push('http://43.138.52.97:8001/media/' + data[1])
+         images.push('http://127.0.0.1:8000/media/' + data[1])
          that.setData({ fileList });
          that.setData({
            images:images
