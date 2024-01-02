@@ -33,24 +33,25 @@ def changeSleepState(request):
     
 def getSleep(request):
     if request.method == 'GET':
-        id = request.GET.get('id')
+        id = int(request.GET.get('id'))
         date = request.GET.get('date')
         # for this day and the 7 days before,
-        targetSleepInfo = SleepInfo.objects.filter(userId=id)
+        targetSleepInfo = SleepInfo.objects.filter(userId=id).first()
         if targetSleepInfo is None:
             targetSleepInfo = SleepInfo.objects.create(userId=id, sleepingInfo={})
         timeDelta = 0
         sleepInfo = {}
         while timeDelta >= -7:
-            print(date)
             # date being a string, get thisDate as a new string that this date += timeDelta
             thisDate = datetime.strptime(date, '%Y-%m-%d') + timedelta(days=timeDelta)
+            thisDate = thisDate.strftime('%Y-%m-%d')
             # if the date is not in the database, put a date, [0,0,0,0,0,0,0,0,0,0,0,0] into the dict
             if targetSleepInfo.sleepingInfo.get(thisDate) is None:
                 sleepInfo[thisDate] = [0,0,0,0,0,0,0,0,0,0,0,0]
             else:
                 sleepInfo[thisDate] = targetSleepInfo.sleepingInfo.get(thisDate)
             timeDelta -= 1
+        print(sleepInfo)
         return HttpResponse(json.dumps(sleepInfo, ensure_ascii=False))
             
         
