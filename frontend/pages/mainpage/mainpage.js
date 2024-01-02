@@ -175,6 +175,7 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
+    console.log(token)
     wx.request({
       url:'http://127.0.0.1:8000/user/getDetail/',
       header: {
