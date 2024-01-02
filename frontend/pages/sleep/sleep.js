@@ -69,7 +69,6 @@ Page({
         sleepData = this.data.sleepDaily[i].data
       }
     }
-    sleepData = sleepData.split(",")
     var sleepHour = 0
     if(this.data.startDate == this.data.endDate){
       for(var i = this.data.startHour;i<this.data.endHour;i++){
@@ -282,13 +281,13 @@ touchHandler: function (e) {
     var id = wx.getStorageSync('id')
     var that = this
     console.log(date)
-    console.log(data)
+    console.log("[" + data.join() + "]")
     wx.request({
       url:'http://127.0.0.1:8000/sleep/changeSleep/',
       data:{
         id:id,
         date: date,
-        data: data
+        data: "[" + data.join() + "]"
       },
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       method:'POST',
