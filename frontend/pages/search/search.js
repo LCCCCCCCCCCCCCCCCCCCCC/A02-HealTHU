@@ -17,8 +17,10 @@ Page({
   onLoad(options) {
     var that = this
     if(options){
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/bbs/searchPost/',
+        header: {'Authorization': token},
         data:{
           key: options.key
         },
@@ -30,8 +32,10 @@ Page({
           });
         }
       })
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/user/search/',
+        header: {'Authorization': token},
         data:{
           key: options.key
         },

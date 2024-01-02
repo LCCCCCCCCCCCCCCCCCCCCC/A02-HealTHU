@@ -14,12 +14,13 @@ Page({
     const { file } = event.detail;
     var that = this
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
      wx.uploadFile({
        url: 'http://127.0.0.1:8000/user/postImage/',
        filePath: file.url,
        name: 'image',
        formData: { id: id },
-       header:{ 'content-type': 'application/x-www-form-urlencoded'},
+       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
        method:"POST",
        success(res) {
          var data = res.data.split('/')
@@ -45,10 +46,10 @@ Page({
   change(){
     var that = this
     var id = wx.getStorageSync('id')
-    console.log(that.data)
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/changeInfo/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id: id,
         nickName:that.data.nickName,
@@ -74,8 +75,10 @@ Page({
   onLoad(options) {
     var that = this
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/getDetail/',
+      header: {'Authorization': token},
       data:{
         'hostId': id,
         'customerId':id

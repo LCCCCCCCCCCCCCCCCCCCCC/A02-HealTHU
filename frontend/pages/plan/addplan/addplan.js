@@ -137,8 +137,10 @@ Page({
       })
       return;
     }
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/todos/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': that.data.date
@@ -165,10 +167,10 @@ Page({
         }
         if(that.data.isValid){
           var id = wx.getStorageSync('id')
-          console.log(id)
+          var token = wx.getStorageSync('token')
           wx.request({
             url:'http://127.0.0.1:8000/schedule/addTodo/',
-            header:{ 'content-type': 'application/x-www-form-urlencoded'},
+            header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
             data:{
               id: id,
               title: that.data.title,

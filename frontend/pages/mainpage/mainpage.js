@@ -45,9 +45,10 @@ Page({
       });
     }
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/message/read/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:id,
         messageId: tempList[personindex].id
@@ -62,8 +63,10 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     if(choice != 3){
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/bbs/getPost/',
+        header: {'Authorization': token},
         data:{
           id:id,
           type: choice
@@ -90,8 +93,10 @@ Page({
       })
     }
     else{
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/message/getMessages/',
+        header: {'Authorization': token},
         data:{
           id:id,
         },
@@ -175,7 +180,6 @@ Page({
     var that = this
     var id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
-    console.log(token)
     wx.request({
       url:'http://127.0.0.1:8000/user/getDetail/',
       header: {
@@ -206,6 +210,7 @@ Page({
     })
     wx.request({
       url:'http://127.0.0.1:8000/schedule/todos/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': date
@@ -229,6 +234,7 @@ Page({
     })
     wx.request({
       url:'http://127.0.0.1:8000/schedule/getddl/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': date,
@@ -247,6 +253,7 @@ Page({
     })
     wx.request({
       url:'http://127.0.0.1:8000/bbs/getPost/',
+      header: {'Authorization': token},
       data:{
         id:id,
         type: 0
@@ -261,6 +268,7 @@ Page({
     })
     wx.request({
       url:'http://127.0.0.1:8000/message/getMessages/',
+      header: {'Authorization': token},
       data:{
         id:id,
       },

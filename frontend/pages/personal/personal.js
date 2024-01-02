@@ -67,9 +67,10 @@ Page({
   },
   follow(){
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/addAttention/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         hostId: that.data.id,
         customerId: that.data.userId
@@ -82,9 +83,10 @@ Page({
   },
   unfollow(){
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/delAttention/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         hostId: that.data.id,
         customerId: that.data.userId
@@ -111,8 +113,10 @@ Page({
       id:id
     })
     var that = this
+    var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/user/getPersonal/',
+        header: {'Authorization': token},
         data:{
           hostId: id,
           customerId: that.data.userId

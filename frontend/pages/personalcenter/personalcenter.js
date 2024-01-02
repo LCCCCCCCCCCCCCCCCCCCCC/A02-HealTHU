@@ -40,7 +40,6 @@ Page({
                 },
                 method:'GET',
                 success:function(res){
-                  console.log(res.data.token)
                   wx.setStorageSync('id', res.data.id);
                   wx.setStorageSync('token', res.data.token)
                   wx.redirectTo({

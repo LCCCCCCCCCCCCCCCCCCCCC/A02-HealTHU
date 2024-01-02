@@ -82,8 +82,10 @@ Page({
   onLoad(options) {
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/thuInfo/getHealthInfo/',
+      header: {'Authorization': token},
       data:{
         id:id
       },
