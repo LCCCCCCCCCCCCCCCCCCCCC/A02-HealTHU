@@ -4,5 +4,5 @@ from . import views
 urlpatterns=[
     path('getSleep/', views.getSleep),
     path('changeSleepState/', views.changeSleepState),
-    path('getSleep', views.getSleep),
+    path('changeSleep/', views.changeSleep),
 ]

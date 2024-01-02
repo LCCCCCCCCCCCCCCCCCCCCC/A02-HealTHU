@@ -34,9 +34,10 @@ def changeSleepState(request):
     
 def getSleep(request):
     if request.method == 'GET':
-        id = request.GET.get('id')
+        id = int(request.GET.get('id'))
         date = request.GET.get('date')
         # for this day and the 7 days before,
+        targetSleepInfo = SleepInfo.objects.filter(userId=id).first()
         targetSleepInfo = SleepInfo.objects.filter(userId=id).first()
         if targetSleepInfo is None:
             targetSleepInfo = SleepInfo.objects.create(userId=id, sleepingInfo={})
