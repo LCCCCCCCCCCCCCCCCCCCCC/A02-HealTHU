@@ -6,16 +6,16 @@
   </view>
   <text>今日运动/千卡</text>
 </view>
-<view class="progress-out">
+<!-- <view class="progress-out">
   <van-progress custom-class="progress"
     percentage="{{percentage}}"
     pivot-text="每日步数目标: 5000"
     pivot-color="#7232dd"
     color="linear-gradient(to right, #be99ff, #7232dd)"
   />
-</view>
+</view> -->
 <van-cell-group custom-class="suggestion" inset>
-  <van-cell title="今日步数 {{walknum | toFixed(1)}}，已完成目标 {{percentage}}%" icon="checked"/>
+  <!-- <van-cell title="今日步数 {{walknum | toFixed(1)}}，已完成目标 {{percentage}}%" icon="checked"/> -->
   <van-cell title="今日运动计划" icon="arrow-down"/>
   <view wx:for="{{todos}}" wx:key="index">
     <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="handleBegin">

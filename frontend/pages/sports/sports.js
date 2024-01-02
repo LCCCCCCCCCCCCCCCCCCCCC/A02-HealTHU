@@ -8,7 +8,7 @@ Page({
     percentage: 78,
     text:"",
     percentage_real: 100,
-    walknum: 3910,
+    walknum: 2000,
     goal: 5000,
     today_cal: 7.5,
     gymList: [
@@ -29,9 +29,10 @@ Page({
       if(this.data.todos[i].state == 1){
         var start = this.data.todos[i].start.split(":")
         var end = this.data.todos[i].end.split(":")
-        cal += ((end[0] - start[0])*60 + end[1]- start[1]) * 500 / 60
+        cal += ((end[0] - start[0])*60+ (end[1] - start[1])) * 500 / 60
       }
     }
+    wx.setStorageSync('cal', cal)
     return cal;
   },
   // 微信步数获取刷新
@@ -152,40 +153,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    var that = this
-    wx.getSetting({
-      success(res) {
-        if (!res.authSetting['scope.werun']) {
-          wx.authorize({
-            scope: 'scope.werun',
-            success () {
-            },
-            fail(){
-              wx.showModal({
-                content: '检测到您没打开此小程序的步数权限，是否去设置打开？',
-                confirmText: "确认",
-                cancelText: "取消",
-                success: function (res) {
-                  console.log(res);
-                  //点击“确认”时打开设置页面
-                  if (res.confirm) {
-                    console.log('用户点击确认')
-                    console.log(111)
-                    wx.openSetting({
-                      success: (res) => { 
-                        console.log(res)          
-                      }
-                    })
-                  } else {
-                    console.log('用户点击取消')
-                  }
-                }
-              });
-            }
-          })
-        }
-      }
-    })
     
   },
 
