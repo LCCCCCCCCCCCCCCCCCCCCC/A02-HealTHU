@@ -26,16 +26,18 @@ Page({
   getcal() {
     var cal = 0.03*this.data.walknum;
     for(var i = 0;i<this.data.todos.length;i++){
-      var start = this.data.todos[i].start
-      var end = this.data.todos[i].end
-      console.log(start)
+      if(this.data.todos[i].state == 1){
+        var start = this.data.todos[i].start.split(":")
+        var end = this.data.todos[i].end.split(":")
+        cal += ((end[0] - start[0])*60 + end[1]- start[1]) * 500 / 60
+      }
     }
     return cal;
   },
   // 微信步数获取刷新
   today_replay(){
     var newwalk = this.data.walknum + Math.random()*50+10;
-    var per = (newwalk/this.data.goal * 100);
+    var per = (newwalk/this.data.goal * 100).toFixed(2);
     if(per>100){per = 100}
     var cal = this.getcal();
     this.setData({ 
@@ -150,7 +152,41 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    var that = this
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.werun']) {
+          wx.authorize({
+            scope: 'scope.werun',
+            success () {
+            },
+            fail(){
+              wx.showModal({
+                content: '检测到您没打开此小程序的步数权限，是否去设置打开？',
+                confirmText: "确认",
+                cancelText: "取消",
+                success: function (res) {
+                  console.log(res);
+                  //点击“确认”时打开设置页面
+                  if (res.confirm) {
+                    console.log('用户点击确认')
+                    console.log(111)
+                    wx.openSetting({
+                      success: (res) => { 
+                        console.log(res)          
+                      }
+                    })
+                  } else {
+                    console.log('用户点击取消')
+                  }
+                }
+              });
+            }
+          })
+        }
+      }
+    })
+    
   },
 
   /**
