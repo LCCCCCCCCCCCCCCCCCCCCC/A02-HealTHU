@@ -17,6 +17,10 @@ def changeSleep(request):
         id = request.POST.get('id')
         date = request.POST.get('date')
         data = request.POST.get('data')
+        if data is None:
+            data = []
+        else:
+            data = json.loads(data)
         # find the corresponding user, if not exist, create one
         targetSleepInfo = SleepInfo.objects.filter(userId=id).first()
         if targetSleepInfo is None:
