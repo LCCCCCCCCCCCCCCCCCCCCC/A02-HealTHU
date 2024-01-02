@@ -14,8 +14,8 @@ import json
 
 
 # Create your views here.
-@login_required
 @csrf_exempt
+@login_required
 def addPost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -65,8 +65,8 @@ def addPost(request):
         )
         return HttpResponse("Post added")
 
-@login_required
 @csrf_exempt
+@login_required
 def deletePost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -92,8 +92,8 @@ def deletePost(request):
         targetTopic.delete()
         return HttpResponse("Post deleted")
 
-@login_required
 @csrf_exempt
+@login_required
 def likePost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -118,8 +118,8 @@ def likePost(request):
         targetOpFloor.save()
         return HttpResponse("Post liked")
 
-@login_required
 @csrf_exempt
+@login_required
 def dislikePost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -144,8 +144,8 @@ def dislikePost(request):
         targetOpFloor.save()
         return HttpResponse("Post disliked")
 
-@login_required
 @csrf_exempt
+@login_required
 def addReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -194,8 +194,8 @@ def addReply(request):
         targetAboveFloor.save()
         return HttpResponse("Reply added")
 
-@login_required
 @csrf_exempt
+@login_required
 def deleteReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -242,8 +242,8 @@ def deleteReply(request):
         targetFloor.delete()
         return HttpResponse("Floor deleted")
 
-@login_required
 @csrf_exempt
+@login_required
 def likeReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -273,8 +273,8 @@ def likeReply(request):
         targetFloor.save()
         return HttpResponse("reply liked")
 
-@login_required
 @csrf_exempt
+@login_required
 def dislikeReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))

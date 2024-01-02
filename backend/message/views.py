@@ -46,8 +46,8 @@ def getMessages(request):
         msgArray.reverse()
         return HttpResponse(json.dumps(msgArray, ensure_ascii=False))
 
-@login_required
 @csrf_exempt
+@login_required
 def read(request):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -71,8 +71,8 @@ def read(request):
         message.save()
         return HttpResponse("Success")
 
-@login_required
 @csrf_exempt
+@login_required
 def sendMessage(request):
     if request.method == "POST":
         receiverId = int(request.POST.get('receiverId'))
@@ -96,8 +96,8 @@ def sendMessage(request):
             targetMessageBox.save()
         return HttpResponse("Success")
 
-@login_required
 @csrf_exempt
+@login_required
 def deleteMessage(request):
     if request.method == "POST":
         id = request.POST.get('id')

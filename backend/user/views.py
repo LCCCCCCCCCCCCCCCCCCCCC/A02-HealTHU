@@ -125,8 +125,9 @@ def getDetail(request):
             else:
                 # 没有找到匹配的用户
                 return HttpResponse("User not found", status=400)
-@login_required
+
 @csrf_exempt
+@login_required
 def changeInfo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -208,8 +209,8 @@ def getFans(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
-@login_required
 @csrf_exempt
+@login_required
 def addAttention(request):
     if request.method == 'POST':
         #host 关注 customer
@@ -230,8 +231,8 @@ def addAttention(request):
                 return HttpResponse("Add Attention Success", status=200)
             else:
                 return HttpResponse("User not found", status=400)
-@login_required
 @csrf_exempt
+@login_required
 def delAttention(request):
     if request.method == 'POST':
         #host 取消关注 customer
@@ -397,8 +398,8 @@ def getRange(request):
             return HttpResponse(json.dumps(responseDict, ensure_ascii=False))
         return HttpResponse("User not found")
 
-@login_required
 @csrf_exempt
+@login_required
 def changeRange(request):
     if request.method == "POST":
         id = int(request.POST.get("id"))

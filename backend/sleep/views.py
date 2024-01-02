@@ -11,8 +11,8 @@ import json
 
 
 # Create your views here.
-@login_required
 @csrf_exempt
+@login_required
 def changeSleep(request):
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -30,8 +30,8 @@ def changeSleep(request):
         print(targetSleepInfo.sleepingInfo)
         targetSleepInfo.save()
         return HttpResponse("Change Success")
-@login_required
 @csrf_exempt
+@login_required
 def changeSleepState(request):
     if request.method == 'POST':
         # !!! no need to implement this function
