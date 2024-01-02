@@ -12,7 +12,6 @@ from .models import Comment
 from .models import Application
 from .models import Activity
 from user.models import User
-from .__init__ import access_token
 import requests
 import json
 import datetime
@@ -24,9 +23,21 @@ import random
 todo_schedule = BackgroundScheduler()
 todo_schedule.start()
 
+def token_job():
+    url = "https://api.weixin.qq.com/cgi-bin/token"
+    params = {
+        "grant_type": "client_credential",
+        "appid": "wx0ed6410d0f2b476f",
+        "secret": "737153f44349fdde120da7fedce92666"
+    }
+
+    response = requests.get(url, params=params)
+    access_token = response.json()['access_token']
+    return access_token
 
 # 微信提醒函数，参数为用户 openid,todo 项 name，开始时间，结束时间
 def wx_reminder(touser, todoname, starttime, endtime):
+    access_token = token_job()
     url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token
     data = {
         "template_id": "fHPE-sivPSATvWyAsqHrlIFKo6-6NN20DmVxFx8q4I8",
