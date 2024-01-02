@@ -174,10 +174,11 @@ Page({
     var currentTime = parseInt(new Date().getHours() + "" + (new Date().getMinutes()).toString().padStart(2, '0'))
     var that = this
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/getDetail/',
       header: {
-        'Authorization': 'Bearer ' + 'token'
+        'Authorization': token
       },
       data:{
         'hostId': id,

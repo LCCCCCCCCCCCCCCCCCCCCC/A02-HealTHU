@@ -41,7 +41,7 @@ Page({
                 method:'GET',
                 success:function(res){
                   wx.setStorageSync('id', res.data);
-                  console.log(res.data)
+                  wx.setStorageSync('token', res.token)
                   wx.redirectTo({
                     url: '../mainpage/mainpage'
                   })
