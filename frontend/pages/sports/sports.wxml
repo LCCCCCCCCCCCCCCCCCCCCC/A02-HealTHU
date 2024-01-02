@@ -21,9 +21,9 @@
     <van-cell is-link label="{{item.label}}" data-id="{{index}}" bind:click="handleBegin">
       <view slot="title"> {{item.title}}</view>
       <view>{{item.start}}—{{item.end}}</view>
-      <view wx:if="{{ (item.state == 0)}}">未开始</view>
+      <view wx:if="{{ (item.state == 0)}}">未完成</view>
       <view wx:if="{{ (item.state == 1)}}">已完成</view>
-      <view wx:if="{{ (item.state == 2)}}">进行中</view>
+      <view wx:if="{{ (item.state == 2)}}">进行中，点击结束</view>
     </van-cell>
   </view>
 </van-cell-group>

@@ -49,6 +49,8 @@ Page({
       startHour: currentHour
     })
     this.saveState()
+    var sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
+    console.log(sleepData.join(""))
     //播放音乐
   },
   endSleep(){
@@ -166,7 +168,7 @@ touchHandler: function (e) {
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     /*
     wx.request({
-      url:'http://127.0.0.1:8000/user/getSleep/',
+      url:'http://127.0.0.1:8000/sleep/getSleep/',
       data:{
         'id': id,
         'date': date
@@ -174,6 +176,9 @@ touchHandler: function (e) {
       method:'GET',
       success:function(res){
         var data = res.data
+        for(var i = 0;i < data.sleepDaily.length;i++){
+          data.sleepDaily[i].data = data.sleepDaily[i].data.split("")
+        }
         that.setData({
           sleepDaily: data.sleepDaily,
           lastTime: data.lastTime,
@@ -265,34 +270,22 @@ touchHandler: function (e) {
     })
   },
   saveState(){//保存临时睡眠状态
-    var that = this
-    var id = wx.getStorageSync('id')
-    wx.request({
-      url:'http://127.0.0.1:8000/user/changeSleepState/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
-      data:{
-        id: id,
-        lastTime: that.data.lasttime,
-        sleepHour: that.data.sleepHour,
-        isSleep: that.data.isSleep,
-        startDate: that.data.startDate,
-        startHour: that.data.startHour
-      },
-      method:'POST',
-      success:function(res){
-        that.onLoad()
-      }
-    })
+    wx.setStorageSync('lastTime', this.data.lasttime)
+    wx.setStorageSync('sleepHour', this.data.lasttime)
+    wx.setStorageSync('isSleep', this.data.lasttime)
+    wx.setStorageSync('startDate', this.data.lasttime)
+    wx.setStorageSync('startHour', this.data.lasttime)
+    this.onLoad()
   },
   saveSleep(date,data){
     var id = wx.getStorageSync('id')
     var that = this
     wx.request({
-      url:'http://127.0.0.1:8000/user/changeSleep/',
+      url:'http://127.0.0.1:8000/sleep/changeSleep/',
       data:{
         id:id,
         date: date,
-        data: data
+        data: data.join("")
       },
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       method:'POST',
