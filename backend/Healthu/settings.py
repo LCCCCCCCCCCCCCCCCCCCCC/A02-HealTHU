@@ -131,3 +131,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static/')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# jwt配置
+JWT_EXPIRE_HOURS = 24
+JWT_SECRET = "foo"
+SALT = "bar"

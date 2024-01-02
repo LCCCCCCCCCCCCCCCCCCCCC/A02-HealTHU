@@ -11,10 +11,13 @@ from schedule.models import Schedule
 from schedule.models import Activity
 from bbs.models import Topic
 from bbs.models import Floor
+from utils.jwt import generate_jwt, login_required
 import requests
 import json
 import os
 # Create your views here.
+
+
 
 @csrf_exempt
 def postImage(request):
@@ -59,8 +62,12 @@ def getId(request):
                                                             achRange=0, actRange=0, postRange=0)
             user = User.objects.create(userid=openid, userInfo=user_info,
                                 customSettings=custom_settings)
-        return HttpResponse(user.id)
+        print("generating jwt")
+        jwt = generate_jwt({"user_id": user.id, "openid": user.userid})
+        print(jwt)
+        return JsonResponse({'id': user.id, 'token': jwt}, safe=False)
 
+@login_required
 def getDetail(request):
     if request.method == 'GET':
         hostid = request.GET.get("hostId")

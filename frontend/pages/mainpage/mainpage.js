@@ -176,6 +176,9 @@ Page({
     var id = wx.getStorageSync('id')
     wx.request({
       url:'http://127.0.0.1:8000/user/getDetail/',
+      header: {
+        'Authorization': 'Bearer ' + 'token'
+      },
       data:{
         'hostId': id,
         'customerId':id
