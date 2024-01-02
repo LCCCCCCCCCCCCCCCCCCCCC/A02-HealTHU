@@ -41,7 +41,6 @@ Page({
     if(new Date().getMinutes > 30){
       currentHour ++
     }
-    console.log(currentHour)
     this.setData({
       lasttime: date + ' ' + new Date().getHours().toString().padStart(2, '0') + ':' + new Date().getMinutes().toString().padStart(2, '0'),
       isSleep:true,
@@ -50,7 +49,6 @@ Page({
     })
     this.saveState()
     var sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
-    console.log(sleepData.join(""))
     //播放音乐
   },
   endSleep(){
@@ -66,16 +64,11 @@ Page({
     })
     //提前获取start天的sleepData
     var sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
-    this.setData({
-      sleepDaily:tofix
-    })
-    console.log(this.data.startDate)
     for(var i = 0; i < 8; i++){
       if(this.data.sleepDaily[i].date == this.data.startDate){
         sleepData = this.data.sleepDaily[i].data
       }
     }
-    console.log(sleepData)
     var sleepHour = 0
     if(this.data.startDate == this.data.endDate){
       for(var i = this.data.startHour;i<this.data.endHour;i++){
@@ -166,7 +159,6 @@ touchHandler: function (e) {
     var id = wx.getStorageSync('id')
     var that = this
     var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
-    console.log(date)
     wx.request({
       url:'http://127.0.0.1:8000/sleep/getSleep/',
       data:{
@@ -175,18 +167,26 @@ touchHandler: function (e) {
       },
       method:'GET',
       success:function(res){
-        var data = res.data
-        console.log(data)
-        for(var i = 0;i < data.length;i++){
-          data[i].data = data[i].data.split("")
+        var label = Object.keys(res.data)
+        var data = []
+        for(var i = 0;i<label.length;i++){
+          var newlabel = {}
+          newlabel.date = label[i]
+          newlabel.data = res.data[label[i]]
+          data[7 - i] = newlabel
         }
+        var lastTime = wx.getStorageSync('lastTime')
+        var sleepHour = wx.getStorageSync('sleepHour')
+        var isSleep = wx.getStorageSync('isSleep')
+        var startDate = wx.getStorageSync('startDate')
+        var startHour = wx.getStorageSync('startHour')
         that.setData({
-          sleepDaily: data.sleepDaily,
-          lastTime: data.lastTime,
-          sleepHour: data.sleepHour,
-          isSleep: data.isSleep,
-          startDate: data.startDate,
-          startHour: data.startHour
+          sleepDaily: data,
+          lasttime: lastTime,
+          sleepHour: sleepHour,
+          isSleep: isSleep,
+          startDate: startDate,
+          startHour: startHour
         })
         that.drawChart()
       }
@@ -201,8 +201,8 @@ touchHandler: function (e) {
     } catch (e) {
       console.error('getSystemInfoSync failed!');
     }
-    chartData = this.tochart(tofix)
-    //chartData = this.tochart(this.data.sleepDaily)
+    //chartData = this.tochart(tofix)
+    chartData = this.tochart(this.data.sleepDaily)
     columnChart = new wxCharts({
         canvasId: 'columnCanvas',
         type: 'column',
@@ -271,21 +271,23 @@ touchHandler: function (e) {
   },
   saveState(){//保存临时睡眠状态
     wx.setStorageSync('lastTime', this.data.lasttime)
-    wx.setStorageSync('sleepHour', this.data.lasttime)
-    wx.setStorageSync('isSleep', this.data.lasttime)
-    wx.setStorageSync('startDate', this.data.lasttime)
-    wx.setStorageSync('startHour', this.data.lasttime)
+    wx.setStorageSync('sleepHour', this.data.sleepHour)
+    wx.setStorageSync('isSleep', this.data.isSleep)
+    wx.setStorageSync('startDate', this.data.startDate)
+    wx.setStorageSync('startHour', this.data.startHour)
     this.onLoad()
   },
   saveSleep(date,data){
     var id = wx.getStorageSync('id')
     var that = this
+    console.log(date)
+    console.log(data)
     wx.request({
       url:'http://127.0.0.1:8000/sleep/changeSleep/',
       data:{
         id:id,
         date: date,
-        data: data.join("")
+        data: data
       },
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       method:'POST',

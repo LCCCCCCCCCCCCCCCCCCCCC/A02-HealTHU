@@ -51,7 +51,6 @@ def getSleep(request):
             else:
                 sleepInfo[thisDate] = targetSleepInfo.sleepingInfo.get(thisDate)
             timeDelta -= 1
-        print(sleepInfo)
         return HttpResponse(json.dumps(sleepInfo, ensure_ascii=False))
             
         
