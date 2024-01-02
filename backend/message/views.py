@@ -119,13 +119,3 @@ def deleteMessage(request):
         message = Message.objects.filter(id=messageId).first()
         message.delete()
         return HttpResponse("Success")
-
-
-
-
-
-
-
-
-
-

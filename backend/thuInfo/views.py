@@ -377,3 +377,12 @@ def getHealthInfo(request):
             result['pullup'] = healthInfo.pullup
             result['grade_pullup'] = healthInfo.grade_pullup
             return HttpResponse(json.dumps(result, ensure_ascii=False))
+
+def bindState(request):
+    if request.method == 'GET':
+        id = request.GET.get('id')
+        thuinfo = Thuinfo.objects.filter(id=id).first()
+        if not thuinfo:
+            return HttpResponse(0)
+        else:
+            return HttpResponse(1)

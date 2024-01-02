@@ -90,7 +90,6 @@ Page({
               isbind:false,
             });
           }
-          wx.setStorageSync('isbind', that.data.isbind)
           wx.setStorageSync('bindId', that.data.ID)
         }
       })
@@ -102,31 +101,26 @@ Page({
    */
   onLoad(options) {
     if(wx.getStorageSync('bindId')!=""){
-      var isbind = wx.getStorageSync('isbind')
       var ID = wx.getStorageSync('bindId')
       this.setData({
-        isbind:isbind,
         ID:ID
       })
     }
-    // var that = this
-    // var id = wx.getStorageSync('id')
-    // wx.request({
-    //   url:'http://127.0.0.1:8000/thuInfo/getBindThu/',
-    //   data:{
-    //     id:id,
-    //   },
-    //   method:'GET',
-    //   success:function(res){
-    //     var data = res.data
-    //     if(data.isBind){
-    //       that.setData({
-    //         isbind:data.isBind,
-    //         ID:data.studentID
-    //       })
-    //     }
-    //   }
-    // })
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://43.138.52.97:8001/thuInfo/bindState/',
+      data:{
+        id:id,
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+          that.setData({
+            isbind:data,
+          })
+      }
+    })
   },
 
   /**
