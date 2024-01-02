@@ -12,6 +12,7 @@ from .models import Comment
 from .models import Application
 from .models import Activity
 from user.models import User
+from utils.jwt import login_required
 import requests
 import json
 import datetime
@@ -60,7 +61,7 @@ def wx_reminder(touser, todoname, starttime, endtime):
     response = requests.post(url, json=data)
     print(response.json())
 
-
+@login_required
 def todos(request):
     if request.method == 'GET':
         id = request.GET.get("id")  # the id of the schedule
@@ -99,7 +100,7 @@ def todos(request):
         # else: not found
         return HttpResponse(json.dumps([], ensure_ascii=False))
 
-
+@login_required
 @csrf_exempt
 def deleteTodo(request):
     if request.method == 'POST':
@@ -138,7 +139,7 @@ def deleteTodo(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
-
+@login_required
 @csrf_exempt
 def changeTodo(request):
     if request.method == 'POST':
@@ -206,7 +207,7 @@ def changeTodo(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
-
+@login_required
 @csrf_exempt
 def addTodo(request):
     if request.method == 'POST':
@@ -268,7 +269,7 @@ def addTodo(request):
         targetSchedule.save()
         return HttpResponse("Add successfully")
 
-
+@login_required
 @csrf_exempt
 def doTodo(request):
     if request.method == 'POST':
@@ -304,7 +305,7 @@ def doTodo(request):
         # else: schedule not found
         return HttpResponse("Schedule not found", status=400)
 
-
+@login_required
 @csrf_exempt
 def addAct(request):
     if request.method == 'POST':
@@ -406,7 +407,7 @@ def addAct(request):
         targetSchedule.save()
         return HttpResponse("Add successfully")
 
-
+@login_required
 @csrf_exempt
 def deleteAct(request):
     if request.method == 'POST':
@@ -476,7 +477,7 @@ def deleteAct(request):
             targetAct.delete()
             return HttpResponse("Delete successfully")
 
-
+@login_required
 @csrf_exempt
 def changeAct(request):
     if request.method == 'POST':
@@ -579,7 +580,7 @@ def changeAct(request):
         # else: not found
         return HttpResponse("Activity not found", status=400)
 
-
+@login_required
 def findAct(request):
     if request.method == 'GET':
         ansArray = []
@@ -648,7 +649,7 @@ def findAct(request):
         # return ansArray
         return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
 
-
+@login_required
 def getActDetail(request):
     if request.method == 'GET':
         actId = request.GET.get("actId")
@@ -679,7 +680,7 @@ def getActDetail(request):
         # else: not found
         return HttpResponse("Activity not found", status=400)
 
-
+@login_required
 @csrf_exempt
 def partAct(request):
     if request.method == 'POST':
@@ -733,7 +734,7 @@ def partAct(request):
             # else: not found
             return HttpResponse("Activity not found", status=400)
 
-
+@login_required
 def getApplication(request):
     if request.method == 'GET':
         id = int(request.GET.get("id"))
@@ -760,7 +761,7 @@ def getApplication(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
-
+@login_required
 @csrf_exempt
 def appReply(request):
     if request.method == 'POST':
@@ -853,7 +854,7 @@ def nDays(date, n):
         ansArray.append(thisDayStr)
     return ansArray
 
-
+@login_required
 def getddl(request):
     if request.method == 'GET':
         id = int(request.GET.get("id"))
@@ -893,8 +894,9 @@ def getddl(request):
             return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
         # else: not found
         return HttpResponse(json.dumps([], ensure_ascii=False))
-    
- 
+
+
+@login_required
 @csrf_exempt   
 def exitAct(request):
     if request.method == 'POST':
@@ -937,7 +939,7 @@ def exitAct(request):
         # else: not found
         return HttpResponse("Schedule or activity not found")
     
-
+@login_required
 @csrf_exempt
 def commentAct(request):
     if request.method == 'POST':
@@ -980,7 +982,7 @@ def commentAct(request):
         return HttpResponse("User or activity not found")
                 
         
-    
+@login_required
 @csrf_exempt
 def likeComment(request):
     if request.method == 'POST':
@@ -1024,7 +1026,7 @@ def likeComment(request):
         return HttpResponse("Activity not found")
 
 
-
+@login_required
 @csrf_exempt
 def dislikeComment(request):
     if request.method == 'POST':
@@ -1065,7 +1067,7 @@ def dislikeComment(request):
             return HttpResponse("Comment not found")
         # else: not found
         return HttpResponse("Activity not found")
-
+@login_required
 @csrf_exempt
 def deleteComment(request):
     if request.method == 'POST':

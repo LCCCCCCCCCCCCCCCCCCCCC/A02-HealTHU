@@ -6,6 +6,7 @@ from .models import ThuHealthuInfo
 from .models import ThuClass
 from schedule.models import Todo
 from schedule.models import Schedule
+from utils.jwt import login_required
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
@@ -253,7 +254,7 @@ def get_weekday(date_string, first_day):
 
     return weeks + 1, weekday + 1  # 返回第几周和第几天（从1开始）
 
-
+@login_required
 def bindThu(request):
     if request.method == 'GET':
         id = request.GET.get('id')
@@ -347,7 +348,7 @@ def bindThu(request):
 
             return HttpResponse(1)
 
-
+@login_required
 def getHealthInfo(request):
     if request.method == 'GET':
         id = request.GET.get('id')
@@ -377,7 +378,7 @@ def getHealthInfo(request):
             result['pullup'] = healthInfo.pullup
             result['grade_pullup'] = healthInfo.grade_pullup
             return HttpResponse(json.dumps(result, ensure_ascii=False))
-
+@login_required
 def bindState(request):
     if request.method == 'GET':
         id = request.GET.get('id')
