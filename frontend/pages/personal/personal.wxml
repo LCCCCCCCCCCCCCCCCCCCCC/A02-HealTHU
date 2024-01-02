@@ -16,13 +16,14 @@
 
 <view class="pages">
   <van-cell-group inset>
-    <van-cell class="userinto-sign" title="{{signature}}" />
+    <van-cell wx:if="{{signature}}" class="userinto-sign" title="{{signature}}" />
+    <van-cell wx:else class="userinto-sign" title="这个人很懒，即使这样也没有留下签名" />
   </van-cell-group>
   <van-cell-group title="成就展示" inset>
     <van-cell is-link clickable
       link-type="navigateTo"
       url="../achievements/achievements?id={{userId}}">
-      <van-row slot="title">
+      <van-row wx:if="{{achList.length}}" slot="title">
         <van-col span="4">
           <image src="{{achList[0].img}}" style="width: 36px; height: 40px;"/></van-col>
         <van-col span="4">
@@ -36,6 +37,7 @@
         <van-col span="4">
           <image src="{{achList[5].img}}" style="width: 36px; height: 40px;"/></van-col>
       </van-row>
+      <text wx:else slot="title">暂无成就或用户设置不展示</text>
     </van-cell>
   </van-cell-group>
 
@@ -52,6 +54,9 @@
           url="../bbs/bbs?bbsid={{item.id}}"
           border="{{false}}">
             <view slot="label">
+              <view wx:if="{{item.image}}" class="image-container">
+                <image class="image" src="{{item.images[0]}}"/>
+              </view>
               <text>{{item.name}} {{item.time}}</text>
               <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
             </view> 

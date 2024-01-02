@@ -18,9 +18,8 @@
       placeholder="请输入搜索关键词"
       use-action-slot
       bind:change="onChange"
-      bind:search="onSearch"
     >
-      <view slot="action" bind:tap="onClick">搜索</view>
+      <view slot="action" bind:tap="onClick" style="padding-left: 8px;">搜索</view>
     </van-search> 
   </view>
 </van-nav-bar>
@@ -43,7 +42,7 @@
       <text class="acttitle">{{item.title}}</text>
     </view>
     <view slot="desc">
-      ({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}
+      ({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数 {{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}
     </view>
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>

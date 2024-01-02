@@ -68,7 +68,7 @@ Page({
   follow(){
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/user/addAttention/',
+      url:'http://127.0.0.1:8000/user/addAttention/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         hostId: that.data.id,
@@ -83,7 +83,7 @@ Page({
   unfollow(){
     var that = this
     wx.request({
-      url:'http://43.138.52.97:8001/user/delAttention/',
+      url:'http://127.0.0.1:8000/user/delAttention/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         hostId: that.data.id,
@@ -112,7 +112,7 @@ Page({
     })
     var that = this
       wx.request({
-        url:'http://43.138.52.97:8001/user/getPersonal/',
+        url:'http://127.0.0.1:8000/user/getPersonal/',
         data:{
           hostId: id,
           customerId: that.data.userId
@@ -120,6 +120,7 @@ Page({
         method:'GET',
         success:function(res){
           var data = res.data
+          console.log(data)
           var followed = true;
           if(data.following_state == 1){
             followed = true

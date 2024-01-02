@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'schedule.apps.ScheduleConfig',
     'thuInfo.apps.ThuinfoConfig',
     'bbs.apps.BbsConfig',
-    'message.apps.MessageConfig'
+    'message.apps.MessageConfig',
+    'sleep.apps.SleepConfig',
 ]
 
 MIDDLEWARE = [

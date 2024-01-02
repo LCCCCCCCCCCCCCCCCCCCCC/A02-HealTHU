@@ -24,4 +24,5 @@ urlpatterns = [
     path('thuInfo/',include('thuInfo.urls')),
     path('bbs/',include('bbs.urls')),
     path('message/',include('message.urls')),
+    path('sleep/',include('sleep.urls')),
 ]

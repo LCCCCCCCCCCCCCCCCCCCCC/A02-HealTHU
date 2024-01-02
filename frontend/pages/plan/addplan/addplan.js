@@ -24,7 +24,7 @@ Page({
     showpicker: false,
     isValid:false,
     sportType:0,
-    sportState:""
+    sportState:0
   },
   onTypeConfirm(event){
     this.setData({ optionvalue1: event.detail});
@@ -138,7 +138,7 @@ Page({
       return;
     }
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/todos/',
+      url:'http://127.0.0.1:8000/schedule/todos/',
       data:{
         'id': id,
         'date': that.data.date
@@ -167,7 +167,7 @@ Page({
           var id = wx.getStorageSync('id')
           console.log(id)
           wx.request({
-            url:'http://43.138.52.97:8001/schedule/addTodo/',
+            url:'http://127.0.0.1:8000/schedule/addTodo/',
             header:{ 'content-type': 'application/x-www-form-urlencoded'},
             data:{
               id: id,
@@ -180,6 +180,8 @@ Page({
               state: 0,
               sportType: that.data.sportType,
               sportState: that.data.sportState,
+              //sportStart: "",
+              //sportEnd: "",
               readOnly: 0
             },
             method:'POST',
