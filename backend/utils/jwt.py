@@ -2,7 +2,6 @@
 import base64
 import datetime
 import jwt
-import scrypt
 from django.conf import settings
 from django.http import JsonResponse
 from user.controllers import get_user
@@ -50,12 +49,6 @@ def verify_jwt(token):
         payload = None
 
     return payload
-
-
-def encrypt_password(password):
-    salt = settings.SALT
-    key = scrypt.hash(password, salt, 32768, 8, 1, 32)
-    return base64.b64encode(key).decode("ascii")
 
 
 def jwt_authentication(request):
