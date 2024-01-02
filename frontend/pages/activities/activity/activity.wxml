@@ -45,7 +45,7 @@
         <van-rate class="rate" value="{{ userscore }}" bind:change="handleScoreGiven" />
       </view>
     </van-cell>
-    <textarea class="textinput"
+    <textarea class="textinput" value="{{signtext}}"
       bindinput="handleScoreInput" placeholder="请输入评价"></textarea>
   </van-cell-group>
 </van-dialog>

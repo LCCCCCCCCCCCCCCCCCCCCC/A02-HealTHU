@@ -27,7 +27,7 @@ Page({
     var that = this
     var exitId = wx.getStorageSync('id')
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/exitAct/',
+      url:'http://127.0.0.1:8000/schedule/exitAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded'},
       data:{
         id:that.data.activities4[id].promoterId,
@@ -87,7 +87,7 @@ Page({
     var that = this
     let id = wx.getStorageSync('id')
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/findAct/',
+      url:'http://127.0.0.1:8000/schedule/findAct/',
       data:{
         'keyForSearch': this.data.value,
         minDate: that.data.startDate,
@@ -108,7 +108,7 @@ Page({
           var j = 0
           data[i].participantNum = data[i].participants.length
           wx.request({
-            url:'http://43.138.52.97:8001/user/getDetail/',
+            url:'http://127.0.0.1:8000/user/getDetail/',
             data:{
               'hostId': data[i].promoter,
               'customerId':data[i].promoter
@@ -142,7 +142,7 @@ Page({
       id:id
     })
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/findAct/',
+      url:'http://127.0.0.1:8000/schedule/findAct/',
       data:{
         'isRandom': 1,
         minDate: that.data.startDate,
@@ -160,7 +160,7 @@ Page({
           var j = 0
           data[i].participantNum = data[i].participants.length
           wx.request({
-            url:'http://43.138.52.97:8001/user/getDetail/',
+            url:'http://127.0.0.1:8000/user/getDetail/',
             data:{
               'hostId': data[i].promoter,
               'customerId':data[i].promoter,
@@ -241,7 +241,7 @@ Page({
         activities1:[]
       })
       wx.request({
-        url:'http://43.138.52.97:8001/user/getDetail/',
+        url:'http://127.0.0.1:8000/user/getDetail/',
         data:{
           'hostId': id,
           'customerId':id
@@ -251,7 +251,7 @@ Page({
           var dat = JSON.parse(res.data)
           for(let k = 0;k < dat.followings.length;k++){
             wx.request({
-              url:'http://43.138.52.97:8001/schedule/findAct/',
+              url:'http://127.0.0.1:8000/schedule/findAct/',
               data:{
                 'promoter': dat.followings[k],
                 minDate: that.data.startDate,
@@ -269,7 +269,7 @@ Page({
                   var j = 0
                   data[i].participantNum = data[i].participants.length
                   wx.request({
-                    url:'http://43.138.52.97:8001/user/getDetail/',
+                    url:'http://127.0.0.1:8000/user/getDetail/',
                     data:{
                       'hostId': data[i].promoter,
                       'customerId':data[i].promoter,
@@ -301,7 +301,7 @@ Page({
       var that = this
       let id = wx.getStorageSync('id')
       wx.request({
-        url:'http://43.138.52.97:8001/schedule/findAct/',
+        url:'http://127.0.0.1:8000/schedule/findAct/',
         data:{
           'promoter': id,
           minDate: that.data.startDate,
@@ -319,7 +319,7 @@ Page({
             var j = 0
             data[i].participantNum = data[i].participants.length
             wx.request({
-              url:'http://43.138.52.97:8001/user/getDetail/',
+              url:'http://127.0.0.1:8000/user/getDetail/',
               data:{
                 'hostId': data[i].promoter,
                 'customerId':data[i].promoter,
@@ -348,7 +348,7 @@ Page({
       var ids = []
       ids.push(id)
       wx.request({
-        url:'http://43.138.52.97:8001/schedule/findAct/',
+        url:'http://127.0.0.1:8000/schedule/findAct/',
         data:{
           'participants': ids,
           minDate: that.data.startDate,
@@ -366,7 +366,7 @@ Page({
             var j = 0
             data[i].participantNum = data[i].participants.length
             wx.request({
-              url:'http://43.138.52.97:8001/user/getDetail/',
+              url:'http://127.0.0.1:8000/user/getDetail/',
               data:{
                 'hostId': data[i].promoter,
                 'customerId':data[i].promoter,

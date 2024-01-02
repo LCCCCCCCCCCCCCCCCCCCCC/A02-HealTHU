@@ -18,7 +18,7 @@ Page({
     var that = this
     if(options){
       wx.request({
-        url:'http://43.138.52.97:8001/bbs/searchPost/',
+        url:'http://127.0.0.1:8000/bbs/searchPost/',
         data:{
           key: options.key
         },
@@ -31,7 +31,7 @@ Page({
         }
       })
       wx.request({
-        url:'http://43.138.52.97:8001/user/search/',
+        url:'http://127.0.0.1:8000/user/search/',
         data:{
           key: options.key
         },

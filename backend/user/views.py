@@ -25,9 +25,9 @@ def postImage(request):
         if user:
             # 找到匹配的用户
             image = request.FILES['image']
-            #获取images文件夹下的文件数量
+            #获取 images 文件夹下的文件数量
             num = len(os.listdir('images'))
-            #将图片存储到images文件夹下，并且给每个id都自动编号命名，如id_1.jpg
+            #将图片存储到 images 文件夹下，并且给每个 id 都自动编号命名，如 id_1.jpg
             with open('images/'+str(id)+'_'+str(num+1)+'.jpg', 'wb') as f:
                 for chunk in image.chunks():
                     f.write(chunk)
@@ -147,7 +147,7 @@ def getAttention(request):
             attentionList = user.userInfo.followings
             result = []
             for id in attentionList:
-                # 根据id查找相应的avatarUrl, nickName和signature
+                # 根据 id 查找相应的 avatarUrl, nickName 和 signature
                 user = User.objects.filter(id=id).first()
                 avatarUrl = user.userInfo.avatarUrl
                 nickName = user.userInfo.nickName
@@ -173,7 +173,7 @@ def getFans(request):
             fansList = user.userInfo.followers
             result = []
             for id in fansList:
-                # 根据id查找相应的avatarUrl, nickName和signature
+                # 根据 id 查找相应的 avatarUrl, nickName 和 signature
                 user = User.objects.filter(id=id).first()
                 avatarUrl = user.userInfo.avatarUrl
                 nickName = user.userInfo.nickName
@@ -205,7 +205,7 @@ def getFans(request):
 @csrf_exempt
 def addAttention(request):
     if request.method == 'POST':
-        #host关注customer
+        #host 关注 customer
         hostid = request.POST.get("hostId")
         customerid = request.POST.get("customerId")
         if hostid == customerid:
@@ -227,7 +227,7 @@ def addAttention(request):
 @csrf_exempt
 def delAttention(request):
     if request.method == 'POST':
-        #host取消关注customer
+        #host 取消关注 customer
         hostid = request.POST.get("hostId")
         customerid = request.POST.get("customerId")
         if hostid == customerid:
@@ -321,7 +321,7 @@ def getPersonal(request):
                     ((homeUser.customSettings.actRange == 1) and (visitorUserId in homeUser.userInfo.followers)) or \
                     ((homeUser.customSettings.actRange == 2) and (homeUserId == visitorUserId)):
                 # iniActs and partActs CAN BE seen by visitor
-                correspondingSchedule = Schedule.objects.filter(userid=homeUserId).first()
+                correspondingSchedule = Schedule.objects.filter(id=homeUserId).first()
                 if correspondingSchedule:
                     alliniActs = correspondingSchedule.initiActs
                     allpartActs = correspondingSchedule.partiActs

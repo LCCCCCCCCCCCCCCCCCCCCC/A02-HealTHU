@@ -99,7 +99,7 @@
   bind:getuserinfo="replyConfirm"
 >
   <van-cell-group class="toflex">
-    <textarea class="textinput"
+    <textarea class="textinput" value="{{replytext}}"
       bindinput="handlereplyInput" placeholder="在这里写回复~"></textarea>
   </van-cell-group>
 </van-dialog>

@@ -21,7 +21,6 @@ def addPost(request):
         title = request.POST.get('title')
         timeNow = request.POST.get('time')
         content = request.POST.get('content')
-        print("content: ", content)
         imgs = request.POST.get('images')
         if imgs:
             images = json.loads(imgs)
@@ -191,8 +190,6 @@ def addReply(request):
         targetTopic.save()
         targetAboveFloor.commentNum += 1
         targetAboveFloor.belowIds.append(newFloor.id)
-        print("targetAboveFloor.id:", targetAboveFloor.id)
-        print("targetAboveFloor.belowIds:", targetAboveFloor.belowIds)
         targetAboveFloor.save()
         return HttpResponse("Reply added")
 
@@ -212,8 +209,6 @@ def deleteReply(request):
         # post found
         # find in targetTopic.floors the floor, floorId pair
         targetFloorId = targetTopic.floors[str(floor)]
-        print("targetTopic.floors:", targetTopic.floors)
-        print("targetFloorId:", targetFloorId)
         if targetFloorId == -1 or targetFloorId is None:
             return HttpResponse("FloorId does not exist")
         # floorId found
@@ -224,31 +219,26 @@ def deleteReply(request):
         # floor found
         targetAboveFloorId = targetFloor.aboveId
         targetAboveFloor = Floor.objects.filter(id=targetAboveFloorId).first()
-        if targetAboveFloor is None:
-            return HttpResponse("Above Floor does not exist")
+        if targetAboveFloor is not None:
+            # then remove this from its above's belowIds
+            targetAboveFloor.belowIds.remove(targetFloorId)
+            targetAboveFloor.commentNum -= 1
+            targetAboveFloor.save()
         # above floor found
         # first find and set all floors in belowIds to such a degree, that
         # its aboveId being -1, and its aboveName and aboveContent being ""
         for belowId in targetFloor.belowIds:
             targetBelowFloor = Floor.objects.filter(id=belowId).first()
-            if targetBelowFloor is None:
-                continue
-            targetBelowFloor.aboveId = -1
-            targetBelowFloor.aboveName = ""
-            targetBelowFloor.aboveContent = "此评论已被删除"
-            targetBelowFloor.save()
-        # then remove this from its above's belowIds
-        print("targetAboveFloor.id:", targetAboveFloor.id)
-        print("targetAboveFloor.belowIds:", targetAboveFloor.belowIds)
-        targetAboveFloor.belowIds.remove(targetFloorId)
-        targetAboveFloor.commentNum -= 1
-        targetAboveFloor.save()
+            if targetBelowFloor is not None:
+                targetBelowFloor.aboveId = -1
+                targetBelowFloor.aboveName = ""
+                targetBelowFloor.aboveContent = "此评论已被删除"
+                targetBelowFloor.save()
         # then set the floorId in targetTopic.floors to -1
         targetTopic.floors[str(floor)] = -1
         targetTopic.save()
         # then delete the floor itself
         targetFloor.delete()
-        print("targetTopic.floors:", targetTopic.floors)
         return HttpResponse("Floor deleted")
 
 
@@ -272,13 +262,11 @@ def likeReply(request):
         # floorId found
         # find the floor
         targetFloor = Floor.objects.filter(id=targetFloorId).first()
-        print("targetFloor.LikeList:", targetFloor.likeList)
         if targetFloor is None:
             return HttpResponse("Floor does not exist")
         # floor found
         if id in targetFloor.likeList:
             return HttpResponse("You have already liked this floor")
-        print("targetFloor:", targetFloor)
         targetFloor.likeList.append(id)
         targetFloor.likes += 1
         targetFloor.save()
@@ -305,7 +293,6 @@ def dislikeReply(request):
         # floorId found
         # find the floor
         targetFloor = Floor.objects.filter(id=targetFloorId).first()
-        print("targetFloor.LikeList:", targetFloor.likeList)
         if targetFloor is None:
             return HttpResponse("Floor does not exist")
         # floor found
@@ -341,6 +328,11 @@ def getPost(request):
                 targetPost['name'] = targetTopic.name
                 targetPost['likeNum'] = targetTopic.likes
                 targetPost['commentNum'] = targetTopic.floorCnt - 1
+                for key, value in targetTopic.floors.items():
+                    if int(key) == 1:
+                        continue
+                    if int(value) == -1:
+                        targetPost['commentNum'] -= 1
                 targetPost['images'] = targetTopic.images
                 targetPostArray.append(targetPost)
         elif getPostType == 1:
@@ -358,6 +350,11 @@ def getPost(request):
                 targetPost['name'] = targetTopic.name
                 targetPost['likeNum'] = targetTopic.likes
                 targetPost['commentNum'] = targetTopic.floorCnt - 1
+                for key, value in targetTopic.floors.items():
+                    if int(key) == 1:
+                        continue
+                    if int(value) == -1:
+                        targetPost['commentNum'] -= 1
                 targetPost['images'] = targetTopic.images
                 targetPostArray.append(targetPost)
         elif getPostType == 2:
@@ -375,6 +372,11 @@ def getPost(request):
                     targetPost['name'] = topic.name
                     targetPost['likeNum'] = topic.likes
                     targetPost['commentNum'] = topic.floorCnt - 1
+                    for key, value in topic.floors.items():
+                        if int(key) == 1:
+                            continue
+                        if int(value) == -1:
+                            targetPost['commentNum'] -= 1
                     targetPost['images'] = topic.images
                     targetPostArray.append(targetPost)
         return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
@@ -394,6 +396,11 @@ def getPostById(request):
                 targetPost['name'] = topic.name
                 targetPost['likeNum'] = topic.likes
                 targetPost['commentNum'] = topic.floorCnt - 1
+                for key, value in topic.floors.items():
+                    if int(key) == 1:
+                        continue
+                    if int(value) == -1:
+                        targetPost['commentNum'] -= 1
                 targetPost['images'] = topic.images
                 targetPostArray.append(targetPost)
         return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
@@ -416,6 +423,11 @@ def searchPost(request):
                 targetPost['name'] = topic.name
                 targetPost['likeNum'] = topic.likes
                 targetPost['commentNum'] = topic.floorCnt - 1
+                for key, value in topic.floors.items():
+                    if int(key) == 1:
+                        continue
+                    if int(value) == -1:
+                        targetPost['commentNum'] -= 1
                 targetPost['images'] = topic.images
                 targetPostArray.append(targetPost)
         return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
@@ -446,13 +458,20 @@ def getPostDetail(request):
             targetReply['time'] = targetFloor.time
             targetReply['content'] = targetFloor.content
             targetReply['likeList'] = targetFloor.likeList
-            targetReply['aboveId'] = targetFloor.aboveId
-            for key, value in targetTopic.floors.items():
-                if value == targetFloor.aboveId:
-                    targetReply['aboveId'] = key
-                    break
-            targetReply['aboveName'] = targetFloor.aboveName
-            targetReply['aboveContent'] = targetFloor.aboveContent
+            if targetFloor.aboveId == -1:
+                targetReply['aboveId'] = targetFloor.aboveId
+                targetReply['aboveName'] = targetFloor.aboveName
+                targetReply['aboveContent'] = targetFloor.aboveContent
+            else:
+                targetAboveFloor = Floor.objects.filter(id=targetFloor.aboveId).first()
+                if targetAboveFloor is None:
+                    targetReply['aboveId'] = -1
+                    targetReply['aboveName'] = ""
+                    targetReply['aboveContent'] = "此评论已被删除"
+                else:
+                    targetReply['aboveId'] = targetFloor.aboveId
+                    targetReply['aboveName'] = targetFloor.aboveName
+                    targetReply['aboveContent'] = targetFloor.aboveContent
             targetReplyArray.append(targetReply)
         targetPost['id'] = targetTopic.id
         targetPost['userId'] = targetTopic.userId
@@ -463,7 +482,6 @@ def getPostDetail(request):
         targetPost['images'] = targetTopic.images
         targetPost['likeList'] = targetTopic.likeList
         targetPost['replies'] = targetReplyArray
-        # print("targetPost: ", targetPost)
         return HttpResponse(json.dumps(targetPost, ensure_ascii=False))
 
 

@@ -3,44 +3,17 @@ const wxCharts = require('../../utils/wxcharts.js');
 // var不行，const就行了x
 var app = getApp();
 var columnChart = null;
-var chartData = {
-    main: {
-        title: '近七日睡眠时间',
-        data: [7, 7, 8, 6, 6, 7, 6],
-        categories: ['11-30', '12-1', '12-2', '12-3', '12-4', '12-5', '12-6']
-    },
-    sub: [
-      {
-        title: '11-30睡眠时间分布',
-        data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        categories: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']
-    }, {
-        title: '12-1睡眠时间分布',
-        data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        categories: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']
-    }, {
-        title: '12-2睡眠时间分布',
-        data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-        categories: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']
-    }, {
-        title: '12-3睡眠时间分布',
-        data: [2, 2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        categories: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']                
-    }, {
-        title: '12-4睡眠时间分布',
-        data: [2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        categories: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']
-    }, {
-      title: '12-5睡眠时间分布',
-      data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-      categories: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']
-  }, {
-    title: '12-6睡眠时间分布',
-    data: [2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    categories: ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']
-}
-  ]
-};
+var chartData = {}
+var tofix = [
+  {date: "2023/12/30", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2023/12/31", data: [2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 2]},
+  {date: "2024/01/01", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024/01/02", data: [2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024/01/03", data: [2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1]},
+  {date: "2024/01/04", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024/01/05", data: [2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0]},
+  {date: "2024/01/06", data: [2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]},
+]
 Page({
   /**
    * 页面的初始数据
@@ -49,15 +22,18 @@ Page({
     lasttime: '2023/12/6 0:53',
     chartTitle: '近七日睡眠时间',
     isMainChartDisplay: true,
+    sleepHour: 0,
     score:"",
     isShort:false,//睡眠时间是否不足
     isLate:false,//是否熬夜
     isSleep: false,
-    startDate:'2023/12/20',
+    startDate:'2024/01/02',
     startHour:22,
-    endDate:'2023/12/21',
+    endDate:'2024/01/03',
     endHour:6,
-    sleepData:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    sleepDaily:[],
+    sleepData:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    sleepData2:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   },
   startSleep(){
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
@@ -67,12 +43,12 @@ Page({
     }
     console.log(currentHour)
     this.setData({
-      lasttime: date + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
+      lasttime: date + ' ' + new Date().getHours().toString().padStart(2, '0') + ':' + new Date().getMinutes().toString().padStart(2, '0'),
       isSleep:true,
       startDate: date,
       startHour: currentHour
     })
-    console.log(this.data.startDate)
+    this.saveState()
     //播放音乐
   },
   endSleep(){
@@ -86,44 +62,63 @@ Page({
       endDate: date,
       endHour: currentHour
     })
-    this.setData({
-      startHour: 0,
-      endHour:5,
-      sleepData:[0,0,0,0,0,0,0,0,0,0,0,0]
-    })
     //提前获取start天的sleepData
-    var sleepData = this.data.sleepData
+    var sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
+    this.setData({
+      sleepDaily:tofix
+    })
+    console.log(this.data.startDate)
+    for(var i = 0; i < 8; i++){
+      if(this.data.sleepDaily[i].date == this.data.startDate){
+        sleepData = this.data.sleepDaily[i].data
+      }
+    }
+    console.log(sleepData)
+    var sleepHour = 0
     if(this.data.startDate == this.data.endDate){
       for(var i = this.data.startHour;i<this.data.endHour;i++){
+        sleepHour++
         if(i == 0){sleepData[0] ++}
         else{sleepData[((i-1)/2).toFixed(0)] ++}
       }
-      console.log(sleepData)
       //向后端传入修改指令
       this.setData({
-        sleepData:sleepData
+        lasttime: date + ' ' + new Date().getHours().toString().padStart(2, '0') + ':' + new Date().getMinutes().toString().padStart(2, '0'),
+        sleepData:sleepData,
+        sleepHour:sleepHour
       })
+      this.saveSleep(this.data.startDate,sleepData)
     }
-    else{
+    else if(this.isnext(this.data.startDate,this.data.endDate)){//睡眠一天以内
       //提前获取start天的sleepData
       for(var i = this.data.startHour;i<24;i++){
+        sleepHour++
         if(i == 0){sleepData[0] ++}
         else{sleepData[((i-1)/2).toFixed(0)] ++}
       }
       //向后端传入修改指令
       this.setData({
-        sleepData:sleepData
+        sleepData:sleepData,
       })
-      //提前获取end天的sleepData
+      this.saveSleep(this.data.startDate,sleepData)
+      sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
       for(var i = 0;i<this.data.endHour;i++){
+        sleepHour++
         if(i == 0){sleepData[0] ++}
         else{sleepData[((i-1)/2).toFixed(0)] ++}
       }
       //向后端传入修改指令
       this.setData({
-        sleepData:sleepData
+        lasttime: date + ' ' + new Date().getHours().toString().padStart(2, '0') + ':' + new Date().getMinutes().toString().padStart(2, '0'),
+        sleepData2:sleepData,
+        sleepHour:sleepHour
       })
+      this.saveSleep(this.data.endDate,this.data.sleepData2)
     }
+    else{
+      wx.showToast({ title: '睡眠时间超过一天，记录无效', icon: 'none' });
+    }
+    this.saveState()
   },
   backToMainChart: function () {
     this.setData({
@@ -166,6 +161,34 @@ touchHandler: function (e) {
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    var id = wx.getStorageSync('id')
+    var that = this
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    /*
+    wx.request({
+      url:'http://127.0.0.1:8000/user/getSleep/',
+      data:{
+        'id': id,
+        'date': date
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          sleepDaily: data.sleepDaily,
+          lastTime: data.lastTime,
+          sleepHour: data.sleepHour,
+          isSleep: data.isSleep,
+          startDate: data.startDate,
+          startHour: data.startHour
+        })
+        that.drawChart()
+      }
+    })
+    */
+   this.drawChart()
+  },
+  drawChart(){
     var windowWidth = 320;
     try {
       var res = wx.getSystemInfoSync();
@@ -173,7 +196,8 @@ touchHandler: function (e) {
     } catch (e) {
       console.error('getSystemInfoSync failed!');
     }
-
+    chartData = this.tochart(tofix)
+    //chartData = this.tochart(this.data.sleepDaily)
     columnChart = new wxCharts({
         canvasId: 'columnCanvas',
         type: 'column',
@@ -237,8 +261,80 @@ touchHandler: function (e) {
       })
     }
     this.setData({
-      score:lengthScore+timeScore
+      score:(lengthScore+timeScore).toFixed(2)
     })
+  },
+  saveState(){//保存临时睡眠状态
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://127.0.0.1:8000/user/changeSleepState/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      data:{
+        id: id,
+        lastTime: that.data.lasttime,
+        sleepHour: that.data.sleepHour,
+        isSleep: that.data.isSleep,
+        startDate: that.data.startDate,
+        startHour: that.data.startHour
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
+  saveSleep(date,data){
+    var id = wx.getStorageSync('id')
+    var that = this
+    wx.request({
+      url:'http://127.0.0.1:8000/user/changeSleep/',
+      data:{
+        id:id,
+        date: date,
+        data: data
+      },
+      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      method:'POST',
+      success:function(res){
+        that.onLoad()
+      }
+    })
+  },
+  isnext(startDate,endDate){//判断后者是否为前者的后一天
+    var currentDate = startDate.split("/");
+    var year = parseInt(currentDate[0]);
+    var month = parseInt(currentDate[1]);
+    var day = parseInt(currentDate[2]);
+    var newDate = new Date(year, month - 1, day + 1);
+    var newYear = newDate.getFullYear();
+    var newMonth = (newDate.getMonth() + 1).toString().padStart(2, '0');
+    var newDay = newDate.getDate().toString().padStart(2, '0');
+    var dateString = newYear + '/' + newMonth + '/' + newDay;
+    return (endDate == dateString)
+  },
+  tochart(dailys){
+    var chart = {}
+    var main = {}
+    main.title = "近七日睡眠时间"
+    main.data = [0,0,0,0,0,0,0]
+    main.categories = []
+    var sub = []
+    for(var i = 0;i < 7;i++){
+      sub[i] = {}
+      var dates = dailys[i].date.split("/")
+      var shortDate = dates[1] + "-" + dates[2]
+      sub[i].title = shortDate + "睡眠时间分布"
+      sub[i].data = dailys[i].data
+      sub[i].categories = ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23']
+      for(var j = 0;j < 12; j++){
+        main.data[i] += sub[i].data[j]
+      }
+      main.categories[i] = shortDate
+    }
+    chart.sub = sub
+    chart.main = main
+    return chart
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

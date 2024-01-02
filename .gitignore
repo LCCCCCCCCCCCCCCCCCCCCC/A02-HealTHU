@@ -7,10 +7,12 @@ db.sqlite3
 # ignore all .pyc files, whereever they are
 **/*.pyc
 
-backend/test.pyc
+backend/test.py
+backend/*.txt
 
 #ignore images
 backend/images/*
 
 .idea/*
 ```
+Scripts/Script.sql

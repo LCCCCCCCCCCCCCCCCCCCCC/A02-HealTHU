@@ -108,7 +108,7 @@ Page({
       return;
     }
     wx.request({
-      url:'http://43.138.52.97:8001/schedule/todos/',
+      url:'http://127.0.0.1:8000/schedule/todos/',
       data:{
         'id': id,
         'date': that.data.date
@@ -135,7 +135,7 @@ Page({
         else{
           var id = wx.getStorageSync('id')
           wx.request({
-            url:'http://43.138.52.97:8001/schedule/changeTodo/',
+            url:'http://127.0.0.1:8000/schedule/changeTodo/',
             header:{ 'content-type': 'application/x-www-form-urlencoded'},
             data:{
               id: id,
