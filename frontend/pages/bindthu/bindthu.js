@@ -3,6 +3,7 @@ Page({
   data: {
     isbind:false,
     showbind:false,
+    showunbind: false,
     ID:"暂未绑定",
     studentID:"",
     password:"",
@@ -13,12 +14,23 @@ Page({
     this.setData({showbind:true})
   },
   unbindthu(){
-    this.setData({
-      ID:"暂未绑定",
-      isbind:false,
-      studentID:"",
-      password:""
-    })
+    // var that = this
+    // var id = wx.getStorageSync('id')
+    // wx.request({
+    //   url:'http://127.0.0.1:8000/thuInfo/unbindThu/',
+    //   data:{
+    //     id:id,
+    //   },
+    //   method:'POST',
+    //   success:function(res){
+    //     that.setData({
+    //       ID:"暂未绑定",
+    //       isbind:false,
+    //       studentID:"",
+    //       password:""
+    //     })
+    //   }
+    // })
   },
   handleIDInput(event){
     this.setData({ studentID: event.detail });
@@ -61,16 +73,7 @@ Page({
           that.setData({
             showLoad:false
           })
-          console.log(res.data)
-          if(res.data == 0){
-            that.setData({
-              showwrong: true,
-              wrongmsg: "绑定失败，请重新输入学号和密码",
-              showbind:false,
-              isbind:false,
-            });
-          }
-          else{
+          if(res.data == 1){
             that.setData({
               showwrong: true,
               wrongmsg: "绑定成功！",
@@ -79,7 +82,14 @@ Page({
               ID:that.data.studentID
             });
           }
-          wx.setStorageSync('isbind', that.data.isbind)
+          else{
+            that.setData({
+              showwrong: true,
+              wrongmsg: "绑定失败，请重新输入学号和密码",
+              showbind:false,
+              isbind:false,
+            });
+          }
           wx.setStorageSync('bindId', that.data.ID)
         }
       })
@@ -91,13 +101,26 @@ Page({
    */
   onLoad(options) {
     if(wx.getStorageSync('bindId')!=""){
-      var isbind = wx.getStorageSync('isbind')
       var ID = wx.getStorageSync('bindId')
       this.setData({
-        isbind:isbind,
         ID:ID
       })
     }
+    var that = this
+    var id = wx.getStorageSync('id')
+    wx.request({
+      url:'http://43.138.52.97:8001/thuInfo/bindState/',
+      data:{
+        id:id,
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+          that.setData({
+            isbind:data,
+          })
+      }
+    })
   },
 
   /**
@@ -147,5 +170,11 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+  onClose() {
+    this.setData({ showunbind: false });
+  },
+  unbindHandle() {
+    this.setData({ showunbind: true });
+  },
 })
