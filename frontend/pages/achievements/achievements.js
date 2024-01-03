@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    exampleshow: true,
     achNow: {
       img: "../images/ach12last.png", text: "月度纪念2022", time: "2022/12", state: 100
     },

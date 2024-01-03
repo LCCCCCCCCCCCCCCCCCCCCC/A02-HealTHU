@@ -7,6 +7,11 @@
   bind:click-right="onClickRight">
 </van-nav-bar>
 
+<van-dialog
+  title="该界面仅为示例界面"
+  show="{{ exampleshow }}"
+/>
+
 <van-grid custom-class="pages" column-num="3" clickable>
   <!-- 不太确定做不做成就展示选择（森空岛展示n张卡在个人界面那种） -->
   <van-checkbox-group wx:for="{{ achList }}" wx:key="index" 
