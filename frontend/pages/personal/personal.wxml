@@ -29,7 +29,7 @@
     <van-cell wx:if="{{signature}}" class="userinto-sign" title="{{signature}}" />
     <van-cell wx:else class="userinto-sign" title="这个人很懒，即使这样也没有留下签名" />
   </van-cell-group>
-  <van-cell-group title="成就展示" inset>
+  <!-- <van-cell-group title="成就展示(示例页面)" inset>
     <van-cell is-link clickable
       link-type="navigateTo"
       url="../achievements/achievements?id={{userId}}">
@@ -49,7 +49,7 @@
       </van-row>
       <text wx:else slot="title">暂无成就或用户设置不展示</text>
     </van-cell>
-  </van-cell-group>
+  </van-cell-group> -->
 
   <van-cell-group title="动态" inset>
     <van-tabs active="{{ active }}" bind:change="onChange">

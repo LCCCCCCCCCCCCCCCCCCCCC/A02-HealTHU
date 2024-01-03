@@ -27,66 +27,22 @@
     <view class="container_num">
       <view class="block1">
         <view class="text">睡眠时长</view>
-        <view class="today-number">{{sleepHour}}h
+        <view class="today-number">8h
         </view>
       </view>
       <view class="block2">
         <view class="text">消耗热量</view>
-        <view class="today-number">{{heatNum}}kJ
+        <view class="today-number">1500kJ
         </view>
       </view>
     </view>
     <view style="border-radius:10rpx; padding: 32rpx;">
       <van-cell-group class="suggestion" inset>
-        <van-cell title="睡眠时间较少" icon="question"/>
-        <van-cell title="睡眠时间较晚" icon="clock"/>
+        <van-cell title="注意睡眠" icon="question"/>
+        <van-cell title="按时完成计划" icon="clock"/>
       </van-cell-group>    
     </view>
-    <!-- <view>引入总结其他模块的部分内容，比如：</view>
-    <view>今天发起/参与了{{}}个活动,有多少多少与好友有关</view>
-    <view>达成了xx成就</view>
-    <view>条件判定若干关键词，如ddl战士、健身达人、社牛分子、养生作息等</view> -->
     <van-divider />
   </van-tab>
-
-  <!-- <van-tab title="事件统计">
-    <view class="container_num">
-      <view class="lasting-block">
-          <view class="text">已连续打卡</view>
-          <view class="today-number">{{lasting}}
-            <text class="text">天</text>
-          </view>
-        </view> 
-    </view>
-
-    <view class="container_chart">
-      <text class="text-black">打卡时长趋势</text>
-      <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas> -->
-    <!--TODO: 完成不同事件的折线图，能够筛选事件类型和时间范围 -->
-    <!-- maybe TODO: 若干周一周二...周日的综合表现 -->
-    <!-- </view>
-    <view class="container_chart">
-      <text class="text-black">时间掌控度评估</text>
-      <canvas canvas-id="radarCanvas" class="canvas" bindtouchstart="touchHandler_radar"></canvas>
-      <text class="text-black">一周内超过一半的日子合理掌控了时间，继续加油</text>    -->
-          <!--综合工作量和事件完成率评个分，分三档 -->
-    <!-- </view>
-    <van-divider />
-  </van-tab> -->
-
-  <!-- <van-tab title="历史报告"> -->
-  <!-- 往期的昨日小结和每周事件统计（如果签名不做筛选的话） -->
-    <!-- <van-card
-      tag="未查看"
-      desc="描述信息"
-      title="2023秋第9周(11/27-12/3)健康周报"
-      thumb="{{ imageURL }}"
-    >
-      <view slot="footer">
-        <van-button size="mini">详情</van-button>
-        <van-button size="mini">删除</van-button>
-      </view>
-    </van-card> 
-  </van-tab> -->
 </van-tabs>
 </view>

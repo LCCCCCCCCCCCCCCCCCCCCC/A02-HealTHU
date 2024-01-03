@@ -1,5 +1,5 @@
 <!--pages/achievements/achievements.wxml-->
-<van-nav-bar title="成就展架" 
+<van-nav-bar title="成就展架(示例页面)" 
   right-text="管理"
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
