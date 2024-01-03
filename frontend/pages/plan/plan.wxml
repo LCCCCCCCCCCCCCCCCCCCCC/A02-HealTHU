@@ -1,5 +1,6 @@
 <!--pages/plan/plan.wxml-->
 <!--TODO:加入一个以周（或更长时间）为单位的计划概览-->
+<view class="pages">
 <van-nav-bar
     left-text="<上一天"
     right-text="下一天>"
@@ -37,4 +38,5 @@
       </van-cell>
     </van-cell-group>
   </view>
+</view>
 </view>

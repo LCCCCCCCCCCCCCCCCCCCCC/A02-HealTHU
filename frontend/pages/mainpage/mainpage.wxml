@@ -45,8 +45,8 @@
             <van-icon name="checked" color="{{switchColorbyType[item.type]}}"/> {{item.title}}
           </view>
         </van-cell>
-        <view wx:if="{{ (item.state == 0)&&(item.type !== 'ddl')}}">未完成</view>
-        <view wx:if="{{ (item.state == 1)&&(item.type !== 'ddl')}}">已完成</view>
+        <!-- <view wx:if="{{ (item.state == 0)&&(item.type !== 'ddl')}}">未完成</view>
+        <view wx:if="{{ (item.state == 1)&&(item.type !== 'ddl')}}">已完成</view> -->
       </van-cell-group>
     </view>
     <view class="header">

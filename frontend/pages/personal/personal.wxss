@@ -14,15 +14,11 @@
   font-size: 16px;
 }
 .infobutton{
-  margin-top: 12px;
   margin-bottom: 12px;
   right: 8px;
   font-size: 12px;
   background-color: transparent;
   border: 1px solid #000000; 
-}
-.empty-line{
-  height: 54px;
 }
 .image-container {
   padding-top: 2px;

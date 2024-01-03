@@ -2,6 +2,8 @@
 // pages/personal/personal.js
 Page({
   data: {
+    fannum: 0,
+    attentionnum: 0,
     active: 0,
     nickName: '微信用户',
     avatarUrl: '',
@@ -143,7 +145,9 @@ Page({
             bbsList:data.posts,
             actList:data.partActs,
             actaddList: data.iniActs,
-            followed:followed
+            followed:followed,
+            attentionnum:data.followings.length,
+            fannum:data.followers.length,
           });
         }
       })
@@ -200,5 +204,10 @@ Page({
    */
   onShareAppMessage() {
 
+  },
+  changeInfo(){
+    wx.navigateTo({
+      url: '../changeinfo/changeinfo'
+    })
   }
 })
