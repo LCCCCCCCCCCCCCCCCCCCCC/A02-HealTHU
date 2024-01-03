@@ -32,7 +32,7 @@ Page({
    }) 
     /*
     wx.uploadFile({
-      url: 'http://127.0.0.1:8000/images', // 仅为示例，非真实的接口地址
+      url: 'http://43.138.52.97:8001/images', // 仅为示例，非真实的接口地址
       filePath: file[0].url,
       name: 'file',
       formData: { user: 'test' },
@@ -58,7 +58,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/changeAct/',
+      url:'http://43.138.52.97:8001/schedule/changeAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         actId: that.data.actId,
@@ -84,7 +84,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/deleteAct/',
+      url:'http://43.138.52.97:8001/schedule/deleteAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         actId:that.data.actId
@@ -106,7 +106,7 @@ Page({
     }
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
       header: {'Authorization': token},
       data:{
         'actId': that.data.actId

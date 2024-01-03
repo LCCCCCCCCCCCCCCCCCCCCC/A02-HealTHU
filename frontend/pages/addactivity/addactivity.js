@@ -26,7 +26,7 @@ Page({
     var id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
      wx.uploadFile({
-       url: 'http://127.0.0.1:8000/user/postImage/',
+       url: 'http://43.138.52.97:8001/user/postImage/',
        filePath: file[0].url,
        name: 'image',
        formData: { id: id },
@@ -36,10 +36,10 @@ Page({
          // 上传完成需要更新 fileList
          var data = res.data.split('/')
          const { fileList = [] } = that.data;
-         fileList.push({ ...file, url: 'http://127.0.0.1:8000/media/' + data[1] });
+         fileList.push({ ...file, url: 'http://43.138.52.97:8001/media/' + data[1] });
          //fileList.push({ ...file, url: file[0].url });
          var images = that.data.images
-         images.push('http://127.0.0.1:8000/media/' + data[1])
+         images.push('http://43.138.52.97:8001/media/' + data[1])
          that.setData({ fileList });
          that.setData({
            images:images
@@ -60,7 +60,7 @@ Page({
     }
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/todos/',
+      url:'http://43.138.52.97:8001/schedule/todos/',
       header: {'Authorization': token},
       data:{
         'id': id,
@@ -77,7 +77,7 @@ Page({
           console.log(that.data.detail)
           var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/schedule/addAct/',
+            url:'http://43.138.52.97:8001/schedule/addAct/',
             header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
             data:{
               id: id,

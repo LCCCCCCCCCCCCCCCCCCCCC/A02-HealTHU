@@ -30,7 +30,7 @@ Page({
       var that = this
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/appReply/',
+        url:'http://43.138.52.97:8001/schedule/appReply/',
         header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
         data:{
           id:id,
@@ -42,7 +42,7 @@ Page({
           wx.showToast({ title: '已同意', icon: 'success' });
           var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             header: {'Authorization': token},
             data:{
               'hostId': id,
@@ -58,7 +58,7 @@ Page({
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
               var token = wx.getStorageSync('token')
               wx.request({
-                url:'http://127.0.0.1:8000/message/sendMessage/',
+                url:'http://43.138.52.97:8001/message/sendMessage/',
                 header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
                 data:{
                   receiverId: recieverId,
@@ -85,7 +85,7 @@ Page({
       console.log(id + " " + applicationId)
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/appReply/',
+        url:'http://43.138.52.97:8001/schedule/appReply/',
         header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
         data:{
           id:id,
@@ -97,7 +97,7 @@ Page({
           wx.showToast({ title: '已拒绝'});
           var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             header: {'Authorization': token},
             data:{
               'hostId': id,
@@ -113,7 +113,7 @@ Page({
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
               var token = wx.getStorageSync('token')
               wx.request({
-                url:'http://127.0.0.1:8000/message/sendMessage/',
+                url:'http://43.138.52.97:8001/message/sendMessage/',
                 header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
                 data:{
                   receiverId: recieverId,
@@ -162,7 +162,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
       header: {'Authorization': token},
       data:{
         actId: that.data.actId
@@ -178,7 +178,7 @@ Page({
     })
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getApplication/',
+      url:'http://43.138.52.97:8001/schedule/getApplication/',
       header: {'Authorization': token},
       data:{
         id: id
@@ -199,7 +199,7 @@ Page({
           //filteredApps[i].id = filteredApps[i].applyerId
           var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             header: {'Authorization': token},
             data:{
               'hostId': id,

@@ -51,7 +51,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/likeComment/',
+      url:'http://43.138.52.97:8001/schedule/likeComment/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
@@ -77,7 +77,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/dislikeComment/',
+      url:'http://43.138.52.97:8001/schedule/dislikeComment/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
@@ -100,7 +100,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/deleteComment/',
+      url:'http://43.138.52.97:8001/schedule/deleteComment/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
@@ -120,7 +120,7 @@ Page({
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/commentAct/',
+      url:'http://43.138.52.97:8001/schedule/commentAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         commenterId: id,
@@ -141,7 +141,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/partAct/',
+      url:'http://43.138.52.97:8001/schedule/partAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id: id,
@@ -154,7 +154,7 @@ Page({
         wx.showToast({ title: '报名成功', icon: 'success' });
         var token = wx.getStorageSync('token')
         wx.request({
-          url:'http://127.0.0.1:8000/user/getDetail/',
+          url:'http://43.138.52.97:8001/user/getDetail/',
           header: {'Authorization': token},
           data:{
             'hostId': id,
@@ -170,7 +170,7 @@ Page({
             var toUrl = '../activities/actreview/actreview?actid=' + that.data.activity.id
             var token = wx.getStorageSync('token')
             wx.request({
-              url:'http://127.0.0.1:8000/message/sendMessage/',
+              url:'http://43.138.52.97:8001/message/sendMessage/',
               header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
               data:{
                 receiverId: recieverId,
@@ -200,7 +200,7 @@ Page({
       let id = wx.getStorageSync('id')
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/todos/',
+        url:'http://43.138.52.97:8001/schedule/todos/',
         header: {'Authorization': token},
         data:{
           'id': id,
@@ -260,7 +260,7 @@ Page({
     })
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
       header: {'Authorization': token},
       data:{
         'actId': that.data.actId
@@ -293,7 +293,7 @@ Page({
         activity.participantsId = activity.participants
         var token = wx.getStorageSync('token')
         wx.request({
-          url:'http://127.0.0.1:8000/user/getDetail/',
+          url:'http://43.138.52.97:8001/user/getDetail/',
           header: {'Authorization': token},
           data:{
             'hostId': activity.promoter,
@@ -315,7 +315,7 @@ Page({
           let j = 0
           var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             header: {'Authorization': token},
             data:{
               'hostId': activity.promoter,

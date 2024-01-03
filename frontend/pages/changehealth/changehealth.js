@@ -6,7 +6,7 @@ Page({
     age:'20',
     gender: '男',
     beizhu:'',
-    grade: '70.8',
+    grade: '',
     update:{},
     current:{
       age:'20',
@@ -47,9 +47,18 @@ Page({
         icon: "success"
       });
     }
-
-    // 后端更新数据（以及重新计算体测分数）
-    // 想画变化曲线的话要后端都存起来x
+  },
+  changeGender(){
+    if(this.data.gender == "男"){
+      this.setData({
+        gender:"女"
+      })
+    }
+    else{
+      this.setData({
+        gender:"男"
+      })
+    }
   },
   ChangeGender(event){
     this.setData({
@@ -84,7 +93,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/thuInfo/getHealthInfo/',
+      url:'http://43.138.52.97:8001/thuInfo/getHealthInfo/',
       header: {'Authorization': token},
       data:{
         id:id
@@ -92,11 +101,17 @@ Page({
       method:'GET',
       success:function(res){
         var data = res.data
+        console.log(data)
         data.bmi = data.bmi.toFixed(2)
         that.setData({
           update:data
         })
-        that.setData
+        console.log(that.data.update)
+        var grade = 0.15*that.data.update.grade_vitalCapacity + 0.2*that.data.update.grade_50m + 0.1*that.data.update.grade_sitreach + 0.1*that.data.update.grade_longjump + 0.1*(that.data.update.grade_pullup + that.data.update.grade_situp) + 0.2*(that.data.update.grade_800m + that.data.update.grade_1000m) 
+        if(grade != 0){grade += 15}
+        that.setData({
+          grade:grade
+        })
       }
     })
   },

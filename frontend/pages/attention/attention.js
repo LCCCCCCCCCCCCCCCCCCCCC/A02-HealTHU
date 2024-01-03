@@ -20,7 +20,7 @@ Page({
     var that = this
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/user/delAttention/',
+      url:'http://43.138.52.97:8001/user/delAttention/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         hostId: id,
@@ -75,7 +75,7 @@ Page({
       var j = 0
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/user/getDetail/',
+        url:'http://43.138.52.97:8001/user/getDetail/',
         header: {'Authorization': token},
         data:{
           'hostId': id,

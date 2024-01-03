@@ -99,7 +99,7 @@ Page({
       wx.showToast({ title: '事项进行中', icon: 'success' });
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/doTodo/',
+        url:'http://43.138.52.97:8001/schedule/doTodo/',
         header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
         data:{
           id: id,
@@ -150,7 +150,7 @@ Page({
     var id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/todos/',
+      url:'http://43.138.52.97:8001/schedule/todos/',
       header: {'Authorization': token},
       data:{
         'id': id,

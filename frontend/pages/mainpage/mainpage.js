@@ -47,7 +47,7 @@ Page({
     var id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/message/read/',
+      url:'http://43.138.52.97:8001/message/read/',
       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:id,
@@ -65,7 +65,7 @@ Page({
     if(choice != 3){
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/bbs/getPost/',
+        url:'http://43.138.52.97:8001/bbs/getPost/',
         header: {'Authorization': token},
         data:{
           id:id,
@@ -95,7 +95,7 @@ Page({
     else{
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/message/getMessages/',
+        url:'http://43.138.52.97:8001/message/getMessages/',
         header: {'Authorization': token},
         data:{
           id:id,
@@ -181,7 +181,7 @@ Page({
     var id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/user/getDetail/',
+      url:'http://43.138.52.97:8001/user/getDetail/',
       header: {
         'Authorization': token
       },
@@ -209,7 +209,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/todos/',
+      url:'http://43.138.52.97:8001/schedule/todos/',
       header: {'Authorization': token},
       data:{
         'id': id,
@@ -233,7 +233,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getddl/',
+      url:'http://43.138.52.97:8001/schedule/getddl/',
       header: {'Authorization': token},
       data:{
         'id': id,
@@ -252,7 +252,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/bbs/getPost/',
+      url:'http://43.138.52.97:8001/bbs/getPost/',
       header: {'Authorization': token},
       data:{
         id:id,
@@ -267,7 +267,7 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/message/getMessages/',
+      url:'http://43.138.52.97:8001/message/getMessages/',
       header: {'Authorization': token},
       data:{
         id:id,

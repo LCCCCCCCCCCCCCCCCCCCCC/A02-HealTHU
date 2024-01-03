@@ -28,7 +28,7 @@ Page({
     var exitId = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/exitAct/',
+      url:'http://43.138.52.97:8001/schedule/exitAct/',
       header:{ 'content-type': 'application/x-www-form-urlencoded',
       'Authorization': token},
       data:{
@@ -90,7 +90,7 @@ Page({
     let id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/findAct/',
+      url:'http://43.138.52.97:8001/schedule/findAct/',
       header: {'Authorization': token},
       data:{
         'keyForSearch': this.data.value,
@@ -113,7 +113,7 @@ Page({
           data[i].participantNum = data[i].participants.length
           var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             header: {'Authorization': token},
             data:{
               'hostId': data[i].promoter,
@@ -149,7 +149,7 @@ Page({
     })
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/findAct/',
+      url:'http://43.138.52.97:8001/schedule/findAct/',
       header: {'Authorization': token},
       data:{
         'isRandom': 1,
@@ -169,7 +169,7 @@ Page({
           data[i].participantNum = data[i].participants.length
           var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
             header: {'Authorization': token},
             data:{
               'hostId': data[i].promoter,
@@ -252,7 +252,7 @@ Page({
       })
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/user/getDetail/',
+        url:'http://43.138.52.97:8001/user/getDetail/',
         header: {'Authorization': token},
         data:{
           'hostId': id,
@@ -264,7 +264,7 @@ Page({
           for(let k = 0;k < dat.followings.length;k++){
             var token = wx.getStorageSync('token')
             wx.request({
-              url:'http://127.0.0.1:8000/schedule/findAct/',
+              url:'http://43.138.52.97:8001/schedule/findAct/',
               header: {'Authorization': token},
               data:{
                 'promoter': dat.followings[k],
@@ -284,7 +284,7 @@ Page({
                   data[i].participantNum = data[i].participants.length
                   var token = wx.getStorageSync('token')
                   wx.request({
-                    url:'http://127.0.0.1:8000/user/getDetail/',
+                    url:'http://43.138.52.97:8001/user/getDetail/',
                     header: {'Authorization': token},
                     data:{
                       'hostId': data[i].promoter,
@@ -318,7 +318,7 @@ Page({
       let id = wx.getStorageSync('id')
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/findAct/',
+        url:'http://43.138.52.97:8001/schedule/findAct/',
         header: {'Authorization': token},
         data:{
           'promoter': id,
@@ -338,7 +338,7 @@ Page({
             data[i].participantNum = data[i].participants.length
             var token = wx.getStorageSync('token')
             wx.request({
-              url:'http://127.0.0.1:8000/user/getDetail/',
+              url:'http://43.138.52.97:8001/user/getDetail/',
               header: {'Authorization': token},
               data:{
                 'hostId': data[i].promoter,
@@ -369,7 +369,7 @@ Page({
       ids.push(id)
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/findAct/',
+        url:'http://43.138.52.97:8001/schedule/findAct/',
         header: {'Authorization': token},
         data:{
           'participants': ids,
@@ -389,7 +389,7 @@ Page({
             data[i].participantNum = data[i].participants.length
             var token = wx.getStorageSync('token')
             wx.request({
-              url:'http://127.0.0.1:8000/user/getDetail/',
+              url:'http://43.138.52.97:8001/user/getDetail/',
               header: {'Authorization': token},
               data:{
                 'hostId': data[i].promoter,

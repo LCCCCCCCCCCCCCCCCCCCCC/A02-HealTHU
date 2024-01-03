@@ -7,12 +7,10 @@
   bind:click-right="ChangeHealthClick">
 </van-nav-bar>
 <van-cell-group inset>
-  <van-cell title="性别" value="{{gender}}" />
-  <van-cell title="年龄" value="{{age}}" />
+  <van-cell title="性别" value="{{gender}}" bind:tap="changeGender"/>
   <van-cell title="身高 (cm)" value="{{update.height}}" />
   <van-cell title="体重 (kg)" value="{{update.weight}}" />
   <van-cell title="BMI指数" value="{{update.bmi}}" label="=体重(kg) / 身高²(m²)" />
-  <van-cell title="备注" value="{{beizhu}}" />
 </van-cell-group>
 <van-cell-group title="体质测试" inset>
   <van-cell title="体测成绩" value="{{grade}}" />

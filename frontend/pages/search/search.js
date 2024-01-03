@@ -19,7 +19,7 @@ Page({
     if(options){
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/bbs/searchPost/',
+        url:'http://43.138.52.97:8001/bbs/searchPost/',
         header: {'Authorization': token},
         data:{
           key: options.key
@@ -34,7 +34,7 @@ Page({
       })
       var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/user/search/',
+        url:'http://43.138.52.97:8001/user/search/',
         header: {'Authorization': token},
         data:{
           key: options.key
