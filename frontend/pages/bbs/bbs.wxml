@@ -1,9 +1,7 @@
 <van-nav-bar title="动态"
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
-  placeholder="{{true}}"
-  bind:click-right="onClickRight">
-  <van-icon name="bars" slot="right" />
+  placeholder="{{true}}">
 </van-nav-bar>
 
 <view class="pages">

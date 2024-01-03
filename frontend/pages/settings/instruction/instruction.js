@@ -1,4 +1,4 @@
-// pages/eat/eat.js
+// pages/settings/instruction/instruction.js
 Page({
 
   /**

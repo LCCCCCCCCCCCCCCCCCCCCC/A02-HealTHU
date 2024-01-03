@@ -40,23 +40,6 @@
   <view class="timetext">{{text}}</view>
 </van-dialog>
 <van-divider />
-<!-- 1给一些准备/结束活动指导（播片），23打卡，4看自己参加的体育比赛 -->
-<!-- <view class="width">
-  <van-grid clickable class="buttons-grid" column-num="4" border="{{false}}">
-    <van-grid-item text="拉伸"  link-type="navigateTo">
-        <image slot="icon" src="../images/lag.svg" class="button-icon"/>
-      </van-grid-item>
-      <van-grid-item text="跑步"  link-type="navigateTo" >
-        <image slot="icon" src="../images/run.svg" class="button-icon"/>
-      </van-grid-item>
-      <van-grid-item text="打卡"  link-type="navigateTo" >
-        <image slot="icon" src="../images/record.svg" class="button-icon"/>
-      </van-grid-item>
-      <van-grid-item text="比赛"  link-type="navigateTo" >
-        <image slot="icon" src="../images/race.svg" class="button-icon"/>
-      </van-grid-item>
-    </van-grid>    
-</view> -->
 
 <van-cell-group title="场馆信息（学校每日8:00开放第4天场地预约）" inset>
 <view wx:for="{{gymList}}" wx:key="index">

@@ -6,38 +6,33 @@
       <view class="block1">
         <view class="text">打卡时长</view>
         <view class="today-number">{{lastHour}}h
-          <text class="text">+??.?%</text>
         </view>
       </view>
       <view class="block2">
         <view class="text">完成事项</view>
         <view class="today-number">{{lastNum}}/{{wellNum}}
-          <text class="text">+??.?%</text>
         </view>
       </view>
     </view>
     <view class="container_chart">
       <text class="text-black">事件的打卡时长分布</text>
       <canvas canvas-id="pieCanvas-num" class="canvas" style="height:300px" bindtouchstart="touchHandler_pie"></canvas>
-      <text class="text-black">充实的一天</text>
+      <!-- <text class="text-black">充实的一天</text> -->
     </view>
-    <!-- TODO：换成环形图 -->
     <view class="container_chart">
       <text class="text-black">打卡时间分布</text>
       <canvas canvas-id="columnCanvas" class="canvas"></canvas>
-      <text class="text-black">你更喜欢在夜晚奋斗</text>
+      <!-- <text class="text-black">你更喜欢在夜晚奋斗</text> -->
     </view>
     <view class="container_num">
       <view class="block1">
         <view class="text">睡眠时长</view>
         <view class="today-number">{{sleepHour}}h
-          <text class="text">-??.?%</text>
         </view>
       </view>
       <view class="block2">
         <view class="text">消耗热量</view>
         <view class="today-number">{{heatNum}}kJ
-          <text class="text">+??.?%</text>
         </view>
       </view>
     </view>
@@ -46,14 +41,6 @@
         <van-cell title="睡眠时间较少" icon="question"/>
         <van-cell title="睡眠时间较晚" icon="clock"/>
       </van-cell-group>    
-    </view>
-    <view class="container_num">
-      <view class="waiting-block">
-          <view class="text-black">徽章提醒</view>
-          <view class="today-number-black">{{waiting}}
-            <text class="text-black">天后获得新成就</text>
-          </view>
-        </view> 
     </view>
     <!-- <view>引入总结其他模块的部分内容，比如：</view>
     <view>今天发起/参与了{{}}个活动,有多少多少与好友有关</view>

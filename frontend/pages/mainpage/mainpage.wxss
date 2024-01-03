@@ -137,11 +137,6 @@ van-row{
   height: 160px; 
   overflow: hidden;
 }
-/* .image {
-  width: auto;
-  height: 100%; 
-  transform: scale(1.5);
-} */
 .lnum {
   text-align: right;
 }
