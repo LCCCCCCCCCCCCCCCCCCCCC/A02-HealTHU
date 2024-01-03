@@ -69,12 +69,15 @@ Page({
         sleepData = this.data.sleepDaily[i].data
       }
     }
+    sleepData = sleepData.split(",")
     var sleepHour = 0
     if(this.data.startDate == this.data.endDate){
       for(var i = this.data.startHour;i<this.data.endHour;i++){
         sleepHour++
         if(i == 0){sleepData[0] ++}
-        else{sleepData[((i-1)/2).toFixed(0)] ++}
+        else{
+          sleepData[((i-1)/2).toFixed(0)] ++
+        }
       }
       //向后端传入修改指令
       this.setData({
