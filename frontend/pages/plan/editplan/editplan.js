@@ -107,8 +107,10 @@ Page({
       })
       return;
     }
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/todos/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': that.data.date
@@ -134,9 +136,10 @@ Page({
         }
         else{
           var id = wx.getStorageSync('id')
+          var token = wx.getStorageSync('token')
           wx.request({
             url:'http://127.0.0.1:8000/schedule/changeTodo/',
-            header:{ 'content-type': 'application/x-www-form-urlencoded'},
+            header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
             data:{
               id: id,
               oldDate: that.data.oldTodo.date,
@@ -315,9 +318,10 @@ Page({
   deleteAct(){
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/deleteTodo/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id: id,
         oldDate: that.data.oldTodo.date,

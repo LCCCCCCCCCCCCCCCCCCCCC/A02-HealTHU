@@ -48,7 +48,6 @@ Page({
       startHour: currentHour
     })
     this.saveState()
-    var sleepData = [0,0,0,0,0,0,0,0,0,0,0,0]
     //播放音乐
   },
   endSleep(){
@@ -159,8 +158,10 @@ touchHandler: function (e) {
     var id = wx.getStorageSync('id')
     var that = this
     var date = new Date().getFullYear() + "-" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "-" + new Date().getDate().toString().padStart(2, '0')
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/sleep/getSleep/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': date
@@ -281,15 +282,16 @@ touchHandler: function (e) {
     var id = wx.getStorageSync('id')
     var that = this
     console.log(date)
-    console.log(data)
+    console.log("[" + data.join() + "]")
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/sleep/changeSleep/',
       data:{
         id:id,
         date: date,
-        data: data
+        data: "[" + data.join() + "]"
       },
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       method:'POST',
       success:function(res){
         that.onLoad()

@@ -56,9 +56,10 @@ Page({
   },
   editAct(){
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/changeAct/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         actId: that.data.actId,
         newTitle: that.data.title,
@@ -81,9 +82,10 @@ Page({
   },
   deleteConfirm() {
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/deleteAct/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         actId:that.data.actId
       },
@@ -102,8 +104,10 @@ Page({
     if(options.actid){
       this.setData({ actId: options.actid });
     }
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      header: {'Authorization': token},
       data:{
         'actId': that.data.actId
       },

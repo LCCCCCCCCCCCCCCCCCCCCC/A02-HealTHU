@@ -82,8 +82,10 @@ createSimulationData: function () {
       sleepHour:sleepHour,
       heatNum: cal
     })
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/todos/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': date

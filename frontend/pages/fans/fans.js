@@ -27,9 +27,10 @@ Page({
     var id = wx.getStorageSync('id')
     var ids = wx.getStorageSync('attentionId');
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/addAttention/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         hostId: id,
         customerId: userId
@@ -57,9 +58,10 @@ Page({
     var id = wx.getStorageSync('id')
     var ids = wx.getStorageSync('attentionId');
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/delAttention/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         hostId: id,
         customerId: userId
@@ -111,8 +113,10 @@ Page({
     })
     for(let i = 0; i < ids.length; i++){
       var j = 0
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/user/getDetail/',
+        header: {'Authorization': token},
         data:{
           'hostId': id,
           'customerId':ids[i]

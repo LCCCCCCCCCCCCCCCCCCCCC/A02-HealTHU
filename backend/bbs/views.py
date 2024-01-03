@@ -8,13 +8,14 @@ from .models import Topic
 from .models import Floor
 from user.models import User
 from user.models import UserInfo
+from utils.jwt import login_required
 import requests
 import json
 
 
 # Create your views here.
-
 @csrf_exempt
+@login_required
 def addPost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -64,8 +65,8 @@ def addPost(request):
         )
         return HttpResponse("Post added")
 
-
 @csrf_exempt
+@login_required
 def deletePost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -91,8 +92,8 @@ def deletePost(request):
         targetTopic.delete()
         return HttpResponse("Post deleted")
 
-
 @csrf_exempt
+@login_required
 def likePost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -117,8 +118,8 @@ def likePost(request):
         targetOpFloor.save()
         return HttpResponse("Post liked")
 
-
 @csrf_exempt
+@login_required
 def dislikePost(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -143,8 +144,8 @@ def dislikePost(request):
         targetOpFloor.save()
         return HttpResponse("Post disliked")
 
-
 @csrf_exempt
+@login_required
 def addReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -193,8 +194,8 @@ def addReply(request):
         targetAboveFloor.save()
         return HttpResponse("Reply added")
 
-
 @csrf_exempt
+@login_required
 def deleteReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -241,8 +242,8 @@ def deleteReply(request):
         targetFloor.delete()
         return HttpResponse("Floor deleted")
 
-
 @csrf_exempt
+@login_required
 def likeReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -272,8 +273,8 @@ def likeReply(request):
         targetFloor.save()
         return HttpResponse("reply liked")
 
-
 @csrf_exempt
+@login_required
 def dislikeReply(request):
     if request.method == "POST":
         id = int(request.POST.get('id'))
@@ -303,7 +304,7 @@ def dislikeReply(request):
         targetFloor.save()
         return HttpResponse("reply disliked")
 
-
+@login_required
 def getPost(request):
     if request.method == "GET":
         getPostType = int(request.GET.get('type'))
@@ -381,7 +382,7 @@ def getPost(request):
                     targetPostArray.append(targetPost)
         return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
 
-
+@login_required
 def getPostById(request):
     if request.method == "GET":
         id = int(request.GET.get('id'))
@@ -405,7 +406,7 @@ def getPostById(request):
                 targetPostArray.append(targetPost)
         return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
 
-
+@login_required
 def searchPost(request):
     if request.method == "GET":
         key = request.GET.get('key')
@@ -432,7 +433,7 @@ def searchPost(request):
                 targetPostArray.append(targetPost)
         return HttpResponse(json.dumps(targetPostArray, ensure_ascii=False))
 
-
+@login_required
 def getPostDetail(request):
     if request.method == "GET":
         id = int(request.GET.get('id'))

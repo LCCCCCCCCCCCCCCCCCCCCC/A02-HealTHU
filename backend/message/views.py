@@ -6,12 +6,13 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Message
 from .models import MessageBox
+from utils.jwt import login_required
 import requests
 import json
 
 
 # Create your views here.
-
+@login_required
 def getMessages(request):
     if request.method == 'GET':
         id = request.GET.get('id')
@@ -45,8 +46,8 @@ def getMessages(request):
         msgArray.reverse()
         return HttpResponse(json.dumps(msgArray, ensure_ascii=False))
 
-
 @csrf_exempt
+@login_required
 def read(request):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -70,8 +71,8 @@ def read(request):
         message.save()
         return HttpResponse("Success")
 
-
 @csrf_exempt
+@login_required
 def sendMessage(request):
     if request.method == "POST":
         receiverId = int(request.POST.get('receiverId'))
@@ -95,8 +96,8 @@ def sendMessage(request):
             targetMessageBox.save()
         return HttpResponse("Success")
 
-
 @csrf_exempt
+@login_required
 def deleteMessage(request):
     if request.method == "POST":
         id = request.POST.get('id')

@@ -49,9 +49,10 @@ Page({
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 1;
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/likeComment/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
         actId: that.data.actId,
@@ -74,9 +75,10 @@ Page({
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 0;
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/dislikeComment/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
         actId: that.data.actId,
@@ -96,9 +98,10 @@ Page({
     const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/deleteComment/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
         actId: that.data.actId,
@@ -115,9 +118,10 @@ Page({
     var id = wx.getStorageSync('id')
     let that = this
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/commentAct/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         commenterId: id,
         actId: that.data.actId,
@@ -135,9 +139,10 @@ Page({
   signupConfirm() {
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/partAct/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id: id,
         otherId: that.data.activity.promoterId,
@@ -147,8 +152,10 @@ Page({
       method:'POST',
       success:function(res){
         wx.showToast({ title: '报名成功', icon: 'success' });
+        var token = wx.getStorageSync('token')
         wx.request({
           url:'http://127.0.0.1:8000/user/getDetail/',
+          header: {'Authorization': token},
           data:{
             'hostId': id,
             'customerId':id
@@ -161,9 +168,10 @@ Page({
             var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
             var recieverId = that.data.activity.promoterId
             var toUrl = '../activities/actreview/actreview?actid=' + that.data.activity.id
+            var token = wx.getStorageSync('token')
             wx.request({
               url:'http://127.0.0.1:8000/message/sendMessage/',
-              header:{ 'content-type': 'application/x-www-form-urlencoded'},
+              header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
               data:{
                 receiverId: recieverId,
                 time: nowTime,
@@ -190,8 +198,10 @@ Page({
     else{
       let that = this
       let id = wx.getStorageSync('id')
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/schedule/todos/',
+        header: {'Authorization': token},
         data:{
           'id': id,
           'date': that.data.activity.date
@@ -248,8 +258,10 @@ Page({
       actId: options.actid,
       userid:id
     })
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      header: {'Authorization': token},
       data:{
         'actId': that.data.actId
       },
@@ -279,8 +291,10 @@ Page({
         activity.promoterId = activity.promoter
         activity.participantNum = activity.participants.length
         activity.participantsId = activity.participants
+        var token = wx.getStorageSync('token')
         wx.request({
           url:'http://127.0.0.1:8000/user/getDetail/',
+          header: {'Authorization': token},
           data:{
             'hostId': activity.promoter,
             'customerId':activity.promoter
@@ -299,8 +313,10 @@ Page({
         })      
         for(let i = 0;i<activity.participantNum;i++){
           let j = 0
+          var token = wx.getStorageSync('token')
           wx.request({
             url:'http://127.0.0.1:8000/user/getDetail/',
+            header: {'Authorization': token},
             data:{
               'hostId': activity.promoter,
               'customerId':activity.participantsId[i]

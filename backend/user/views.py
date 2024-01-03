@@ -11,11 +11,14 @@ from schedule.models import Schedule
 from schedule.models import Activity
 from bbs.models import Topic
 from bbs.models import Floor
+from utils.jwt import generate_jwt, login_required
 import requests
 import json
 import os
 # Create your views here.
 
+
+@login_required
 @csrf_exempt
 def postImage(request):
     if request.method == 'POST':
@@ -59,8 +62,12 @@ def getId(request):
                                                             achRange=0, actRange=0, postRange=0)
             user = User.objects.create(userid=openid, userInfo=user_info,
                                 customSettings=custom_settings)
-        return HttpResponse(user.id)
+        print("generating jwt")
+        jwt = generate_jwt({"user_id": user.id, "openid": user.userid})
+        print(jwt)
+        return JsonResponse({'id': user.id, 'token': jwt}, safe=False)
 
+@login_required
 def getDetail(request):
     if request.method == 'GET':
         hostid = request.GET.get("hostId")
@@ -120,6 +127,7 @@ def getDetail(request):
                 return HttpResponse("User not found", status=400)
 
 @csrf_exempt
+@login_required
 def changeInfo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -138,7 +146,7 @@ def changeInfo(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
-
+@login_required
 def getAttention(request):
     if request.method == 'GET':
         id = request.GET.get("id")
@@ -164,7 +172,7 @@ def getAttention(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
-
+@login_required
 def getFans(request):
     if request.method == 'GET':
         id = request.GET.get("id")
@@ -201,8 +209,8 @@ def getFans(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
-
 @csrf_exempt
+@login_required
 def addAttention(request):
     if request.method == 'POST':
         #host 关注 customer
@@ -223,8 +231,8 @@ def addAttention(request):
                 return HttpResponse("Add Attention Success", status=200)
             else:
                 return HttpResponse("User not found", status=400)
-
 @csrf_exempt
+@login_required
 def delAttention(request):
     if request.method == 'POST':
         #host 取消关注 customer
@@ -254,7 +262,7 @@ def delAttention(request):
             else:
                 return HttpResponse("User not found", status=400)
 
-
+@login_required
 def search(request):
     if request.method == "GET":
         key = request.GET.get("key")
@@ -288,7 +296,7 @@ def search(request):
         ansarray = list({v['userId']: v for v in ansarray}.values())
         return HttpResponse(json.dumps(ansarray, ensure_ascii=False))
 
-
+@login_required
 def getPersonal(request):
     if request.method == 'GET':
         homeUserId = int(request.GET.get("customerId"))
@@ -375,7 +383,7 @@ def getPersonal(request):
         else:
             return HttpResponse("User not found")
 
-
+@login_required
 def getRange(request):
     if request.method == "GET":
         id = int(request.GET.get("id"))
@@ -390,8 +398,8 @@ def getRange(request):
             return HttpResponse(json.dumps(responseDict, ensure_ascii=False))
         return HttpResponse("User not found")
 
-
 @csrf_exempt
+@login_required
 def changeRange(request):
     if request.method == "POST":
         id = int(request.POST.get("id"))

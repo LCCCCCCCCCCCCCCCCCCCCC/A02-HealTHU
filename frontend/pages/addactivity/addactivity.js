@@ -24,12 +24,13 @@ Page({
     const { file } = event.detail;
     var that = this
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
      wx.uploadFile({
        url: 'http://127.0.0.1:8000/user/postImage/',
        filePath: file[0].url,
        name: 'image',
        formData: { id: id },
-       header:{ 'content-type': 'application/x-www-form-urlencoded'},
+       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
        method:"POST",
        success(res) {
          // 上传完成需要更新 fileList
@@ -57,8 +58,10 @@ Page({
       })
       return;
     }
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/todos/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': that.data.date
@@ -72,9 +75,10 @@ Page({
         if(that.isValid(that.data.start,that.data.end,that.data.todos,"活动")){
           var pubTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + new Date().getHours().toString().padStart(2, '0') + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
           console.log(that.data.detail)
+          var token = wx.getStorageSync('token')
           wx.request({
             url:'http://127.0.0.1:8000/schedule/addAct/',
-            header:{ 'content-type': 'application/x-www-form-urlencoded'},
+            header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
             data:{
               id: id,
               pubTime: pubTime,

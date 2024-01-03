@@ -61,8 +61,10 @@ Page({
         showLoad:true
       })
       var id = wx.getStorageSync('id')
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/thuInfo/bindThu/',
+        header: {'Authorization': token},
         data:{
           id:id,
           thuID: that.data.studentID,
@@ -108,8 +110,10 @@ Page({
     }
     var that = this
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://43.138.52.97:8001/thuInfo/bindState/',
+      header: {'Authorization': token},
       data:{
         id:id,
       },

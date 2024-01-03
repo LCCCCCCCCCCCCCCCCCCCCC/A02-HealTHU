@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from utils.jwt import login_required
 from .models import SleepInfo
 from datetime import datetime,timedelta
 import requests
@@ -12,11 +12,16 @@ import json
 
 # Create your views here.
 @csrf_exempt
+@login_required
 def changeSleep(request):
     if request.method == 'POST':
         id = request.POST.get('id')
         date = request.POST.get('date')
         data = request.POST.get('data')
+        if data is None:
+            data = []
+        else:
+            data = json.loads(data)
         # find the corresponding user, if not exist, create one
         targetSleepInfo = SleepInfo.objects.filter(userId=id).first()
         if targetSleepInfo is None:
@@ -25,13 +30,13 @@ def changeSleep(request):
         print(targetSleepInfo.sleepingInfo)
         targetSleepInfo.save()
         return HttpResponse("Change Success")
-    
 @csrf_exempt
+@login_required
 def changeSleepState(request):
     if request.method == 'POST':
         # !!! no need to implement this function
         return HttpResponse("Change Success")
-    
+@login_required
 def getSleep(request):
     if request.method == 'GET':
         id = int(request.GET.get('id'))

@@ -19,9 +19,10 @@ Page({
     this.setData({ optionvalue1: detail });
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/changeRange/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:id,
         achRange: that.data.optionvalue1,
@@ -39,9 +40,10 @@ Page({
     this.setData({ optionvalue2: detail });
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/changeRange/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:id,
         achRange: that.data.optionvalue1,
@@ -59,9 +61,10 @@ Page({
     this.setData({ optionvalue3: detail });
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/changeRange/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:id,
         achRange: that.data.optionvalue1,
@@ -80,8 +83,10 @@ Page({
   onLoad(options) {
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/getRange/',
+      header: {'Authorization': token},
       data:{
         id:id,
       },

@@ -28,9 +28,10 @@ Page({
       var id = wx.getStorageSync('id')
       var applicationId = this.data.tempItem.id
       var that = this
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/schedule/appReply/',
-        header:{ 'content-type': 'application/x-www-form-urlencoded'},
+        header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
         data:{
           id:id,
           applicationId:applicationId,
@@ -39,8 +40,10 @@ Page({
         method:'POST',
         success:function(res){
           wx.showToast({ title: '已同意', icon: 'success' });
+          var token = wx.getStorageSync('token')
           wx.request({
             url:'http://127.0.0.1:8000/user/getDetail/',
+            header: {'Authorization': token},
             data:{
               'hostId': id,
               'customerId':id
@@ -53,9 +56,10 @@ Page({
               var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
               var recieverId = that.data.tempItem.applyerId
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
+              var token = wx.getStorageSync('token')
               wx.request({
                 url:'http://127.0.0.1:8000/message/sendMessage/',
-                header:{ 'content-type': 'application/x-www-form-urlencoded'},
+                header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
                 data:{
                   receiverId: recieverId,
                   time: nowTime,
@@ -79,9 +83,10 @@ Page({
       console.log(this.data.tempItem)
       var that = this
       console.log(id + " " + applicationId)
+      var token = wx.getStorageSync('token')
       wx.request({
         url:'http://127.0.0.1:8000/schedule/appReply/',
-        header:{ 'content-type': 'application/x-www-form-urlencoded'},
+        header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
         data:{
           id:id,
           applicationId:applicationId,
@@ -90,8 +95,10 @@ Page({
         method:'POST',
         success:function(res){
           wx.showToast({ title: '已拒绝'});
+          var token = wx.getStorageSync('token')
           wx.request({
             url:'http://127.0.0.1:8000/user/getDetail/',
+            header: {'Authorization': token},
             data:{
               'hostId': id,
               'customerId':id
@@ -104,9 +111,10 @@ Page({
               var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
               var recieverId = that.data.tempItem.applyerId
               var toUrl = '../activities/activity/activity?actid=' + that.data.activity.id
+              var token = wx.getStorageSync('token')
               wx.request({
                 url:'http://127.0.0.1:8000/message/sendMessage/',
-                header:{ 'content-type': 'application/x-www-form-urlencoded'},
+                header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
                 data:{
                   receiverId: recieverId,
                   time: nowTime,
@@ -152,8 +160,10 @@ Page({
     }
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      header: {'Authorization': token},
       data:{
         actId: that.data.actId
       },
@@ -166,8 +176,10 @@ Page({
         })
       }
     })
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/schedule/getApplication/',
+      header: {'Authorization': token},
       data:{
         id: id
       },
@@ -185,8 +197,10 @@ Page({
           var j = 0
           filteredApps[i].text = filteredApps[i].message
           //filteredApps[i].id = filteredApps[i].applyerId
+          var token = wx.getStorageSync('token')
           wx.request({
             url:'http://127.0.0.1:8000/user/getDetail/',
+            header: {'Authorization': token},
             data:{
               'hostId': id,
               'customerId':filteredApps[i].applyerId

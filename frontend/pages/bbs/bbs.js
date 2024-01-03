@@ -18,9 +18,10 @@ Page({
   },
   likePost(){
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/likePost/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.id,
         postId:that.data.bbsId
@@ -33,9 +34,10 @@ Page({
   },
   dislikePost(){
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/dislikePost/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.id,
         postId:that.data.bbsId
@@ -49,9 +51,10 @@ Page({
   likeAct(event){
     var floor = event.target.dataset.index
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/likeReply/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.id,
         postId:that.data.bbsId,
@@ -66,9 +69,10 @@ Page({
   dislikeAct(event){
     var floor = event.target.dataset.index
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/dislikeReply/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.id,
         postId:that.data.bbsId,
@@ -89,9 +93,10 @@ Page({
     var floor = this.data.replyindex
     var that = this
     var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/addReply/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.id,
         postId:that.data.bbsId,
@@ -104,8 +109,10 @@ Page({
         that.onLoad()
       }
     })
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/user/getDetail/',
+      header: {'Authorization': token},
       data:{
         'hostId': that.data.id,
         'customerId':that.data.id
@@ -124,9 +131,10 @@ Page({
           var toUrl = '../bbs/bbs?bbsid=' + that.data.bbsId + '&floor=' + floor
           recieverId = that.getIdByFloor(floor)
         }
+        var token = wx.getStorageSync('token')
         wx.request({
           url:'http://127.0.0.1:8000/message/sendMessage/',
-          header:{ 'content-type': 'application/x-www-form-urlencoded'},
+          header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
           data:{
             receiverId: recieverId,
             time: nowTime,
@@ -144,9 +152,10 @@ Page({
   deleteConfirm() {
     var floor = this.data.deleteindex
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/deleteReply/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.id,
         postId:that.data.bbsId,
@@ -160,9 +169,10 @@ Page({
   },
   deleteallConfirm() {
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/deletePost/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.id,
         postId:that.data.bbsId
@@ -200,8 +210,10 @@ Page({
     this.setData({
       id:id
     })
+    var token = wx.getStorageSync('token')
     wx.request({
       url:'http://127.0.0.1:8000/bbs/getPostDetail/',
+      header: {'Authorization': token},
       data:{
         id:id,
         postId: that.data.bbsId
