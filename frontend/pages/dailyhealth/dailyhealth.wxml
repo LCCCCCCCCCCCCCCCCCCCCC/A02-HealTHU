@@ -6,13 +6,13 @@
       <view class="block1">
         <view class="text">打卡时长</view>
         <view class="today-number">{{lastHour}}h
-          <text class="text">+??.?%</text>
+          <!-- <text class="text">+??.?%</text> -->
         </view>
       </view>
       <view class="block2">
         <view class="text">完成事项</view>
         <view class="today-number">{{lastNum}}/{{wellNum}}
-          <text class="text">+??.?%</text>
+          <!-- <text class="text">+??.?%</text> -->
         </view>
       </view>
     </view>

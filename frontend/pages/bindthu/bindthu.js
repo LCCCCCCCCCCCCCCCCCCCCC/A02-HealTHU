@@ -112,7 +112,7 @@ Page({
     var id = wx.getStorageSync('id')
     var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://43.138.52.97:8001/thuInfo/bindState/',
+      url:'http://127.0.0.1:8000/thuInfo/bindState/',
       header: {'Authorization': token},
       data:{
         id:id,
@@ -120,6 +120,7 @@ Page({
       method:'GET',
       success:function(res){
         var data = res.data
+        console.log(data)
           that.setData({
             isbind:data,
           })
