@@ -9,6 +9,8 @@ from schedule.models import Schedule
 from utils.jwt import login_required
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
+from django.conf import settings
+from cryptography.fernet import Fernet
 import requests
 import subprocess
 import os
@@ -195,31 +197,36 @@ def update_info():
         # 其中new_health_info是一个新的ThuHealthuInfo对象
         userId = thuinfo.studentNum
         password = thuinfo.studentPass
+        cipher_suite = Fernet(settings.THU_TOKEN)
+        password = cipher_suite.decrypt(password).decode()
         healthResult = subprocess.run(
             f'OPENSSL_CONF=${{PWD}}/openssl.cnf node -r esm demo_report.js {userId} {password}', shell=True, check=True,
             stdout=subprocess.PIPE)
         output = healthResult.stdout.decode('utf-8')
-        result = healthTestProcess(output)
-        thuinfo.healthInfo.height = result['身高']
-        thuinfo.healthInfo.weight = result['体重']
-        thuinfo.healthInfo.bmi = result['体重'] * 10000 / (result['身高'] * result['身高'])
-        thuinfo.healthInfo.vitalCapacity = result['肺活量']
-        thuinfo.healthInfo.grade_vitalCapacity = result['肺活量分数']
-        thuinfo.healthInfo.time_800m = result['800M跑']
-        thuinfo.healthInfo.grade_800m = result['800M跑分数']
-        thuinfo.healthInfo.time_1000m = result['1000M跑']
-        thuinfo.healthInfo.grade_1000m = result['1000M跑分数']
-        thuinfo.healthInfo.time_50m = result['50M跑']
-        thuinfo.healthInfo.grade_50m = result['50M跑分数']
-        thuinfo.healthInfo.longjump = result['立定跳远']
-        thuinfo.healthInfo.grade_longjump = result['立定跳远分数']
-        thuinfo.healthInfo.sitreach = result['坐位体前屈']
-        thuinfo.healthInfo.grade_sitreach = result['坐位体前屈分数']
-        thuinfo.healthInfo.situp = result['仰卧起坐']
-        thuinfo.healthInfo.grade_situp = result['仰卧起坐分数']
-        thuinfo.healthInfo.pullup = result['引体向上']
-        thuinfo.healthInfo.grade_pullup = result['引体向上分数']
-        thuinfo.healthInfo.save()
+        try:
+            result = healthTestProcess(output)
+            thuinfo.healthInfo.height = result['身高']
+            thuinfo.healthInfo.weight = result['体重']
+            thuinfo.healthInfo.bmi = result['体重'] * 10000 / (result['身高'] * result['身高'])
+            thuinfo.healthInfo.vitalCapacity = result['肺活量']
+            thuinfo.healthInfo.grade_vitalCapacity = result['肺活量分数']
+            thuinfo.healthInfo.time_800m = result['800M跑']
+            thuinfo.healthInfo.grade_800m = result['800M跑分数']
+            thuinfo.healthInfo.time_1000m = result['1000M跑']
+            thuinfo.healthInfo.grade_1000m = result['1000M跑分数']
+            thuinfo.healthInfo.time_50m = result['50M跑']
+            thuinfo.healthInfo.grade_50m = result['50M跑分数']
+            thuinfo.healthInfo.longjump = result['立定跳远']
+            thuinfo.healthInfo.grade_longjump = result['立定跳远分数']
+            thuinfo.healthInfo.sitreach = result['坐位体前屈']
+            thuinfo.healthInfo.grade_sitreach = result['坐位体前屈分数']
+            thuinfo.healthInfo.situp = result['仰卧起坐']
+            thuinfo.healthInfo.grade_situp = result['仰卧起坐分数']
+            thuinfo.healthInfo.pullup = result['引体向上']
+            thuinfo.healthInfo.grade_pullup = result['引体向上分数']
+            thuinfo.healthInfo.save()
+        except:
+            pass
 
         # 更新classInfo
         # 假设你有一个新的classInfo对象，可以通过以下方式进行更新
@@ -273,27 +280,48 @@ def bindThu(request):
             os.chdir(current_dir)
             return HttpResponse(0)
         else:
-            result = healthTestProcess(output)
-            thu_health_info = ThuHealthuInfo.objects.create(height=result['身高'],
-                                                            weight=result['体重'],
-                                                            bmi=result['体重'] * 10000 / (
-                                                                        result['身高'] * result['身高']),
-                                                            vitalCapacity=result['肺活量'],
-                                                            grade_vitalCapacity=result['肺活量分数'],
-                                                            time_800m=result['800M跑'],
-                                                            grade_800m=result['800M跑分数'],
-                                                            time_1000m=result['1000M跑'],
-                                                            grade_1000m=result['1000M跑分数'],
-                                                            time_50m=result['50M跑'],
-                                                            grade_50m=result['50M跑分数'],
-                                                            longjump=result['立定跳远'],
-                                                            grade_longjump=result['立定跳远分数'],
-                                                            sitreach=result['坐位体前屈'],
-                                                            grade_sitreach=result['坐位体前屈分数'],
-                                                            situp=result['仰卧起坐'],
-                                                            grade_situp=result['仰卧起坐分数'],
-                                                            pullup=result['引体向上'],
-                                                            grade_pullup=result['引体向上分数'])
+            try:
+                result = healthTestProcess(output)
+                thu_health_info = ThuHealthuInfo.objects.create(height=result['身高'],
+                                                                weight=result['体重'],
+                                                                bmi=result['体重'] * 10000 / (
+                                                                            result['身高'] * result['身高']),
+                                                                vitalCapacity=result['肺活量'],
+                                                                grade_vitalCapacity=result['肺活量分数'],
+                                                                time_800m=result['800M跑'],
+                                                                grade_800m=result['800M跑分数'],
+                                                                time_1000m=result['1000M跑'],
+                                                                grade_1000m=result['1000M跑分数'],
+                                                                time_50m=result['50M跑'],
+                                                                grade_50m=result['50M跑分数'],
+                                                                longjump=result['立定跳远'],
+                                                                grade_longjump=result['立定跳远分数'],
+                                                                sitreach=result['坐位体前屈'],
+                                                                grade_sitreach=result['坐位体前屈分数'],
+                                                                situp=result['仰卧起坐'],
+                                                                grade_situp=result['仰卧起坐分数'],
+                                                                pullup=result['引体向上'],
+                                                                grade_pullup=result['引体向上分数'])
+            except:
+                thu_health_info = ThuHealthuInfo.objects.create(height=0,
+                                                                weight=0,
+                                                                bmi=0,
+                                                                vitalCapacity=0,
+                                                                grade_vitalCapacity=0,
+                                                                time_800m='0',
+                                                                grade_800m='0',
+                                                                time_1000m='0',
+                                                                grade_1000m='0',
+                                                                time_50m='0',
+                                                                grade_50m='0',
+                                                                longjump='0',
+                                                                grade_longjump='0',
+                                                                sitreach='0',
+                                                                grade_sitreach='0',
+                                                                situp='0',
+                                                                grade_situp='0',
+                                                                pullup='0',
+                                                                grade_pullup='0')
             classResult = subprocess.run(
                 f'OPENSSL_CONF=${{PWD}}/openssl.cnf node -r esm demo_schedule.js {thu_id} {thu_pass}', shell=True,
                 check=True, stdout=subprocess.PIPE)
@@ -306,6 +334,8 @@ def bindThu(request):
             for i in range(1, len(output)):
                 class_info.extend(classProcess(first_day, output[i]))
             thu_class = ThuClass.objects.create(schedule=class_info)
+            cipher_suite = Fernet(settings.THU_TOKEN)
+            thu_pass = cipher_suite.encrypt(thu_pass.encode())
             thu_info = Thuinfo.objects.create(id=id,
                                               studentNum=thu_id,
                                               studentPass=thu_pass,

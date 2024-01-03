@@ -136,3 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 JWT_EXPIRE_HOURS = 24
 JWT_SECRET = "foo"
 SALT = "bar"
+
+THU_TOKEN = b'En4BbAdiYaMavGzzQZPp2mNvAhxSEh-yChbZQ-tc-No='
