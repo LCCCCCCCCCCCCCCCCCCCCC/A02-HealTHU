@@ -6,7 +6,17 @@
   <van-col span="10">
     <view class="userinfo-nick">{{nickName}}</view>
     <view class="userinfo-id">UID：{{userId}}</view>
-    <view wx:if="{{userId == id}}" class="empty-line"></view>
+    <van-grid clickable column-num="2" border="{{false}}" center="{{false}}">
+      <van-grid-item link-type="navigateTo" url='../attention/attention' use-slot>
+        <text style="color: grey;font-size: 14px;"> {{attentionnum}} 关注</text>
+      </van-grid-item>
+      <van-grid-item link-type="navigateTo" url='../fans/fans' use-slot>
+        <text style="color: grey;font-size: 14px;"> {{fannum}} 粉丝</text>
+      </van-grid-item>
+    </van-grid>
+    <view wx:if="{{userId == id}}">
+      <button class="infobutton" bind:tap="changeInfo">编辑个人信息</button>
+    </view>
     <view wx:else>
       <button wx:if="{{followed == false}}" class="infobutton" bind:tap="follow">关注</button>
       <button wx:if="{{followed == true}}" class="infobutton" bind:tap="unfollow">取消关注</button>

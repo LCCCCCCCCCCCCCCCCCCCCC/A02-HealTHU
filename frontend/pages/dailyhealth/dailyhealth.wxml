@@ -21,11 +21,10 @@
       <canvas canvas-id="pieCanvas-num" class="canvas" style="height:300px" bindtouchstart="touchHandler_pie"></canvas>
       <text class="text-black">充实的一天</text>
     </view>
-    <!-- TODO：换成环形图 -->
     <view class="container_chart">
       <text class="text-black">打卡时间分布</text>
       <canvas canvas-id="columnCanvas" class="canvas"></canvas>
-      <text class="text-black">你更喜欢在夜晚奋斗</text>
+      <!-- <text class="text-black">你更喜欢在夜晚奋斗</text> -->
     </view>
     <view class="container_num">
       <view class="block1">
