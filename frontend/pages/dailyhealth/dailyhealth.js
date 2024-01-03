@@ -24,7 +24,6 @@ Page({
     wellNum: 6,
     lastHour: 12.6,
     lasting: 8,
-    waiting: 2,
     sleepHour: 6.1,
     heatNum: 27,
   },

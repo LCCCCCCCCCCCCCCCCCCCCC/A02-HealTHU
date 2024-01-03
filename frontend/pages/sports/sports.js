@@ -12,8 +12,8 @@ Page({
     goal: 5000,
     today_cal: 7.5,
     gymList: [
-      {title:"综合体育馆", detail:"羽毛球场11:00~12:00", url:"../images/szonghe.png"},
-      {title:"西体育馆", detail:"篮球场15:00~17:00", url:"../images/sxi.png"},
+      {title:"综合体育馆", detail:"位于校园东区东大操场南侧，于2000年建成，提供室内羽毛球、篮球、排球等场地预约。", url:"../images/szonghe.png"},
+      {title:"西体育馆", detail:"位于西大操场西侧，早期清华四大建筑之一，被认定为全国重点文物。提供室内羽毛球、台球、篮球等场地预约，以及清华大学体育荣誉室的参观。", url:"../images/sxi.png"},
     ],
     todos: [
       {title:"晨跑", start:"9:00", end:"9:15", label:"紫荆操场", state: 1},
