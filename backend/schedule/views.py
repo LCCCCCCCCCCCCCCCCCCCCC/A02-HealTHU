@@ -43,7 +43,7 @@ def wx_reminder(touser, todoname, starttime, endtime):
     data = {
         "template_id": "fHPE-sivPSATvWyAsqHrlIFKo6-6NN20DmVxFx8q4I8",
         "touser": touser,
-        "page": "pages/personalcenter/mainpage",
+        "page": "pages/mainpage/mainpage",
         "data": {
             "thing1": {
                 "value": todoname
