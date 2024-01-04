@@ -39,7 +39,7 @@
           <image class="image" src="{{item.images[0]}}"/>
         </view>
         <text>{{item.name}} {{item.time}}</text>
-        <view class="lnum">{{item.likeNum}}点赞 {{item.replies.commentNum}回复</view>
+        <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
       </view> 
     </van-cell>
   </view>
