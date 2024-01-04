@@ -20,9 +20,8 @@
   <van-cell border="{{false}}">
     <text slot="title" class="signature">{{ post.content }}</text>
   </van-cell>
-  <!-- TODO: 图片大小处理 -->
   <van-cell wx:for="{{post.images}}" wx:key="index">
-    <image class="image" src="{{item}}"/>
+    <image class="image" src="{{item}}" mode="aspectFit"/>
   </van-cell>
   <van-cell class="funcline">
     <view class="lnum">{{post.time}}</view>

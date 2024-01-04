@@ -17,3 +17,11 @@
   padding: 16px;
   text-align: right;
 }
+.textinput {
+  background-color: white;
+  height: 200px;
+  width: 94%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 8px;
+}

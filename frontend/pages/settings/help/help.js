@@ -1,13 +1,12 @@
 // pages/settings/help/help.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
 
   },
 
+  handleSubmit() {
+    wx.showToast({ title: '提交成功', icon: 'success' });
+  },
   /**
    * 生命周期函数--监听页面加载
    */

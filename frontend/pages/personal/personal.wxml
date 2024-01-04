@@ -7,10 +7,10 @@
     <view class="userinfo-nick">{{nickName}}</view>
     <view class="userinfo-id">UID：{{userId}}</view>
     <van-grid clickable column-num="2" border="{{false}}" center="{{false}}">
-      <van-grid-item link-type="navigateTo" use-slot>
+      <van-grid-item use-slot>
         <text style="color: grey;font-size: 14px;"> {{attentionnum}} 关注</text>
       </van-grid-item>
-      <van-grid-item link-type="navigateTo" use-slot>
+      <van-grid-item use-slot>
         <text style="color: grey;font-size: 14px;"> {{fannum}} 粉丝</text>
       </van-grid-item>
     </van-grid>
