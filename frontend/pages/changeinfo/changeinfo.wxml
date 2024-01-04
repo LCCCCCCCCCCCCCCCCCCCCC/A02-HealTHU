@@ -1,8 +1,11 @@
 <!--pages/changeinfo/changeinfo.wxml-->
 <view class="container">
-  <button class="choosebutton" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar"> 
+  <!-- <button class="choosebutton" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar"> -->
+    <van-uploader class="upload" 
+  bind:after-read="afterRead" >
     <van-image round width="6rem" height="6rem" src="{{avatarUrl}}"></van-image>
-  </button>
+  <!-- </button> -->
+  </van-uploader>
   <van-divider />
   <van-cell-group>
   <van-field

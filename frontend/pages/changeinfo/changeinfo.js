@@ -9,6 +9,27 @@ Page({
     nickName: '',
     sign:'',
   },
+  afterRead(event) {
+    console.log(event.detail)
+    const { file } = event.detail;
+    var that = this
+    var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
+     wx.uploadFile({
+       url: 'http://43.138.52.97:8001/user/postImage/',
+       filePath: file.url,
+       name: 'image',
+       formData: { id: id },
+       header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
+       method:"POST",
+       success(res) {
+         var data = res.data.split('/')
+         that.setData({
+           avatarUrl:'http://43.138.52.97:8001/media/' + data[1]
+         })
+       },
+     });
+    },
   handleNameInput(event) {
     this.setData({
       nickName: event.detail
@@ -25,10 +46,10 @@ Page({
   change(){
     var that = this
     var id = wx.getStorageSync('id')
-    console.log(that.data)
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/user/changeInfo/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://43.138.52.97:8001/user/changeInfo/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id: id,
         nickName:that.data.nickName,
@@ -54,8 +75,10 @@ Page({
   onLoad(options) {
     var that = this
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/user/getDetail/',
+      url:'http://43.138.52.97:8001/user/getDetail/',
+      header: {'Authorization': token},
       data:{
         'hostId': id,
         'customerId':id

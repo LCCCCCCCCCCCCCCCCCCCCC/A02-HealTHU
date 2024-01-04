@@ -1,40 +1,40 @@
 <!--pages/changehealth/changehealth.wxml-->
-<van-nav-bar title="最近更新时间：{{update.updateTime}}" 
-  right-text="编辑"
+<view class="pages">
+<van-nav-bar title="最近更新时间：{{updateTime}}" 
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
   placeholder="{{true}}"
   bind:click-right="ChangeHealthClick">
 </van-nav-bar>
 <van-cell-group inset>
-  <van-cell title="性别" value="{{update.gender}}" />
-  <van-cell title="年龄" value="{{update.age}}" />
+  <van-cell title="性别" value="{{gender}}" bind:tap="changeGender"/>
   <van-cell title="身高 (cm)" value="{{update.height}}" />
   <van-cell title="体重 (kg)" value="{{update.weight}}" />
   <van-cell title="BMI指数" value="{{update.bmi}}" label="=体重(kg) / 身高²(m²)" />
-  <van-cell title="备注" value="{{update.beizhu}}" />
 </van-cell-group>
 <van-cell-group title="体质测试" inset>
-  <van-cell title="体测成绩" value="{{update.grade}}" />
-  <van-cell wx:if="{{update.gender == '男'}}" title="1000m" value="{{update.thousand}} 成绩:{{update.grade_thousand}}" />
-  <van-cell wx:if="{{update.gender == '女'}}" title="800m" value="{{update.ehundred}} 成绩:{{update.grade_ehundred}}" />
-  <van-cell title="50m" value="{{update.fifty}} 成绩:{{update.grade_fifty}}" />
-  <van-cell title="立定跳远" value="{{update.jump}}m 成绩:{{update.grade_jump}}" />
-  <van-cell title="坐位体前屈" value="{{update.sar}}cm 成绩:{{update.grade_sar}}" />
-  <van-cell wx:if="{{update.gender == '男'}}" title="引体向上" value="{{update.pullup}} 成绩:{{update.grade_pullup}}" />
-  <van-cell wx:if="{{update.gender == '女'}}" title="仰卧起坐" value="{{update.situp}} 成绩:{{update.grade_situp}}" />
+  <van-cell title="体测成绩" value="{{grade}}" />
+  <van-cell wx:if="{{gender == '男'}}" title="1000m" value="{{update.time_1000m}} 成绩:{{update.grade_1000m}}" />
+  <van-cell wx:if="{{gender == '女'}}" title="800m" value="{{update.time_800m}} 成绩:{{update.grade_800m}}" />
+  <van-cell title="50m" value="{{update.time_50m}} 成绩:{{update.grade_50m}}" />
+  <van-cell title="立定跳远" value="{{update.longjump}}cm 成绩:{{update.grade_longjump}}" />
+  <van-cell title="坐位体前屈" value="{{update.sitreach}}cm 成绩:{{update.grade_sitreach}}" />
+  <van-cell wx:if="{{gender == '男'}}" title="引体向上" value="{{update.pullup}} 成绩:{{update.grade_pullup}}" />
+  <van-cell wx:if="{{gender == '女'}}" title="仰卧起坐" value="{{update.situp}} 成绩:{{update.grade_situp}}" />
+  <van-cell title="肺活量" value="{{update.vitalCapacity}}mL 成绩:{{update.grade_vitalCapacity}}" />
 </van-cell-group>
 
-<van-popup show="{{ show }}" bind:close="onClose">
+<van-popup show="{{ show }}" bind:close="onClose"
+  closable round custom-style="width: 80%">
   <van-cell-group>
   <van-field
     label="性别"
-    placeholder="{{update.gender}}"
+    placeholder="{{gender}}"
     bind:change="ChangeGender"
   />
   <van-field
     label="年龄"
-    placeholder="{{update.age}}"
+    placeholder="{{age}}"
     bind:change="ChangeAge"
   />
   <van-field
@@ -49,9 +49,10 @@
   />
   <van-field
     label="备注"
-    placeholder="{{update.beizhu}}"
+    placeholder="{{beizhu}}"
     bind:change="ChangeBeizhu"
   />
 </van-cell-group>
 <van-button hairline bind:tap="change">确认修改</van-button>
 </van-popup>
+</view>

@@ -1,20 +1,15 @@
 <!--pages/settings/help/help.wxml-->
-<van-cell-group title="帮助">
-  <van-cell title="反馈1" is-link value="2023-11-30" />
-  <van-cell title="问题2" is-link value="2023-12-2" />
-  <!-- 先定以弹窗形式展示问题答案（使用说明）/反馈结果 -->
+<view class="pages">
+<van-cell-group title="帮助" inset>
+  <van-cell title="使用说明查看/下载" is-link clickable
+    link-type="navigateTo"
+    url="../instruction/instruction"/>
 </van-cell-group>
+<text class="helptext">访问需要清华信息门户账号</text>
 
-<van-cell-group title="反馈">
-  <van-field
-    label="联系方式"
-    placeholder="（可选填，便于进一步沟通）"
-    bind:change="onChangeTele"
-  /> 
-  <van-field
-    label="意见"
-    placeholder="欢迎对 HealTHU 提出意见，看到你的反馈后，我们会第一时间在上方帮助栏进行解答"
-    bind:change="onChangeText"
-  />
+<van-cell-group title="反馈" inset>
+  <textarea class="textinput"
+    bindinput="onChangeText" placeholder="欢迎对 HealTHU 提出意见"></textarea>
 </van-cell-group>
-<van-button type="primary">提交</van-button>
+<van-button class="upbtn" bind:click="handleSubmit" type="primary">提交</van-button>
+</view>

@@ -1,0 +1,2 @@
+<!--pages/gym/gym.wxml-->
+<web-view src="https://50.tsinghua.edu.cn/gymsite/cacheAction.do?ms=viewIndex"></web-view>

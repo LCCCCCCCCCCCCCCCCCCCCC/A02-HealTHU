@@ -18,9 +18,8 @@
       placeholder="请输入搜索关键词"
       use-action-slot
       bind:change="onChange"
-      bind:search="onSearch"
     >
-      <view slot="action" bind:tap="onClick">搜索</view>
+      <view slot="action" bind:tap="onClick" style="padding-left: 8px;">搜索</view>
     </van-search> 
   </view>
 </van-nav-bar>
@@ -37,22 +36,25 @@
 <van-tabs active="{{ active }}" bind:change="onactiveChange">
 <van-tab title="关注">
   <van-empty description="关注的人还没有发起过活动" wx:if="{{activities1.length == 0}}"></van-empty>
-  <view wx:for="{{activities1}}" wx:key="index">
+<view wx:for="{{activities1}}" wx:key="index">
     <van-card>
     <view slot="title">
       <text class="acttitle">{{item.title}}</text>
     </view>
     <view slot="desc">
-      ({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}
+      <view class="actperson">#{{item.label}}</view>
+      <text class="acttime">{{item.date}} {{item.start}}-{{item.end}}</text>
+      <view class="actperson">发起人：{{item.promoter}}</view>
     </view>
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
       </view>
       <view slot="footer">
+        <text class="actperson">共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}} </text>
         <van-button size="mini" bind:click="showdetail1" data-index="{{index}}">查看</van-button>
       </view>
     </van-card>
@@ -74,7 +76,7 @@
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
       </view>
@@ -86,46 +88,60 @@
   </view>
 </van-tab>
 
+
 <van-tab title="发起">
   <van-empty description="你还没有发起过活动" wx:if="{{activities3.length == 0}}"></van-empty>
   <view wx:for="{{activities3}}" wx:key="index">
-    <van-card 
-    desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
-    title="{{item.title}}"
-    >
+  <van-card>
+    <view slot="title">
+      <text class="acttitle">{{item.title}}</text>
+    </view>
+    <view slot="desc">
+      <view class="actperson">#{{item.label}}</view>
+      <text class="acttime">{{item.date}} {{item.start}}-{{item.end}}</text>
+      <view class="actperson">发起人：{{item.promoter}}</view>
+    </view>
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
-    </view>
-    <view slot="footer">
-      <van-button size="mini" bind:click="showdetail3" data-index="{{index}}">查看</van-button>
-      <van-button size="mini" bind:click="handleChange" data-index="{{index}}" wx:if="{{item.state == 0}}">编辑</van-button>
-      <van-button size="mini" bind:click="handleReview" data-index="{{index}}" wx:if="{{item.state == 0}}">报名审核</van-button>
-    </view>
+      </view>
+      <view slot="footer">
+        <text class="actperson">共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}} </text>
+        <van-button size="mini" bind:click="showdetail3" data-index="{{index}}">查看</van-button>
+        <!-- <van-button size="mini" bind:click="handleChange" data-index="{{index}}" wx:if="{{item.state == 0}}">编辑</van-button> -->
+        <van-button size="mini" bind:click="handleReview" data-index="{{index}}" wx:if="{{item.state == 0}}">报名审核</van-button>
+      </view>
     </van-card>
   </view>
 </van-tab>
+
 <van-tab title="参与">
   <van-empty description="你还没有参与过活动" wx:if="{{activities4.length == 0}}"></van-empty>
-  <view wx:for="{{activities4}}" wx:key="index">
-    <van-card 
-    desc="({{item.promoter}}发起，共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}}，{{item.date}} {{item.start}}-{{item.end}}) {{item.label}}"
-    title="{{item.title}}"
-    >
+<view wx:for="{{activities4}}" wx:key="index">
+    <van-card>
+    <view slot="title">
+      <text class="acttitle">{{item.title}}</text>
+    </view>
+    <view slot="desc">
+      <view class="actperson">#{{item.label}}</view>
+      <text class="acttime">{{item.date}} {{item.start}}-{{item.end}}</text>
+      <view class="actperson">发起人：{{item.promoter}}</view>
+    </view>
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
-    </view>
-    <view slot="footer">
-      <van-button size="mini" bind:click="showdetail4" data-index="{{index}}">查看</van-button>
-      <van-button size="mini" bind:click="handleExit" data-index="{{index}}" wx:if="{{item.state == 0}}">取消报名</van-button>
-    </view>
+      </view>
+      <view slot="footer">
+        <text class="actperson">共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}} </text>
+        <van-button size="mini" bind:click="showdetail4" data-index="{{index}}">查看</van-button>
+        <van-button size="mini" bind:click="handleExit" data-index="{{index}}" wx:if="{{item.state == 0}}">取消报名</van-button>
+      </view>
     </van-card>
   </view>
 </van-tab>

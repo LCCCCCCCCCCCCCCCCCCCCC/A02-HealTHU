@@ -1,9 +1,5 @@
 // pages/mainpage/mainpage.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     switchColorbyType: {
       "课程": "#BBBB00",
@@ -23,19 +19,18 @@ Page({
     exitshow: false,
     bbsactivate: 0,
     // 未读消息数量
-    unreadNum: 1,
-    noticeList: [
-      {state:1, title:"teto评论了你的动态“今天真冷啊...”", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {state:0, title:"GUMI报名了你的活动“软件学院集体锻炼”", time:"2023-12-19 8:20", url: '../activities/activity/activity?actid=1'},
-    ],
-    bbsList: [
-      {name:"NLno", title:"今天真冷啊..", time:"2023-12-18 14:02", url: '../bbs/bbs?bbsid=103'},
-      {name:"NLno", title:"[活动报名] 2023秋软件学院集体锻炼", time:"2023-12-17 19:20", url: '../activities/activity/activity?actid=10001'},
-      {name:"NLno", title:"[提问氵]西操体育馆几点开放啊", time:"2023-12-17 18:56", url: '../bbs/bbs?bbsid=102'},
-      {name:"NLno", title:"[失物招领]在紫操西北角捡到一串钥匙，已经交到紫荆一楼了", time:"2023-12-17 17:30", url: '../bbs/bbs?bbsid=101'},
-    ]
+    unreadNum: 0,
+    noticeList: [],
+    bbsList: [],
+    bbsList1: [],
+    bbsList2: [],
+    bbsList3: [],
+    id:0,
+    readchecked: false,
+    searchvalue: '',
+    noneshow: false,
   },
-  // TODO：维度消息阅读更新
+  // 未读消息阅读更新
   delUnread(event){
     var tempList = this.data.noticeList;
     const personindex = event.currentTarget.dataset.index;
@@ -48,6 +43,95 @@ Page({
         noticeList: tempList,
         unreadNum: unread
       });
+    }
+    var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url:'http://43.138.52.97:8001/message/read/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
+      data:{
+        id:id,
+        messageId: tempList[personindex].id
+      },
+      method:'POST',
+      success:function(res){
+      }
+    })
+  },
+  onbbsChange(event){
+    var choice = event.detail.index
+    var that = this
+    var id = wx.getStorageSync('id')
+    if(choice != 3){
+      var token = wx.getStorageSync('token')
+      wx.request({
+        url:'http://43.138.52.97:8001/bbs/getPost/',
+        header: {'Authorization': token},
+        data:{
+          id:id,
+          type: choice
+        },
+        method:'GET',
+        success:function(res){
+          var data = res.data
+          if(choice == 0){
+            that.setData({
+              bbsList1: data,
+            });
+          }
+          else if (choice == 1){
+            that.setData({
+              bbsList2: data,
+            });
+          }
+          else{
+            that.setData({
+              bbsList3: data,
+            });
+          }
+        }
+      })
+    }
+    else{
+      var token = wx.getStorageSync('token')
+      wx.request({
+        url:'http://43.138.52.97:8001/message/getMessages/',
+        header: {'Authorization': token},
+        data:{
+          id:id,
+        },
+        method:'GET',
+        success:function(res){
+          var data = res.data
+          var unreadNum = 0
+          for(var i = 0;i< data.length; i++){
+            if(data[i].state == 0){
+              unreadNum ++
+            }
+          }
+          that.setData({
+            noticeList: data,
+            unreadNum: unreadNum
+          });
+        }
+      })
+    }
+  },
+  unreadChange(event){
+    this.setData({ readchecked: event.detail });
+  },
+  onsearchChange(event){
+    this.setData({ searchvalue: event.detail });
+  },
+  onSearch(){
+    console.log(this.data.searchvalue)
+    if(this.data.searchvalue.length == 0){
+      this.setData({ noneshow: true });
+    }
+    else {
+      wx.navigateTo({
+        url: '../search/search?key=' + this.data.searchvalue
+      })
     }
   },
 
@@ -74,8 +158,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    var tabid = options.tabid;
-    this.setData({ currentTab: tabid });
+    if(options.tabid){
+      var tabid = options.tabid;
+      this.setData({ currentTab: tabid });
+    }
+    var id = wx.getStorageSync('id')
+    this.setData({ id:id });
   },
 
   /**
@@ -94,8 +182,12 @@ Page({
     var currentTime = parseInt(new Date().getHours() + "" + (new Date().getMinutes()).toString().padStart(2, '0'))
     var that = this
     var id = wx.getStorageSync('id')
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/user/getDetail/',
+      url:'http://43.138.52.97:8001/user/getDetail/',
+      header: {
+        'Authorization': token
+      },
       data:{
         'hostId': id,
         'customerId':id
@@ -120,7 +212,8 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/todos/',
+      url:'http://43.138.52.97:8001/schedule/todos/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': date
@@ -143,7 +236,8 @@ Page({
       }
     })
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getddl/',
+      url:'http://43.138.52.97:8001/schedule/getddl/',
+      header: {'Authorization': token},
       data:{
         'id': id,
         'date': date,
@@ -157,6 +251,42 @@ Page({
         }
         that.setData({
           ddls: data,
+        });
+      }
+    })
+    wx.request({
+      url:'http://43.138.52.97:8001/bbs/getPost/',
+      header: {'Authorization': token},
+      data:{
+        id:id,
+        type: 0
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        that.setData({
+          bbsList1: data,
+        });
+      }
+    })
+    wx.request({
+      url:'http://43.138.52.97:8001/message/getMessages/',
+      header: {'Authorization': token},
+      data:{
+        id:id,
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        var unreadNum = 0
+        for(var i = 0;i< data.length; i++){
+          if(data[i].state == 0){
+            unreadNum ++
+          }
+        }
+        that.setData({
+          noticeList: data,
+          unreadNum: unreadNum
         });
       }
     })
@@ -202,10 +332,24 @@ Page({
   exit_confirm(){
     this.setData({ exitshow: true });
   },
-  
   loginExit(){
     wx.redirectTo({
       url: '../personalcenter/personalcenter'
     })
-  }
+  },
+  toPersonal(){
+    wx.navigateTo({
+      url: '../personal/personal?id=' + this.data.id
+    })
+  },
+  toAttention(){
+    wx.navigateTo({
+      url: '../attention/attention'
+    })
+  },
+  toFan(){
+    wx.navigateTo({
+      url: '../fans/fans'
+    })
+  },
 })

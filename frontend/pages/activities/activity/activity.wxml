@@ -45,7 +45,7 @@
         <van-rate class="rate" value="{{ userscore }}" bind:change="handleScoreGiven" />
       </view>
     </van-cell>
-    <textarea class="textinput"
+    <textarea class="textinput" value="{{signtext}}"
       bindinput="handleScoreInput" placeholder="请输入评价"></textarea>
   </van-cell-group>
 </van-dialog>
@@ -96,7 +96,8 @@
         bind:click="dislikeAct" data-index="{{index}}">
         <van-icon name="like" /> {{item.likes}}
       </van-button>
-      <van-button bind:click="deleteComment" data-index="{{index}}" wx:if="{{item.commenterId == userid}}">删除</van-button>
+      <van-button size="small" wx:if="{{item.commenterId == userid}}"
+        bind:click="deleteComment" data-index="{{index}}" >删除</van-button>
       <view slot="title">
         <text class="comname">{{item.nickname}} </text>
         <text class="comtime">{{item.pubTime}}</text>
@@ -114,7 +115,7 @@
 </van-divider>
 <van-cell-group inset>
   <van-cell link-type="navigateTo"
-    url="../../personal/personal?id={{activity.participantsId[index]}}">
+    url="../../personal/personal?id={{activity.promoterId}}">
     <view slot="title">
       <image class="avatar" src="{{activity.promoterUrl}}"></image>
       <text class="name">{{ activity.promoter }}（发起人）</text>
@@ -129,5 +130,11 @@
       url="../../personal/personal?id={{activity.participantsId[index]}}"></van-cell>
     </view>
 </van-cell-group>
+
+<van-dialog
+  message="活动已被删除或无法访问"
+  show="{{ emptyshow }}"
+  bind:close="emptytoDelta"
+></van-dialog>
 <van-divider />
 </view>

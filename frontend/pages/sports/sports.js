@@ -1,40 +1,150 @@
 // pages/sports/sports.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    currentid: 0,
+    onlyshow: false,
+    endshow: false,
+    startshow: false,
+    percentage: 78,
+    text:"",
+    percentage_real: 100,
+    walknum: 2000,
+    goal: 5000,
     today_cal: 7.5,
-    value_step: 78,
-    gradientColor1: {
-      '0%': '#ffd01e',
-      '100%': '#ee0a24',
-    },
-    value_run: 42,
-    gradientColor2: {
-      '0%': '#ee0a24',
-      '100%': '#ee0a24',
-    },
-    value_km: 48,
-    gradientColor3: {
-      '0%': '#07c160',
-      '100%': '#ee0a24',
-    },
+    gymList: [
+      {title:"综合体育馆", detail:"位于校园东区东大操场南侧，于2000年建成，提供室内羽毛球、篮球、排球等场地预约。", url:"../images/szonghe.png"},
+      {title:"西体育馆", detail:"位于西大操场西侧，早期清华四大建筑之一，被认定为全国重点文物。提供室内羽毛球、台球、篮球等场地预约，以及清华大学体育荣誉室的参观。", url:"../images/sxi.png"},
+    ],
+    todos: [
+      {title:"晨跑", start:"9:00", end:"9:15", label:"紫荆操场", state: 1},
+      {title:"集体锻炼", start:"17:00", end:"18:00", label:"紫荆操场东南角", state: 2},
+      {title:"月光长骑", start:"22:00", end:"22:30", label:"3km", state: 0},
+    ]
   },
+
+  // 热量换算
+  getcal() {
+    var cal = 0.03*this.data.walknum;
+    for(var i = 0;i<this.data.todos.length;i++){
+      if(this.data.todos[i].state == 1){
+        var start = this.data.todos[i].start.split(":")
+        var end = this.data.todos[i].end.split(":")
+        cal += ((end[0] - start[0])*60+ (end[1] - start[1])) * 500 / 60
+      }
+    }
+    wx.setStorageSync('cal', cal)
+    return cal;
+  },
+  // 微信步数获取刷新
   today_replay(){
-    var today_calnew = parseFloat(this.data.today_cal + 1);
-    this.setData({
-      today_cal: today_calnew
+    var newwalk = this.data.walknum + Math.random()*50+10;
+    var per = (newwalk/this.data.goal * 100).toFixed(2);
+    if(per>100){per = 100}
+    var cal = this.getcal();
+    this.setData({ 
+      today_cal: cal,
+      walknum: newwalk,
+      percentage: per,
     });
+  },
+  handleBegin(event) {
+    const id = event.currentTarget.dataset.id;
+    if(this.data.todos[id].state == 1){
+      this.setData({ 
+        onlyshow:true,
+        text:"运动时间" + this.data.todos[id].start + "-" + this.data.todos[id].end
+       });
+    } else if(this.data.todos[id].state == 2){
+      var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+      this.setData({ 
+        endshow: true,
+        text: "当前时间" + nowTime + ",是否结束运动?",
+        currentid: id,
+      });
+    }
+    else{
+      this.setData({ 
+        startshow:true,
+        text:"计划运动时间" + this.data.todos[id].start + "-" + this.data.todos[id].end + ",请按时完成"
+      });
+    }
+  },
+  confirm(event){
+    const id = this.data.currentid;
+    var userId = wx.getStorageSync('id')
+    var that = this
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url:'http://43.138.52.97:8001/schedule/doTodo/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
+      data:{
+        id: userId,
+        title: that.data.todos[id].title,
+        date: that.data.todos[id].date,
+        start: that.data.todos[id].start,
+        end: that.data.todos[id].end,
+      },
+      method:'POST',
+      success:function(res){
+        that.onLoad()//刷新页面
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    var that = this
+    var id = wx.getStorageSync('id')
+    var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url:'http://43.138.52.97:8001/schedule/todos/',
+      header: {'Authorization': token},
+      data:{
+        'id': id,
+        'date': date
+      },
+      method:'GET',
+      success:function(res){
+        var data = res.data
+        var filteredTasks = data.filter(function(data) {
+          return data.type == "运动"
+        });
+        filteredTasks.sort(function(a, b) {
+          var startTimeA = parseInt(a.start.replace(":", ""));
+          var startTimeB = parseInt(b.start.replace(":", ""));
+          return startTimeA - startTimeB;
+        });
+        var nowTime = new Date().getHours() + ":" + (new Date().getMinutes()).toString().padStart(2, '0')
+        nowTime = parseInt(nowTime.replace(":",""))
+        for(var i = 0;i<filteredTasks.length;i++){
+          var start = parseInt(filteredTasks[i].start.replace(":", ""))
+          var end = parseInt(filteredTasks[i].end.replace(":", ""))
+          if(((start<=nowTime)&&(end>=nowTime)&&(filteredTasks[i].state == 0))){
+            filteredTasks[i].state = 2
+          }
+        }
+        that.setData({
+          todos: filteredTasks,
+        });
+        var per = (that.data.walknum/that.data.goal * 100).toFixed(2);
+        if(per>100){per = 100}
+        var cal = that.getcal();
+        that.setData({
+          percentage: per, 
+          today_cal: cal,
+        });
+      }
+    })
+  // TODO: 微信步数获取
+    
   },
-
+  toGym(){
+    wx.navigateTo({
+      url: '../gym/gym',
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -46,7 +156,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    
   },
 
   /**

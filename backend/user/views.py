@@ -7,10 +7,38 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import User
 from .models import UserInfo
 from .models import CustomSettings
+from schedule.models import Schedule
+from schedule.models import Activity
+from bbs.models import Topic
+from bbs.models import Floor
+from utils.jwt import generate_jwt, login_required
 import requests
 import json
+import os
 # Create your views here.
 
+@csrf_exempt
+@login_required
+def postImage(request):
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        print(id)
+        user = User.objects.filter(id=id).first()
+        if user:
+            # 找到匹配的用户
+            image = request.FILES['image']
+            #获取 images 文件夹下的文件数量
+            num = len(os.listdir('images'))
+            #将图片存储到 images 文件夹下，并且给每个 id 都自动编号命名，如 id_1.jpg
+            with open('images/'+str(id)+'_'+str(num+1)+'.jpg', 'wb') as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
+                f.close()
+            #返回图片的存储路径
+            return HttpResponse('images/'+str(id)+'_'+str(num+1)+'.jpg')
+        else:
+            # 用户不存在的情况下返回错误的响应
+            return HttpResponse("User not found")
 def getId(request):
     if request.method == 'GET':
         code = request.GET.get("code")
@@ -27,13 +55,18 @@ def getId(request):
             # 在数据库中新增一项
             user_info = UserInfo.objects.create(avatarUrl='赫赫', nickName='微信昵称', signature='',
                                                 followings=[], followingNum=0,
-                                                followers=[], followerNum=0)
+                                                followers=[], followerNum=0, achievements=[])
             custom_settings = CustomSettings.objects.create(displayMode=0, ddlRange='',
-                                                            storageRange='', blackList=[])
-            user = User.objects.create(userid=openid, nickName='', userInfo=user_info,
+                                                            storageRange='', blackList=[],
+                                                            achRange=0, actRange=0, postRange=0)
+            user = User.objects.create(userid=openid, userInfo=user_info,
                                 customSettings=custom_settings)
-        return HttpResponse(user.id)
+        print("generating jwt")
+        jwt = generate_jwt({"user_id": user.id, "openid": user.userid})
+        print(jwt)
+        return JsonResponse({'id': user.id, 'token': jwt}, safe=False)
 
+@login_required
 def getDetail(request):
     if request.method == 'GET':
         hostid = request.GET.get("hostId")
@@ -42,7 +75,7 @@ def getDetail(request):
             user = User.objects.filter(id=customerid).first()
             if user:
                 # 找到匹配的用户
-                #为了新加最后一项新建一个字典
+                # 为了新加最后一项新建一个字典
                 user_info_dict = {
                     'avatarUrl': user.userInfo.avatarUrl,
                     'nickName': user.userInfo.nickName,
@@ -93,6 +126,7 @@ def getDetail(request):
                 return HttpResponse("User not found", status=400)
 
 @csrf_exempt
+@login_required
 def changeInfo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -111,7 +145,7 @@ def changeInfo(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
-
+@login_required
 def getAttention(request):
     if request.method == 'GET':
         id = request.GET.get("id")
@@ -120,7 +154,7 @@ def getAttention(request):
             attentionList = user.userInfo.followings
             result = []
             for id in attentionList:
-                # 根据id查找相应的avatarUrl, nickName和signature
+                # 根据 id 查找相应的 avatarUrl, nickName 和 signature
                 user = User.objects.filter(id=id).first()
                 avatarUrl = user.userInfo.avatarUrl
                 nickName = user.userInfo.nickName
@@ -137,7 +171,7 @@ def getAttention(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
-
+@login_required
 def getFans(request):
     if request.method == 'GET':
         id = request.GET.get("id")
@@ -146,7 +180,7 @@ def getFans(request):
             fansList = user.userInfo.followers
             result = []
             for id in fansList:
-                # 根据id查找相应的avatarUrl, nickName和signature
+                # 根据 id 查找相应的 avatarUrl, nickName 和 signature
                 user = User.objects.filter(id=id).first()
                 avatarUrl = user.userInfo.avatarUrl
                 nickName = user.userInfo.nickName
@@ -174,11 +208,11 @@ def getFans(request):
         else:
             # 用户不存在的情况下返回错误的响应
             return HttpResponse("User not found", status=400)
-
 @csrf_exempt
+@login_required
 def addAttention(request):
     if request.method == 'POST':
-        #host关注customer
+        #host 关注 customer
         hostid = request.POST.get("hostId")
         customerid = request.POST.get("customerId")
         if hostid == customerid:
@@ -196,11 +230,11 @@ def addAttention(request):
                 return HttpResponse("Add Attention Success", status=200)
             else:
                 return HttpResponse("User not found", status=400)
-
 @csrf_exempt
+@login_required
 def delAttention(request):
     if request.method == 'POST':
-        #host取消关注customer
+        #host 取消关注 customer
         hostid = request.POST.get("hostId")
         customerid = request.POST.get("customerId")
         if hostid == customerid:
@@ -226,3 +260,156 @@ def delAttention(request):
                 return HttpResponse("Delete Attention Success", status=200)
             else:
                 return HttpResponse("User not found", status=400)
+
+@login_required
+def search(request):
+    if request.method == "GET":
+        key = request.GET.get("key")
+        # find a user that
+        # (1) contains key in his or her nickName, or:
+        # (2) id == key
+        ansarray = []
+        # if key can be converted to int, then search by id
+        all_users_whose_id_is_key = []
+        if key.isdigit():
+            all_users_whose_id_is_key = User.objects.filter(id=int(key))
+        all_users_whose_nickName_contains_key = []
+        for user in User.objects.all():
+            if key in user.userInfo.nickName:
+                all_users_whose_nickName_contains_key.append(user)
+        for user in all_users_whose_id_is_key:
+            newDict = {
+                'userId': user.id,
+                'avatar': user.userInfo.avatarUrl,
+                'name': user.userInfo.nickName,
+            }
+            ansarray.append(newDict)
+        for user in all_users_whose_nickName_contains_key:
+            newDict = {
+                'userId': user.id,
+                'avatar': user.userInfo.avatarUrl,
+                'name': user.userInfo.nickName,
+            }
+            ansarray.append(newDict)
+        # then, ensure that there is no duplicate
+        ansarray = list({v['userId']: v for v in ansarray}.values())
+        return HttpResponse(json.dumps(ansarray, ensure_ascii=False))
+
+@login_required
+def getPersonal(request):
+    if request.method == 'GET':
+        homeUserId = int(request.GET.get("customerId"))
+        visitorUserId = int(request.GET.get("hostId"))
+        homeUser = User.objects.filter(id=homeUserId).first()
+        visitorUser = User.objects.filter(id=visitorUserId).first()
+        if homeUser and visitorUser:
+            # both users exist
+            responseDict = {
+                'avatarUrl': homeUser.userInfo.avatarUrl,
+                'nickName': homeUser.userInfo.nickName,
+                'signature': homeUser.userInfo.signature,
+                'followings': homeUser.userInfo.followings,
+                'followers': homeUser.userInfo.followers,
+                'achievements': [],
+                'iniActs': [],
+                'partActs': [],
+                'posts': []
+            }
+            if str(homeUserId) in visitorUser.userInfo.followings:
+                responseDict['following_state'] = 1
+            else:
+                responseDict['following_state'] = 0
+            if (homeUser.customSettings.achRange == 0) or \
+                    ((homeUser.customSettings.actRange == 1) and (visitorUserId in homeUser.userInfo.followers)) or \
+                    ((homeUser.customSettings.actRange == 2) and (homeUserId == visitorUserId)):
+                # achievement CAN BE seen by visitor
+                responseDict['achievements'] = homeUser.userInfo.achievements
+            if (homeUser.customSettings.actRange == 0) or \
+                    ((homeUser.customSettings.actRange == 1) and (visitorUserId in homeUser.userInfo.followers)) or \
+                    ((homeUser.customSettings.actRange == 2) and (homeUserId == visitorUserId)):
+                # iniActs and partActs CAN BE seen by visitor
+                correspondingSchedule = Schedule.objects.filter(id=homeUserId).first()
+                if correspondingSchedule:
+                    alliniActs = correspondingSchedule.initiActs
+                    allpartActs = correspondingSchedule.partiActs
+                    for actId in alliniActs:
+                        act = Activity.objects.filter(id=actId).first()
+                        if act:
+                            actDict = {
+                                'id': act.id,  # 'id' is the primary key of 'Activity'
+                                'title': act.title,
+                                'participants': act.participants,
+                                'partNumMin': act.partNumMin,
+                                'partNumMax': act.partNumMax,
+                                'date': act.date,
+                                'start': act.start,
+                                'end': act.end,
+                                'label': act.label,
+                                'tags': act.tags,
+                            }
+                            responseDict['iniActs'].append(actDict)
+                    for actId in allpartActs:
+                        act = Activity.objects.filter(id=actId).first()
+                        if act:
+                            actDict = {
+                                'id': act.id,  # 'id' is the primary key of 'Activity'
+                                'title': act.title,
+                                'participants': act.participants,
+                                'partNumMin': act.partNumMin,
+                                'partNumMax': act.partNumMax,
+                                'date': act.date,
+                                'start': act.start,
+                                'end': act.end,
+                                'label': act.label,
+                                'tags': act.tags,
+                            }
+                            responseDict['partActs'].append(actDict)
+            if (homeUser.customSettings.postRange == 0) or \
+                    ((homeUser.customSettings.postRange == 1) and (visitorUserId in homeUser.userInfo.followers)) or \
+                    ((homeUser.customSettings.postRange == 2) and (homeUserId == visitorUserId)):
+                # posts CAN BE seen by visitor
+                targetTopics = Topic.objects.filter(userId=homeUserId)
+                for topic in targetTopics:
+                    topicDict = {
+                        'id': topic.id,
+                        'title': topic.title,
+                        'time': topic.time,
+                        'likeNum': topic.likes,
+                        'commentNum': topic.floorCnt - 1
+                    }
+                    responseDict['posts'].append(topicDict)
+            return HttpResponse(json.dumps(responseDict, ensure_ascii=False))
+        else:
+            return HttpResponse("User not found")
+
+@login_required
+def getRange(request):
+    if request.method == "GET":
+        id = int(request.GET.get("id"))
+        targetUser = User.objects.filter(id=id).first()
+        if targetUser:
+            # targetUser exists
+            responseDict = {
+                'achRange': targetUser.customSettings.achRange,
+                'actRange': targetUser.customSettings.actRange,
+                'postRange': targetUser.customSettings.postRange
+            }
+            return HttpResponse(json.dumps(responseDict, ensure_ascii=False))
+        return HttpResponse("User not found")
+
+@csrf_exempt
+@login_required
+def changeRange(request):
+    if request.method == "POST":
+        id = int(request.POST.get("id"))
+        achRange = int(request.POST.get("achRange"))
+        actRange = int(request.POST.get("actRange"))
+        postRange = int(request.POST.get("postRange"))
+        targetUser = User.objects.filter(id=id).first()
+        if targetUser:
+            targetUser.customSettings.achRange = achRange
+            targetUser.customSettings.actRange = actRange
+            targetUser.customSettings.postRange = postRange
+            targetUser.customSettings.save()
+            return HttpResponse("Change Range Success")
+        return HttpResponse("User not found")

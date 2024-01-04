@@ -34,4 +34,8 @@
 </van-cell-group>
 
 <van-divider />
+<van-dialog
+  message="标题或内容为空"
+  show="{{ emptyshow }}"
+/>
 </view>

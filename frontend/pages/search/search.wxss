@@ -1,0 +1,24 @@
+/* pages/search/search.wxss */
+.pages{
+  background-color: #f2f2f2;
+}
+.usershow {
+  height: 100px; 
+}
+.achname{
+  margin-top: 8px;
+  font-size: 13px;
+}
+.noneuser{
+  height: 100px;
+}
+.image-container {
+  padding-top: 2px;
+  padding-bottom: 4px;
+  height: 120px; 
+  overflow: hidden;
+  width: 95%;
+}
+.lnum {
+  text-align: right;
+}

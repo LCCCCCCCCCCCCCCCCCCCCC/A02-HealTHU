@@ -1,0 +1,48 @@
+<!--pages/search/search.wxml-->
+<van-nav-bar title="“{{searchkey}}”搜索结果"
+  safe-area-inset-top="{{false}}"
+  fixed="{{true}}"
+  placeholder="{{true}}"
+  bind:click-right="onClickRight">
+  <van-icon name="search" slot="right" />
+</van-nav-bar>
+
+<view class="pages">
+<van-cell-group inset title="用户">
+<van-empty description="无相关用户" wx:if="{{userList.length == 0}}"></van-empty>
+  <van-grid wx:else column-num="5" border="{{false}}" clickable>
+    <van-grid-item use-slot wx:for="{{ userList }}" wx:key="id"
+      link-type="navigateTo"
+      url="../personal/personal?id={{item.userId}}">
+      <image class="avatar" src="{{ item.avatar }}" style="width: 80%; height: 42px; border-radius: 50%;"></image>
+      <view class="achname" wx:if="{{item.name.length <= 6}}">{{item.name}}</view>
+      <view class="achname" wx:elif="{{item.name.length > 6}}">{{item.name.slice(0,6)}}...</view>
+    </van-grid-item>
+    <van-grid-item wx:for="{{5 - userList.length % 5}}" wx:key="index"
+      custom-class="noneuser"/>
+  </van-grid>
+</van-cell-group>
+<van-divider />
+
+<van-cell-group title="帖子" inset>
+  <van-empty wx:if="{{bbsList.length == 0}}" description="无相关帖子"></van-empty>
+  <view wx:for="{{bbsList}}" wx:key="index">
+    <van-cell clickable
+    size="large" 
+    title="{{item.title}}"
+    link-type="navigateTo"
+    use-label-slot
+    url="../bbs/bbs?bbsid={{item.id}}"
+    border="{{false}}">
+      <view slot="label">
+        <view wx:if="{{item.images.length !== 0}}" class="image-container">
+          <image class="image" src="{{item.images[0]}}"/>
+        </view>
+        <text>{{item.name}} {{item.time}}</text>
+        <view class="lnum">{{item.likeNum}}点赞 {{item.commentNum}}回复</view>
+      </view> 
+    </van-cell>
+  </view>
+  <van-divider />
+</van-cell-group>
+</view>

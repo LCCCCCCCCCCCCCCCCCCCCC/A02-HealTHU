@@ -1,16 +1,16 @@
 <van-nav-bar title="粉丝" 
-  right-text="搜索"
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
-  placeholder="{{true}}"
-  bind:click-right="onClickRight">
+  placeholder="{{true}}">
 </van-nav-bar>
 
 <van-empty description="等待第一个粉丝.." wx:if="{{userList.length == 0}}"></van-empty>
 <van-cell-group wx:for="{{ userList }}" wx:key="id">
-   <van-cell use-label-slot>
+   <van-cell use-label-slot clickable
+    link-type="navigateTo"
+    url="../personal/personal?id={{item.id}}">
     <view slot="title">
-      <image class="avatar" src="{{ item.avatar }}"></image>
+      <image class="avatar" src="{{ item.avatar }}" ></image>
       <text class="name">{{ item.nickName }}</text>
     </view>
     <view slot="label">

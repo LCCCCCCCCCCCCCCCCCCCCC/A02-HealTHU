@@ -12,7 +12,7 @@ from .models import Comment
 from .models import Application
 from .models import Activity
 from user.models import User
-from .__init__ import access_token
+from utils.jwt import login_required
 import requests
 import json
 import datetime
@@ -24,14 +24,26 @@ import random
 todo_schedule = BackgroundScheduler()
 todo_schedule.start()
 
+def token_job():
+    url = "https://api.weixin.qq.com/cgi-bin/token"
+    params = {
+        "grant_type": "client_credential",
+        "appid": "wx0ed6410d0f2b476f",
+        "secret": "737153f44349fdde120da7fedce92666"
+    }
+
+    response = requests.get(url, params=params)
+    access_token = response.json()['access_token']
+    return access_token
 
 # 微信提醒函数，参数为用户 openid,todo 项 name，开始时间，结束时间
 def wx_reminder(touser, todoname, starttime, endtime):
+    access_token = token_job()
     url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token
     data = {
         "template_id": "fHPE-sivPSATvWyAsqHrlIFKo6-6NN20DmVxFx8q4I8",
         "touser": touser,
-        "page": "pages/personalcenter/mainpage",
+        "page": "pages/mainpage/mainpage",
         "data": {
             "thing1": {
                 "value": todoname
@@ -49,7 +61,7 @@ def wx_reminder(touser, todoname, starttime, endtime):
     response = requests.post(url, json=data)
     print(response.json())
 
-
+@login_required
 def todos(request):
     if request.method == 'GET':
         id = request.GET.get("id")  # the id of the schedule
@@ -88,8 +100,8 @@ def todos(request):
         # else: not found
         return HttpResponse(json.dumps([], ensure_ascii=False))
 
-
 @csrf_exempt
+@login_required
 def deleteTodo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -127,8 +139,8 @@ def deleteTodo(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
-
 @csrf_exempt
+@login_required
 def changeTodo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -195,8 +207,8 @@ def changeTodo(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
-
 @csrf_exempt
+@login_required
 def addTodo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -257,8 +269,8 @@ def addTodo(request):
         targetSchedule.save()
         return HttpResponse("Add successfully")
 
-
 @csrf_exempt
+@login_required
 def doTodo(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -293,8 +305,8 @@ def doTodo(request):
         # else: schedule not found
         return HttpResponse("Schedule not found", status=400)
 
-
 @csrf_exempt
+@login_required
 def addAct(request):
     if request.method == 'POST':
         id = request.POST.get("id")
@@ -395,8 +407,8 @@ def addAct(request):
         targetSchedule.save()
         return HttpResponse("Add successfully")
 
-
 @csrf_exempt
+@login_required
 def deleteAct(request):
     if request.method == 'POST':
         actId = int(request.POST.get("actId"))
@@ -465,8 +477,8 @@ def deleteAct(request):
             targetAct.delete()
             return HttpResponse("Delete successfully")
 
-
 @csrf_exempt
+@login_required
 def changeAct(request):
     if request.method == 'POST':
         actId = request.POST.get("actId")
@@ -568,7 +580,7 @@ def changeAct(request):
         # else: not found
         return HttpResponse("Activity not found", status=400)
 
-
+@login_required
 def findAct(request):
     if request.method == 'GET':
         ansArray = []
@@ -591,16 +603,16 @@ def findAct(request):
                 print("DEBUG: promoterId not satisfied")
                 continue
             if participantsId and not set_of_participantsId.intersection(set(act.participants)):
-                print("DEBUG: promoterId not satisfied")
+                print("DEBUG: participantsId not satisfied")
                 continue
-            if keyForSearch and (keyForSearch not in act.title) and (keyForSearch not in act.detail):
-                print("DEBUG: promoterId not satisfied")
+            if keyForSearch and (keyForSearch not in act.title) and (keyForSearch not in act.detail) and (keyForSearch not in act.tags):
+                print("DEBUG: keyForSearch not satisfied")
                 continue
             if minDate and act.date < minDate:
-                print("DEBUG: promoterId not satisfied")
+                print("DEBUG: minDate not satisfied")
                 continue
             if maxDate and act.date > maxDate:
-                print("DEBUG: promoterId not satisfied")
+                print("DEBUG: maxDate not satisfied")
                 continue
             # if the activity satisfies the filters, put it into ansArray
             newAct = {
@@ -637,7 +649,7 @@ def findAct(request):
         # return ansArray
         return HttpResponse(json.dumps(ansArray, ensure_ascii=False))
 
-
+@login_required
 def getActDetail(request):
     if request.method == 'GET':
         actId = request.GET.get("actId")
@@ -668,8 +680,8 @@ def getActDetail(request):
         # else: not found
         return HttpResponse("Activity not found", status=400)
 
-
 @csrf_exempt
+@login_required
 def partAct(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
@@ -722,7 +734,7 @@ def partAct(request):
             # else: not found
             return HttpResponse("Activity not found", status=400)
 
-
+@login_required
 def getApplication(request):
     if request.method == 'GET':
         id = int(request.GET.get("id"))
@@ -749,8 +761,8 @@ def getApplication(request):
         # else: not found
         return HttpResponse("Schedule not found", status=400)
 
-
 @csrf_exempt
+@login_required
 def appReply(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
@@ -842,7 +854,7 @@ def nDays(date, n):
         ansArray.append(thisDayStr)
     return ansArray
 
-
+@login_required
 def getddl(request):
     if request.method == 'GET':
         id = int(request.GET.get("id"))
@@ -882,9 +894,10 @@ def getddl(request):
             return HttpResponse(json.dumps(targetTodos, ensure_ascii=False))
         # else: not found
         return HttpResponse(json.dumps([], ensure_ascii=False))
-    
- 
-@csrf_exempt   
+
+
+@csrf_exempt
+@login_required
 def exitAct(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
@@ -926,8 +939,8 @@ def exitAct(request):
         # else: not found
         return HttpResponse("Schedule or activity not found")
     
-
 @csrf_exempt
+@login_required
 def commentAct(request):
     if request.method == 'POST':
         commenterId = int(request.POST.get("commenterId"))
@@ -969,8 +982,8 @@ def commentAct(request):
         return HttpResponse("User or activity not found")
                 
         
-    
 @csrf_exempt
+@login_required
 def likeComment(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
@@ -1013,8 +1026,8 @@ def likeComment(request):
         return HttpResponse("Activity not found")
 
 
-
 @csrf_exempt
+@login_required
 def dislikeComment(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))
@@ -1054,8 +1067,8 @@ def dislikeComment(request):
             return HttpResponse("Comment not found")
         # else: not found
         return HttpResponse("Activity not found")
-
 @csrf_exempt
+@login_required
 def deleteComment(request):
     if request.method == 'POST':
         id = int(request.POST.get("id"))

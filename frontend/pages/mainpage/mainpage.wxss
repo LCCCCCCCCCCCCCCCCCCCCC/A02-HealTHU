@@ -80,7 +80,8 @@ van-row{
 }
 .userinfo-id{
   color: grey;
-  font-size: 16px;
+  font-size: 14px;
+  padding-top: 2px;
 }
 .infobutton{
   margin-top: 12px;
@@ -125,4 +126,27 @@ van-row{
   max-width: 80rpx;
   color: #fff;
   text-align: center;
+}
+.searchbox{
+  padding-right: 16px;
+  padding-left: 12px;
+}
+.image-container {
+  padding-top: 2px;
+  padding-bottom: 4px;
+  height: 120px; 
+  overflow: hidden;
+}
+.lnum {
+  text-align: right;
+}
+.toline{
+  padding: 4px;
+}
+.personalbtn{
+  border: 1px solid white;
+  color: grey;
+  font-size: 14px;
+  background-color: white;
+  width: 72px;
 }

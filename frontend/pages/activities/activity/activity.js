@@ -1,10 +1,7 @@
 // pages/activities/activity/activity.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    emptyshow: false,
     likeLabel: [0, 1], //onLoad时候也获取comment,检验一下用户id是否在likeList里,来显示点赞状态
     meanscore: 4.5,
     comment: [
@@ -20,28 +17,28 @@ Page({
     scoretext: '',
     activity:{},
     todos:[],
-    debugact: {
-      title: "软件学院2023秋第10周集体锻炼",
-      promoter:"NLno", 
-      promoterId:3,
-      promoterUrl:'../../images/avatar4.jpg',
-      participantNum:2,
-      participants:["teto","GUMI"],
-      participantsId:[4,5],
-      partNumMin:2,
-      partNumMax:4,
-      date:"2023/12/18",
-      start:"17:00",
-      end:"18:00",
-      label:"打卡统计",
-      detail:"可以作为阳光体育打卡的凭证，报名时请填写姓名、学号信息，便于助教统计",
-      images:['../../images/swiper1.jpg', '../../images/swiper2.jpg', '../../images/swiper3.jpg'],
-      tags:["紫荆操场","飞盘","集体锻炼"],
-      state:2
-    }
+    // debugact: {
+    //   title: "软件学院2023秋第10周集体锻炼",
+    //   promoter:"NLno", 
+    //   promoterId:3,
+    //   promoterUrl:'../../images/avatar4.jpg',
+    //   participantNum:2,
+    //   participants:["teto","GUMI"],
+    //   participantsId:[4,5],
+    //   partNumMin:2,
+    //   partNumMax:4,
+    //   date:"2023/12/18",
+    //   start:"17:00",
+    //   end:"18:00",
+    //   label:"打卡统计",
+    //   detail:"可以作为阳光体育打卡的凭证，报名时请填写姓名、学号信息，便于助教统计",
+    //   images:['../../images/swiper1.jpg', '../../images/swiper2.jpg', '../../images/swiper3.jpg'],
+    //   tags:["紫荆操场","飞盘","集体锻炼"],
+    //   state:2
+    // }
   },
 
-  //  TODO: 点赞和取消
+  // 点赞和取消
   likeAct(event) {
     const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
@@ -49,9 +46,10 @@ Page({
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 1;
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/likeComment/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://43.138.52.97:8001/schedule/likeComment/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
         actId: that.data.actId,
@@ -74,9 +72,10 @@ Page({
     var likeLabel = this.data.likeLabel;
     likeLabel[personindex] = 0;
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/dislikeComment/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://43.138.52.97:8001/schedule/dislikeComment/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
         actId: that.data.actId,
@@ -96,9 +95,10 @@ Page({
     const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/deleteComment/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://43.138.52.97:8001/schedule/deleteComment/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id:that.data.comment[personindex].id,
         actId: that.data.actId,
@@ -110,14 +110,15 @@ Page({
       }
     })
   },
-  // TODO：报名和评分处理
+  // 报名和评分处理
   scoreConfirm() {
     var id = wx.getStorageSync('id')
     let that = this
     var date = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0')
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/commentAct/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://43.138.52.97:8001/schedule/commentAct/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         commenterId: id,
         actId: that.data.actId,
@@ -135,9 +136,10 @@ Page({
   signupConfirm() {
     var id = wx.getStorageSync('id')
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/partAct/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://43.138.52.97:8001/schedule/partAct/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         id: id,
         otherId: that.data.activity.promoterId,
@@ -147,7 +149,39 @@ Page({
       method:'POST',
       success:function(res){
         wx.showToast({ title: '报名成功', icon: 'success' });
-        wx.navigateBack({delta:1})
+        var token = wx.getStorageSync('token')
+        wx.request({
+          url:'http://43.138.52.97:8001/user/getDetail/',
+          header: {'Authorization': token},
+          data:{
+            'hostId': id,
+            'customerId':id
+          },
+          method:'GET',
+          success:function(res){
+            var data = JSON.parse(res.data)
+            var nickName = data.nickName
+            var messageContent = nickName + "报名了你的活动"
+            var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
+            var recieverId = that.data.activity.promoterId
+            var toUrl = '../activities/actreview/actreview?actid=' + that.data.activity.id
+            var token = wx.getStorageSync('token')
+            wx.request({
+              url:'http://43.138.52.97:8001/message/sendMessage/',
+              header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
+              data:{
+                receiverId: recieverId,
+                time: nowTime,
+                content: messageContent,
+                toUrl: toUrl
+              },
+              method:'POST',
+              success:function(res){
+                that.onLoad()
+              }
+            })
+          }
+        })
       }
     })
   },
@@ -161,8 +195,10 @@ Page({
     else{
       let that = this
       let id = wx.getStorageSync('id')
+      var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/schedule/todos/',
+        url:'http://43.138.52.97:8001/schedule/todos/',
+        header: {'Authorization': token},
         data:{
           'id': id,
           'date': that.data.activity.date
@@ -184,7 +220,10 @@ Page({
     }
   },
   handleScore() {
-    this.setData({ scoreshow : true });     
+    this.setData({ 
+      scoreshow : true,
+      signtext:""
+    });     
   },
   onscoreClose() {
     this.setData({ scoreshow : false });     
@@ -211,18 +250,24 @@ Page({
    */
   onLoad(options) {
     var that = this
+    if(options.actid) {
+      this.setData({ actId: options.actid })
+    }
     var id = wx.getStorageSync('id')
-    this.setData({
-      actId: options.actid,
-      userid:id
-    })
+    this.setData({ userid:id })
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/schedule/getActDetail/',
+      url:'http://43.138.52.97:8001/schedule/getActDetail/',
+      header: {'Authorization': token},
       data:{
         'actId': that.data.actId
       },
       method:'GET',
       success:function(res){
+        if (res.statusCode === 500) {
+          that.setData({ emptyshow: true });
+          return;
+        }
         let activity = res.data
         that.setData({
           comment:res.data.comments
@@ -247,8 +292,10 @@ Page({
         activity.promoterId = activity.promoter
         activity.participantNum = activity.participants.length
         activity.participantsId = activity.participants
+        var token = wx.getStorageSync('token')
         wx.request({
-          url:'http://127.0.0.1:8000/user/getDetail/',
+          url:'http://43.138.52.97:8001/user/getDetail/',
+          header: {'Authorization': token},
           data:{
             'hostId': activity.promoter,
             'customerId':activity.promoter
@@ -267,8 +314,10 @@ Page({
         })      
         for(let i = 0;i<activity.participantNum;i++){
           let j = 0
+          var token = wx.getStorageSync('token')
           wx.request({
-            url:'http://127.0.0.1:8000/user/getDetail/',
+            url:'http://43.138.52.97:8001/user/getDetail/',
+            header: {'Authorization': token},
             data:{
               'hostId': activity.promoter,
               'customerId':activity.participantsId[i]
@@ -287,13 +336,6 @@ Page({
         }
       }
     })
-    // debug: only shown use
-    if(options.actid == 10001) {
-      this.setData({
-        activity: this.data.debugact
-      })
-    }
-    console.log(activity)
   },
 
   /**
@@ -381,5 +423,10 @@ Page({
     else{
       return 1
     }
+  },
+  emptytoDelta(){
+    wx.navigateBack({
+      delta: 1  // destroy now page
+    })
   }
 })

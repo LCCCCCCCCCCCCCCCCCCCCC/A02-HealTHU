@@ -1,3 +1,11 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-loading": "@vant/weapp/loading/index"
+  }
 }

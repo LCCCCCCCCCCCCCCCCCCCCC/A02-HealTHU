@@ -1,26 +1,17 @@
 // pages/attention/attention.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     userList: []
   },
-
-  onClickRight() {
-    console.log(this.data.userList)
-    wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
-  },
-  
   unfollowUser(event) {
     const userId = event.currentTarget.dataset.id
     var id = wx.getStorageSync('id')
     var ids = wx.getStorageSync('attentionId');
     var that = this
+    var token = wx.getStorageSync('token')
     wx.request({
-      url:'http://127.0.0.1:8000/user/delAttention/',
-      header:{ 'content-type': 'application/x-www-form-urlencoded'},
+      url:'http://43.138.52.97:8001/user/delAttention/',
+      header:{ 'content-type': 'application/x-www-form-urlencoded','Authorization': token},
       data:{
         hostId: id,
         customerId: userId
@@ -63,14 +54,19 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    this.setData({
+      userList:[]
+    })
     var ids = wx.getStorageSync('attentionId');
     var id = wx.getStorageSync('id')
     //console.log(ids.length)
     var that = this
     for(let i = 0; i < ids.length; i++){
       var j = 0
+      var token = wx.getStorageSync('token')
       wx.request({
-        url:'http://127.0.0.1:8000/user/getDetail/',
+        url:'http://43.138.52.97:8001/user/getDetail/',
+        header: {'Authorization': token},
         data:{
           'hostId': id,
           'customerId':ids[i]

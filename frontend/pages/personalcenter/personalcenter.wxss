@@ -3,8 +3,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(to bottom, #743481, #9c7ea1);
+  height: 100vh;
 }
-.login{
-  position: relative; 
-  top: 10px;
+.logo{
+  width: 100%;
+  height: 100%;
+}
+.text{
+  width: 200px;
+  height: 108px;
+}
+.logintext{
+  color: #743481; 
+  font-weight: bold;
 }

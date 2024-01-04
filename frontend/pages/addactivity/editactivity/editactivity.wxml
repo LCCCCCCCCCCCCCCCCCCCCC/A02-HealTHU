@@ -14,7 +14,8 @@
   </view>
 </van-nav-bar>
 
-<swiper indicator-dots="{{true}}" autoplay="{{true}}" circular="{{true}}"  wx:if="{{images.length != 0}}">
+<swiper class="swiper" indicator-dots="{{true}}" 
+  autoplay="{{true}}" circular="{{true}}"  wx:if="{{images.length != 0}}">
   <view wx:for="{{images}}" wx:key="index">
     <swiper-item>
       <image src="{{item}}" mode="aspectFill"></image>
