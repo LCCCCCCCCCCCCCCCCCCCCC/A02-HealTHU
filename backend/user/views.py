@@ -17,9 +17,8 @@ import json
 import os
 # Create your views here.
 
-
-@login_required
 @csrf_exempt
+@login_required
 def postImage(request):
     if request.method == 'POST':
         id = request.POST.get("id")
