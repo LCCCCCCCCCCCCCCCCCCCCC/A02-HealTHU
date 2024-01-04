@@ -20,7 +20,7 @@
   <van-cell border="{{false}}">
     <text slot="title" class="signature">{{ post.content }}</text>
   </van-cell>
-  <van-cell wx:for="{{post.images}}" wx:key="index">
+  <van-cell wx:for="{{post.images}}" wx:key="index" border="{{false}}">
     <image class="image" src="{{item}}" mode="aspectFit"/>
   </van-cell>
   <van-cell class="funcline">
