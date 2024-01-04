@@ -120,5 +120,10 @@
   bind:getuserinfo="deleteallConfirm"
 ></van-dialog>
 
+<van-dialog
+  message="帖子已被删除或无法访问"
+  show="{{ emptyshow }}"
+  bind:close="emptytoDelta"
+></van-dialog>
 <van-divider />
 </view>

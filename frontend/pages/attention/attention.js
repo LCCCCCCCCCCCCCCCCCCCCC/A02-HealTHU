@@ -1,18 +1,8 @@
 // pages/attention/attention.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     userList: []
   },
-
-  onClickRight() {
-    console.log(this.data.userList)
-    wx.showToast({ title: 'TODO:sousuo', icon: 'none' });
-  },
-  
   unfollowUser(event) {
     const userId = event.currentTarget.dataset.id
     var id = wx.getStorageSync('id')

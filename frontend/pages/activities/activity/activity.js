@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    emptyshow: false,
     likeLabel: [0, 1], //onLoad时候也获取comment,检验一下用户id是否在likeList里,来显示点赞状态
     meanscore: 4.5,
     comment: [
@@ -20,28 +21,28 @@ Page({
     scoretext: '',
     activity:{},
     todos:[],
-    debugact: {
-      title: "软件学院2023秋第10周集体锻炼",
-      promoter:"NLno", 
-      promoterId:3,
-      promoterUrl:'../../images/avatar4.jpg',
-      participantNum:2,
-      participants:["teto","GUMI"],
-      participantsId:[4,5],
-      partNumMin:2,
-      partNumMax:4,
-      date:"2023/12/18",
-      start:"17:00",
-      end:"18:00",
-      label:"打卡统计",
-      detail:"可以作为阳光体育打卡的凭证，报名时请填写姓名、学号信息，便于助教统计",
-      images:['../../images/swiper1.jpg', '../../images/swiper2.jpg', '../../images/swiper3.jpg'],
-      tags:["紫荆操场","飞盘","集体锻炼"],
-      state:2
-    }
+    // debugact: {
+    //   title: "软件学院2023秋第10周集体锻炼",
+    //   promoter:"NLno", 
+    //   promoterId:3,
+    //   promoterUrl:'../../images/avatar4.jpg',
+    //   participantNum:2,
+    //   participants:["teto","GUMI"],
+    //   participantsId:[4,5],
+    //   partNumMin:2,
+    //   partNumMax:4,
+    //   date:"2023/12/18",
+    //   start:"17:00",
+    //   end:"18:00",
+    //   label:"打卡统计",
+    //   detail:"可以作为阳光体育打卡的凭证，报名时请填写姓名、学号信息，便于助教统计",
+    //   images:['../../images/swiper1.jpg', '../../images/swiper2.jpg', '../../images/swiper3.jpg'],
+    //   tags:["紫荆操场","飞盘","集体锻炼"],
+    //   state:2
+    // }
   },
 
-  //  TODO: 点赞和取消
+  // 点赞和取消
   likeAct(event) {
     const personindex = event.currentTarget.dataset.index;
     var like = this.data.comment;
@@ -113,7 +114,7 @@ Page({
       }
     })
   },
-  // TODO：报名和评分处理
+  // 报名和评分处理
   scoreConfirm() {
     var id = wx.getStorageSync('id')
     let that = this
@@ -267,6 +268,10 @@ Page({
       },
       method:'GET',
       success:function(res){
+        if (res.statusCode === 500) {
+          that.setData({ emptyshow: true });
+          return;
+        }
         let activity = res.data
         that.setData({
           comment:res.data.comments
@@ -335,12 +340,6 @@ Page({
         }
       }
     })
-    // debug: only shown use
-    if(options.actid == 10001) {
-      this.setData({
-        activity: this.data.debugact
-      })
-    }
   },
 
   /**
@@ -428,5 +427,10 @@ Page({
     else{
       return 1
     }
+  },
+  emptytoDelta(){
+    wx.navigateBack({
+      delta: 1  // destroy now page
+    })
   }
 })

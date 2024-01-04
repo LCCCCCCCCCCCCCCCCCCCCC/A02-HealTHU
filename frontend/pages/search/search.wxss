@@ -17,7 +17,7 @@
   padding-bottom: 4px;
   height: 120px; 
   overflow: hidden;
-  width: 98%
+  width: 95%;
 }
 .lnum {
   text-align: right;

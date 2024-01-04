@@ -1,5 +1,6 @@
 Page({
   data: {
+    emptyshow: false,
     id:4, // 用于确定是否为自己主页
     bbsList: [],
     post: {},
@@ -185,17 +186,17 @@ Page({
       this.setData({
         bbsId:bbsid
       })
-      if (options.floor) {
-        wx.nextTick(() => {
-          const query = wx.createSelectorQuery()
-          query.select('#floor-' + options.floor).boundingClientRect(res => {
-            wx.pageScrollTo({
-              scrollTop: res.top - 60,
-              duration: 300
-            })
-          }).exec()
-        })
-      }
+      // if (options.floor) {
+      //   wx.nextTick(() => {
+      //     const query = wx.createSelectorQuery()
+      //     query.select('#floor-' + options.floor).boundingClientRect(res => {
+      //       wx.pageScrollTo({
+      //         scrollTop: res.top - 60,
+      //         duration: 300
+      //       })
+      //     }).exec()
+      //   })
+      // }
     }
 
     var id = wx.getStorageSync('id')
@@ -213,30 +214,35 @@ Page({
       },
       method:'GET',
       success:function(res){
-        var data = res.data
-        console.log(data)
-        that.setData({
-          post: data,
-          replyList: data.replies
-        })
-        var likeLabel = []
-        if(that.data.post.likeList.includes(id)){
-          likeLabel[0] = 1
+        if (res.statusCode === 500) {
+          that.setData({ emptyshow: true });
         }
         else{
-          likeLabel[0] = 0
-        }
-        for(var k = 0;k < that.data.replyList.length;k++){
-          if(that.data.replyList[k].likeList.includes(id)){
-            likeLabel[that.data.replyList[k].floor] = 1
+          var data = res.data
+          console.log(data)
+          that.setData({
+            post: data,
+            replyList: data.replies
+          })
+          var likeLabel = []
+          if(that.data.post.likeList.includes(id)){
+            likeLabel[0] = 1
           }
           else{
-            likeLabel[that.data.replyList[k].floor] = 0
+            likeLabel[0] = 0
           }
+          for(var k = 0;k < that.data.replyList.length;k++){
+            if(that.data.replyList[k].likeList.includes(id)){
+              likeLabel[that.data.replyList[k].floor] = 1
+            }
+            else{
+              likeLabel[that.data.replyList[k].floor] = 0
+            }
+          }
+          that.setData({
+            likeLabels: likeLabel
+          })
         }
-        that.setData({
-          likeLabels: likeLabel
-        })
       }
     })
   },
@@ -347,4 +353,9 @@ Page({
   ondeleteallClose(){
     this.setData({ deleteallshow : false });    
   },
+  emptytoDelta(){
+    wx.navigateBack({
+      delta: 1  // destroy now page
+    })
+  }
 })

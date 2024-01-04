@@ -49,7 +49,7 @@
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
       </view>
@@ -76,7 +76,7 @@
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
       </view>
@@ -104,7 +104,7 @@
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
       </view>
@@ -133,7 +133,7 @@
     <view slot="tags">
       <van-tag plain type="danger" wx:if="{{item.state == 1}}">进行中</van-tag>
       <van-tag plain type="danger" wx:if="{{item.state == 2}}">已结束</van-tag>
-        <span wx:for="{{item.tags}}">
+        <span wx:for="{{item.tags}}" wx:key="index">
           <van-tag plain type="primary">{{item}}</van-tag>
         </span>
       </view>

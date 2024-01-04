@@ -30,7 +30,7 @@ Page({
     searchvalue: '',
     noneshow: false,
   },
-  // TODO：未读消息阅读更新
+  // 未读消息阅读更新
   delUnread(event){
     var tempList = this.data.noticeList;
     const personindex = event.currentTarget.dataset.index;

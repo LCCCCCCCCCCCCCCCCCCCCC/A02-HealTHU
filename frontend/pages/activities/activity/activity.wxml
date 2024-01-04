@@ -129,5 +129,11 @@
       url="../../personal/personal?id={{activity.participantsId[index]}}"></van-cell>
     </view>
 </van-cell-group>
+
+<van-dialog
+  message="活动已被删除或无法访问"
+  show="{{ emptyshow }}"
+  bind:close="emptytoDelta"
+></van-dialog>
 <van-divider />
 </view>

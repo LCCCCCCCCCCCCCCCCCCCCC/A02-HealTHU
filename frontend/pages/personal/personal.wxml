@@ -6,7 +6,7 @@
   <van-col span="10">
     <view class="userinfo-nick">{{nickName}}</view>
     <view class="userinfo-id">UID：{{userId}}</view>
-    <van-grid column-num="3" border="{{false}}" center="{{false}}"
+    <van-grid column-num="2" border="{{false}}" center="{{false}}"
       custom-class="attention-num">
       <van-grid-item use-slot>
         <text style="color: grey;font-size: 14px;"> {{attentionnum}} 关注</text>

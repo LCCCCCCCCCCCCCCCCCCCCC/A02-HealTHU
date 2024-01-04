@@ -2,18 +2,18 @@
 Page({
   data: {
     activity: {
-      title: "软件学院2023秋第10周集体锻炼",
-      participantNum:2,
-      partNumMin:2,
-      partNumMax:4,
-      date:"2023/12/18",
-      start:"17:00",
-      end:"18:00",
+      // title: "软件学院2023秋第10周集体锻炼",
+      // participantNum:2,
+      // partNumMin:2,
+      // partNumMax:4,
+      // date:"2023/12/18",
+      // start:"17:00",
+      // end:"18:00",
     },
     reviewList: [
-      {id: 1, nickName:"GUMI", text:"软院 2022012222 张三"},
-      {id: 2, nickName:"teto",  text:"软件学院 2021011111 李四，请让我参加活动，我什么都会做的！"},
-      {id: 404, nickName:"anonymous",  text:"让我看看"}
+      // {id: 1, nickName:"GUMI", text:"软院 2022012222 张三"},
+      // {id: 2, nickName:"teto",  text:"软件学院 2021011111 李四，请让我参加活动，我什么都会做的！"},
+      // {id: 404, nickName:"anonymous",  text:"让我看看"}
     ],
     // 0未处理，1接受，2拒绝
     tempItem: {id: 1, nickname:"GUMI", text:"软院 2022012222 张三", state:1},
@@ -218,8 +218,6 @@ Page({
         }
       }
     })
-    // TODO：请求获取申请信息（需要对重复提交的进行筛选吗？），获取活动人数限制相关信息到activity
-    // 但不知道是否要保留已经处理过的请求
   },
 
   /**
