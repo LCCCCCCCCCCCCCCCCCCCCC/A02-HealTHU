@@ -1,9 +1,5 @@
 // pages/activities/activity/activity.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     emptyshow: false,
     likeLabel: [0, 1], //onLoad时候也获取comment,检验一下用户id是否在likeList里,来显示点赞状态
@@ -254,11 +250,11 @@ Page({
    */
   onLoad(options) {
     var that = this
+    if(options.actid) {
+      this.setData({ actId: options.actid })
+    }
     var id = wx.getStorageSync('id')
-    this.setData({
-      actId: options.actid,
-      userid:id
-    })
+    this.setData({ userid:id })
     var token = wx.getStorageSync('token')
     wx.request({
       url:'http://43.138.52.97:8001/schedule/getActDetail/',
