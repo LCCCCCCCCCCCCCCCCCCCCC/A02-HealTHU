@@ -1,6 +1,7 @@
 /* pages/search/search.wxss */
 .pages{
   background-color: #f2f2f2;
+  height: 100vh;
 }
 .usershow {
   height: 100px; 

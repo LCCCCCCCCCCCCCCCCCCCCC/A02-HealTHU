@@ -54,7 +54,7 @@
   </van-cell>
   <van-cell border="{{false}}">
     <view slot="title">
-       <view class="above" wx:if="{{ item.aboveId != 1 }}" bind:tap="toFloor" data-index="{{item.aboveId}}">
+      <view class="above" wx:if="{{ item.aboveId != 1 }}" data-index="{{item.aboveId}}">
         回复 #{{item.aboveId}} {{item.aboveName}}
         <view>{{ item.aboveContent }}</view>
       </view> 
