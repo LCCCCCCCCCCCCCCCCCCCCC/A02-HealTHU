@@ -158,9 +158,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    var tabid = options.tabid;
+    if(options.tabid){
+      var tabid = options.tabid;
+      this.setData({ currentTab: tabid });
+    }
     var id = wx.getStorageSync('id')
-    this.setData({ currentTab: tabid,id:id });
+    this.setData({ id:id });
   },
 
   /**
