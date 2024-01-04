@@ -183,7 +183,7 @@
       <button class="infobutton" bind:tap="changeInfo">编辑个人信息</button>
     </van-col>
   </van-row>
-  <van-grid clickable column-num="3" gutter="{{ 16 }}" border="{{false}}">
+  <!-- <van-grid clickable column-num="3" gutter="{{ 16 }}" border="{{false}}">
     <van-grid-item link-type="navigateTo" url='../personal/personal?id={{id}}' use-slot>
       <text style="color: grey;font-size: 14px;">0 动态</text>
     </van-grid-item>
@@ -193,16 +193,23 @@
     <van-grid-item link-type="navigateTo" url='../fans/fans' use-slot>
       <text style="color: grey;font-size: 14px;"> {{fannum}} 粉丝</text>
     </van-grid-item>
-  </van-grid>
+  </van-grid> -->
+  <van-row class="toline">
+    <van-col span="6" offset="4">
+      <text class="personalbtn" bindtap="toPersonal">动态</text>
+    </van-col>
+    <van-col span="6" >
+      <text class="personalbtn" bindtap="toAttention">{{attentionnum}} 关注</text>
+    </van-col>
+    <van-col span="6" >
+      <text class="personalbtn" bindtap="toFan">{{fannum}} 粉丝</text>
+    </van-col>
+  </van-row>
   <view class="empty-line"></view>
     <view class="changeinfo">
     <van-cell-group>
       <van-cell is-link title="  健康状况" icon="manager-o"
         link-type="navigateTo" url='../changehealth/changehealth'/>
-        <!--
-      <van-cell is-link title="  个性化" icon="records-o"
-      link-type="navigateTo" url='../settings/selfset/selfset'/>
-      <view class="empty-line"></view>-->
       <van-cell is-link title="  账号绑定" icon="link-o"  
         link-type="navigateTo" url='../bindthu/bindthu'/>
       <van-cell is-link title="  隐私设置" icon="setting-o"  

@@ -140,3 +140,13 @@ van-row{
 .lnum {
   text-align: right;
 }
+.toline{
+  padding: 4px;
+}
+.personalbtn{
+  border: 1px solid white;
+  color: grey;
+  font-size: 14px;
+  background-color: white;
+  width: 72px;
+}

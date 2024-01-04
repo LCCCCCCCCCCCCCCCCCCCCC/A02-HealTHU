@@ -2,9 +2,7 @@
 <van-nav-bar title="“{{searchkey}}”搜索结果"
   safe-area-inset-top="{{false}}"
   fixed="{{true}}"
-  placeholder="{{true}}"
-  bind:click-right="onClickRight">
-  <van-icon name="search" slot="right" />
+  placeholder="{{true}}">
 </van-nav-bar>
 
 <view class="pages">
@@ -14,7 +12,7 @@
     <van-grid-item use-slot wx:for="{{ userList }}" wx:key="id"
       link-type="navigateTo"
       url="../personal/personal?id={{item.userId}}">
-      <image class="avatar" src="{{ item.avatar }}" style="width: 80%; height: 42px; border-radius: 50%;"></image>
+      <image class="avatar" src="{{ item.avatar }}" style="width: 70%; height: 42px; border-radius: 50%;"></image>
       <view class="achname" wx:if="{{item.name.length <= 6}}">{{item.name}}</view>
       <view class="achname" wx:elif="{{item.name.length > 6}}">{{item.name.slice(0,6)}}...</view>
     </van-grid-item>

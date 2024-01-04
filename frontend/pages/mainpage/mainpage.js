@@ -329,10 +329,24 @@ Page({
   exit_confirm(){
     this.setData({ exitshow: true });
   },
-  
   loginExit(){
     wx.redirectTo({
       url: '../personalcenter/personalcenter'
     })
-  }
+  },
+  toPersonal(){
+    wx.navigateTo({
+      url: '../personal/personal?id=' + this.data.id
+    })
+  },
+  toAttention(){
+    wx.navigateTo({
+      url: '../attention/attention'
+    })
+  },
+  toFan(){
+    wx.navigateTo({
+      url: '../fans/fans'
+    })
+  },
 })
