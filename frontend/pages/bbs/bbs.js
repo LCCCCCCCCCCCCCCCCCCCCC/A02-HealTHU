@@ -1,15 +1,13 @@
 Page({
   data: {
     id:4, // 用于确定是否为自己主页
-    // bbsList: for debug use
     bbsList: [],
     post: {},
     replyList: [],
-    // todo：点赞和取消处理
     likeLabels: [0, 1, 0, 0],
     replyshow: false,
     replytext: '',
-    // 当前回复的楼层，0为lz，1为第一个回复
+    // 当前回复的楼层
     replyindex: 0,
     deleteallshow: false,
     deleteshow: false,
@@ -84,11 +82,6 @@ Page({
       }
     })
   },
-  onClickRight(){
-    wx.showToast({ title: '便于后续功能添加', icon: 'none' });
-    // 屏蔽某层发言人?
-  },
-  // TODO: 回复功能的对接
   replyConfirm() {
     var floor = this.data.replyindex
     var that = this
@@ -247,19 +240,19 @@ Page({
       }
     })
   },
-  toFloor(event){
-    var floor = event.currentTarget.dataset.index;
-    wx.nextTick(() => {
-      const query = wx.createSelectorQuery()
-        query.select('#floor-' + floor).boundingClientRect(res => {
-          console.log(res)
-          wx.pageScrollTo({
-            scrollTop: res.top - 60,
-            duration: 300
-          })
-      }).exec()
-    })
-  },
+  // toFloor(event){
+  //   var floor = event.currentTarget.dataset.index;
+  //   wx.nextTick(() => {
+  //     const query = wx.createSelectorQuery()
+  //       query.select('#floor-' + floor).boundingClientRect(res => {
+  //         console.log(res)
+  //         wx.pageScrollTo({
+  //           scrollTop: res.top - 60,
+  //           duration: 300
+  //         })
+  //     }).exec()
+  //   })
+  // },
    getNameByFloor(floor){
      for(var i = 0;i<this.data.replyList.length;i++){
        if(this.data.replyList[i].floor == floor){

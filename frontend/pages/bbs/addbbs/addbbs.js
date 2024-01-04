@@ -1,14 +1,18 @@
 // pages/bbs/addbbs/addbbs.js
 Page({
   data: {
+    emptyshow: false,
     fileList: [],
     time: '',
     title: '',
     content: '',
     images: []
   },
-  // TODO: 发送帖子对接
   addbbs() {
+    if (this.data.title.trim() === '' && this.data.content.trim() === ''){
+      this.setData({ emptyshow: true });
+      return;
+    }
     var id = wx.getStorageSync('id')
     var that = this
     var nowTime = new Date().getFullYear() + "/" + (new Date().getMonth() + 1).toString().padStart(2, '0') + "/" + new Date().getDate().toString().padStart(2, '0') + " " + parseInt(new Date().getHours()).toString().padStart(2, '0') + ":" + parseInt(new Date().getMinutes()).toString().padStart(2, '0')
