@@ -111,7 +111,7 @@
       <view slot="footer">
         <text class="actperson">共{{item.participantNum}}人报名，预计参与人数{{item.partNumMin}}-{{item.partNumMax}} </text>
         <van-button size="mini" bind:click="showdetail3" data-index="{{index}}">查看</van-button>
-        <van-button size="mini" bind:click="handleChange" data-index="{{index}}" wx:if="{{item.state == 0}}">编辑</van-button>
+        <!-- <van-button size="mini" bind:click="handleChange" data-index="{{index}}" wx:if="{{item.state == 0}}">编辑</van-button> -->
         <van-button size="mini" bind:click="handleReview" data-index="{{index}}" wx:if="{{item.state == 0}}">报名审核</van-button>
       </view>
     </van-card>

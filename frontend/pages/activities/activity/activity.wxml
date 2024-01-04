@@ -96,7 +96,8 @@
         bind:click="dislikeAct" data-index="{{index}}">
         <van-icon name="like" /> {{item.likes}}
       </van-button>
-      <van-button bind:click="deleteComment" data-index="{{index}}" wx:if="{{item.commenterId == userid}}">删除</van-button>
+      <van-button size="small" wx:if="{{item.commenterId == userid}}"
+        bind:click="deleteComment" data-index="{{index}}" >删除</van-button>
       <view slot="title">
         <text class="comname">{{item.nickname}} </text>
         <text class="comtime">{{item.pubTime}}</text>
