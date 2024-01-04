@@ -4,7 +4,7 @@
 
 前端: 采用框架 Vant Weapp (https://youzan.github.io/vant-weapp/#/home)
 
-后端：Django（补充一些版本信息etc）
+后端：Django 
 
 文件结构：
 
