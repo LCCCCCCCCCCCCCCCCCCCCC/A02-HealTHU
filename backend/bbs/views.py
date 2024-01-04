@@ -180,7 +180,7 @@ def addReply(request):
             content=content,
             likes=0,
             likeList=[],
-            aboveId=targetAboveFloorId,
+            aboveId=aboveId,
             aboveName=targetAboveFloor.name,
             aboveContent=targetAboveFloor.content,
             belowIds=[],
