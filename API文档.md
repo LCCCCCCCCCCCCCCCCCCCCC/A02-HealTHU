@@ -4,21 +4,13 @@
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |openid|string|微信绑定的openid|
-|id|int|用户id|
 |userInfo|userInfo|个人信息|
 |healthInfo|healthInfo|健康状况|
-|customSettings|customSettings|个性化设置|
 |bindTHU|bool|绑定清华身份情况|
 |todos|todo[]|待办事项|
 |partiActs|activity[]|参与的活动|
 |initiActs|activity[]|发起的活动|
 |appoints|appoint[]|预约的场馆|
-|sports|sportDaily[]|运动信息|
-|sleeps|sleepDaily[]|睡眠情况|
-|eats|eatDaily[]|饮食信息|
-|healthDailies|healthDaily[]|健康日报|
-|healthWeeklies|healthWeekly[]|健康周报 注：健康周报动态变化，为过去一周的集中统计，每日更新|
-|achievements|achievement[]|用户成就|
 |posts|post[]|帖子|
 |achRange|int|成就可见范围(全部可见/粉丝可见/自己可见)0/1/2 初始为0|
 |actRange|int|活动可见范围|
@@ -28,46 +20,37 @@
 |-------------|-------------|-------------|
 |avatarUrl|string|用户头像|
 |nickName|string|用户昵称|
-|sign|string|用户签名|
+|signature|string|用户签名|
 |followings|int[]|关注列表|
 |followingNum|int|关注人数|
 |followers|int[]|粉丝列表|
 |followerNum|int|粉丝数|
+|id|int|用户id|
+|following_state|string|关注状况|
 #### 健康状况 healthInfo
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |updateTime|string|最近更新日期|
-|birthday|string|生日|
-|gender|string|性别|
 |height|double|身高|
 |weight|double|体重|
 |vitalCapacity|int|肺活量|
-|beizhu|string|备注|
 |bmi|double|BMI指数|
-|grade|double|体测成绩|
-|ehundred|string|800m|
-|grade_ehundred|double|800m成绩|
-|thousand|string|1000m|
-|grade_thousand|double|1000m成绩|
-|fifty|string|50m|
-|grade_fifty|double|50m成绩|
-|jump|string|立定跳远|
-|grade_jump|double|立定跳远|
-|sar|string|坐位体前屈|
-|grade_sar|double|坐位体前屈|
+|time_800m|string|800m|
+|grade_800m|double|800m成绩|
+|time_1000m|string|1000m|
+|grade_1000m|double|1000m成绩|
+|time_50m|string|50m|
+|grade_50m|double|50m成绩|
+|longjump|string|立定跳远|
+|grade_longjump|double|立定跳远|
+|sitreach|string|坐位体前屈|
+|grade_sitreach|double|坐位体前屈|
 |situp|string|仰卧起坐|
 |grade_situp|int|仰卧起坐|
 |pullup|string|引体向上|
 |grade_pullup|int|引体向上|
 
 grade前缀的为分数成绩
-#### 个性化设置 customSettings
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|model|int|显示模式|
-|ddlRange|string|ddl提醒范围|
-|storageRange|string|存储范围|
-|blacklist|int[]|屏蔽列表|
 #### 待办事项 todo
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -81,7 +64,6 @@ grade前缀的为分数成绩
 |readOnly|bool|是否能被修改|
 |sportType|string|运动类型|
 |sportState|int|运动状态(初始为0)|
-|sportTime|int|实际运动时长(分钟)|
 
 state不为0或为公共活动时，todo均只读
 #### 活动 activity
@@ -111,8 +93,8 @@ state不为0或为公共活动时，todo均只读
 |nickName|string|评价人昵称|
 |avatarUrl|string|头像|
 |comment|string|内容|
-|likes|int|点赞数|
-|likesId|int[]|点赞者的Id|
+|likeNum|int|点赞数|
+|likeList|int[]|点赞者的Id|
 |pubTime|string|发布时间|
 
 #### 预约的场馆 appoint
@@ -135,17 +117,6 @@ state不为0或为公共活动时，todo均只读
 |-------------|-------------|-------------|
 |date|string|日期|
 |data|int[12]|睡眠情况|
-#### 饮食信息 eatDaily
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|calorie|int|建议摄入热量|
-|foods|string|推荐菜品|
-#### 用户成就 achievement
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|type|int|成就类型|
-|icon|string|图标|
-|state|完成情况|
 #### 帖子 post
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -173,9 +144,9 @@ state不为0或为公共活动时，todo均只读
 |aboveName|string|回复楼层发布人|
 |aboveContent|string|回复楼层的内容|
 ### 一、用户管理部分
-#### 首次登录时生成id
+#### 首次登录时生成id与token
 ```HTTP
-[GET] /getId
+[GET] /user/getId
 ```
 通过code调用API，获取用户的openid，如果这个openid在用户集中返回id，否则生成一个id，为用户总数+1，同时用户总数+1
 获取openid可以参考
@@ -196,6 +167,7 @@ wx.request({
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
+|token|string|唯一token，用作后续请求头|
 #### 获取用户信息
 ```HTTP
 [GET] /user/getDetail
@@ -230,67 +202,20 @@ wx.request({
 |200|修改成功|
 |400|修改失败|
 |405|请求方法错误|
-#### 获取关注情况
-[GET] /user/getAttention
+#### 关注用户
+[POST] /user/addAttention
 ##### 请求参数
 |参数|类型|说明|
 |-------------|-------------|-------------|
-|id|int|自己用户id|
-##### 响应数据
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|attention|int|1代表已关注，2代表未关注，0代表是同一个用户，3代表在黑名单内|
-#### 改变用户关注状态
-[PUT] /user/changeAttention
+|hostId|int|自己用户id|
+|customerId|int|其他用户id|
+#### 取消关注用户
+[POST] /user/delAttention
 ##### 请求参数
 |参数|类型|说明|
 |-------------|-------------|-------------|
-|id|int|自己用户id|
-|otherid|int|其他用户id|
-|attention|int|需要变为的关注状态，同上|
-#### 绑定清华身份
-```HTTP
-[PUT] /user/{id}/bindTHU
-```
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|xuehao|string|学号|
-|password|string|密码|
-##### 响应状态
-|状态码|说明|
-|-------------|-------------|
-|200|绑定成功|
-|400|绑定失败|
-|405|请求方法错误|
-##### 响应数据
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|bindTHU|bool|绑定清华身份情况|
-* 通过清华身份获取信息后，定时在后端添加到事项等中，不在前端处理
-  
-#### (未完成)获取绑定情况
-```HTTP
-[GET] /user/getBindTHU
-```
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-##### 响应数据
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|isBind|int|是否绑定|
-|studentID|string|如有返回学号|
-
-#### (未完成)解除绑定清华身份
-```HTTP
-[POST] /user/unbindTHU
-```
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
+|hostId|int|自己用户id|
+|customerId|int|其他用户id|
 
 #### 搜索用户
 ```HTTP
@@ -306,94 +231,14 @@ wx.request({
 ##### 响应数据
 |参数|类型|说明|
 |-------------|-------------|-------------|
-|ids|int[]|用户id|
+|userList|[]|用户列表
 
-#### 得到健康状况
-```HTTP
-[GET] /user/getHealthInfo
-```
-
-##### 请求参数
 |参数|类型|说明|
 |-------------|-------------|-------------|
-|id|int|用户id|
+|userId|int|用户id|
+|avatar|string|用户头像|
+|name|string|昵称|
 
-##### 响应数据
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|healthInfo|healthInfo|健康状况(见上)|
-
-
-#### 修改健康状况
-```HTTP
-[POST] /user/changeHealthInfo
-```
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-|gender|string|性别|
-|birthday|string|生日|
-|height|double|身高|
-|weight|double|体重|
-|bmi|double|bmi|
-|beizhu|string|备注|
-
-#### (未完成)获取睡眠情况
-```HTTP
-[GET] /user/getSleep
-```
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-|date|string|日期|
-
-##### 响应数据
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|sleepDaily[8]|sleepDaily|今天以及之前七天的，按时间顺序返回，即第0项为七天以前，第7项为今天，如果当天没有则data项为[0,0,0,0,0,0,0,0,0,0,0,0],不要返回空值|
-|以下几点|用于|临时存储|
-|lastTime|string|上次睡眠时间(初始返回空)|
-|sleepHour|int|上次睡眠时长|
-|isSleep|int|是否睡眠中|
-|startDate|string|睡眠开始时间|
-|startHour|int|睡眠开始时|
-
-#### 睡眠信息 sleepDaily
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|date|string|日期|
-|data|int[12]|睡眠情况|
-
-#### (未完成)改变睡眠状态
-```HTTP
-[POST] /user/changeSleepState
-```
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-|以下几点|用于|临时存储|
-|lastTime|string|上次睡眠时间(初始返回空)|
-|sleepHour|int|上次睡眠时长|
-|isSleep|int|是否睡眠中|
-|startDate|string|睡眠开始时间|
-|startHour|int|睡眠开始时|
-
-#### (未完成)改变睡眠条形图
-```HTTP
-[POST] /user/changeSleep
-```
-
-##### 请求参数
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-|date|string|日期|
-|data|int[12]|当天睡眠情况|
-
-改变那天的sleepDaily,没有就添加
 
 #### 获取个人主页信息
 ```HTTP
@@ -414,16 +259,9 @@ wx.request({
 |followings|int[]|关注|
 |followers|int[]|粉丝|
 |following_state|string|关注情况|
-|achRange|int|成就可见范围(全部可见/粉丝可见/自己可见)0/1/2 初始为0|
-|actRange|int|活动可见范围|
-|postRange|int|帖子可见范围|
-
-这四个都是预览，包括
-##### achievement
-|参数|类型|说明|
-|-------------|-------------|-------------|
-|isShow|int|根据隐私设置判断的是否展示|
-|avatarUrl|string|图片|
+|posts|post[]|发布的帖子|
+|partActs|partAct[]|参与的活动|
+|iniActs|iniAct[]|发起的活动|
 
 ##### iniAct
 |参数|类型|说明|
@@ -495,7 +333,7 @@ wx.request({
 
 #### 获取指定日期的事务
 ```HTTP
-[GET] /schedule/{id}/todos
+[GET] /schedule/todos
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -508,9 +346,9 @@ wx.request({
 |-------------|-------------|-------------|
 |todos|todo[]|待办事项|
 
-#### 获取最近若干天的ddl (# not supported ?)
+#### 获取最近若干天的ddl
 ```HTTP
-[GET] /schedule/{id}/getDDL
+[GET] /schedule/getDDL
 ```
 |字段|类型|说明|
 |-------------|-------------|-------------|
@@ -525,26 +363,35 @@ wx.request({
 注：建议按时间顺序返回
 #### 事务的删
 ```HTTP
-[GET] /schedule/{id}/deleteTodo
+[POST] /schedule/deleteTodo
 ```
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
-|oldTodo|todo|修改前事项|
-注意: 假设todo由 date, title, start, end唯一决定
+|date|string|日期|
+|title|string|标题|
+|start|string|开始时间|
+|end|string|结束时间|
 
 #### 事务的改
 ```HTTP
-[GET] /schedule/{id}/changeTodo
+[GET] /schedule/changeTodo
 ```
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
-|oldTodo|todo|修改前事项|
-|newtodo|todo|修改后事项|
-注意: 假设todo由 date, title, start, end唯一决定
+|oldDate|string|日期|
+|oldTitle|string|标题|
+|oldStart|string|开始时间|
+|oldEnd|string|结束时间|
+|newDate|string|日期|
+|newTitle|string|标题|
+|newStart|string|开始时间|
+|newEnd|string|结束时间|
+|newLabel|string|新备注|
+|newType|string|新类型|
 
 #### 完成事务
 ```HTTP
@@ -553,7 +400,11 @@ wx.request({
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|用户id|
-|todo|todo|事项(可参照之前由date, title, start, end唯一决定)|
+|date|string|日期|
+|title|string|标题|
+|start|string|开始时间|
+|end|string|结束时间|
+
 
 进行的操作:将state设置为1，readOnly设置为True(不管先前如何)
 
@@ -561,7 +412,7 @@ wx.request({
 
 #### 发起活动
 ```HTTP
-[POST] /activity/{id}/addAct
+[POST] /activity/addAct
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -573,7 +424,7 @@ wx.request({
 
 #### 查找活动
 ```HTTP
-[GET] /activity/{id}/findAct
+[GET] /activity/findAct
 ```
 
 ##### 传入参数
@@ -604,7 +455,7 @@ wx.request({
 
 #### 查看活动详情
 ```HTTP
-[GET] /activity/{id}/getActDetail
+[GET] /activity/getActDetail
 ```
 
 ##### 传入参数
@@ -621,7 +472,7 @@ wx.request({
 
 #### 参与活动
 ```HTTP
-[POST] /activity/{id}/partAct
+[POST] /activity/partAct
 ```
 
 ##### 传入参数
@@ -636,7 +487,7 @@ wx.request({
 
 #### 获取活动申请信息
 ```HTTP
-[GET] /activity/{id}/getApplication
+[GET] /activity/getApplication
 ```
 
 ##### 传入参数
@@ -659,7 +510,7 @@ wx.request({
 
 #### 同意/不同意申请
 ```HTTP
-[POST] /activity/{id}/appReply
+[POST] /activity/appReply
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -672,7 +523,7 @@ wx.request({
 
 #### 删除活动
 ```HTTP
-[POST] /activity/{id}/deleteAct
+[POST] /activity/deleteAct
 ```
 
 ##### 传入参数
@@ -683,23 +534,23 @@ wx.request({
 
 #### 修改活动
 ```HTTP
-[POST] /activity/{id}/changeAct
+[POST] /activity/changeAct
 ```
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |id|int|发起人id|
 |actId|int|活动id|
-|newtitle|string|标题|
-|newpartnum|int[2]|人数范围|
-|newlabel|string|备注|
-|newdetail|string|详情|
-|newimages|string[]|图片|
-|newtags|string[]|标签|
+|newTitle|string|标题|
+|newPartnum|int[2]|人数范围|
+|newLabel|string|备注|
+|newDetail|string|详情|
+|newImages|string[]|图片|
+|newTags|string[]|标签|
 
 #### 退出活动
 ```HTTP
-[POST] /activity/{id}/exitAct
+[POST] /activity/exitAct
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -712,19 +563,20 @@ wx.request({
 
 #### 对活动进行评价
 ```HTTP
-[POST] /activity/{id}/commentAct
+[POST] /activity/commentAct
 ```
 ##### 传入参数
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |commenterId|int|评价人id|
 |actId|int|活动id|
+|score|int|分数|
 |comment|string|评价内容|
 |pubTime|string|评价时间|
 
 #### 对评价进行点赞
 ```HTTP
-[POST] /activity/{id}/likeComment
+[POST] /activity/likeComment
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -735,7 +587,7 @@ wx.request({
 
 #### 对评价取消点赞
 ```HTTP
-[POST] /activity/{id}/dislikeComment
+[POST] /activity/dislikeComment
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -746,7 +598,7 @@ wx.request({
 
 #### 对评价进行删除
 ```HTTP
-[POST] /activity/{id}/deleteComment
+[POST] /activity/deleteComment
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -754,70 +606,11 @@ wx.request({
 |id|int|评价本身的id|
 |actId|int|活动id|
 
-### 四、运动处理部分
-
-#### (待商榷)获取场馆预约信息
-```HTTP
-[GET] /sport/{id}/getAppoints
-```
-##### 传入参数
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|id|int|查找的id|
-|date|string|当天时间|
-
-##### 返回参数
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|appoints|appoint[]|七天内的场馆预约|
-
-#### (未完成)改变运动类型
-```HTTP
-[POST] /sport/changeSportType
-```
-##### 传入参数
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-|date|string|日期|
-|start|string|开始时间|
-|end|string|结束时间|
-|sportType|string|运动类型|
-
-将对应事项的sportType变为某值
-
-#### 改变运动状态
-```HTTP
-[POST] /sport/changeSportState
-```
-##### 传入参数
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-|date|string|日期|
-|start|string|开始时间|
-|end|string|结束时间|
-|sportState|int|运动状态|
-
-#### 结束运动
-```HTTP
-[POST] /sport/endSport
-```
-|字段|类型|说明|
-|-------------|-------------|-------------|
-|id|int|用户id|
-|date|string|日期|
-|start|string|开始时间|
-|end|string|结束时间|
-|sportTime|int|实际运动时长(分钟)|
-
-也会让事项的state变为1
-
-### 五、消息部分
+### 四、消息部分
 
 #### 获取消息
 ```HTTP
-[GET] /message/{id}/getMessages
+[GET] /message/getMessages
 ```
 ##### 传入参数
 |字段|类型|说明|
@@ -870,7 +663,7 @@ wx.request({
 |id|int|用户id|
 |messageId|int|消息id|
 
-### 六、论坛部分
+### 五、论坛部分
 #### 发布帖子
 ```HTTP
 [POST] /bbs/addPost
@@ -1013,3 +806,92 @@ wx.request({
 |字段|类型|说明|
 |-------------|-------------|-------------|
 |post|post|最上边定义的post结构|
+
+### 五、清华身份部分
+
+#### 绑定清华身份
+```HTTP
+[POST] /thuInfo/bindThu
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|id|
+|thuID|string|学号|
+|password|string|密码|
+##### 响应状态
+|状态码|说明|
+|-------------|-------------|
+|200|绑定成功|
+|400|绑定失败|
+|405|请求方法错误|
+##### 响应数据
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|bindTHU|bool|绑定清华身份情况|
+* 通过清华身份获取信息后，定时在后端添加到事项等中，不在前端处理
+  
+#### 获取绑定情况
+```HTTP
+[GET] /thuInfo/bindState
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+##### 响应数据
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|isBind|int|是否绑定|
+
+#### 得到健康状况
+```HTTP
+[GET] /thuInfo/getHealthInfo
+```
+
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+
+##### 响应数据
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|healthInfo|healthInfo|健康状况(见上)|
+
+### 六、睡眠部分
+#### 获取睡眠情况
+```HTTP
+[GET] /sleep/getSleep
+```
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|date|string|日期|
+
+##### 响应数据
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|sleepDaily[8]|sleepDaily|今天以及之前七天的，按时间顺序返回，即第0项为七天以前，第7项为今天，如果当天没有则data项为[0,0,0,0,0,0,0,0,0,0,0,0],不要返回空值|
+
+#### 睡眠信息 sleepDaily
+|字段|类型|说明|
+|-------------|-------------|-------------|
+|date|string|日期|
+|data|int[12]|睡眠情况|
+
+
+#### 改变睡眠条形图
+```HTTP
+[POST] /sleep/changeSleep
+```
+
+##### 请求参数
+|参数|类型|说明|
+|-------------|-------------|-------------|
+|id|int|用户id|
+|date|string|日期|
+|data|int[12]|当天睡眠情况|
+
+改变那天的sleepDaily,没有就添加
