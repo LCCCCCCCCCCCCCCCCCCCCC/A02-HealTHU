@@ -10,7 +10,7 @@
 .textinput {
   background-color: white;
   height: 320px;
-  width: 99%;
+  width: 94%;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 8px;

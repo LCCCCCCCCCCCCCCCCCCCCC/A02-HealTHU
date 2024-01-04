@@ -134,7 +134,7 @@ van-row{
 .image-container {
   padding-top: 2px;
   padding-bottom: 4px;
-  height: 160px; 
+  height: 120px; 
   overflow: hidden;
 }
 .lnum {
