@@ -365,7 +365,7 @@ def getPost(request):
             # user found
             targetFollowingList = targetUser.userInfo.followings
             for topic in Topic.objects.all():
-                if topic.userId in targetFollowingList:
+                if str(topic.userId) in targetFollowingList:
                     targetPost = {}
                     targetPost['id'] = topic.id
                     targetPost['title'] = topic.title
