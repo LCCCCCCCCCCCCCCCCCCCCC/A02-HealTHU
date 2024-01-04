@@ -30,14 +30,15 @@
     title="{{item.title}}"
     link-type="navigateTo"
     use-label-slot
-    url="../bbs/bbs?bbsid={{item.id}}"
-    border="{{false}}">
+    url="../bbs/bbs?bbsid={{item.id}}">
       <view slot="label">
         <view wx:if="{{item.images.length !== 0}}" class="image-container">
           <image class="image" src="{{item.images[0]}}"/>
         </view>
         <text>{{item.name}} {{item.time}}</text>
-        <view class="lnum">{{item.likeList.length}}点赞 {{item.replies.length}}回复</view>
+        <view class="lnum">
+        <!-- {{item.likeList.length}}点赞 {{item.replies.length}}回复 -->
+        </view>
       </view> 
     </van-cell>
   </view>
