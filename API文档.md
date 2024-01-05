@@ -149,10 +149,6 @@ state不为0或为公共活动时，todo均只读
 [GET] /user/getId
 ```
 通过code调用API，获取用户的openid，如果这个openid在用户集中返回id，否则生成一个id，为用户总数+1，同时用户总数+1
-获取openid可以参考
-wx.request({
-             url: 'https://api.weixin.qq.com/sns/jscode2session',data: {app:'wx0ed6410d0f2b476f',secret:'737153f44349fdde120da7fedce92666',code:res.code},success:function(response{{varopenid=response.data.openid;
-                    }})})
 ##### 请求参数
 |参数|类型|位置|说明|
 |-------------|-------------|--|-------------|
