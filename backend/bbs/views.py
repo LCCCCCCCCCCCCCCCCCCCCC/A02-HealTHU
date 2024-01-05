@@ -180,7 +180,7 @@ def addReply(request):
             content=content,
             likes=0,
             likeList=[],
-            aboveId=aboveId,
+            aboveId=targetAboveFloorId,
             aboveName=targetAboveFloor.name,
             aboveContent=targetAboveFloor.content,
             belowIds=[],
@@ -470,9 +470,9 @@ def getPostDetail(request):
                     targetReply['aboveName'] = ""
                     targetReply['aboveContent'] = "此评论已被删除"
                 else:
-                    targetReply['aboveId'] = targetFloor.aboveId
-                    targetReply['aboveName'] = targetFloor.aboveName
-                    targetReply['aboveContent'] = targetFloor.aboveContent
+                    targetReply['aboveId'] = targetAboveFloor.floorNum
+                    targetReply['aboveName'] = targetAboveFloor.name
+                    targetReply['aboveContent'] = targetAboveFloor.content
             targetReplyArray.append(targetReply)
         targetPost['id'] = targetTopic.id
         targetPost['userId'] = targetTopic.userId
